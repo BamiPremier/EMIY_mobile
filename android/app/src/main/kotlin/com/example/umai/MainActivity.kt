@@ -1,4 +1,4 @@
-package com.example.umai
+package caelis.studio.umai
 
 import io.flutter.embedding.android.FlutterActivity
 
