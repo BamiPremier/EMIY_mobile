@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:potatoes/libs.dart';
 import 'package:umai/auth/bloc/signin_cubit.dart';
-import 'package:umai/auth/screens/registration_username.dart';
+import 'package:umai/auth/screens/registrationuser/registration_username.dart';
 import 'package:umai/auth/widgets/auth_button.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/common/widgets/buttons.dart';
@@ -58,43 +58,41 @@ class _LoginWelcomeBackScreenState extends State<LoginWelcomeBackScreen> {
     return Scaffold(
       backgroundColor: ThemeApp.primaryYellow,
       body: SafeArea(
-        child: Column(
-          children: [
-            const Spacer(flex: 1),
-            const Expanded(
-              child: Padding(
-                padding:
-                    EdgeInsets.symmetric(horizontal: Dimension.kMarginX * 2),
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 48),
+          child: Column(
+            children: [
+              Spacer(
+                flex: 1,
+              ),
+              Expanded(
                 child: Column(
                   children: [
-                    Text(
-                      'Bon retour parmi nous!',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: Dimension.kBigTitlle),
-                    ),
+                    Text('Bon retour parmi nous!',
+                        textAlign: TextAlign.center,
+                        
+                        style: Theme.of(context).textTheme.displaySmall)
                   ],
                 ),
               ),
-            ),
-            Container(
-              margin: const EdgeInsets.symmetric(
-                  horizontal: Dimension.kMarginX, vertical: Dimension.kMarginY),
-              child: UmaiButton.secondary(
-                onPressed: () {
-                  log('3333333333333333');
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            const RegistrationUsernameScreen()),
-                  );
-                  log('3333333333333333');
-                },
-                text: "Merci",
+              Container(
+                margin:
+                    const EdgeInsets.symmetric(vertical: Dimension.kMarginY),
+                child: UmaiButton.secondary(
+                  onPressed: () {
+                    log('3333333333333333');
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const RegistrationUsernameScreen()),
+                    );
+                    log('3333333333333333');
+                  },
+                  text: "Merci",
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

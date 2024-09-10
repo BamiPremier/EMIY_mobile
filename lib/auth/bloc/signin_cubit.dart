@@ -15,25 +15,6 @@ class SignInCubit extends Cubit<SignInState> {
   void login(String identifier, String password) {
     final stateBefore = state;
     emit(const SignInLoadingState());
-    authService.login(identifier: identifier, password: password).then(
-        (response) {
-      // userCubit.signIn(response.user, response.jwt).then((_) {
-      //   if (response.subscription != null) {
-      //     userCubit.preferencesService.saveSubscription(response.subscription!);
-      //   }
-
-      //   if (response.user.userIsSupplier &&
-      //       (response.user.birthdate == null || response.user.place == null)) {
-      //     emit(const SignInMissingSupplierInformation());
-      //   } else {
-      //     emit(const SignInSuccessState());
-      //   }
-      //   emit(stateBefore);
-      // });
-    }, onError: (error, trace) {
-      emit(SignInErrorState(error, trace));
-      emit(stateBefore);
-    });
   }
 
   void socialLogin(
@@ -49,5 +30,26 @@ class SignInCubit extends Cubit<SignInState> {
       'error': error,
       'trace': trace
     }}');
+    emit(const SignInIdleState());
+
+    //  authService.login(identifier: identifier, password: password).then(
+    //     (response) {
+    //   // userCubit.signIn(response.user, response.jwt).then((_) {
+    //   //   if (response.subscription != null) {
+    //   //     userCubit.preferencesService.saveSubscription(response.subscription!);
+    //   //   }
+
+    //   //   if (response.user.userIsSupplier &&
+    //   //       (response.user.birthdate == null || response.user.place == null)) {
+    //   //     emit(const SignInMissingSupplierInformation());
+    //   //   } else {
+    //   //     emit(const SignInSuccessState());
+    //   //   }
+    //   //   emit(stateBefore);
+    //   // });
+    // }, onError: (error, trace) {
+    //   emit(SignInErrorState(error, trace));
+    //   emit(stateBefore);
+    // });
   }
 }

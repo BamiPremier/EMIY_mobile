@@ -33,17 +33,13 @@ class UserProfileItem extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  name,
-                  style: TextStyle(
-                      fontSize: Dimension.kMiddle, fontWeight: FontWeight.bold),
-                ),
+                Text(name, style: Theme.of(context).textTheme.bodyLarge),
                 Text(
                   description,
-                  style: TextStyle(
-                      color: ThemeApp.primaryYellow,
-                      fontSize: Dimension.kDescrition,
-                      fontWeight: FontWeight.bold),
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelMedium!
+                      .copyWith(color: Theme.of(context).colorScheme.secondary),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -54,10 +50,8 @@ class UserProfileItem extends StatelessWidget {
           ElevatedButton.icon(
             onPressed: onFollowPressed,
             icon: const Icon(Icons.add),
-            label: const Text(
-              'Suivre',
-              style: TextStyle(fontSize: Dimension.kMiddlePrimary),
-            ),
+            label:
+                Text('Suivre', style: Theme.of(context).textTheme.labelLarge),
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(

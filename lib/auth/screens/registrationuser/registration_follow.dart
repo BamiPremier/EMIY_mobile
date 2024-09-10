@@ -42,57 +42,54 @@ class _RegistrationFollowScreenState extends State<RegistrationFollowScreen>
       appBar: CustomAppBar(title: "Rejoins la communauté!"),
       body: SafeArea(
         child: Padding(
-          padding:
-              const EdgeInsets.symmetric(horizontal: Dimension.kMarginX / 2),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              Container(
+                  margin: const EdgeInsets.symmetric(vertical: 16),
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                      'Fais-toi des amis et reste informé(e) de leur activité dans l’application',
+                      style: Theme.of(context).textTheme.bodySmall)),
               Expanded(
-                // padding: const EdgeInsets.symmetric(
-                //     horizontal: Dimension.kMarginX / 2),
-                child: Column(children: [
-                  Container(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: Dimension.kMarginY / 2,
-                      ),
-                      alignment: Alignment.centerLeft,
-                      child: const Text(
-                        'Fais-toi des amis et reste informé(e) de leur activité dans l’application',
-                        style: TextStyle(fontSize: Dimension.kMiddle),
-                      )),
-                  const SizedBox(height: 10),
-                  Container(
-                      height: MediaQuery.of(context).size.height * .73,
-                      // padding: const EdgeInsets.all(8.0),
-                      child: SingleChildScrollView(
-                          child: ListView.builder(
-                        itemCount: users.length,
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          final user = users[index];
-                          return UserProfileItem(
-                            imageUrl: user.imageUrl,
-                            name: user.name,
-                            description: user.description,
-                            onFollowPressed: user.onFollow,
-                          );
-                        },
-                      ))),
-                ]),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: Dimension.kMarginY / 2),
-                child: UmaiButton.primary(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (context) => const LoginWelcomeBackScreen()),
-                    );
-                  },
-                  text: "Continuer",
-                ),
+                  // margin: const EdgeInsets.symmetric(vertical: 16),
+                  // height: MediaQuery.of(context).size.height * .73,
+                  // padding: const EdgeInsets.all(8.0),
+                  child: SingleChildScrollView(
+                      child: ListView.builder(
+                itemCount: users.length,
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  final user = users[index];
+                  return UserProfileItem(
+                    imageUrl: user.imageUrl,
+                    name: user.name,
+                    description: user.description,
+                    onFollowPressed: user.onFollow,
+                  );
+                },
+              ))),
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: Container(
+        color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+        child: SafeArea(
+          minimum: const EdgeInsets.symmetric(horizontal: 31.0, vertical: 16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              UmaiButton.primary(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => const LoginWelcomeBackScreen()),
+                  );
+                },
+                text: "Continuer",
               ),
             ],
           ),
@@ -173,7 +170,7 @@ List<RandomUser> generateRandomUsers() {
     return RandomUser(
       imageUrl: Assets.avatar /* 'https://picsum.photos/seed/$id/200' */,
       name: '$firstName $lastName',
-      description: '$job passionné(e)',
+      description: '$job',
       onFollow: () {
         print('Suivre $firstName $lastName');
       },

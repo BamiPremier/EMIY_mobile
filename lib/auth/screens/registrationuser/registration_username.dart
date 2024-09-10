@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/auth/bloc/signin_cubit.dart';
-import 'package:umai/auth/screens/registration_preffered.dart';
+import 'package:umai/auth/screens/registrationuser/registration_preffered.dart';
 import 'package:umai/common/utils/validators.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:flutter/material.dart';
@@ -49,14 +49,11 @@ class _RegistrationUsernameScreenState extends State<RegistrationUsernameScreen>
       appBar: CustomAppBar(title: "Tu es nouveau?"),
       body: SafeArea(
         child: Padding(
-          padding:
-              const EdgeInsets.symmetric(horizontal: Dimension.kMarginX / 2),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Expanded(
-                // padding: const EdgeInsets.symmetric(
-                //     horizontal: Dimension.kMarginX / 2),
                 child: Column(
                   children: [
                     CustomTextField(
@@ -87,19 +84,26 @@ class _RegistrationUsernameScreenState extends State<RegistrationUsernameScreen>
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: Dimension.kMarginY / 2),
-                child: UmaiButton.primary(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              const RegistrationPrefferedScreen()),
-                    );
-                  },
-                  text: "Continuer",
-                ),
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: Container(
+        color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+        child: SafeArea(
+          minimum: const EdgeInsets.symmetric(horizontal: 31.0, vertical: 16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              UmaiButton.primary(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const RegistrationPrefferedScreen()),
+                  );
+                },
+                text: "Continuer",
               ),
             ],
           ),

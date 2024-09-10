@@ -40,24 +40,25 @@ class CustomTextField extends StatelessWidget {
         decoration: InputDecoration(
           hintText: hintText,
           border: UnderlineInputBorder(
-            borderSide: BorderSide(color: Theme.of(context).primaryColor),
+            borderSide: BorderSide(color: Theme.of(context).dividerColor),
           ),
           focusedBorder: UnderlineInputBorder(
             borderSide:
-                BorderSide(color: Theme.of(context).primaryColor, width: 2.0),
+                BorderSide(color: Theme.of(context).dividerColor, width: 2.0),
           ),
           enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Theme.of(context).primaryColor),
+            borderSide: BorderSide(color: Theme.of(context).dividerColor),
           ),
         ),
       ),
       if (subText != null)
         Container(
-          margin: const EdgeInsets.symmetric(
-              vertical: 8.0, horizontal: Dimension.kMarginX / 2),
+          margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
           child: Text(
             subText!,
-            style: Theme.of(context).textTheme.bodySmall,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
           ),
         ),
     ]));

@@ -25,16 +25,6 @@ Future<T?> showAppBottomSheet<T>(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const SizedBox(height: 12.0),
-              // Container(
-              //   decoration: BoxDecoration(
-              //     borderRadius: BorderRadius.circular(10.0),
-              //     color: Theme.of(context).disabledColor
-              //   ),
-              //   height: 4.0,
-              //   width: 40.0,
-              // ),
-              const SizedBox(height: 32.0),
               Flexible(
                 child: SafeArea(
                   minimum: EdgeInsets.only(

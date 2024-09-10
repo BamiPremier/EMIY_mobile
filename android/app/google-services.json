@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "887208119857",
+    "project_id": "umai-app",
+    "storage_bucket": "umai-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:887208119857:android:8bdc43ac28c7dd04134f10",
+        "android_client_info": {
+          "package_name": "caelis.studio.umai"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "887208119857-66iahahhjh9ocg9h3n2q5ljuinb40fh2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "caelis.studio.umai",
+            "certificate_hash": "19fe0832b4805eb73b0f2610a122e3094a125c89"
+          }
+        },
+        {
+          "client_id": "887208119857-f31hg004emqi3d3ms5ugv3mtmn902ghr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgSNG26g8urbrpNR21YYo37J-_DKFtFWM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "887208119857-f31hg004emqi3d3ms5ugv3mtmn902ghr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

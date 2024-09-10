@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:umai/common/services/api_service.dart';
 import 'package:umai/utils/app_dimension.dart';
@@ -33,18 +35,11 @@ extension AuthProviderExtension on AuthProvider {
 }
 
 enum AuthButtonStyle { primary, secondary, hybride }
-
-typedef AuthCallback = void Function(
-    {String? provider,
-    String? email,
-    String? token,
-    Object? error,
-    StackTrace? trace});
-
+ 
 class AuthButton extends StatelessWidget {
   final AuthProvider provider;
   final AuthButtonStyle buttonStyle;
-  final AuthCallback callback;
+  final   onPressed;
   final Color? backgroundColor; // Ajout du type Color
   final Color? textColor; // Ajout du type Color
 
@@ -53,7 +48,7 @@ class AuthButton extends StatelessWidget {
       this.buttonStyle = AuthButtonStyle.primary,
       this.backgroundColor,
       this.textColor,
-      required this.callback})
+      required this.onPressed})
       : provider = AuthProvider.apple;
 
   const AuthButton.google(
@@ -61,7 +56,7 @@ class AuthButton extends StatelessWidget {
       this.buttonStyle = AuthButtonStyle.primary,
       this.backgroundColor,
       this.textColor,
-      required this.callback})
+      required this.onPressed})
       : provider = AuthProvider.google;
 
   ButtonStyle style(BuildContext context) {
@@ -95,59 +90,20 @@ class AuthButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OutlinedButton.icon(
-      onPressed: onAuthTap,
+      onPressed: onPressed,
       icon: SvgPicture.asset(
         provider.asset,
         height: 30.0,
       ),
-      label: AutoSizeText(
-        provider.name,
-        maxLines: 1,
-        style: TextStyle(
-            color: textColor,
-            fontWeight: FontWeight.bold,
-            fontSize: Dimension.kMiddlePrimary),
-      ),
+      label: AutoSizeText(provider.name,
+          maxLines: 1,
+          style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                color: textColor,
+              )),
       style: style(context).copyWith(
           minimumSize: const MaterialStatePropertyAll(Size.fromHeight(45.0)),
           textStyle: MaterialStatePropertyAll(
               Theme.of(context).textTheme.labelMedium)),
     );
-  }
-
-  void onAuthTap() async {
-    // TODO
-    //return;
-    try {
-      switch (provider) {
-        case AuthProvider.apple:
-          final appleCredentials = await SignInWithApple.getAppleIDCredential(
-            scopes: [
-              AppleIDAuthorizationScopes.email,
-              AppleIDAuthorizationScopes.fullName
-            ],
-          );
-          return callback(
-              email: appleCredentials.email,
-              token: appleCredentials.identityToken,
-              provider: provider.name.toLowerCase());
-
-        case AuthProvider.google:
-          final account = await GoogleSignIn(
-            scopes: [
-              'email',
-              'https://www.googleapis.com/auth/userinfo.profile',
-            ],
-          ).signIn();
-          if (account == null) return;
-          final auth = await account.authentication;
-          return callback(
-              email: account.email,
-              token: auth.accessToken,
-              provider: provider.name.toLowerCase());
-      }
-    } catch (e, t) {
-      return callback(error: e, trace: t);
-    }
   }
 }

@@ -81,7 +81,7 @@ class UmaiButton extends StatelessWidget {
       child: Text(
         text,
         textAlign: TextAlign.center,
-        style: const TextStyle(fontSize: Dimension.kMiddlePrimary),
+        style: Theme.of(context).textTheme.labelLarge,
       ),
     );
   }
