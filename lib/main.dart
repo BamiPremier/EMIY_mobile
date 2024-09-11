@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart' hide PreferencesService;
+import 'package:umai/firebase_options.dart';
 import 'package:umai/home_screen.dart';
 import 'package:umai/auth/bloc/signin_cubit.dart';
 import 'package:umai/auth/bloc/signup_cubit.dart';
@@ -18,12 +20,24 @@ import 'package:umai/common/services/user_service.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:umai/utils/themes.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final SharedPreferences preferences = await SharedPreferences.getInstance();
   final cacheOptions = await cacheStoreOptions();
   Links.instance = const ApiLinks();
-
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(kReleaseMode);
+  CubitErrorState.stream().listen((state) {
+    FirebaseCrashlytics.instance.recordError(state.error, state.trace);
+  });
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+  PlatformDispatcher.instance.onError = (Object error, StackTrace trace) {
+    FirebaseCrashlytics.instance.recordError(error, trace);
+    return true;
+  };
   runApp(Phoenix(
     child: MyApp(
       navigatorKey: GlobalKey(),
@@ -76,7 +90,7 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'My Coco Beauty',
+          title: 'Umai',
           theme: ThemeApp.lightTheme(context),
           themeMode: ThemeMode.light,
           locale: const Locale.fromSubtags(languageCode: 'fr'),

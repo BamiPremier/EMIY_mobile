@@ -7,7 +7,7 @@ import 'package:umai/auth/bloc/signin_cubit.dart';
 import 'package:umai/auth/screens/registrationuser/registration_follow.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:flutter/material.dart';
-import 'package:umai/common/widgets/custom_app_bar.dart';
+ 
 import 'package:umai/utils/app_dimension.dart';
 
 class RegistrationAnimeSelectionScreen extends StatefulWidget {
@@ -35,14 +35,14 @@ class _RegistrationAnimeSelectionScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: "Tu regardes quoi?"),
+      appBar: AppBar(title: const Text("Tu regardes quoi?")),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             children: [
               Container(
-                  margin: const EdgeInsets.symmetric(vertical: 16),
+                  margin: const EdgeInsets.only(top: 8, bottom: 16),
                   alignment: Alignment.centerLeft,
                   child: Text(
                       'Choisis tes animes favoris ou rajoutes-en dans ta washlist',
@@ -53,9 +53,9 @@ class _RegistrationAnimeSelectionScreenState
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3, // Nombre de colonnes
                     crossAxisSpacing:
-                        8.0, // Espacement horizontal entre les colonnes
+                        2.0, // Espacement horizontal entre les colonnes
                     mainAxisSpacing:
-                        8.0, // Espacement vertical entre les lignes
+                        2.0, // Espacement vertical entre les lignes
 
                     childAspectRatio: .65),
                 itemCount: 30, // Nombre total d'éléments dans la grille

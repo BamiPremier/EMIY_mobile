@@ -56,28 +56,11 @@ class UmaiButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ButtonStyle buttonStyle;
-    if (large) {
-      buttonStyle = ElevatedButton.styleFrom(
-        backgroundColor: _backgroundColor(context),
-        minimumSize: const Size.fromHeight(45.0),
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(100.0)),
-      );
-    } else {
-      buttonStyle = ElevatedButton.styleFrom(
-        backgroundColor: _backgroundColor(context),
-        minimumSize: const Size(0, 24.0),
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(100.0)),
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      );
-    }
-
-    return ElevatedButton(
+    return FilledButton(
       onPressed: onPressed,
-      style: buttonStyle,
+      style: FilledButton.styleFrom(
+        backgroundColor: _backgroundColor(context),
+      ),
       child: Text(
         text,
         textAlign: TextAlign.center,

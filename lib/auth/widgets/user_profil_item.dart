@@ -18,48 +18,28 @@ class UserProfileItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          // Image circulaire à gauche
-          CircleAvatar(
-            radius: 28,
-            backgroundImage: AssetImage(imageUrl),
-          ),
-          const SizedBox(width: 16),
-          // Colonne au milieu avec nom et description
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(name, style: Theme.of(context).textTheme.bodyLarge),
-                Text(
-                  description,
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelMedium!
-                      .copyWith(color: Theme.of(context).colorScheme.secondary),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
+    return ListTile(
+      contentPadding:
+          const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      leading: CircleAvatar(
+        radius: 28,
+        backgroundImage: AssetImage(imageUrl),
+      ),
+      title: Text(name, style: Theme.of(context).textTheme.bodyLarge),
+      subtitle: Text(
+        description,
+        style: Theme.of(context).textTheme.labelMedium!.copyWith(
+              color: Theme.of(context).colorScheme.secondary,
             ),
-          ),
-          // Bouton "Suivre" à droite
-          ElevatedButton.icon(
-            onPressed: onFollowPressed,
-            icon: const Icon(Icons.add),
-            label:
-                Text('Suivre', style: Theme.of(context).textTheme.labelLarge),
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(
-                    100), // Ajustez la valeur pour plus ou moins d'arrondi
-              ),
-            ),
-          ),
-        ],
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+      trailing: Chip(
+        label: Text('Suivre', style: Theme.of(context).textTheme.labelLarge),
+        avatar: Icon(Icons.add, color: ThemeApp.mainText),
+        backgroundColor: ThemeApp.primaryYellow,
+        deleteIcon: const SizedBox.shrink(),
+        onDeleted: () {},
       ),
     );
   }

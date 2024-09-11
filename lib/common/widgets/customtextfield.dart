@@ -29,31 +29,37 @@ class CustomTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      TextFormField(
-        controller: controller,
-        focusNode: focusNode,
-        keyboardType: keyboardType,
-        textCapitalization: textCapitalization,
-        textInputAction: textInputAction,
-        onEditingComplete: onEditingCompleted,
-        validator: validator,
-        decoration: InputDecoration(
-          hintText: hintText,
-          border: UnderlineInputBorder(
-            borderSide: BorderSide(color: Theme.of(context).dividerColor),
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderSide:
-                BorderSide(color: Theme.of(context).dividerColor, width: 2.0),
-          ),
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Theme.of(context).dividerColor),
+      Container(
+        height: 56,
+        child: TextFormField(
+          controller: controller,
+          focusNode: focusNode,
+          keyboardType: keyboardType,
+          textCapitalization: textCapitalization,
+          textInputAction: textInputAction,
+          onEditingComplete: onEditingCompleted,
+          validator: validator,
+          decoration: InputDecoration(
+            hintText: hintText,
+            border: UnderlineInputBorder(
+              borderSide: BorderSide(color: Theme.of(context).dividerColor),
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide:
+                  BorderSide(color: Theme.of(context).dividerColor, width: 2.0),
+            ),
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Theme.of(context).dividerColor),
+            ),
           ),
         ),
       ),
       if (subText != null)
         Container(
-          margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
+          margin: const EdgeInsets.symmetric(horizontal: 16)
+              .add(const EdgeInsets.only(
+            top: 4.0,
+          )),
           child: Text(
             subText!,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(

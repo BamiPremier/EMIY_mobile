@@ -8,7 +8,6 @@ import 'package:umai/auth/screens/registrationuser/registration_preffered.dart';
 import 'package:umai/common/utils/validators.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:flutter/material.dart';
-import 'package:umai/common/widgets/custom_app_bar.dart';
 import 'package:umai/common/widgets/customtextfield.dart';
 import 'package:umai/utils/app_dimension.dart';
 
@@ -46,7 +45,10 @@ class _RegistrationUsernameScreenState extends State<RegistrationUsernameScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: "Tu es nouveau?"),
+      appBar: AppBar(
+          title: const Text(
+        "Tu es nouveau?",
+      )),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),

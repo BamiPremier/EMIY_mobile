@@ -67,15 +67,14 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       child: Scaffold(
         backgroundColor: ThemeApp.primaryYellow,
         body: SafeArea(
+          minimum: EdgeInsets.only(bottom: 65),
           child: Column(
             children: [
-              const Spacer(flex: 2),
-              Container(),
-              const Spacer(flex: 3),
+              // const Spacer(flex: 0),
+              const SizedBox(height: 643.0),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: Dimension.kMarginX),
+                  padding: const EdgeInsets.symmetric(horizontal: 48),
                   child: Column(
                     children: [
                       AuthButton.apple(
@@ -83,18 +82,15 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                             acceptTerm(provider: AuthProvider.apple),
                         backgroundColor: ThemeApp.white,
                         textColor: ThemeApp.primaryBlack,
-                        buttonStyle: AuthButtonStyle.hybride,
                       ),
-                      const SizedBox(height: 20.0),
-                      if (Platform.isAndroid || Platform.isIOS)
-                        AuthButton.google(
-                          onPressed: () =>
-                              acceptTerm(provider: AuthProvider.google),
-                          backgroundColor: ThemeApp.primaryBlack,
-                          textColor: ThemeApp.white,
-                          buttonStyle: AuthButtonStyle.hybride,
-                        ),
-                      const SizedBox(height: 12.0),
+                      const SizedBox(height: 24.0),
+                      // if (Platform.isAndroid || Platform.isIOS)
+                      AuthButton.google(
+                        onPressed: () =>
+                            acceptTerm(provider: AuthProvider.google),
+                        backgroundColor: ThemeApp.primaryBlack,
+                        textColor: ThemeApp.white,
+                      ),
                     ],
                   ),
                 ),
@@ -149,7 +145,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   void acceptTerm({required AuthProvider provider}) => showAppBottomSheet(
       context: context,
       horizontalPadding: 0,
-      maxHeight: 256,
+      maxHeight: 240,
       isScrollControlled: true,
       builder: (_) => Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -166,7 +162,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                 ),
               ),
               SizedBox(
-                height: 39,
+                height: 32,
               ),
               Container(
                   child: Text(
@@ -174,11 +170,12 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                 style: Theme.of(context).textTheme.bodySmall,
               )),
               SizedBox(
-                height: 39,
+                height: 32,
               ),
               Container(
                 child: UmaiButton.primary(
                   onPressed: () {
+                    Navigator.of(context).pop();
                     // onAuthTap(provider);
                     // log('3333333333333333');
                     Navigator.of(context).push(

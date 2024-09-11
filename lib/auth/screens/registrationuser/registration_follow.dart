@@ -8,7 +8,7 @@ import 'package:umai/auth/screens/login_welcome_back.dart';
 import 'package:umai/auth/widgets/user_profil_item.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:flutter/material.dart';
-import 'package:umai/common/widgets/custom_app_bar.dart';
+ 
 import 'package:umai/utils/app_dimension.dart';
 import 'package:umai/utils/assets.dart';
 import 'dart:math';
@@ -39,7 +39,10 @@ class _RegistrationFollowScreenState extends State<RegistrationFollowScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: "Rejoins la communauté!"),
+      appBar: AppBar(
+          title: const Text(
+        "Rejoins la communauté!",
+      )),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
