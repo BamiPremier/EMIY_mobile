@@ -1,14 +1,11 @@
-import 'dart:io';
-
-import 'package:flutter/widgets.dart';
+ 
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/auth/bloc/signin_cubit.dart';
 import 'package:umai/auth/screens/registrationuser/registration_follow.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:flutter/material.dart';
- 
-import 'package:umai/utils/app_dimension.dart';
+  
 
 class RegistrationAnimeSelectionScreen extends StatefulWidget {
   const RegistrationAnimeSelectionScreen({super.key});
@@ -65,7 +62,7 @@ class _RegistrationAnimeSelectionScreenState
                     child: Center(
                       child: Text(
                         'Item $index',
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       ),
                     ),
                   );

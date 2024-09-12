@@ -16,5 +16,6 @@ class User with _$User {
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
-  String get id => id;
+  // @override
+  // String get id => id;
 }

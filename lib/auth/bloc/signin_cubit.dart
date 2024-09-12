@@ -11,11 +11,7 @@ class SignInCubit extends Cubit<SignInState> {
 
   SignInCubit(this.userCubit, this.authService)
       : super(const SignInIdleState());
-
-  void login(String identifier, String password) {
-    final stateBefore = state;
-    emit(const SignInLoadingState());
-  }
+ 
 
   void socialLogin(
       {String? provider,
@@ -23,13 +19,7 @@ class SignInCubit extends Cubit<SignInState> {
       String? token,
       Object? error,
       StackTrace? trace}) {
-    print('${{
-      'provider': provider,
-      'email': email,
-      'token': token,
-      'error': error,
-      'trace': trace
-    }}');
+   
     emit(const SignInIdleState());
 
     //  authService.login(identifier: identifier, password: password).then(

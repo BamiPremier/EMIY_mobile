@@ -163,8 +163,8 @@ abstract class ThemeApp {
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       ),
       checkboxTheme: theme.checkboxTheme.copyWith(
-        fillColor: MaterialStateProperty.resolveWith((states) =>
-            states.contains(MaterialState.selected) ? primaryYellow : null),
+        fillColor: WidgetStateProperty.resolveWith((states) =>
+            states.contains(WidgetState.selected) ? primaryYellow : null),
       ),
       dividerColor: theme.colorScheme.onSurfaceVariant,
       dialogTheme: DialogTheme(contentTextStyle: textTheme.bodyLarge),
@@ -195,10 +195,10 @@ abstract class ThemeApp {
           borderSide: BorderSide(color: theme.disabledColor),
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
-        hintStyle: textTheme.bodyLarge
-            ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-        labelStyle: textTheme.bodySmall
-            ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+        // hintStyle: textTheme.bodyLarge
+        //     ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+        // labelStyle: textTheme.bodySmall
+        //     ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
@@ -227,7 +227,7 @@ abstract class ThemeApp {
         backgroundColor: Colors.white,
         selectedColor: primaryYellow,
         labelStyle: textTheme.labelLarge,
-        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+        // padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
         shape: RoundedRectangleBorder(
             side: BorderSide.none, borderRadius: BorderRadius.circular(100.0)),
         side: BorderSide.none,
@@ -250,8 +250,8 @@ abstract class ThemeApp {
       popupMenuTheme:
           theme.popupMenuTheme.copyWith(textStyle: textTheme.labelSmall),
       switchTheme: theme.switchTheme.copyWith(
-        thumbColor: MaterialStateProperty.resolveWith((states) =>
-            states.contains(MaterialState.selected) ? primaryYellow : null),
+        thumbColor: WidgetStateProperty.resolveWith((states) =>
+            states.contains(WidgetState.selected) ? primaryYellow : null),
       ),
       textTheme: textTheme,
     );

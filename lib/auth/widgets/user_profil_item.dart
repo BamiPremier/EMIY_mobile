@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:umai/utils/app_dimension.dart';
+import 'package:flutter/material.dart'; 
 import 'package:umai/utils/themes.dart';
 
 class UserProfileItem extends StatelessWidget {
@@ -9,12 +8,12 @@ class UserProfileItem extends StatelessWidget {
   final VoidCallback onFollowPressed;
 
   const UserProfileItem({
-    Key? key,
+    super.key,
     required this.imageUrl,
     required this.name,
     required this.description,
     required this.onFollowPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +35,7 @@ class UserProfileItem extends StatelessWidget {
       ),
       trailing: Chip(
         label: Text('Suivre', style: Theme.of(context).textTheme.labelLarge),
-        avatar: Icon(Icons.add, color: ThemeApp.mainText),
+        avatar: const Icon(Icons.add, color: ThemeApp.mainText),
         backgroundColor: ThemeApp.primaryYellow,
         deleteIcon: const SizedBox.shrink(),
         onDeleted: () {},

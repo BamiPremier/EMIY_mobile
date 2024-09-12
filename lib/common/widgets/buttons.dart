@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:umai/utils/app_dimension.dart';
+import 'package:flutter/material.dart'; 
 import 'package:umai/utils/themes.dart';
 
 enum _ButtonHierarchy { primary, secondary, tertiary, quaternary }

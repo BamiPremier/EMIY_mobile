@@ -1,11 +1,8 @@
-import 'dart:developer';
-import 'dart:io';
+import 'dart:developer'; 
 
 import 'package:potatoes/libs.dart';
 import 'package:umai/auth/bloc/signin_cubit.dart';
-import 'package:umai/auth/screens/registrationuser/registration_username.dart';
-import 'package:umai/auth/widgets/auth_button.dart';
-import 'package:umai/common/widgets/bottom_sheet.dart';
+import 'package:umai/auth/screens/registrationuser/registration_username.dart'; 
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:umai/utils/app_dimension.dart';
@@ -28,41 +25,16 @@ class _LoginWelcomeBackScreenState extends State<LoginWelcomeBackScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Widget swiperPage({
-      required String image,
-      required String title,
-      required String subtitle,
-    }) {
-      return Column(
-        children: [
-          Expanded(
-            child: Image.asset(image),
-          ),
-          const SizedBox(height: 16.0),
-          Text(
-            title,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          const SizedBox(height: 16.0),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 60.0),
-            child: Text(
-              subtitle,
-              textAlign: TextAlign.center,
-            ),
-          )
-        ],
-      );
-    }
+  
 
     return Scaffold(
       backgroundColor: ThemeApp.primaryYellow,
       body: SafeArea(
         child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 48),
+          margin: const EdgeInsets.symmetric(horizontal: 48),
           child: Column(
             children: [
-              Spacer(
+           const   Spacer(
                 flex: 1,
               ),
               Expanded(

@@ -1,18 +1,9 @@
-import 'dart:io';
-
-import 'package:flutter/widgets.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/auth/bloc/signin_cubit.dart';
 import 'package:umai/auth/screens/registrationuser/registration_anime_selection.dart';
-import 'package:umai/auth/widgets/auth_button.dart';
-import 'package:umai/common/utils/validators.dart';
-import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:flutter/material.dart';
-import 'package:umai/common/widgets/customtextfield.dart';
-import 'package:umai/common/widgets/textfield.dart';
-import 'package:umai/utils/app_dimension.dart';
 import 'package:umai/utils/themes.dart';
 
 class RegistrationPrefferedScreen extends StatefulWidget {
@@ -94,9 +85,10 @@ class _RegistrationPrefferedScreenState
                   children: animeCategories.map((item) {
                     final isSelected = true;
                     return Chip(
-                        avatar: Icon(Icons.indeterminate_check_box_outlined,
+                        avatar: const Icon(
+                            Icons.indeterminate_check_box_outlined,
                             color: ThemeApp.mainText),
-                        side: BorderSide(),
+                        side: const BorderSide(),
                         deleteIcon: Container(),
                         onDeleted: () {},
                         label: Text(

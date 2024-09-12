@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:flutter/widgets.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/auth/bloc/signin_cubit.dart';
@@ -8,8 +5,7 @@ import 'package:umai/auth/screens/login_welcome_back.dart';
 import 'package:umai/auth/widgets/user_profil_item.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:flutter/material.dart';
- 
-import 'package:umai/utils/app_dimension.dart';
+
 import 'package:umai/utils/assets.dart';
 import 'dart:math';
 
@@ -63,7 +59,7 @@ class _RegistrationFollowScreenState extends State<RegistrationFollowScreen>
                       child: ListView.builder(
                 itemCount: users.length,
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   final user = users[index];
                   return UserProfileItem(
@@ -168,14 +164,13 @@ List<RandomUser> generateRandomUsers() {
     final firstName = firstNames[random.nextInt(firstNames.length)];
     final lastName = lastNames[random.nextInt(lastNames.length)];
     final job = jobs[random.nextInt(jobs.length)];
-    final id = random.nextInt(1000);
 
     return RandomUser(
       imageUrl: Assets.avatar /* 'https://picsum.photos/seed/$id/200' */,
       name: '$firstName $lastName',
-      description: '$job',
+      description: job,
       onFollow: () {
-        print('Suivre $firstName $lastName');
+       
       },
     );
   });

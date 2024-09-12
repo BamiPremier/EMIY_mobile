@@ -1,14 +1,7 @@
-import 'dart:developer';
-
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:umai/common/services/api_service.dart';
-import 'package:umai/utils/app_dimension.dart';
 import 'package:umai/utils/assets.dart';
-import 'package:umai/utils/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 enum AuthProvider { apple, google }
 

@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:umai/utils/app_dimension.dart';
+import 'package:flutter/material.dart'; 
 
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
@@ -13,7 +12,7 @@ class CustomTextField extends StatelessWidget {
   final String? subText;
 
   const CustomTextField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.hintText,
     this.subText,
@@ -23,50 +22,49 @@ class CustomTextField extends StatelessWidget {
     this.textCapitalization = TextCapitalization.none,
     this.textInputAction = TextInputAction.done,
     this.onEditingCompleted,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Container(
-        height: 56,
-        child: TextFormField(
-          controller: controller,
-          focusNode: focusNode,
-          keyboardType: keyboardType,
-          textCapitalization: textCapitalization,
-          textInputAction: textInputAction,
-          onEditingComplete: onEditingCompleted,
-          validator: validator,
-          decoration: InputDecoration(
-            hintText: hintText,
-            border: UnderlineInputBorder(
-              borderSide: BorderSide(color: Theme.of(context).dividerColor),
-            ),
-            focusedBorder: UnderlineInputBorder(
-              borderSide:
-                  BorderSide(color: Theme.of(context).dividerColor, width: 2.0),
-            ),
-            enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Theme.of(context).dividerColor),
-            ),
-          ),
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          SizedBox(
+    height: 56,
+    child: TextFormField(
+      controller: controller,
+      focusNode: focusNode,
+      keyboardType: keyboardType,
+      textCapitalization: textCapitalization,
+      textInputAction: textInputAction,
+      onEditingComplete: onEditingCompleted,
+      validator: validator,
+      decoration: InputDecoration(
+        hintText: hintText,
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(color: Theme.of(context).dividerColor),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide:
+              BorderSide(color: Theme.of(context).dividerColor, width: 2.0),
+        ),
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Theme.of(context).dividerColor),
         ),
       ),
-      if (subText != null)
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 16)
-              .add(const EdgeInsets.only(
-            top: 4.0,
-          )),
-          child: Text(
-            subText!,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
+    ),
           ),
-        ),
-    ]));
+          if (subText != null)
+    Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16)
+          .add(const EdgeInsets.only(
+        top: 4.0,
+      )),
+      child: Text(
+        subText!,
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+      ),
+    ),
+        ]);
   }
 }

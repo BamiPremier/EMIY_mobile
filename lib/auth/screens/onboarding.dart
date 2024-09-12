@@ -1,11 +1,8 @@
 import 'dart:developer';
-import 'dart:io';
-
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
-import 'package:potatoes/common/widgets/loaders.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:potatoes/common/widgets/loaders.dart'; 
 
 import 'package:umai/auth/bloc/signin_cubit.dart';
 import 'package:umai/auth/screens/registrationuser/registration_username.dart';
@@ -13,7 +10,6 @@ import 'package:umai/auth/widgets/auth_button.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:flutter/material.dart';
-import 'package:umai/utils/app_dimension.dart';
 import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/themes.dart';
 
@@ -35,39 +31,39 @@ class _OnboardingScreenState extends State<OnboardingScreen>
 
   @override
   Widget build(BuildContext context) {
-    Widget swiperPage({
-      required String image,
-      required String title,
-      required String subtitle,
-    }) {
-      return Column(
-        children: [
-          Expanded(
-            child: Image.asset(image),
-          ),
-          const SizedBox(height: 16.0),
-          Text(
-            title,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          const SizedBox(height: 16.0),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 60.0),
-            child: Text(
-              subtitle,
-              textAlign: TextAlign.center,
-            ),
-          )
-        ],
-      );
-    }
+    // Widget swiperPage({
+    //   required String image,
+    //   required String title,
+    //   required String subtitle,
+    // }) {
+    //   return Column(
+    //     children: [
+    //       Expanded(
+    //         child: Image.asset(image),
+    //       ),
+    //       const SizedBox(height: 16.0),
+    //       Text(
+    //         title,
+    //         style: Theme.of(context).textTheme.titleMedium,
+    //       ),
+    //       const SizedBox(height: 16.0),
+    //       Padding(
+    //         padding: const EdgeInsets.symmetric(horizontal: 60.0),
+    //         child: Text(
+    //           subtitle,
+    //           textAlign: TextAlign.center,
+    //         ),
+    //       )
+    //     ],
+    //   );
+    // }
 
     return BlocListener<SignInCubit, SignInState>(
       listener: onEventReceived,
       child: Scaffold(
         backgroundColor: ThemeApp.primaryYellow,
         body: SafeArea(
-          minimum: EdgeInsets.only(bottom: 65),
+          minimum: const EdgeInsets.only(bottom: 65),
           child: Column(
             children: [
               // const Spacer(flex: 0),
@@ -108,12 +104,12 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     try {
       switch (provider) {
         case AuthProvider.apple:
-          final appleCredentials = await SignInWithApple.getAppleIDCredential(
-            scopes: [
-              AppleIDAuthorizationScopes.email,
-              AppleIDAuthorizationScopes.fullName
-            ],
-          );
+        // final appleCredentials = await SignInWithApple.getAppleIDCredential(
+        //   scopes: [
+        //     AppleIDAuthorizationScopes.email,
+        //     AppleIDAuthorizationScopes.fullName
+        //   ],
+        // );
         // return callback(
         //     email: appleCredentials.email,
         //     token: appleCredentials.identityToken,
@@ -152,41 +148,36 @@ class _OnboardingScreenState extends State<OnboardingScreen>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 24,
               ),
-              Container(
-                child: Text(
-                  'Connexion & inscription',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
+              Text(
+                'Connexion & inscription',
+                style: Theme.of(context).textTheme.titleLarge,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 32,
               ),
-              Container(
-                  child: Text(
+              Text(
                 'En cliquant sur Continuer, tu confirmes avoir pris connaissance et accepté notre politique de confidentialité et nos termes d’usage.',
                 style: Theme.of(context).textTheme.bodySmall,
-              )),
-              SizedBox(
+              ),
+              const SizedBox(
                 height: 32,
               ),
-              Container(
-                child: UmaiButton.primary(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    // onAuthTap(provider);
-                    // log('3333333333333333');
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              const RegistrationUsernameScreen()),
-                    );
-                    log('3333333333333333');
-                  },
-                  text: "Continuer",
-                ),
+              UmaiButton.primary(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  // onAuthTap(provider);
+                  // log('3333333333333333');
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const RegistrationUsernameScreen()),
+                  );
+                  log('3333333333333333');
+                },
+                text: "Continuer",
               ),
             ],
           )));

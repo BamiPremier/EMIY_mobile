@@ -1,4 +1,4 @@
-import 'package:umai/common/utils/validators.dart';
+ 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -58,7 +58,7 @@ class UmaiTextField extends StatefulWidget {
 }
 
 class _UmaiTextFieldState extends State<UmaiTextField> {
-  late bool _textVisible = !widget.obscureText;
+  late final bool _textVisible = !widget.obscureText;
 
   @override
   Widget build(BuildContext context) {

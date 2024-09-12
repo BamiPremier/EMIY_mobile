@@ -7,10 +7,7 @@ import 'package:umai/firebase_options.dart';
 import 'package:umai/home_screen.dart';
 import 'package:umai/auth/bloc/signin_cubit.dart';
 import 'package:umai/auth/bloc/signup_cubit.dart';
-import 'package:umai/auth/screens/onboarding.dart';
-import 'package:umai/auth/screens/registrationuser/registration_anime_selection.dart';
-import 'package:umai/auth/screens/registrationuser/registration_preffered.dart';
-import 'package:umai/auth/screens/registrationuser/registration_username.dart';
+import 'package:umai/auth/screens/onboarding.dart'; 
 import 'package:umai/auth/services/auth_service.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/screens/splash.dart';
@@ -107,6 +104,7 @@ class MyApp extends StatelessWidget {
               // recharge l'app quelque soit l'étape dans l'appli
               if (state is UserNotLoggedState) {
                 Future.delayed(const Duration(milliseconds: 100),
+                    // ignore: use_build_context_synchronously
                     () => Phoenix.rebirth(context));
               }
             },

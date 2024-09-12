@@ -48,7 +48,7 @@ class _SplashScreenState extends State<SplashScreen>
           children: [
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 32.0),
-              child: Text('UMAI'),
+              child: const Text('UMAI'),
             ),
             const SizedBox(height: 48.0),
             const CircularProgressIndicator(

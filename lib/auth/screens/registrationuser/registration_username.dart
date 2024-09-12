@@ -1,6 +1,4 @@
-import 'dart:io';
-
-import 'package:flutter/widgets.dart';
+ 
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/auth/bloc/signin_cubit.dart';
@@ -8,9 +6,7 @@ import 'package:umai/auth/screens/registrationuser/registration_preffered.dart';
 import 'package:umai/common/utils/validators.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:flutter/material.dart';
-import 'package:umai/common/widgets/customtextfield.dart';
-import 'package:umai/utils/app_dimension.dart';
-
+import 'package:umai/common/widgets/customtextfield.dart'; 
 class RegistrationUsernameScreen extends StatefulWidget {
   const RegistrationUsernameScreen({super.key});
 
