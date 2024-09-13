@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart' hide PreferencesService;
+import 'package:umai/auth/bloc/category_anime_cubit.dart';
+import 'package:umai/auth/bloc/follow_user_cubit.dart';
+import 'package:umai/auth/bloc/preference_user_cubit.dart';
+import 'package:umai/auth/services/preference_user_service.dart';
 import 'package:umai/firebase_options.dart';
 import 'package:umai/home_screen.dart';
 import 'package:umai/auth/bloc/signin_cubit.dart';
-import 'package:umai/auth/bloc/signup_cubit.dart';
-import 'package:umai/auth/screens/onboarding.dart'; 
+import 'package:umai/auth/screens/onboarding.dart';
 import 'package:umai/auth/services/auth_service.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/screens/splash.dart';
@@ -71,6 +74,7 @@ class MyApp extends StatelessWidget {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(create: (_) => AuthService(dio)),
+        RepositoryProvider(create: (_) => PreferenceUserService(dio)),
         RepositoryProvider(create: (_) => UserService(dio)),
       ],
       child: MultiBlocProvider(
@@ -81,9 +85,15 @@ class MyApp extends StatelessWidget {
                     preferencesService,
                   )),
           BlocProvider(
-              create: (context) => SignUpCubit(context.read(), context.read())),
+              create: (context) =>
+                  PreferenceUserCubit(context.read(), context.read())),
           BlocProvider(
               create: (context) => SignInCubit(context.read(), context.read())),
+          BlocProvider(
+              create: (context) => FollowUserCubit(
+                    context.read(),
+                  )),
+          BlocProvider(create: (context) => CategoryAnimeCubit(context.read())),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -103,7 +113,8 @@ class MyApp extends StatelessWidget {
             listener: (_, state) {
               // recharge l'app quelque soit l'étape dans l'appli
               if (state is UserNotLoggedState) {
-                Future.delayed(const Duration(milliseconds: 100),
+                Future.delayed(
+                    const Duration(milliseconds: 100),
                     // ignore: use_build_context_synchronously
                     () => Phoenix.rebirth(context));
               }

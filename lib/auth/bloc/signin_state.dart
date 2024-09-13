@@ -13,11 +13,23 @@ class SignInLoadingState extends CubitLoadingState with SignInState {
   const SignInLoadingState();
 }
 
-class SignInSuccessState extends CubitInformationState with SignInState {
-  const SignInSuccessState();
+class SignInSuccessActiveUserState extends CubitInformationState
+    with SignInState {
+  const SignInSuccessActiveUserState();
 }
 
-class SignInMissingSupplierInformation extends CubitInformationState with SignInState {
+class SignInSuccessInActiveUserState extends CubitInformationState
+    with SignInState {
+  const SignInSuccessInActiveUserState();
+}
+
+class CompleteUserSuccessUserState extends CubitInformationState
+    with SignInState {
+  const CompleteUserSuccessUserState();
+}
+
+class SignInMissingSupplierInformation extends CubitInformationState
+    with SignInState {
   const SignInMissingSupplierInformation();
 }
 

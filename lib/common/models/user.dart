@@ -12,6 +12,7 @@ class User with _$User {
     String? firstname,
     required String lastname,
     required String email,
+    required bool status,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

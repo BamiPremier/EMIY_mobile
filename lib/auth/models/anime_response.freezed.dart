@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'register_response.dart';
+part of 'anime_response.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,36 +14,36 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-RegisterResponse _$RegisterResponseFromJson(Map<String, dynamic> json) {
-  return _RegisterResponse.fromJson(json);
+AnimeResponse _$AnimeResponseFromJson(Map<String, dynamic> json) {
+  return _AnimeResponse.fromJson(json);
 }
 
 /// @nodoc
-mixin _$RegisterResponse {
+mixin _$AnimeResponse {
   User get user => throw _privateConstructorUsedError;
-  String get jwt => throw _privateConstructorUsedError;
+  bool get status => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $RegisterResponseCopyWith<RegisterResponse> get copyWith =>
+  $AnimeResponseCopyWith<AnimeResponse> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $RegisterResponseCopyWith<$Res> {
-  factory $RegisterResponseCopyWith(
-          RegisterResponse value, $Res Function(RegisterResponse) then) =
-      _$RegisterResponseCopyWithImpl<$Res, RegisterResponse>;
+abstract class $AnimeResponseCopyWith<$Res> {
+  factory $AnimeResponseCopyWith(
+          AnimeResponse value, $Res Function(AnimeResponse) then) =
+      _$AnimeResponseCopyWithImpl<$Res, AnimeResponse>;
   @useResult
-  $Res call({User user, String jwt});
+  $Res call({User user, bool status});
 
   $UserCopyWith<$Res> get user;
 }
 
 /// @nodoc
-class _$RegisterResponseCopyWithImpl<$Res, $Val extends RegisterResponse>
-    implements $RegisterResponseCopyWith<$Res> {
-  _$RegisterResponseCopyWithImpl(this._value, this._then);
+class _$AnimeResponseCopyWithImpl<$Res, $Val extends AnimeResponse>
+    implements $AnimeResponseCopyWith<$Res> {
+  _$AnimeResponseCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -54,17 +54,17 @@ class _$RegisterResponseCopyWithImpl<$Res, $Val extends RegisterResponse>
   @override
   $Res call({
     Object? user = null,
-    Object? jwt = null,
+    Object? status = null,
   }) {
     return _then(_value.copyWith(
       user: null == user
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as User,
-      jwt: null == jwt
-          ? _value.jwt
-          : jwt // ignore: cast_nullable_to_non_nullable
-              as String,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 
@@ -78,106 +78,105 @@ class _$RegisterResponseCopyWithImpl<$Res, $Val extends RegisterResponse>
 }
 
 /// @nodoc
-abstract class _$$RegisterResponseImplCopyWith<$Res>
-    implements $RegisterResponseCopyWith<$Res> {
-  factory _$$RegisterResponseImplCopyWith(_$RegisterResponseImpl value,
-          $Res Function(_$RegisterResponseImpl) then) =
-      __$$RegisterResponseImplCopyWithImpl<$Res>;
+abstract class _$$AnimeResponseImplCopyWith<$Res>
+    implements $AnimeResponseCopyWith<$Res> {
+  factory _$$AnimeResponseImplCopyWith(
+          _$AnimeResponseImpl value, $Res Function(_$AnimeResponseImpl) then) =
+      __$$AnimeResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({User user, String jwt});
+  $Res call({User user, bool status});
 
   @override
   $UserCopyWith<$Res> get user;
 }
 
 /// @nodoc
-class __$$RegisterResponseImplCopyWithImpl<$Res>
-    extends _$RegisterResponseCopyWithImpl<$Res, _$RegisterResponseImpl>
-    implements _$$RegisterResponseImplCopyWith<$Res> {
-  __$$RegisterResponseImplCopyWithImpl(_$RegisterResponseImpl _value,
-      $Res Function(_$RegisterResponseImpl) _then)
+class __$$AnimeResponseImplCopyWithImpl<$Res>
+    extends _$AnimeResponseCopyWithImpl<$Res, _$AnimeResponseImpl>
+    implements _$$AnimeResponseImplCopyWith<$Res> {
+  __$$AnimeResponseImplCopyWithImpl(
+      _$AnimeResponseImpl _value, $Res Function(_$AnimeResponseImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? user = null,
-    Object? jwt = null,
+    Object? status = null,
   }) {
-    return _then(_$RegisterResponseImpl(
+    return _then(_$AnimeResponseImpl(
       user: null == user
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as User,
-      jwt: null == jwt
-          ? _value.jwt
-          : jwt // ignore: cast_nullable_to_non_nullable
-              as String,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$RegisterResponseImpl implements _RegisterResponse {
-  const _$RegisterResponseImpl({required this.user, required this.jwt});
+class _$AnimeResponseImpl implements _AnimeResponse {
+  const _$AnimeResponseImpl({required this.user, required this.status});
 
-  factory _$RegisterResponseImpl.fromJson(Map<String, dynamic> json) =>
-      _$$RegisterResponseImplFromJson(json);
+  factory _$AnimeResponseImpl.fromJson(Map<String, dynamic> json) =>
+      _$$AnimeResponseImplFromJson(json);
 
   @override
   final User user;
   @override
-  final String jwt;
+  final bool status;
 
   @override
   String toString() {
-    return 'RegisterResponse(user: $user, jwt: $jwt)';
+    return 'AnimeResponse(user: $user, status: $status)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$RegisterResponseImpl &&
+            other is _$AnimeResponseImpl &&
             (identical(other.user, user) || other.user == user) &&
-            (identical(other.jwt, jwt) || other.jwt == jwt));
+            (identical(other.status, status) || other.status == status));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, user, jwt);
+  int get hashCode => Object.hash(runtimeType, user, status);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$RegisterResponseImplCopyWith<_$RegisterResponseImpl> get copyWith =>
-      __$$RegisterResponseImplCopyWithImpl<_$RegisterResponseImpl>(
-          this, _$identity);
+  _$$AnimeResponseImplCopyWith<_$AnimeResponseImpl> get copyWith =>
+      __$$AnimeResponseImplCopyWithImpl<_$AnimeResponseImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$RegisterResponseImplToJson(
+    return _$$AnimeResponseImplToJson(
       this,
     );
   }
 }
 
-abstract class _RegisterResponse implements RegisterResponse {
-  const factory _RegisterResponse(
+abstract class _AnimeResponse implements AnimeResponse {
+  const factory _AnimeResponse(
       {required final User user,
-      required final String jwt}) = _$RegisterResponseImpl;
+      required final bool status}) = _$AnimeResponseImpl;
 
-  factory _RegisterResponse.fromJson(Map<String, dynamic> json) =
-      _$RegisterResponseImpl.fromJson;
+  factory _AnimeResponse.fromJson(Map<String, dynamic> json) =
+      _$AnimeResponseImpl.fromJson;
 
   @override
   User get user;
   @override
-  String get jwt;
+  bool get status;
   @override
   @JsonKey(ignore: true)
-  _$$RegisterResponseImplCopyWith<_$RegisterResponseImpl> get copyWith =>
+  _$$AnimeResponseImplCopyWith<_$AnimeResponseImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

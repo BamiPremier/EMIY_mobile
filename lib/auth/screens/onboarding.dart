@@ -2,9 +2,10 @@ import 'dart:developer';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
-import 'package:potatoes/common/widgets/loaders.dart'; 
+import 'package:potatoes/common/widgets/loaders.dart';
 
 import 'package:umai/auth/bloc/signin_cubit.dart';
+import 'package:umai/auth/screens/login_welcome_back.dart';
 import 'package:umai/auth/screens/registrationuser/registration_username.dart';
 import 'package:umai/auth/widgets/auth_button.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
@@ -66,8 +67,8 @@ class _OnboardingScreenState extends State<OnboardingScreen>
           minimum: const EdgeInsets.only(bottom: 65),
           child: Column(
             children: [
-              // const Spacer(flex: 0),
-              const SizedBox(height: 643.0),
+              const Spacer(flex: 2),
+              const Spacer(flex: 3),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 48),
@@ -98,7 +99,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     );
   }
 
-  void onAuthTap(provider) async {
+  onAuthTap(provider) async {
     // TODO
     //return;
     try {
@@ -128,13 +129,16 @@ class _OnboardingScreenState extends State<OnboardingScreen>
 
           if (account == null) return;
           final auth = await account.authentication;
-        // return callback(
-        //     email: account.email,
-        //     token: auth.accessToken,
-        //     provider: provider.name.toLowerCase());
+          return signInCubit.socialLogin(
+            email: account.email,
+            token: auth.accessToken!,
+          );
       }
-    } catch (e, t) {
-      // return callback(error: e, trace: t);
+    } catch (e) {
+      return showError(
+        context,
+        e,
+      );
     }
   }
 
@@ -167,14 +171,15 @@ class _OnboardingScreenState extends State<OnboardingScreen>
               ),
               UmaiButton.primary(
                 onPressed: () {
-                  Navigator.of(context).pop();
-                  // onAuthTap(provider);
+                  // Navigator.of(context).pop();
+                  onAuthTap(provider);
                   // log('3333333333333333');
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            const RegistrationUsernameScreen()),
-                  );
+                  // Navigator.of(context).push(
+                  //   MaterialPageRoute(
+                  //       builder: (context) =>
+                  //           const RegistrationUsernameScreen()),
+                  // );
+
                   log('3333333333333333');
                 },
                 text: "Continuer",
@@ -192,8 +197,15 @@ class _OnboardingScreenState extends State<OnboardingScreen>
 
     if (state is SignInLoadingState) {
       loadingDialogCompleter = showLoadingBarrier(context: context);
-    } else if (state is SignInSuccessState) {
-    } else if (state is SignInMissingSupplierInformation) {
+    } else if (state is SignInSuccessActiveUserState) {
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => const LoginWelcomeBackScreen()),
+      );
+    } else if (state is SignInSuccessInActiveUserState) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+            builder: (context) => const RegistrationUsernameScreen()),
+      );
     } else if (state is SignInErrorState) {
       showError(context, state.error);
     }

@@ -1,5 +1,3 @@
- 
-
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:dio_cache_interceptor_hive_store/dio_cache_interceptor_hive_store.dart';
 import 'package:path_provider/path_provider.dart';
@@ -55,7 +53,6 @@ class ApiService extends potatoes.ApiService {
       // API error as single string. Is either 'error' or 'detail'
       throw ApiError.unknown(e);
     } catch (e, s) {
-      print('xxx $e\n$s');
       throw potatoes.ApiError.unknown(e.toString(), s);
     }
   }

@@ -11,35 +11,47 @@ class SignInCubit extends Cubit<SignInState> {
 
   SignInCubit(this.userCubit, this.authService)
       : super(const SignInIdleState());
- 
 
-  void socialLogin(
-      {String? provider,
-      String? email,
-      String? token,
-      Object? error,
-      StackTrace? trace}) {
-   
-    emit(const SignInIdleState());
+  void socialLogin({
+    required String email,
+    required String token,
+  }) {
+    final stateBefore = state;
 
-    //  authService.login(identifier: identifier, password: password).then(
-    //     (response) {
-    //   // userCubit.signIn(response.user, response.jwt).then((_) {
-    //   //   if (response.subscription != null) {
-    //   //     userCubit.preferencesService.saveSubscription(response.subscription!);
-    //   //   }
+    emit(const SignInLoadingState());
 
-    //   //   if (response.user.userIsSupplier &&
-    //   //       (response.user.birthdate == null || response.user.place == null)) {
-    //   //     emit(const SignInMissingSupplierInformation());
-    //   //   } else {
-    //   //     emit(const SignInSuccessState());
-    //   //   }
-    //   //   emit(stateBefore);
-    //   // });
-    // }, onError: (error, trace) {
-    //   emit(SignInErrorState(error, trace));
-    //   emit(stateBefore);
-    // });
+    authService.authUser(email: email, token: token).then((response) {
+      userCubit.preferencesService.saveUser(response.user);
+      if (response.user.status) {
+        emit(const SignInSuccessActiveUserState());
+      } else {
+        emit(const SignInSuccessInActiveUserState());
+      }
+      emit(stateBefore);
+    }, onError: (error, trace) {
+      emit(SignInErrorState(error, trace));
+      emit(stateBefore);
+    });
+  }
+
+  void completeUserName({
+    required String username,
+    required String idUserName,
+  }) {
+    final stateBefore = state;
+
+    emit(const SignInLoadingState());
+
+    authService
+        .completeUserName(username: username, idUserName: idUserName)
+        .then((response) {
+      userCubit.preferencesService.saveUser(response.user);
+      emit(const CompleteUserSuccessUserState());
+
+      emit(stateBefore);
+    }, onError: (error, trace) {
+      emit(SignInErrorState(error, trace));
+      emit(stateBefore);
+    });
   }
 }

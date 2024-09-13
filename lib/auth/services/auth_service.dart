@@ -1,41 +1,37 @@
-import 'package:umai/auth/models/register_response.dart';
+import 'package:umai/auth/models/auth_response.dart';
 import 'package:umai/common/services/api_service.dart';
 import 'package:potatoes/libs.dart';
 
 class AuthService extends ApiService {
   static const String _register = '/user/registration';
-  static const String _login = '/user/authentification';
+  static const String _auth = '/auth';
 
   const AuthService(super._dio);
 
-  Future<RegisterResponse> register({
-    String? firstName,
-    required String lastName,
-    required String email,
-    required String token,
+  Future<AuthResponse> completeUserName({
+    required String idUserName,
+    required String username,
   }) {
     return compute(
-      dio.post(_register, data: {
+      dio.patch(_register, data: {
         'user': {
-          'firstname': firstName,
-          'lastname': lastName,
-          'email': email,
-          'token': token,
-        }..removeWhere((key, value) => value == null),
+          'idUserName': idUserName,
+          'username': username,
+        },
       }),
-      mapper: RegisterResponse.fromJson,
+      mapper: AuthResponse.fromJson,
     );
   }
 
-  Future<RegisterResponse> login(
-      {required String identifier, required String password}) {
+  Future<AuthResponse> authUser(
+      {required String email, required String token}) {
     return compute(
-      dio.post(_login,
+      dio.post(_auth,
           data: FormData.fromMap({
-            'login': identifier,
-            'password': password,
+            'email': email,
+            'token': token,
           })),
-      mapper: RegisterResponse.fromJson,
+      mapper: AuthResponse.fromJson,
     );
   }
 }

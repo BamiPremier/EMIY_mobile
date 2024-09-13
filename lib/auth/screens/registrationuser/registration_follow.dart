@@ -1,13 +1,20 @@
+import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
+import 'package:umai/auth/bloc/follow_user_cubit.dart';
+import 'package:umai/auth/bloc/preference_user_cubit.dart';
 import 'package:umai/auth/bloc/signin_cubit.dart';
+import 'package:umai/auth/models/follower_response.dart';
 import 'package:umai/auth/screens/login_welcome_back.dart';
 import 'package:umai/auth/widgets/user_profil_item.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:flutter/material.dart';
+import 'package:umai/home_screen.dart';
 
 import 'package:umai/utils/assets.dart';
 import 'dart:math';
+
+import 'package:umai/utils/dialogs.dart';
 
 class RegistrationFollowScreen extends StatefulWidget {
   const RegistrationFollowScreen({super.key});
@@ -21,6 +28,8 @@ class _RegistrationFollowScreenState extends State<RegistrationFollowScreen>
     with CompletableMixin {
   late final signInCubit = context.read<SignInCubit>();
   final List<RandomUser> users = generateRandomUsers();
+  late final followCubit = context.read<FollowUserCubit>();
+  late final preferenceUserCubit = context.read<PreferenceUserCubit>();
 
   @override
   void initState() {
@@ -34,67 +43,108 @@ class _RegistrationFollowScreenState extends State<RegistrationFollowScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          title: const Text(
-        "Rejoins la communauté!",
-      )),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(
-                  margin: const EdgeInsets.symmetric(vertical: 16),
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                      'Fais-toi des amis et reste informé(e) de leur activité dans l’application',
-                      style: Theme.of(context).textTheme.bodySmall)),
-              Expanded(
-                  // margin: const EdgeInsets.symmetric(vertical: 16),
-                  // height: MediaQuery.of(context).size.height * .73,
-                  // padding: const EdgeInsets.all(8.0),
-                  child: SingleChildScrollView(
-                      child: ListView.builder(
-                itemCount: users.length,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  final user = users[index];
-                  return UserProfileItem(
-                    imageUrl: user.imageUrl,
-                    name: user.name,
-                    description: user.description,
-                    onFollowPressed: user.onFollow,
-                  );
-                },
-              ))),
-            ],
+    return BlocListener<PreferenceUserCubit, PreferenceUserState>(
+      listener: onEventReceived,
+      child: Scaffold(
+        appBar: AppBar(
+            title: const Text(
+          "Rejoins la communauté!",
+        )),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Container(
+                      margin: const EdgeInsets.symmetric(vertical: 16),
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                          'Fais-toi des amis et reste informé(e) de leur activité dans l’application',
+                          style: Theme.of(context).textTheme.bodySmall)),
+                  Expanded(
+                      // margin: const EdgeInsets.symmetric(vertical: 16),
+                      // height: MediaQuery.of(context).size.height * .73,
+                      // padding: const EdgeInsets.all(8.0),
+                      child: SingleChildScrollView(
+                          child:
+                              //          ListView.builder(
+                              //   itemCount: users.length,
+                              //   shrinkWrap: true,
+                              //   physics: const NeverScrollableScrollPhysics(),
+                              //   itemBuilder: (context, index) {
+                              //     final user = users[index];
+                              //     return UserProfileItem(
+                              //       imageUrl: user.imageUrl,
+                              //       name: user.name,
+                              //       description: user.description,
+                              //       onFollowPressed: user.onFollow,
+                              //     );
+                              //   },
+                              // ))),
+                              AutoListView.get<FollowerResponse>(
+                                  cubit: followCubit,
+                                  itemBuilder: (context, user) =>
+                                      UserProfileItem(
+                                        user: user,
+                                        // ignore: avoid_print
+                                        onFollowPressed: () => print(''),
+                                      ),
+                                  emptyBuilder: (context) => const Center(
+                                        child: Text("Empty list"),
+                                      ),
+                                  errorBuilder: (context, retry) => Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const Text("An error occured"),
+                                          TextButton(
+                                            onPressed: retry,
+                                            child: const Text("Retry"),
+                                          )
+                                        ],
+                                      ))))
+                ]),
           ),
         ),
-      ),
-      bottomNavigationBar: Container(
-        color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
-        child: SafeArea(
-          minimum: const EdgeInsets.symmetric(horizontal: 31.0, vertical: 16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              UmaiButton.primary(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (context) => const LoginWelcomeBackScreen()),
-                  );
-                },
-                text: "Continuer",
-              ),
-            ],
+        bottomNavigationBar: Container(
+          color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+          child: SafeArea(
+            minimum:
+                const EdgeInsets.symmetric(horizontal: 31.0, vertical: 16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                UmaiButton.primary(
+                  onPressed: () {
+                    preferenceUserCubit.completePreferenceUser();
+
+                    // Navigator.of(context).push(
+                    //   MaterialPageRoute(
+                    //       builder: (context) => const LoginWelcomeBackScreen()),
+                    // );
+                  },
+                  text: "Continuer",
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  void onEventReceived(BuildContext context, PreferenceUserState state) async {
+    await waitForDialog();
+
+    if (state is PreferenceUserLoadingState) {
+      loadingDialogCompleter = showLoadingBarrier(context: context);
+    } else if (state is PreferenceUserSuccessState) {
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => const HomeScreen()),
+      );
+    } else if (state is PreferenceUserErrorState) {
+      showError(context, state.error);
+    }
   }
 }
 
@@ -169,9 +219,7 @@ List<RandomUser> generateRandomUsers() {
       imageUrl: Assets.avatar /* 'https://picsum.photos/seed/$id/200' */,
       name: '$firstName $lastName',
       description: job,
-      onFollow: () {
-       
-      },
+      onFollow: () {},
     );
   });
 }

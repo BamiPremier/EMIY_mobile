@@ -1,6 +1,9 @@
+import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
+import 'package:umai/auth/bloc/category_anime_cubit.dart';
 import 'package:umai/auth/bloc/signin_cubit.dart';
+import 'package:umai/auth/models/category_anime_response.dart';
 import 'package:umai/auth/screens/registrationuser/registration_anime_selection.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +20,7 @@ class RegistrationPrefferedScreen extends StatefulWidget {
 class _RegistrationPrefferedScreenState
     extends State<RegistrationPrefferedScreen> with CompletableMixin {
   late final signInCubit = context.read<SignInCubit>();
+  late final categoryAnimeCubit = context.read<CategoryAnimeCubit>();
 
   @override
   void initState() {
@@ -28,38 +32,6 @@ class _RegistrationPrefferedScreenState
     super.dispose();
   }
 
-  static const List<String> animeCategories = [
-    'Action',
-    'Aventure',
-    'Comédie',
-    'Drame',
-    'Fantaisie',
-    'Horreur',
-    'Mystère',
-    'Psychologique',
-    'Romance',
-    'Science-fiction',
-    'Slice of Life',
-    'Sports',
-    'Surnaturel',
-    'Thriller',
-    'Mecha',
-    'Historique',
-    'Musical',
-    'Parodie',
-    'Shoujo',
-    'Shounen',
-    'Seinen',
-    'Josei',
-    'Ecchi',
-    'Harem',
-    'Isekai',
-    'Magical Girl',
-    'Post-apocalyptique',
-    'Cyberpunk',
-    'Steampunk',
-    'Guerre'
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,7 +51,7 @@ class _RegistrationPrefferedScreenState
                       style: Theme.of(context).textTheme.bodySmall)),
               Expanded(
                 child: SingleChildScrollView(
-                    child: Wrap(
+                    child: /*  Wrap(
                   spacing: 8,
                   runSpacing: 8,
                   children: animeCategories.map((item) {
@@ -95,7 +67,40 @@ class _RegistrationPrefferedScreenState
                           item,
                         ));
                   }).toList(),
-                )),
+                ) */
+
+                        AutoListView.get<CategoryAnimeResponse>(
+                            cubit: categoryAnimeCubit,
+                            customBuilder: (context, user) => Wrap(
+                                  spacing: 8,
+                                  runSpacing: 8,
+                                  children: user.map((item) {
+                                    return Chip(
+                                        avatar: const Icon(
+                                            Icons
+                                                .indeterminate_check_box_outlined,
+                                            color: ThemeApp.mainText),
+                                        side: const BorderSide(),
+                                        deleteIcon: Container(),
+                                        onDeleted: () {},
+                                        label: const Text(
+                                          'item',
+                                        ));
+                                  }).toList(),
+                                ),
+                            emptyBuilder: (context) => const Center(
+                                  child: Text("Empty list"),
+                                ),
+                            errorBuilder: (context, retry) => Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Text("An error occured"),
+                                    TextButton(
+                                      onPressed: retry,
+                                      child: const Text("Retry"),
+                                    )
+                                  ],
+                                ))),
               ),
             ],
           ),
@@ -113,7 +118,8 @@ class _RegistrationPrefferedScreenState
                   Navigator.of(context).push(
                     MaterialPageRoute(
                         builder: (context) =>
-                            const RegistrationAnimeSelectionScreen()),
+                            const RegistrationAnimeSelectionScreen(
+                                listCategory: [])),
                   );
                 },
                 text: "Continuer",

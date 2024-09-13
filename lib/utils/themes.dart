@@ -154,6 +154,7 @@ abstract class ThemeApp {
           theme.bottomNavigationBarTheme.copyWith(backgroundColor: white),
       bottomSheetTheme: theme.bottomSheetTheme.copyWith(
         clipBehavior: Clip.antiAlias,
+        backgroundColor: white,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(24.0))),
       ),
@@ -186,6 +187,9 @@ abstract class ThemeApp {
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
+        fillColor: mainText,
+        focusColor: mainText,
+        hoverColor: mainText,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.0),
           borderSide: const BorderSide(color: mainText),
@@ -195,10 +199,19 @@ abstract class ThemeApp {
           borderSide: BorderSide(color: theme.disabledColor),
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
-        // hintStyle: textTheme.bodyLarge
-        //     ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-        // labelStyle: textTheme.bodySmall
-        //     ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+        hintStyle: textTheme.bodyLarge
+            ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+        labelStyle: textTheme.bodySmall
+            ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+        suffixIconColor: mainText,
+        prefixIconColor: mainText,
+        iconColor: mainText,
+        floatingLabelStyle: textTheme.bodySmall?.copyWith(color: mainText),
+      ),
+      textSelectionTheme: const TextSelectionThemeData(
+        cursorColor: mainText,
+        // selectionColor: mainText.withOpacity(0.3),
+        selectionHandleColor: Color.fromARGB(255, 32, 23, 23),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(

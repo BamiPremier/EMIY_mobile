@@ -1,21 +1,21 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'register_response.dart';
+part of 'category_anime_response.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$RegisterResponseImpl _$$RegisterResponseImplFromJson(
+_$CategoryAnimeResponseImpl _$$CategoryAnimeResponseImplFromJson(
         Map<String, dynamic> json) =>
-    _$RegisterResponseImpl(
+    _$CategoryAnimeResponseImpl(
       user: User.fromJson(json['user'] as Map<String, dynamic>),
-      jwt: json['jwt'] as String,
+      status: json['status'] as bool,
     );
 
-Map<String, dynamic> _$$RegisterResponseImplToJson(
-        _$RegisterResponseImpl instance) =>
+Map<String, dynamic> _$$CategoryAnimeResponseImplToJson(
+        _$CategoryAnimeResponseImpl instance) =>
     <String, dynamic>{
       'user': instance.user,
-      'jwt': instance.jwt,
+      'status': instance.status,
     };
