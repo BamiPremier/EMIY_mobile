@@ -133,11 +133,13 @@ abstract class ThemeApp {
         secondary: secondaryLight,
         tertiary: tertiary,
         error: errorRed,
+        // ignore: deprecated_member_use
         surfaceVariant: disabledGreySurface,
       ),
       primaryColor: primaryYellow,
       disabledColor: disabledGrey,
-      scaffoldBackgroundColor: scaffoldBackground,
+      scaffoldBackgroundColor: Theme.of(context).colorScheme.surface,
+      cardColor: Theme.of(context).colorScheme.surface,
       appBarTheme: theme.appBarTheme.copyWith(
         backgroundColor: Colors.transparent,
         scrolledUnderElevation: 0,
@@ -159,6 +161,7 @@ abstract class ThemeApp {
             borderRadius: BorderRadius.vertical(top: Radius.circular(24.0))),
       ),
       cardTheme: theme.cardTheme.copyWith(
+        color: Theme.of(context).colorScheme.surface,
         elevation: 1,
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
@@ -186,6 +189,15 @@ abstract class ThemeApp {
           padding: const EdgeInsets.only(bottom: 16.0),
         ),
       ),
+      tabBarTheme: TabBarTheme(
+        labelColor: mainText,
+        unselectedLabelColor: disabledText,
+        indicatorColor: primaryYellow,
+        labelStyle: textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
+        unselectedLabelStyle: textTheme.titleSmall,
+        indicatorSize: TabBarIndicatorSize.tab,
+        labelPadding: const EdgeInsets.symmetric(horizontal: 16.0),
+      ),
       inputDecorationTheme: InputDecorationTheme(
         fillColor: mainText,
         focusColor: mainText,
@@ -199,8 +211,8 @@ abstract class ThemeApp {
           borderSide: BorderSide(color: theme.disabledColor),
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
-        hintStyle: textTheme.bodyLarge
-            ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+        // hintStyle: textTheme.bodyLarge
+        //     ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
         labelStyle: textTheme.bodySmall
             ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
         suffixIconColor: mainText,

@@ -5,7 +5,6 @@ import 'package:umai/auth/bloc/follow_user_cubit.dart';
 import 'package:umai/auth/bloc/preference_user_cubit.dart';
 import 'package:umai/auth/bloc/signin_cubit.dart';
 import 'package:umai/auth/models/follower_response.dart';
-import 'package:umai/auth/screens/login_welcome_back.dart';
 import 'package:umai/auth/widgets/user_profil_item.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:flutter/material.dart';
@@ -110,7 +109,7 @@ class _RegistrationFollowScreenState extends State<RegistrationFollowScreen>
           color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
           child: SafeArea(
             minimum:
-                const EdgeInsets.symmetric(horizontal: 31.0, vertical: 16.0),
+                const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
