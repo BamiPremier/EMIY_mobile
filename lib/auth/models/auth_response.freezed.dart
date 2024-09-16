@@ -21,7 +21,6 @@ AuthResponse _$AuthResponseFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$AuthResponse {
   User get user => throw _privateConstructorUsedError;
-  bool get status => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +34,7 @@ abstract class $AuthResponseCopyWith<$Res> {
           AuthResponse value, $Res Function(AuthResponse) then) =
       _$AuthResponseCopyWithImpl<$Res, AuthResponse>;
   @useResult
-  $Res call({User user, bool status});
+  $Res call({User user});
 
   $UserCopyWith<$Res> get user;
 }
@@ -54,17 +53,12 @@ class _$AuthResponseCopyWithImpl<$Res, $Val extends AuthResponse>
   @override
   $Res call({
     Object? user = null,
-    Object? status = null,
   }) {
     return _then(_value.copyWith(
       user: null == user
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as User,
-      status: null == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as bool,
     ) as $Val);
   }
 
@@ -85,7 +79,7 @@ abstract class _$$AuthResponseImplCopyWith<$Res>
       __$$AuthResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({User user, bool status});
+  $Res call({User user});
 
   @override
   $UserCopyWith<$Res> get user;
@@ -103,17 +97,12 @@ class __$$AuthResponseImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? user = null,
-    Object? status = null,
   }) {
     return _then(_$AuthResponseImpl(
       user: null == user
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as User,
-      status: null == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as bool,
     ));
   }
 }
@@ -121,19 +110,17 @@ class __$$AuthResponseImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$AuthResponseImpl implements _AuthResponse {
-  const _$AuthResponseImpl({required this.user, required this.status});
+  const _$AuthResponseImpl({required this.user});
 
   factory _$AuthResponseImpl.fromJson(Map<String, dynamic> json) =>
       _$$AuthResponseImplFromJson(json);
 
   @override
   final User user;
-  @override
-  final bool status;
 
   @override
   String toString() {
-    return 'AuthResponse(user: $user, status: $status)';
+    return 'AuthResponse(user: $user)';
   }
 
   @override
@@ -141,13 +128,12 @@ class _$AuthResponseImpl implements _AuthResponse {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AuthResponseImpl &&
-            (identical(other.user, user) || other.user == user) &&
-            (identical(other.status, status) || other.status == status));
+            (identical(other.user, user) || other.user == user));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, user, status);
+  int get hashCode => Object.hash(runtimeType, user);
 
   @JsonKey(ignore: true)
   @override
@@ -164,17 +150,13 @@ class _$AuthResponseImpl implements _AuthResponse {
 }
 
 abstract class _AuthResponse implements AuthResponse {
-  const factory _AuthResponse(
-      {required final User user,
-      required final bool status}) = _$AuthResponseImpl;
+  const factory _AuthResponse({required final User user}) = _$AuthResponseImpl;
 
   factory _AuthResponse.fromJson(Map<String, dynamic> json) =
       _$AuthResponseImpl.fromJson;
 
   @override
   User get user;
-  @override
-  bool get status;
   @override
   @JsonKey(ignore: true)
   _$$AuthResponseImplCopyWith<_$AuthResponseImpl> get copyWith =>

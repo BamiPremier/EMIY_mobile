@@ -9,13 +9,13 @@ part of 'category_anime_response.dart';
 _$CategoryAnimeResponseImpl _$$CategoryAnimeResponseImplFromJson(
         Map<String, dynamic> json) =>
     _$CategoryAnimeResponseImpl(
-      user: User.fromJson(json['user'] as Map<String, dynamic>),
-      status: json['status'] as bool,
+      categories: (json['categories'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$$CategoryAnimeResponseImplToJson(
         _$CategoryAnimeResponseImpl instance) =>
     <String, dynamic>{
-      'user': instance.user,
-      'status': instance.status,
+      'categories': instance.categories,
     };

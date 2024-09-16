@@ -20,7 +20,6 @@ Pagination _$PaginationFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Pagination {
-  @JsonKey(name: 'listEntity')
   List<Map<String, dynamic>> get listEntity =>
       throw _privateConstructorUsedError;
   int get nbElement => throw _privateConstructorUsedError;
@@ -41,7 +40,7 @@ abstract class $PaginationCopyWith<$Res> {
       _$PaginationCopyWithImpl<$Res, Pagination>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'listEntity') List<Map<String, dynamic>> listEntity,
+      {List<Map<String, dynamic>> listEntity,
       int nbElement,
       int perPage,
       int currentPage,
@@ -101,7 +100,7 @@ abstract class _$$PaginationImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'listEntity') List<Map<String, dynamic>> listEntity,
+      {List<Map<String, dynamic>> listEntity,
       int nbElement,
       int perPage,
       int currentPage,
@@ -154,8 +153,7 @@ class __$$PaginationImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$PaginationImpl extends _Pagination {
   const _$PaginationImpl(
-      {@JsonKey(name: 'listEntity')
-      required final List<Map<String, dynamic>> listEntity,
+      {required final List<Map<String, dynamic>> listEntity,
       required this.nbElement,
       required this.perPage,
       required this.currentPage,
@@ -168,7 +166,6 @@ class _$PaginationImpl extends _Pagination {
 
   final List<Map<String, dynamic>> _listEntity;
   @override
-  @JsonKey(name: 'listEntity')
   List<Map<String, dynamic>> get listEntity {
     if (_listEntity is EqualUnmodifiableListView) return _listEntity;
     // ignore: implicit_dynamic_type
@@ -230,8 +227,7 @@ class _$PaginationImpl extends _Pagination {
 
 abstract class _Pagination extends Pagination {
   const factory _Pagination(
-      {@JsonKey(name: 'listEntity')
-      required final List<Map<String, dynamic>> listEntity,
+      {required final List<Map<String, dynamic>> listEntity,
       required final int nbElement,
       required final int perPage,
       required final int currentPage,
@@ -242,7 +238,6 @@ abstract class _Pagination extends Pagination {
       _$PaginationImpl.fromJson;
 
   @override
-  @JsonKey(name: 'listEntity')
   List<Map<String, dynamic>> get listEntity;
   @override
   int get nbElement;

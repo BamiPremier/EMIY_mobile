@@ -117,12 +117,14 @@ class _OnboardingScreenState extends State<OnboardingScreen>
         //     provider: provider.name.toLowerCase());
 
         case AuthProvider.google:
-          final account = await GoogleSignIn(
+          final googleSignIn = GoogleSignIn(
             scopes: [
               'email',
               'https://www.googleapis.com/auth/userinfo.profile',
             ],
-          ).signIn();
+          );
+          await googleSignIn.signOut();
+          final account = await googleSignIn.signIn();
           log('=========================account.toString()=======================');
           log(account.toString());
           log('=========================account.toString()=======================');

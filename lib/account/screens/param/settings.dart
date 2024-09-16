@@ -55,7 +55,7 @@ class _SettingsPageState extends State<SettingsPage> {
             trailing: const Icon(Icons.arrow_right),
             subtitle: Text(
               '1.0.0',
-              style: Theme.of(context).textTheme.bodyLarge,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
         ],

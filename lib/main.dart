@@ -7,6 +7,7 @@ import 'package:umai/account/screens/account.dart';
 import 'package:umai/auth/bloc/category_anime_cubit.dart';
 import 'package:umai/auth/bloc/follow_user_cubit.dart';
 import 'package:umai/auth/bloc/preference_user_cubit.dart';
+import 'package:umai/auth/screens/registrationuser/registration_username.dart';
 import 'package:umai/auth/services/preference_user_service.dart';
 import 'package:umai/firebase_options.dart';
 import 'package:umai/auth/bloc/signin_cubit.dart';
@@ -18,6 +19,7 @@ import 'package:umai/common/services/api_service.dart';
 import 'package:umai/common/services/preferences_service.dart';
 import 'package:umai/common/services/user_service.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:umai/home_screen.dart';
 import 'package:umai/utils/themes.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -132,12 +134,13 @@ class MyApp extends StatelessWidget {
             return BlocBuilder<UserCubit, UserState>(
               buildWhen: (previous, _) => previous is InitializingUserState,
               builder: (context, state) {
-                // if (state is UserNotLoggedState) return splashScreen;
-                // if (state is UserLoggedState) return const HomeScreen();
-                // if (state is InitializingUserState) return const SizedBox();
+                if (state is UserNotLoggedState) return splashScreen;
+                if (state is UserLoggedState) return const HomeScreen();
+                if (state is CompleteUserProfileState)
+                  return const RegistrationUsernameScreen();
+                if (state is InitializingUserState) return const SizedBox();
 
-                // return splashScreen;
-                return const AccountScreen();
+                return splashScreen;
               },
             );
           }),

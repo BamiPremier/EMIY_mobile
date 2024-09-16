@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:umai/common/services/api_service.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
 
@@ -19,7 +19,7 @@ Future<void> showError(BuildContext context, [dynamic error]) {
               const SizedBox(height: 16.0),
               Text(
                 _translateError(error),
-                style: Theme.of(context).textTheme.bodyLarge,
+                style: Theme.of(context).textTheme.bodySmall,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 32.0),

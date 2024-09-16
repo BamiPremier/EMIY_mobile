@@ -1,6 +1,7 @@
-import 'dart:async'; 
+import 'dart:async';
+import 'dart:developer';
 import 'package:potatoes/potatoes.dart' hide PreferencesService;
- 
+
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/models/user.dart';
 import 'package:umai/common/services/preferences_service.dart';
@@ -32,14 +33,12 @@ class UserCubit extends ObjectCubit<User, UserState> {
     if (user == null) {
       emit(const UserNotLoggedState());
     } else {
-      emit(UserLoggedState(user));
-
-      if (!refresh) return;
-      userService.get(user.id).then((user) {
-        preferencesService.saveUser(user).then((_) {
-          emit(UserLoggedState(user));
-        });
-      });
+      if (user.status == "PENDING_REGISTRATION") {
+        log("User is pending registration");
+        emit(const CompleteUserProfileState());
+      } else {
+        emit(UserLoggedState(user));
+      }
     }
   }
 
@@ -53,14 +52,6 @@ class UserCubit extends ObjectCubit<User, UserState> {
     if (user != null) return user;
     throw UnsupportedError(
         'cannot retrieve user when not logged: Current state is ${state.runtimeType}');
-  }
-
-  Future<void> signIn(User user, String jwt) {
-    return Future.wait([
-      preferencesService.saveUser(user),
-      preferencesService.saveJwt(jwt),
-      // preferencesService.saveIsFirstRun(false)
-    ]).then((_) => reset());
   }
 
   void signOut() {

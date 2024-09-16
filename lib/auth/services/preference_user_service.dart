@@ -3,9 +3,9 @@ import 'package:umai/common/services/api_service.dart';
 import 'package:potatoes/libs.dart';
 
 class PreferenceUserService extends ApiService {
-  static const String _category = '/category';
-  static const String _anime = '/anime';
-  static const String _followers = '/followers';
+  static const String _category = '/api/auth/animes-genre';
+  static const String _anime = '/api/auth/animes-by-genres';
+  static const String _followers = '/users';
 
   const PreferenceUserService(super._dio);
 
@@ -16,7 +16,7 @@ class PreferenceUserService extends ApiService {
         dio.get(_category,
             options: Options(headers: withAuth()),
             queryParameters: {
-              'next': page,
+              'page': page,
             }),
         mapper: Pagination.fromJson);
   }
@@ -27,7 +27,7 @@ class PreferenceUserService extends ApiService {
         dio.get(_anime,
             options: Options(headers: withAuth()),
             queryParameters: {
-              'next': page,
+              'page': page,
             }),
         mapper: Pagination.fromJson);
   }
@@ -39,7 +39,7 @@ class PreferenceUserService extends ApiService {
         dio.get(_followers,
             options: Options(headers: withAuth()),
             queryParameters: {
-              'next': page,
+              'page': page,
             }),
         mapper: Pagination.fromJson);
   }

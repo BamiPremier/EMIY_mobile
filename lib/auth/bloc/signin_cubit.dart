@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:umai/auth/services/auth_service.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:potatoes/libs.dart';
@@ -22,7 +24,7 @@ class SignInCubit extends Cubit<SignInState> {
 
     authService.authUser(email: email, token: token).then((response) {
       userCubit.preferencesService.saveUser(response.user);
-      if (response.user.status) {
+      if (response.user.status != "PENDING_REGISTRATION") {
         emit(const SignInSuccessActiveUserState());
       } else {
         emit(const SignInSuccessInActiveUserState());
@@ -36,21 +38,23 @@ class SignInCubit extends Cubit<SignInState> {
 
   void completeUserName({
     required String username,
-    required String idUserName,
+    required String userTag,
   }) {
     final stateBefore = state;
 
     emit(const SignInLoadingState());
 
-    authService
-        .completeUserName(username: username, idUserName: idUserName)
-        .then((response) {
-      userCubit.preferencesService.saveUser(response.user);
+    authService.completeUserProfile(userName: username, userTag: userTag).then(
+        (response) {
+      log('=================${response}============');
+      userCubit.preferencesService.saveUser(response);
       emit(const CompleteUserSuccessUserState());
 
       emit(stateBefore);
     }, onError: (error, trace) {
+      log('=================${error}============');
       emit(SignInErrorState(error, trace));
+      log('=================${trace}============');
       emit(stateBefore);
     });
   }

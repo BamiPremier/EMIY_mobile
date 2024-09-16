@@ -57,8 +57,7 @@ class PreferenceUserCubit extends Cubit<PreferenceUserState> {
     emit(const PreferenceUserLoadingState());
 
     preferenceUserService
-        .completePreferenceUser(
-            /* username: username, idUserName: idUserName */)
+        .completePreferenceUser(/* username: username, userTag: userTag */)
         .then((response) {
       // userCubit.preferencesService.saveUser(response.user);
       emit(const PreferenceUserSuccessState());

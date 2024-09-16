@@ -51,56 +51,37 @@ class _RegistrationPrefferedScreenState
                       style: Theme.of(context).textTheme.bodySmall)),
               Expanded(
                 child: SingleChildScrollView(
-                    child: /*  Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: animeCategories.map((item) {
-                    final isSelected = true;
-                    return Chip(
-                        avatar: const Icon(
-                            Icons.indeterminate_check_box_outlined,
-                            color: ThemeApp.mainText),
-                        side: const BorderSide(),
-                        deleteIcon: Container(),
-                        onDeleted: () {},
-                        label: Text(
-                          item,
-                        ));
-                  }).toList(),
-                ) */
-
-                        AutoListView.get<CategoryAnimeResponse>(
-                            cubit: categoryAnimeCubit,
-                            customBuilder: (context, user) => Wrap(
-                                  spacing: 8,
-                                  runSpacing: 8,
-                                  children: user.map((item) {
-                                    return Chip(
-                                        avatar: const Icon(
-                                            Icons
-                                                .indeterminate_check_box_outlined,
-                                            color: ThemeApp.mainText),
-                                        side: const BorderSide(),
-                                        deleteIcon: Container(),
-                                        onDeleted: () {},
-                                        label: const Text(
-                                          'item',
-                                        ));
-                                  }).toList(),
-                                ),
-                            emptyBuilder: (context) => const Center(
-                                  child: Text("Empty list"),
-                                ),
-                            errorBuilder: (context, retry) => Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const Text("An error occured"),
-                                    TextButton(
-                                      onPressed: retry,
-                                      child: const Text("Retry"),
-                                    )
-                                  ],
-                                ))),
+                    child: AutoListView.get<CategoryAnimeResponse>(
+                        cubit: categoryAnimeCubit,
+                        customBuilder: (context, user) => Wrap(
+                              spacing: 8,
+                              runSpacing: 8,
+                              children: user.map((item) {
+                                return Chip(
+                                    avatar: const Icon(
+                                        Icons.indeterminate_check_box_outlined,
+                                        color: ThemeApp.mainText),
+                                    side: const BorderSide(),
+                                    deleteIcon: Container(),
+                                    onDeleted: () {},
+                                    label: const Text(
+                                      'item',
+                                    ));
+                              }).toList(),
+                            ),
+                        emptyBuilder: (context) => const Center(
+                              child: Text("Empty list"),
+                            ),
+                        errorBuilder: (context, retry) => Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Text("An error occured"),
+                                TextButton(
+                                  onPressed: retry,
+                                  child: const Text("Retry"),
+                                )
+                              ],
+                            ))),
               ),
             ],
           ),

@@ -21,8 +21,7 @@ CategoryAnimeResponse _$CategoryAnimeResponseFromJson(
 
 /// @nodoc
 mixin _$CategoryAnimeResponse {
-  User get user => throw _privateConstructorUsedError;
-  bool get status => throw _privateConstructorUsedError;
+  List<String> get categories => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,9 +35,7 @@ abstract class $CategoryAnimeResponseCopyWith<$Res> {
           $Res Function(CategoryAnimeResponse) then) =
       _$CategoryAnimeResponseCopyWithImpl<$Res, CategoryAnimeResponse>;
   @useResult
-  $Res call({User user, bool status});
-
-  $UserCopyWith<$Res> get user;
+  $Res call({List<String> categories});
 }
 
 /// @nodoc
@@ -55,27 +52,14 @@ class _$CategoryAnimeResponseCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? user = null,
-    Object? status = null,
+    Object? categories = null,
   }) {
     return _then(_value.copyWith(
-      user: null == user
-          ? _value.user
-          : user // ignore: cast_nullable_to_non_nullable
-              as User,
-      status: null == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as bool,
+      categories: null == categories
+          ? _value.categories
+          : categories // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ) as $Val);
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $UserCopyWith<$Res> get user {
-    return $UserCopyWith<$Res>(_value.user, (value) {
-      return _then(_value.copyWith(user: value) as $Val);
-    });
   }
 }
 
@@ -88,10 +72,7 @@ abstract class _$$CategoryAnimeResponseImplCopyWith<$Res>
       __$$CategoryAnimeResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({User user, bool status});
-
-  @override
-  $UserCopyWith<$Res> get user;
+  $Res call({List<String> categories});
 }
 
 /// @nodoc
@@ -106,18 +87,13 @@ class __$$CategoryAnimeResponseImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? user = null,
-    Object? status = null,
+    Object? categories = null,
   }) {
     return _then(_$CategoryAnimeResponseImpl(
-      user: null == user
-          ? _value.user
-          : user // ignore: cast_nullable_to_non_nullable
-              as User,
-      status: null == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as bool,
+      categories: null == categories
+          ? _value._categories
+          : categories // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }
@@ -125,19 +101,23 @@ class __$$CategoryAnimeResponseImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$CategoryAnimeResponseImpl implements _CategoryAnimeResponse {
-  const _$CategoryAnimeResponseImpl({required this.user, required this.status});
+  const _$CategoryAnimeResponseImpl({required final List<String> categories})
+      : _categories = categories;
 
   factory _$CategoryAnimeResponseImpl.fromJson(Map<String, dynamic> json) =>
       _$$CategoryAnimeResponseImplFromJson(json);
 
+  final List<String> _categories;
   @override
-  final User user;
-  @override
-  final bool status;
+  List<String> get categories {
+    if (_categories is EqualUnmodifiableListView) return _categories;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_categories);
+  }
 
   @override
   String toString() {
-    return 'CategoryAnimeResponse(user: $user, status: $status)';
+    return 'CategoryAnimeResponse(categories: $categories)';
   }
 
   @override
@@ -145,13 +125,14 @@ class _$CategoryAnimeResponseImpl implements _CategoryAnimeResponse {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CategoryAnimeResponseImpl &&
-            (identical(other.user, user) || other.user == user) &&
-            (identical(other.status, status) || other.status == status));
+            const DeepCollectionEquality()
+                .equals(other._categories, _categories));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, user, status);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(_categories));
 
   @JsonKey(ignore: true)
   @override
@@ -170,16 +151,13 @@ class _$CategoryAnimeResponseImpl implements _CategoryAnimeResponse {
 
 abstract class _CategoryAnimeResponse implements CategoryAnimeResponse {
   const factory _CategoryAnimeResponse(
-      {required final User user,
-      required final bool status}) = _$CategoryAnimeResponseImpl;
+      {required final List<String> categories}) = _$CategoryAnimeResponseImpl;
 
   factory _CategoryAnimeResponse.fromJson(Map<String, dynamic> json) =
       _$CategoryAnimeResponseImpl.fromJson;
 
   @override
-  User get user;
-  @override
-  bool get status;
+  List<String> get categories;
   @override
   @JsonKey(ignore: true)
   _$$CategoryAnimeResponseImplCopyWith<_$CategoryAnimeResponseImpl>

@@ -9,16 +9,14 @@ class ApiLinks extends potatoes.Links {
   const ApiLinks();
 
   @override
-  String get devUrl => "http://192.168.1.114:8000/";
+  String get devUrl => "https://umai.caelis-tech.studio/api";
 
   @override
-  String get productionUrl => "https://jsonplaceholder.typicode.com";
+  String get productionUrl => "https://umai.caelis-tech.studio/api";
 
   @override
   // TODO: implement stagingUrl
   String get stagingUrl => throw UnimplementedError();
-
-  String get support => "${Uri.parse(server).origin}/ticket";
 }
 
 class ApiService extends potatoes.ApiService {

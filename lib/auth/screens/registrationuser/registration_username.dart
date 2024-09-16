@@ -20,9 +20,37 @@ class _RegistrationUsernameScreenState extends State<RegistrationUsernameScreen>
     with CompletableMixin {
   late final signInCubit = context.read<SignInCubit>();
   final userNameNode = FocusNode();
-  final idUserdNode = FocusNode();
+  final userTagNode = FocusNode();
   final TextEditingController userNameController = TextEditingController();
-  final TextEditingController idUserNameController = TextEditingController();
+  final TextEditingController userTagController = TextEditingController();
+  String generateUserTag(String username) {
+    // Convertir en minuscules
+    String tag = username.toLowerCase();
+
+    // Remplacer les espaces par des tirets
+    tag = tag.replaceAll(' ', '-');
+
+    // Supprimer les accents
+    tag = tag
+        .replaceAllMapped(RegExp(r'[àáâãäå]'), (match) => 'a')
+        .replaceAllMapped(RegExp(r'[èéêë]'), (match) => 'e')
+        .replaceAllMapped(RegExp(r'[ìíîï]'), (match) => 'i')
+        .replaceAllMapped(RegExp(r'[òóôõö]'), (match) => 'o')
+        .replaceAllMapped(RegExp(r'[ùúûü]'), (match) => 'u')
+        .replaceAllMapped(RegExp(r'[ýÿ]'), (match) => 'y')
+        .replaceAllMapped(RegExp(r'[ñ]'), (match) => 'n');
+
+    // Supprimer tous les caractères non autorisés
+    tag = tag.replaceAll(RegExp(r'[^a-z0-9\-_.]'), '');
+
+    // Supprimer les tirets consécutifs
+    tag = tag.replaceAll(RegExp(r'-+'), '-');
+
+    // Supprimer les tirets au début et à la fin
+    tag = tag.trim().toLowerCase();
+
+    return tag;
+  }
 
   @override
   void initState() {
@@ -32,9 +60,9 @@ class _RegistrationUsernameScreenState extends State<RegistrationUsernameScreen>
   @override
   void dispose() {
     userNameController.dispose();
-    idUserNameController.dispose();
+    userTagController.dispose();
     userNameNode.dispose();
-    idUserdNode.dispose();
+    userTagNode.dispose();
 
     super.dispose();
   }
@@ -66,20 +94,31 @@ class _RegistrationUsernameScreenState extends State<RegistrationUsernameScreen>
                         keyboardType: TextInputType.text,
                         textCapitalization: TextCapitalization.none,
                         textInputAction: TextInputAction.next,
+                        onChanged: (value) {
+                          setState(() {
+                            userTagController.text = generateUserTag(value);
+                          });
+                        },
                         onEditingCompleted: () =>
-                            FocusScope.of(context).requestFocus(idUserdNode),
+                            FocusScope.of(context).requestFocus(userNameNode),
                         validator: (value) => Validators.empty(value),
                       ),
                       const SizedBox(height: 10),
                       CustomTextField(
-                          controller: idUserNameController,
-                          focusNode: idUserdNode,
+                          controller: userTagController,
+                          focusNode: userTagNode,
                           subText: "Pour que tes amis te retrouvent facilement",
                           hintText: "Ton identifiant unique",
                           keyboardType: TextInputType.text,
                           textCapitalization: TextCapitalization.none,
+                          onChanged: (value) {
+                            setState(() {
+                              userTagController.text = generateUserTag(value);
+                            });
+                          },
                           textInputAction: TextInputAction.next,
-                          onEditingCompleted: () {},
+                          onEditingCompleted: () =>
+                              FocusScope.of(context).requestFocus(userTagNode),
                           validator: (value) => Validators.empty(value),
                           prefixIcon: const Icon(
                             Icons.alternate_email,
@@ -102,7 +141,7 @@ class _RegistrationUsernameScreenState extends State<RegistrationUsernameScreen>
                 UmaiButton.primary(
                   onPressed: () => signInCubit.completeUserName(
                     username: userNameController.text,
-                    idUserName: idUserNameController.text,
+                    userTag: userTagController.text,
                   ),
                   text: "Continuer",
                 ),

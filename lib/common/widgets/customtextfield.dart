@@ -7,23 +7,24 @@ class CustomTextField extends StatelessWidget {
   final FocusNode? focusNode;
   final TextInputType? keyboardType;
   final TextCapitalization textCapitalization;
+  final void Function(String)? onChanged;
   final TextInputAction textInputAction;
   final void Function()? onEditingCompleted;
   final String? subText;
   final Widget? prefixIcon;
-  const CustomTextField({
-    super.key,
-    required this.controller,
-    required this.hintText,
-    this.subText,
-    this.prefixIcon,
-    this.validator,
-    this.focusNode,
-    this.keyboardType,
-    this.textCapitalization = TextCapitalization.none,
-    this.textInputAction = TextInputAction.done,
-    this.onEditingCompleted,
-  });
+  const CustomTextField(
+      {super.key,
+      required this.controller,
+      required this.hintText,
+      this.subText,
+      this.prefixIcon,
+      this.validator,
+      this.focusNode,
+      this.keyboardType,
+      this.textCapitalization = TextCapitalization.none,
+      this.textInputAction = TextInputAction.done,
+      this.onEditingCompleted,
+      this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +36,7 @@ class CustomTextField extends StatelessWidget {
             focusNode: focusNode,
             keyboardType: keyboardType,
             textCapitalization: textCapitalization,
+            onChanged: onChanged,
             textInputAction: textInputAction,
             onEditingComplete: onEditingCompleted,
             validator: validator,

@@ -8,7 +8,6 @@ part 'auth_response.g.dart';
 class AuthResponse with _$AuthResponse {
   const factory AuthResponse({
     required User user,
-    required bool status, 
   }) = _AuthResponse;
 
   factory AuthResponse.fromJson(Map<String, dynamic> json) =>

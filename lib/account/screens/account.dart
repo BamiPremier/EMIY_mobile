@@ -54,6 +54,7 @@ class _AccountScreenState extends State<AccountScreen>
                 horizontal: 16,
               ),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
                     margin: const EdgeInsets.only(right: 16),
@@ -67,16 +68,16 @@ class _AccountScreenState extends State<AccountScreen>
                       ),
                     ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '@desireadams',
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      SizedBox(
-                        width: 304,
-                        child: Text(
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '@desireadams',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
                           'Proident aliquip officia sint aute tempor adipisicing esse nostrud officia quis ex cillum. Et anim est est cillum sint nulla ex pariatur eiusmod laborum irure laborum cupidatat. Laboris ipsum esse ea dolore tempor dolor sint anim incididunt amet mollit laborum.',
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
@@ -88,8 +89,8 @@ class _AccountScreenState extends State<AccountScreen>
                                       .colorScheme
                                       .surfaceTint),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   )
                 ],
               ),
@@ -260,7 +261,8 @@ class _AccountScreenState extends State<AccountScreen>
                   Navigator.of(context).pop();
 
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const SettingsPage()),
+                    MaterialPageRoute(
+                        builder: (context) => const SettingsPage()),
                   );
                 },
               ),

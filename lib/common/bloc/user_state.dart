@@ -30,6 +30,10 @@ class UserLoggingOut extends CubitLoadingState with UserState {
   const UserLoggingOut() : super();
 }
 
+class CompleteUserProfileState extends CubitInformationState with UserState {
+  const CompleteUserProfileState();
+}
+
 class UserDeleting extends CubitLoadingState with UserState {
   const UserDeleting() : super();
 }

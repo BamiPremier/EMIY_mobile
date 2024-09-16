@@ -24,7 +24,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
   final userNameNode = FocusNode();
   final idUserdNode = FocusNode();
   final TextEditingController userNameController = TextEditingController();
-  final TextEditingController idUserNameController = TextEditingController();
+  final TextEditingController userTagController = TextEditingController();
   int counter = 0;
   @override
   void initState() {
@@ -34,7 +34,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
   @override
   void dispose() {
     userNameController.dispose();
-    idUserNameController.dispose();
+    userTagController.dispose();
     userNameNode.dispose();
     idUserdNode.dispose();
 
@@ -80,20 +80,21 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                               ),
                             ),
                           )),
-                      Container(
-                        width: MediaQuery.of(context).size.width * .75,
-                        height: 56,
-                        alignment: Alignment.center,
-                        child: ProfileTextField(
-                          controller: userNameController,
-                          focusNode: userNameNode,
-                          hintText: "@userxxyz",
-                          keyboardType: TextInputType.text,
-                          textCapitalization: TextCapitalization.none,
-                          textInputAction: TextInputAction.next,
-                          onEditingCompleted: () =>
-                              FocusScope.of(context).requestFocus(idUserdNode),
-                          validator: (value) => Validators.empty(value),
+                      Expanded(
+                        child: Container(
+                          height: 56,
+                          alignment: Alignment.center,
+                          child: ProfileTextField(
+                            controller: userNameController,
+                            focusNode: userNameNode,
+                            hintText: "@userxxyz",
+                            keyboardType: TextInputType.text,
+                            textCapitalization: TextCapitalization.none,
+                            textInputAction: TextInputAction.next,
+                            onEditingCompleted: () => FocusScope.of(context)
+                                .requestFocus(idUserdNode),
+                            validator: (value) => Validators.empty(value),
+                          ),
                         ),
                       )
                     ]),
@@ -116,7 +117,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                       ),
                       const SizedBox(height: 32),
                       LargeTextField(
-                          controller: idUserNameController,
+                          controller: userTagController,
                           focusNode: idUserdNode,
                           counter: counter,
                           hintText: "Ma bio...",
@@ -126,7 +127,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                           onEditingCompleted: () {},
                           onChanged: (value) {
                             setState(() {
-                              counter = idUserNameController.text.length;
+                              counter = userTagController.text.length;
                             });
                           },
                           validator: (value) => Validators.empty(value),
@@ -151,7 +152,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                 UmaiButton.primary(
                   onPressed: () => signInCubit.completeUserName(
                     username: userNameController.text,
-                    idUserName: idUserNameController.text,
+                    userTag: userTagController.text,
                   ),
                   text: "Enregistrer",
                 ),

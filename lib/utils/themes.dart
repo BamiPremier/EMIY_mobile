@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:umai/utils/assets.dart';
 
 abstract class ThemeApp {
   static const Color primaryYellow = Color(0xFFFFCC33);
@@ -22,7 +23,7 @@ abstract class ThemeApp {
   static TextTheme _textTheme(BuildContext context) {
     final baseTextTheme = Theme.of(context).textTheme;
     final robotoTextTheme = GoogleFonts.robotoTextTheme(baseTextTheme);
-    final oswaldTextTheme = GoogleFonts.oswaldTextTheme(baseTextTheme);
+    final arco = Theme.of(context).textTheme.apply(fontFamily: Assets.fontsFamilyARCO);
 
     return robotoTextTheme.copyWith(
       displayLarge: robotoTextTheme.displayLarge?.copyWith(
@@ -37,7 +38,7 @@ abstract class ThemeApp {
         height: 5.2,
         letterSpacing: 0.0,
       ),
-      displaySmall: oswaldTextTheme.displaySmall?.copyWith(
+      displaySmall: arco.displaySmall?.copyWith(
         color: mainText,
         fontSize: 36.0,
         fontWeight: FontWeight.bold,
@@ -62,7 +63,7 @@ abstract class ThemeApp {
         height: 3.2,
         letterSpacing: 0.0,
       ),
-      titleLarge: oswaldTextTheme.titleLarge?.copyWith(
+      titleLarge: arco.titleLarge?.copyWith(
           color: mainText,
           fontSize: 20.0,
           fontWeight: FontWeight.bold,
@@ -80,7 +81,7 @@ abstract class ThemeApp {
         height: 2.0,
         letterSpacing: 0.1,
       ),
-      bodyLarge: oswaldTextTheme.bodyLarge?.copyWith(
+      bodyLarge: arco.bodyLarge?.copyWith(
         color: mainText,
         fontSize: 16.0,
         fontWeight: FontWeight.bold,
@@ -99,7 +100,7 @@ abstract class ThemeApp {
         height: 1.6,
         letterSpacing: 0.4,
       ),
-      labelLarge: oswaldTextTheme.labelLarge?.copyWith(
+      labelLarge: arco.labelLarge?.copyWith(
           color: mainText,
           fontSize: 14.0,
           fontWeight: FontWeight.bold,

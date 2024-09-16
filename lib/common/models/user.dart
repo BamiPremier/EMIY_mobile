@@ -8,15 +8,15 @@ class User with _$User {
   const User._();
 
   const factory User({
-    required String id,
-    String? firstname,
-    required String lastname,
+    @JsonKey(name: '_id') required String id,
+    @JsonKey(name: 'created_at') required int createdAt,
     required String email,
-    required bool status,
+    required String type,
+    required String status,
+    @JsonKey(name: 'updated_at') required int updatedAt,
+    @JsonKey(name: '__v') required int version,
+    @JsonKey(name: 'auth_token') required String authToken,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
-
-  // @override
-  // String get id => id;
 }

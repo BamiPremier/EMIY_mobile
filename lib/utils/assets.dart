@@ -8,4 +8,7 @@ abstract class Assets {
   static const String avatar = '${_imagesDir}avatar.png';
   static const String user = '${_imagesDir}1.png';
   static const String post = '${_imagesDir}post.png';
+
+  static const String fontsFamilyARCO = 'ARCO';
+
 }
