@@ -15,6 +15,7 @@ abstract class ThemeApp {
   static const Color errorRed = Color(0xFFFF0000);
   static const Color disabledGrey = Color(0xFFDDDEE1);
   static const Color disabledGreySurface = Color(0xFFF5F5F5);
+  static const Color grey = Color(0xFFD9D9D9);
   static const Color scaffoldBackground = Color(0xFFFBFCF5);
   static const Color lightText = Color(0xFFA5ACB8);
   static const Color disabledText = Color(0xFF75788B);
@@ -154,8 +155,30 @@ abstract class ThemeApp {
         systemOverlayStyle:
             const SystemUiOverlayStyle(systemNavigationBarColor: white),
       ),
-      bottomNavigationBarTheme:
-          theme.bottomNavigationBarTheme.copyWith(backgroundColor: white),
+      bottomNavigationBarTheme: theme.bottomNavigationBarTheme.copyWith(
+        backgroundColor: white,
+        selectedItemColor: black,
+        unselectedItemColor: Colors.grey,
+        type: BottomNavigationBarType.fixed,
+        selectedLabelStyle: const TextStyle(
+          fontSize: 16,
+          color: black,
+        ),
+        unselectedLabelStyle: const TextStyle(fontSize: 0),
+        showSelectedLabels: true,
+        showUnselectedLabels: false,
+        landscapeLayout: BottomNavigationBarLandscapeLayout.centered,
+        enableFeedback: true,
+        mouseCursor: WidgetStateProperty.all(MouseCursor.defer),
+        selectedIconTheme: const IconThemeData(
+          color: black,
+          size: 24,
+        ),
+        unselectedIconTheme: const IconThemeData(
+          color: Color(0xFF4C4639),
+          size: 24,
+        ),
+      ),
       bottomSheetTheme: theme.bottomSheetTheme.copyWith(
         clipBehavior: Clip.antiAlias,
         backgroundColor: white,

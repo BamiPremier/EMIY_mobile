@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:umai/account/screens/account.dart';
 import 'package:umai/social/screens/social_view.dart';
+import 'package:umai/utils/themes.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -10,7 +11,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -23,11 +24,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: ThemeApp.primaryYellow,
         title: Text(title),
         centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.account_circle),
+            icon: const Icon(Icons.account_circle, color: Colors.red, size: 40),
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => const AccountScreen()));
@@ -36,21 +38,37 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: Center(
-        child: _selectedIndex == 1 ? SocialPage() : const Text('Other Page'),
+        child:
+            _selectedIndex == 0 ? const SocialPage() : const Text('Other Page'),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.location_on),
+            icon: _buildIconWithDecoration(
+                icon: Icons.location_on, selected: _selectedIndex == 0),
+            label: 'Social',
+          ),
+          BottomNavigationBarItem(
+            icon: _buildIconWithDecoration(
+                icon: Icons.library_add_check_sharp,
+                selected: _selectedIndex == 1),
+            label: 'Events',
+          ),
+          BottomNavigationBarItem(
+            icon: _buildIconWithDecoration(
+                icon: Icons.add_alarm, selected: _selectedIndex == 2),
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: '',
+            icon: _buildIconWithDecoration(
+                icon: Icons.add_circle_outline_rounded,
+                selected: _selectedIndex == 3),
+            label: 'Animes',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            label: '',
+            icon: _buildIconWithDecoration(
+                icon: Icons.notifications, selected: _selectedIndex == 4),
+            label: 'Quiz',
           ),
         ],
         currentIndex: _selectedIndex,
@@ -58,5 +76,18 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: _onItemTapped,
       ),
     );
+  }
+
+  _buildIconWithDecoration({required icon, required bool selected}) {
+    return Container(
+        padding: EdgeInsets.symmetric(vertical: 4, horizontal: 20),
+        decoration: selected
+            ? BoxDecoration(
+                color: ThemeApp.primaryYellow,
+                borderRadius: BorderRadius.circular(16))
+            : null,
+        child: Icon(
+          icon,
+        ));
   }
 }

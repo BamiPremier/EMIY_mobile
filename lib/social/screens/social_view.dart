@@ -11,14 +11,16 @@ class SocialPage extends StatelessWidget {
         PostCard(
           username: 'Hari Randolf',
           userImage: 'https://via.placeholder.com/50',
-          postText: 'Lorem ipsum dolor sit amet consectetur.',
+          postText:
+              'Lorem ipsum dolor sit amet consectetur. Odio ornare malesuada non et dignissim erat leo amet aliquet.',
           postImage: 'https://via.placeholder.com/300',
           backgroundColor: Colors.white,
         ),
         PostCard(
           username: 'Hari Randolf',
           userImage: 'https://via.placeholder.com/50',
-          postText: 'Lorem ipsum dolor sit amet consectetur.',
+          postText:
+              'Lorem ipsum dolor sit amet consectetur. Odio ornare malesuada non et dignissim erat leo amet aliquet.',
           postImage: '',
           backgroundColor: Colors.white,
         ),
