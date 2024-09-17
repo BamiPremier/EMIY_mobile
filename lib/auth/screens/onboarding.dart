@@ -4,7 +4,7 @@ import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:potatoes/common/widgets/loaders.dart';
 
-import 'package:umai/auth/bloc/signin_cubit.dart';
+import 'package:umai/auth/bloc/auth_cubit.dart';
 import 'package:umai/auth/screens/login_welcome_back.dart';
 import 'package:umai/auth/screens/registrationuser/registration_username.dart';
 import 'package:umai/auth/widgets/auth_button.dart';
@@ -23,7 +23,7 @@ class OnboardingScreen extends StatefulWidget {
 
 class _OnboardingScreenState extends State<OnboardingScreen>
     with CompletableMixin {
-  late final signInCubit = context.read<SignInCubit>();
+  late final authCubit = context.read<AuthCubit>();
 
   @override
   void initState() {
@@ -59,7 +59,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     //   );
     // }
 
-    return BlocListener<SignInCubit, SignInState>(
+    return BlocListener<AuthCubit, AuthState>(
       listener: onEventReceived,
       child: Scaffold(
         backgroundColor: ThemeApp.primaryYellow,
@@ -105,7 +105,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     try {
       switch (provider) {
         case AuthProvider.apple:
-        // final appleCredentials = await SignInWithApple.getAppleIDCredential(
+        // final appleCredentials = await AuthWithApple.getAppleIDCredential(
         //   scopes: [
         //     AppleIDAuthorizationScopes.email,
         //     AppleIDAuthorizationScopes.fullName
@@ -117,21 +117,21 @@ class _OnboardingScreenState extends State<OnboardingScreen>
         //     provider: provider.name.toLowerCase());
 
         case AuthProvider.google:
-          final googleSignIn = GoogleSignIn(
+          final googleAuth = GoogleSignIn(
             scopes: [
               'email',
               'https://www.googleapis.com/auth/userinfo.profile',
             ],
           );
-          await googleSignIn.signOut();
-          final account = await googleSignIn.signIn();
+          await googleAuth.signOut();
+          final account = await googleAuth.signIn();
           log('=========================account.toString()=======================');
           log(account.toString());
           log('=========================account.toString()=======================');
 
           if (account == null) return;
           final auth = await account.authentication;
-          return signInCubit.socialLogin(
+          return authCubit.socialLogin(
             email: account.email,
             token: auth.accessToken!,
           );
@@ -189,26 +189,23 @@ class _OnboardingScreenState extends State<OnboardingScreen>
             ],
           )));
 
-  void onSignInTap() {
-    // signInCubit.login(
-    //    identifierController.text.trim(), passwordController.text  );
-  }
-
-  void onEventReceived(BuildContext context, SignInState state) async {
+  void onEventReceived(BuildContext context, AuthState state) async {
     await waitForDialog();
 
-    if (state is SignInLoadingState) {
+    if (state is AuthLoadingState) {
       loadingDialogCompleter = showLoadingBarrier(context: context);
-    } else if (state is SignInSuccessActiveUserState) {
+    } else if (state is AuthSuccessActiveUserState) {
       Navigator.of(context).push(
         MaterialPageRoute(builder: (context) => const LoginWelcomeBackScreen()),
       );
-    } else if (state is SignInSuccessInActiveUserState) {
+
+      
+    } else if (state is AuthSuccessInActiveUserState) {
       Navigator.of(context).push(
         MaterialPageRoute(
             builder: (context) => const RegistrationUsernameScreen()),
       );
-    } else if (state is SignInErrorState) {
+    } else if (state is AuthErrorState) {
       showError(context, state.error);
     }
   }

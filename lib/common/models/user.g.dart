@@ -14,7 +14,8 @@ _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
       status: json['status'] as String,
       updatedAt: (json['updated_at'] as num).toInt(),
       version: (json['__v'] as num).toInt(),
-      authToken: json['auth_token'] as String,
+      username: json['username'] as String?,
+      usertag: json['usertag'] as String?,
     );
 
 Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
@@ -26,5 +27,6 @@ Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
       'status': instance.status,
       'updated_at': instance.updatedAt,
       '__v': instance.version,
-      'auth_token': instance.authToken,
+      'username': instance.username,
+      'usertag': instance.usertag,
     };

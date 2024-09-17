@@ -1,9 +1,10 @@
+import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/auth/bloc/follow_user_cubit.dart';
 import 'package:umai/auth/bloc/preference_user_cubit.dart';
-import 'package:umai/auth/bloc/signin_cubit.dart';
+import 'package:umai/auth/bloc/auth_cubit.dart';
 import 'package:umai/auth/models/follower_response.dart';
 import 'package:umai/auth/widgets/user_profil_item.dart';
 import 'package:umai/common/widgets/buttons.dart';
@@ -25,8 +26,7 @@ class RegistrationFollowScreen extends StatefulWidget {
 
 class _RegistrationFollowScreenState extends State<RegistrationFollowScreen>
     with CompletableMixin {
-  late final signInCubit = context.read<SignInCubit>();
-  final List<RandomUser> users = generateRandomUsers();
+  late final authCubit = context.read<AuthCubit>();
   late final followCubit = context.read<FollowUserCubit>();
   late final preferenceUserCubit = context.read<PreferenceUserCubit>();
 
@@ -65,43 +65,29 @@ class _RegistrationFollowScreenState extends State<RegistrationFollowScreen>
                       // margin: const EdgeInsets.symmetric(vertical: 16),
                       // height: MediaQuery.of(context).size.height * .73,
                       // padding: const EdgeInsets.all(8.0),
-                      child: SingleChildScrollView(
-                          child:
-                              //          ListView.builder(
-                              //   itemCount: users.length,
-                              //   shrinkWrap: true,
-                              //   physics: const NeverScrollableScrollPhysics(),
-                              //   itemBuilder: (context, index) {
-                              //     final user = users[index];
-                              //     return UserProfileItem(
-                              //       imageUrl: user.imageUrl,
-                              //       name: user.name,
-                              //       description: user.description,
-                              //       onFollowPressed: user.onFollow,
-                              //     );
-                              //   },
-                              // ))),
-                              AutoListView.get<FollowerResponse>(
-                                  cubit: followCubit,
-                                  itemBuilder: (context, user) =>
-                                      UserProfileItem(
-                                        user: user,
-                                        // ignore: avoid_print
-                                        onFollowPressed: () => print(''),
-                                      ),
-                                  emptyBuilder: (context) => const Center(
-                                        child: Text("Empty list"),
-                                      ),
-                                  errorBuilder: (context, retry) => Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          const Text("An error occured"),
-                                          TextButton(
-                                            onPressed: retry,
-                                            child: const Text("Retry"),
-                                          )
-                                        ],
-                                      ))))
+                      child: AutoListView.get<User>(
+                          cubit: AutoListCubit(
+                              provider: ({int page = 1}) => context
+                                  .read<FollowUserCubit>()
+                                  .getFollowers(page: 1)),
+                          itemBuilder: (context, user) => UserProfileItem(
+                                user: user,
+                                // ignore: avoid_print
+                                onFollowPressed: () => print(''),
+                              ),
+                          emptyBuilder: (context) => const Center(
+                                child: Text("Empty list"),
+                              ),
+                          errorBuilder: (context, retry) => Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Text("An error occured"),
+                                  TextButton(
+                                    onPressed: retry,
+                                    child: const Text("Retry"),
+                                  )
+                                ],
+                              )))
                 ]),
           ),
         ),

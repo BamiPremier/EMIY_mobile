@@ -1,8 +1,8 @@
-import 'dart:developer'; 
+import 'dart:developer';
 
 import 'package:potatoes/libs.dart';
-import 'package:umai/auth/bloc/signin_cubit.dart';
-import 'package:umai/auth/screens/registrationuser/registration_username.dart'; 
+import 'package:umai/auth/bloc/auth_cubit.dart';
+import 'package:umai/auth/screens/registrationuser/registration_username.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:umai/utils/app_dimension.dart';
@@ -16,7 +16,7 @@ class LoginWelcomeBackScreen extends StatefulWidget {
 }
 
 class _LoginWelcomeBackScreenState extends State<LoginWelcomeBackScreen> {
-  late final signInCubit = context.read<SignInCubit>();
+  late final authCubit = context.read<AuthCubit>();
 
   @override
   void initState() {
@@ -25,8 +25,6 @@ class _LoginWelcomeBackScreenState extends State<LoginWelcomeBackScreen> {
 
   @override
   Widget build(BuildContext context) {
-  
-
     return Scaffold(
       backgroundColor: ThemeApp.primaryYellow,
       body: SafeArea(
@@ -34,7 +32,7 @@ class _LoginWelcomeBackScreenState extends State<LoginWelcomeBackScreen> {
           margin: const EdgeInsets.symmetric(horizontal: 48),
           child: Column(
             children: [
-           const   Spacer(
+              const Spacer(
                 flex: 1,
               ),
               Expanded(
@@ -42,7 +40,6 @@ class _LoginWelcomeBackScreenState extends State<LoginWelcomeBackScreen> {
                   children: [
                     Text('Bon retour parmi nous!',
                         textAlign: TextAlign.center,
-                        
                         style: Theme.of(context).textTheme.displaySmall)
                   ],
                 ),

@@ -8,13 +8,13 @@ import 'dart:convert';
 
 import 'package:umai/common/services/preferences_service.dart';
 
-class AuthService extends ApiService {
+class AccountService extends ApiService {
   final PreferencesService preferencesService;
 
   static const String _auth = '/auth';
   static const String _authComplete = '/auth/complete';
 
-  const AuthService(
+  const AccountService(
     super._dio,
     this.preferencesService,
   );

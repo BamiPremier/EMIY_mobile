@@ -21,6 +21,8 @@ AuthResponse _$AuthResponseFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$AuthResponse {
   User get user => throw _privateConstructorUsedError;
+  @JsonKey(name: 'access_token')
+  String get accessToken => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +36,7 @@ abstract class $AuthResponseCopyWith<$Res> {
           AuthResponse value, $Res Function(AuthResponse) then) =
       _$AuthResponseCopyWithImpl<$Res, AuthResponse>;
   @useResult
-  $Res call({User user});
+  $Res call({User user, @JsonKey(name: 'access_token') String accessToken});
 
   $UserCopyWith<$Res> get user;
 }
@@ -53,12 +55,17 @@ class _$AuthResponseCopyWithImpl<$Res, $Val extends AuthResponse>
   @override
   $Res call({
     Object? user = null,
+    Object? accessToken = null,
   }) {
     return _then(_value.copyWith(
       user: null == user
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as User,
+      accessToken: null == accessToken
+          ? _value.accessToken
+          : accessToken // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 
@@ -79,7 +86,7 @@ abstract class _$$AuthResponseImplCopyWith<$Res>
       __$$AuthResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({User user});
+  $Res call({User user, @JsonKey(name: 'access_token') String accessToken});
 
   @override
   $UserCopyWith<$Res> get user;
@@ -97,12 +104,17 @@ class __$$AuthResponseImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? user = null,
+    Object? accessToken = null,
   }) {
     return _then(_$AuthResponseImpl(
       user: null == user
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as User,
+      accessToken: null == accessToken
+          ? _value.accessToken
+          : accessToken // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -110,17 +122,22 @@ class __$$AuthResponseImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$AuthResponseImpl implements _AuthResponse {
-  const _$AuthResponseImpl({required this.user});
+  const _$AuthResponseImpl(
+      {required this.user,
+      @JsonKey(name: 'access_token') required this.accessToken});
 
   factory _$AuthResponseImpl.fromJson(Map<String, dynamic> json) =>
       _$$AuthResponseImplFromJson(json);
 
   @override
   final User user;
+  @override
+  @JsonKey(name: 'access_token')
+  final String accessToken;
 
   @override
   String toString() {
-    return 'AuthResponse(user: $user)';
+    return 'AuthResponse(user: $user, accessToken: $accessToken)';
   }
 
   @override
@@ -128,12 +145,14 @@ class _$AuthResponseImpl implements _AuthResponse {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AuthResponseImpl &&
-            (identical(other.user, user) || other.user == user));
+            (identical(other.user, user) || other.user == user) &&
+            (identical(other.accessToken, accessToken) ||
+                other.accessToken == accessToken));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, user);
+  int get hashCode => Object.hash(runtimeType, user, accessToken);
 
   @JsonKey(ignore: true)
   @override
@@ -150,13 +169,19 @@ class _$AuthResponseImpl implements _AuthResponse {
 }
 
 abstract class _AuthResponse implements AuthResponse {
-  const factory _AuthResponse({required final User user}) = _$AuthResponseImpl;
+  const factory _AuthResponse(
+          {required final User user,
+          @JsonKey(name: 'access_token') required final String accessToken}) =
+      _$AuthResponseImpl;
 
   factory _AuthResponse.fromJson(Map<String, dynamic> json) =
       _$AuthResponseImpl.fromJson;
 
   @override
   User get user;
+  @override
+  @JsonKey(name: 'access_token')
+  String get accessToken;
   @override
   @JsonKey(ignore: true)
   _$$AuthResponseImplCopyWith<_$AuthResponseImpl> get copyWith =>

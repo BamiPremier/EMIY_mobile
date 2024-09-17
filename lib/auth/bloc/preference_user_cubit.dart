@@ -14,12 +14,31 @@ class PreferenceUserCubit extends Cubit<PreferenceUserState> {
   PreferenceUserCubit(this.userCubit, this.preferenceUserService)
       : super(const PreferenceUserIdleState());
 
-  void selectCategory(CategoryAnimeResponse category) {
+  Future<CategoryAnimeResponse> getCategories() async {
+    final stateBefore = state;
+
+    emit(const CategoryLoadingState());
+
+    try {
+      final response = await preferenceUserService.getCategoryAnimes(page: 1);
+      emit(CategorySuccessLoadedState(response));
+      return response;
+    } catch (error, trace) {
+      emit(CategoryErrorState(error, trace));
+      emit(stateBefore);
+      rethrow;
+    }
+  }
+
+  void selectCategory(String category) {
     final currentState = state;
     if (currentState is SelectedPrefenceUserState) {
-      final updatedCategories =
-          List<CategoryAnimeResponse>.from(currentState.category)
-            ..add(category);
+      final updatedCategories = List<String>.from(currentState.category);
+      if (updatedCategories.contains(category)) {
+        updatedCategories.remove(category);
+      } else {
+        updatedCategories.add(category);
+      }
       emit(SelectedPrefenceUserState(
           updatedCategories, currentState.anime, currentState.follow));
     } else {
@@ -56,16 +75,16 @@ class PreferenceUserCubit extends Cubit<PreferenceUserState> {
 
     emit(const PreferenceUserLoadingState());
 
-    preferenceUserService
-        .completePreferenceUser(/* username: username, userTag: userTag */)
-        .then((response) {
-      // userCubit.preferencesService.saveUser(response.user);
-      emit(const PreferenceUserSuccessState());
+    // preferenceUserService
+    //     .completePreferenceUser(/* username: username, userTag: userTag */)
+    //     .then((response) {
+    //   // userCubit.preferencesService.saveUser(response.user);
+    //   emit(const PreferenceUserSuccessState());
 
-      emit(stateBefore);
-    }, onError: (error, trace) {
-      emit(PreferenceUserErrorState(error, trace));
-      emit(stateBefore);
-    });
+    //   emit(stateBefore);
+    // }, onError: (error, trace) {
+    //   emit(PreferenceUserErrorState(error, trace));
+    //   emit(stateBefore);
+    // });
   }
 }

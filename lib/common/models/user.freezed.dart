@@ -31,8 +31,8 @@ mixin _$User {
   int get updatedAt => throw _privateConstructorUsedError;
   @JsonKey(name: '__v')
   int get version => throw _privateConstructorUsedError;
-  @JsonKey(name: 'auth_token')
-  String get authToken => throw _privateConstructorUsedError;
+  String? get username => throw _privateConstructorUsedError;
+  String? get usertag => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -52,7 +52,8 @@ abstract class $UserCopyWith<$Res> {
       String status,
       @JsonKey(name: 'updated_at') int updatedAt,
       @JsonKey(name: '__v') int version,
-      @JsonKey(name: 'auth_token') String authToken});
+      String? username,
+      String? usertag});
 }
 
 /// @nodoc
@@ -75,7 +76,8 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? status = null,
     Object? updatedAt = null,
     Object? version = null,
-    Object? authToken = null,
+    Object? username = freezed,
+    Object? usertag = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -106,10 +108,14 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.version
           : version // ignore: cast_nullable_to_non_nullable
               as int,
-      authToken: null == authToken
-          ? _value.authToken
-          : authToken // ignore: cast_nullable_to_non_nullable
-              as String,
+      username: freezed == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String?,
+      usertag: freezed == usertag
+          ? _value.usertag
+          : usertag // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -129,7 +135,8 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       String status,
       @JsonKey(name: 'updated_at') int updatedAt,
       @JsonKey(name: '__v') int version,
-      @JsonKey(name: 'auth_token') String authToken});
+      String? username,
+      String? usertag});
 }
 
 /// @nodoc
@@ -149,7 +156,8 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? status = null,
     Object? updatedAt = null,
     Object? version = null,
-    Object? authToken = null,
+    Object? username = freezed,
+    Object? usertag = freezed,
   }) {
     return _then(_$UserImpl(
       id: null == id
@@ -180,10 +188,14 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.version
           : version // ignore: cast_nullable_to_non_nullable
               as int,
-      authToken: null == authToken
-          ? _value.authToken
-          : authToken // ignore: cast_nullable_to_non_nullable
-              as String,
+      username: freezed == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String?,
+      usertag: freezed == usertag
+          ? _value.usertag
+          : usertag // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -199,7 +211,8 @@ class _$UserImpl extends _User {
       required this.status,
       @JsonKey(name: 'updated_at') required this.updatedAt,
       @JsonKey(name: '__v') required this.version,
-      @JsonKey(name: 'auth_token') required this.authToken})
+      this.username,
+      this.usertag})
       : super._();
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
@@ -224,12 +237,13 @@ class _$UserImpl extends _User {
   @JsonKey(name: '__v')
   final int version;
   @override
-  @JsonKey(name: 'auth_token')
-  final String authToken;
+  final String? username;
+  @override
+  final String? usertag;
 
   @override
   String toString() {
-    return 'User(id: $id, createdAt: $createdAt, email: $email, type: $type, status: $status, updatedAt: $updatedAt, version: $version, authToken: $authToken)';
+    return 'User(id: $id, createdAt: $createdAt, email: $email, type: $type, status: $status, updatedAt: $updatedAt, version: $version, username: $username, usertag: $usertag)';
   }
 
   @override
@@ -246,14 +260,15 @@ class _$UserImpl extends _User {
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt) &&
             (identical(other.version, version) || other.version == version) &&
-            (identical(other.authToken, authToken) ||
-                other.authToken == authToken));
+            (identical(other.username, username) ||
+                other.username == username) &&
+            (identical(other.usertag, usertag) || other.usertag == usertag));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, createdAt, email, type,
-      status, updatedAt, version, authToken);
+      status, updatedAt, version, username, usertag);
 
   @JsonKey(ignore: true)
   @override
@@ -271,15 +286,15 @@ class _$UserImpl extends _User {
 
 abstract class _User extends User {
   const factory _User(
-          {@JsonKey(name: '_id') required final String id,
-          @JsonKey(name: 'created_at') required final int createdAt,
-          required final String email,
-          required final String type,
-          required final String status,
-          @JsonKey(name: 'updated_at') required final int updatedAt,
-          @JsonKey(name: '__v') required final int version,
-          @JsonKey(name: 'auth_token') required final String authToken}) =
-      _$UserImpl;
+      {@JsonKey(name: '_id') required final String id,
+      @JsonKey(name: 'created_at') required final int createdAt,
+      required final String email,
+      required final String type,
+      required final String status,
+      @JsonKey(name: 'updated_at') required final int updatedAt,
+      @JsonKey(name: '__v') required final int version,
+      final String? username,
+      final String? usertag}) = _$UserImpl;
   const _User._() : super._();
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
@@ -303,8 +318,9 @@ abstract class _User extends User {
   @JsonKey(name: '__v')
   int get version;
   @override
-  @JsonKey(name: 'auth_token')
-  String get authToken;
+  String? get username;
+  @override
+  String? get usertag;
   @override
   @JsonKey(ignore: true)
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>

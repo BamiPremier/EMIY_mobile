@@ -23,7 +23,8 @@ abstract class ThemeApp {
   static TextTheme _textTheme(BuildContext context) {
     final baseTextTheme = Theme.of(context).textTheme;
     final robotoTextTheme = GoogleFonts.robotoTextTheme(baseTextTheme);
-    final arco = Theme.of(context).textTheme.apply(fontFamily: Assets.fontsFamilyARCO);
+    final arco =
+        Theme.of(context).textTheme.apply(fontFamily: Assets.fontsFamilyARCO);
 
     return robotoTextTheme.copyWith(
       displayLarge: robotoTextTheme.displayLarge?.copyWith(
@@ -252,11 +253,12 @@ abstract class ThemeApp {
       chipTheme: ChipThemeData(
         backgroundColor: Colors.white,
         selectedColor: primaryYellow,
-        labelStyle: textTheme.labelLarge,
-        // padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+        labelStyle: Theme.of(context).textTheme.labelLarge,
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
         shape: RoundedRectangleBorder(
-            side: BorderSide.none, borderRadius: BorderRadius.circular(100.0)),
-        side: BorderSide.none,
+            side: const BorderSide(color: black),
+            borderRadius: BorderRadius.circular(100.0)),
+        side: const BorderSide(color: black),
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: primaryYellow,

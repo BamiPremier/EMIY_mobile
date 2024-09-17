@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart' hide PreferencesService;
+import 'package:umai/account/cubit/account_cubit.dart';
 import 'package:umai/account/screens/account.dart';
-import 'package:umai/auth/bloc/category_anime_cubit.dart';
+import 'package:umai/account/services/account_service.dart';
 import 'package:umai/auth/bloc/follow_user_cubit.dart';
 import 'package:umai/auth/bloc/preference_user_cubit.dart';
+import 'package:umai/auth/screens/registrationuser/registration_preffered.dart';
 import 'package:umai/auth/screens/registrationuser/registration_username.dart';
 import 'package:umai/auth/services/preference_user_service.dart';
 import 'package:umai/firebase_options.dart';
-import 'package:umai/auth/bloc/signin_cubit.dart';
+import 'package:umai/auth/bloc/auth_cubit.dart';
 import 'package:umai/auth/screens/onboarding.dart';
 import 'package:umai/auth/services/auth_service.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
@@ -75,9 +77,12 @@ class MyApp extends StatelessWidget {
 
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider(create: (_) => AuthService(dio)),
-        RepositoryProvider(create: (_) => PreferenceUserService(dio)),
-        RepositoryProvider(create: (_) => UserService(dio)),
+        RepositoryProvider(
+            create: (_) => PreferenceUserService(dio, preferencesService)),
+        RepositoryProvider(create: (_) => AuthService(dio, preferencesService)),
+        RepositoryProvider(create: (_) => UserService(dio, preferencesService)),
+        RepositoryProvider(
+            create: (_) => AccountService(dio, preferencesService)),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -90,12 +95,15 @@ class MyApp extends StatelessWidget {
               create: (context) =>
                   PreferenceUserCubit(context.read(), context.read())),
           BlocProvider(
-              create: (context) => SignInCubit(context.read(), context.read())),
+              create: (context) => AuthCubit(context.read(), context.read())),
           BlocProvider(
               create: (context) => FollowUserCubit(
                     context.read(),
                   )),
-          BlocProvider(create: (context) => CategoryAnimeCubit(context.read())),
+          BlocProvider(
+              create: (context) => AccountCubit(
+                    context.read(),
+                  )),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -134,13 +142,13 @@ class MyApp extends StatelessWidget {
             return BlocBuilder<UserCubit, UserState>(
               buildWhen: (previous, _) => previous is InitializingUserState,
               builder: (context, state) {
-                if (state is UserNotLoggedState) return splashScreen;
-                if (state is UserLoggedState) return const HomeScreen();
-                if (state is CompleteUserProfileState)
-                  return const RegistrationUsernameScreen();
-                if (state is InitializingUserState) return const SizedBox();
-
-                return splashScreen;
+                // if (state is UserNotLoggedState) return splashScreen;
+                // if (state is UserLoggedState) return const HomeScreen();
+                // if (state is CompleteUserProfileState)
+                //   return const RegistrationUsernameScreen();
+                // if (state is InitializingUserState) return const SizedBox();
+                return HomeScreen();
+                // return splashScreen;
               },
             );
           }),

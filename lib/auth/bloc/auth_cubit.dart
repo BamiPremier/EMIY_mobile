@@ -5,14 +5,13 @@ import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 
-part 'signin_state.dart';
+part 'auth_state.dart';
 
-class SignInCubit extends Cubit<SignInState> {
+class AuthCubit extends Cubit<AuthState> {
   final UserCubit userCubit;
   final AuthService authService;
 
-  SignInCubit(this.userCubit, this.authService)
-      : super(const SignInIdleState());
+  AuthCubit(this.userCubit, this.authService) : super(const AuthIdleState());
 
   void socialLogin({
     required String email,
@@ -20,18 +19,19 @@ class SignInCubit extends Cubit<SignInState> {
   }) {
     final stateBefore = state;
 
-    emit(const SignInLoadingState());
+    emit(const AuthLoadingState());
 
     authService.authUser(email: email, token: token).then((response) {
       userCubit.preferencesService.saveUser(response.user);
+      userCubit.preferencesService.saveAuthToken(response.accessToken);
       if (response.user.status != "PENDING_REGISTRATION") {
-        emit(const SignInSuccessActiveUserState());
+        emit(const AuthSuccessActiveUserState());
       } else {
-        emit(const SignInSuccessInActiveUserState());
+        emit(const AuthSuccessInActiveUserState());
       }
       emit(stateBefore);
     }, onError: (error, trace) {
-      emit(SignInErrorState(error, trace));
+      emit(AuthErrorState(error, trace));
       emit(stateBefore);
     });
   }
@@ -42,18 +42,18 @@ class SignInCubit extends Cubit<SignInState> {
   }) {
     final stateBefore = state;
 
-    emit(const SignInLoadingState());
+    emit(const AuthLoadingState());
 
     authService.completeUserProfile(userName: username, userTag: userTag).then(
         (response) {
       log('=================${response}============');
-      userCubit.preferencesService.saveUser(response);
+      userCubit.preferencesService.saveUser(response.user);
       emit(const CompleteUserSuccessUserState());
 
       emit(stateBefore);
     }, onError: (error, trace) {
+      emit(AuthErrorState(error, trace));
       log('=================${error}============');
-      emit(SignInErrorState(error, trace));
       log('=================${trace}============');
       emit(stateBefore);
     });

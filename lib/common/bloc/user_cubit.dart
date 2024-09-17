@@ -30,6 +30,7 @@ class UserCubit extends ObjectCubit<User, UserState> {
 
   void _getInitialState([bool refresh = false]) {
     final user = preferencesService.user;
+     
     if (user == null) {
       emit(const UserNotLoggedState());
     } else {

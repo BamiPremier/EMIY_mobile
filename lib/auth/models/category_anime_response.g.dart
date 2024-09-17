@@ -9,7 +9,7 @@ part of 'category_anime_response.dart';
 _$CategoryAnimeResponseImpl _$$CategoryAnimeResponseImplFromJson(
         Map<String, dynamic> json) =>
     _$CategoryAnimeResponseImpl(
-      categories: (json['categories'] as List<dynamic>)
+      genreCollection: (json['GenreCollection'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
     );
@@ -17,5 +17,5 @@ _$CategoryAnimeResponseImpl _$$CategoryAnimeResponseImplFromJson(
 Map<String, dynamic> _$$CategoryAnimeResponseImplToJson(
         _$CategoryAnimeResponseImpl instance) =>
     <String, dynamic>{
-      'categories': instance.categories,
+      'GenreCollection': instance.genreCollection,
     };

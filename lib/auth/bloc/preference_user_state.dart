@@ -16,7 +16,7 @@ class PreferenceUserIdleState extends CubitSuccessState
 
 class SelectedPrefenceUserState extends CubitSuccessState
     with PreferenceUserState {
-  final List<CategoryAnimeResponse> category;
+  final List<String> category;
   final List<AnimeResponse> anime;
   final List<FollowerResponse> follow;
 
@@ -35,7 +35,7 @@ class PreferenceUserSuccessState extends CubitInformationState
     with PreferenceUserState {
   const PreferenceUserSuccessState();
 }
- 
+
 class PreferenceUserMissingSupplierInformation extends CubitInformationState
     with PreferenceUserState {
   const PreferenceUserMissingSupplierInformation();
@@ -44,4 +44,33 @@ class PreferenceUserMissingSupplierInformation extends CubitInformationState
 class PreferenceUserErrorState extends CubitErrorState
     with PreferenceUserState {
   PreferenceUserErrorState(super.error, [super.trace]);
+}
+
+class CategoryIdleState extends CubitSuccessState with PreferenceUserState {
+  const CategoryIdleState();
+
+  @override
+  List<Object?> get props => [identityHashCode(this)];
+}
+
+class CategoryLoadingState extends CubitLoadingState with PreferenceUserState {
+  const CategoryLoadingState();
+}
+
+class CategorySuccessLoadedState extends CubitInformationState
+    with PreferenceUserState {
+  final CategoryAnimeResponse category;
+
+  CategorySuccessLoadedState(
+    this.category,
+  );
+
+  @override
+  List<Object?> get props => [
+        category,
+      ];
+}
+
+class CategoryErrorState extends CubitErrorState with PreferenceUserState {
+  CategoryErrorState(super.error, [super.trace]);
 }

@@ -15,7 +15,8 @@ class User with _$User {
     required String status,
     @JsonKey(name: 'updated_at') required int updatedAt,
     @JsonKey(name: '__v') required int version,
-    @JsonKey(name: 'auth_token') required String authToken,
+    String? username,
+    String? usertag,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

@@ -1,6 +1,6 @@
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
-import 'package:umai/auth/bloc/signin_cubit.dart';
+import 'package:umai/auth/bloc/auth_cubit.dart';
 import 'package:umai/auth/screens/registrationuser/registration_preffered.dart';
 import 'package:umai/common/utils/validators.dart';
 import 'package:umai/common/widgets/buttons.dart';
@@ -18,7 +18,7 @@ class RegistrationUsernameScreen extends StatefulWidget {
 
 class _RegistrationUsernameScreenState extends State<RegistrationUsernameScreen>
     with CompletableMixin {
-  late final signInCubit = context.read<SignInCubit>();
+  late final authCubit = context.read<AuthCubit>();
   final userNameNode = FocusNode();
   final userTagNode = FocusNode();
   final TextEditingController userNameController = TextEditingController();
@@ -69,7 +69,7 @@ class _RegistrationUsernameScreenState extends State<RegistrationUsernameScreen>
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<SignInCubit, SignInState>(
+    return BlocListener<AuthCubit, AuthState>(
       listener: onEventReceived,
       child: Scaffold(
         appBar: AppBar(
@@ -139,7 +139,7 @@ class _RegistrationUsernameScreenState extends State<RegistrationUsernameScreen>
               mainAxisSize: MainAxisSize.min,
               children: [
                 UmaiButton.primary(
-                  onPressed: () => signInCubit.completeUserName(
+                  onPressed: () => authCubit.completeUserName(
                     username: userNameController.text,
                     userTag: userTagController.text,
                   ),
@@ -153,17 +153,17 @@ class _RegistrationUsernameScreenState extends State<RegistrationUsernameScreen>
     );
   }
 
-  void onEventReceived(BuildContext context, SignInState state) async {
+  void onEventReceived(BuildContext context, AuthState state) async {
     await waitForDialog();
 
-    if (state is SignInLoadingState) {
+    if (state is AuthLoadingState) {
       loadingDialogCompleter = showLoadingBarrier(context: context);
     } else if (state is CompleteUserSuccessUserState) {
       Navigator.of(context).push(
         MaterialPageRoute(
             builder: (context) => const RegistrationPrefferedScreen()),
       );
-    } else if (state is SignInErrorState) {
+    } else if (state is AuthErrorState) {
       showError(context, state.error);
     }
   }
