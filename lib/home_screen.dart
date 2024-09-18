@@ -18,6 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
       _selectedIndex = index;
     });
   }
+
   String get title => _selectedIndex == 1 ? "Social" : "Autre page";
   @override
   Widget build(BuildContext context) {
