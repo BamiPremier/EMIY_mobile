@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:umai/social/widget/post_card.dart';
 
-class SocialPage extends StatelessWidget {
-  const SocialPage({super.key});
+class SocialView extends StatelessWidget {
+  const SocialView({super.key});
 
   @override
   Widget build(BuildContext context) {

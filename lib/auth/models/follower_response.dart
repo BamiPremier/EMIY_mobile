@@ -20,14 +20,13 @@ class User with _$User {
   const factory User({
     @JsonKey(name: '_id') required String id,
     @JsonKey(name: 'created_at') required int createdAt,
-    String? uid,
     required String email,
-    @JsonKey(name: 'user_type') String? userType,
-    String? type,
+    required String type,
     required String status,
     @JsonKey(name: 'updated_at') required int updatedAt,
     String? username,
     String? usertag,
+    String? image,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

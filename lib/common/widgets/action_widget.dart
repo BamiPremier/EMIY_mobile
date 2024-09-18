@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:umai/utils/themes.dart';
 
-class PartagerWidget extends StatelessWidget {
-  const PartagerWidget(
+class ActionWidget extends StatelessWidget {
+  const ActionWidget(
       {super.key,
       required this.title,
       required this.icon,

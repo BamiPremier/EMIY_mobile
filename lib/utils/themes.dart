@@ -187,6 +187,7 @@ abstract class ThemeApp {
       ),
       cardTheme: theme.cardTheme.copyWith(
         color: Theme.of(context).colorScheme.surface,
+        margin: const EdgeInsets.all(0.0),
         elevation: 1,
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),

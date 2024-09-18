@@ -41,6 +41,9 @@ _$AnimeImpl _$$AnimeImplFromJson(Map<String, dynamic> json) => _$AnimeImpl(
       id: (json['id'] as num).toInt(),
       title: Title.fromJson(json['title'] as Map<String, dynamic>),
       description: json['description'] as String,
+      coverImage:
+          CoverImage.fromJson(json['coverImage'] as Map<String, dynamic>),
+      bannerImage: json['bannerImage'] as String?,
     );
 
 Map<String, dynamic> _$$AnimeImplToJson(_$AnimeImpl instance) =>
@@ -48,6 +51,8 @@ Map<String, dynamic> _$$AnimeImplToJson(_$AnimeImpl instance) =>
       'id': instance.id,
       'title': instance.title,
       'description': instance.description,
+      'coverImage': instance.coverImage,
+      'bannerImage': instance.bannerImage,
     };
 
 _$TitleImpl _$$TitleImplFromJson(Map<String, dynamic> json) => _$TitleImpl(
@@ -59,4 +64,20 @@ Map<String, dynamic> _$$TitleImplToJson(_$TitleImpl instance) =>
     <String, dynamic>{
       'romaji': instance.romaji,
       'english': instance.english,
+    };
+
+_$CoverImageImpl _$$CoverImageImplFromJson(Map<String, dynamic> json) =>
+    _$CoverImageImpl(
+      extraLarge: json['extraLarge'] as String,
+      large: json['large'] as String,
+      medium: json['medium'] as String,
+      color: json['color'] as String?,
+    );
+
+Map<String, dynamic> _$$CoverImageImplToJson(_$CoverImageImpl instance) =>
+    <String, dynamic>{
+      'extraLarge': instance.extraLarge,
+      'large': instance.large,
+      'medium': instance.medium,
+      'color': instance.color,
     };

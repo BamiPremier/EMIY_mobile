@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/account/cubit/account_cubit.dart';
-import 'package:umai/account/screens/edit_profile.dart';
-import 'package:umai/account/screens/param/settings.dart';
+import 'package:umai/account/screens/edit_profile_screen.dart';
+import 'package:umai/account/screens/param/settings_screen.dart';
 import 'package:umai/account/screens/section/activites.dart';
 import 'package:umai/account/screens/section/animes.dart';
 import 'package:umai/account/screens/section/sociale.dart';
 import 'package:umai/account/screens/section/watchlist.dart';
-import 'package:umai/account/widgets/profile_button.dart';
+import 'package:umai/common/widgets/action_widget.dart';
 import 'package:umai/common/services/user_service.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/utils/assets.dart';
@@ -40,7 +40,7 @@ class _AccountScreenState extends State<AccountScreen>
       builder: (context, state) => Scaffold(
         appBar: AppBar(
           title: Text(
-            /*     context.read<AccountCubit>().user!.username! ?? */ 'Inactif',
+            context.read<AccountCubit>().user!.username!,
           ),
           centerTitle: true,
           actions: [
@@ -240,7 +240,7 @@ class _AccountScreenState extends State<AccountScreen>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              PartagerWidget(
+              ActionWidget(
                 title: 'Partager...',
                 icon: Icons.share,
                 onTap: () => print(''),
@@ -248,7 +248,7 @@ class _AccountScreenState extends State<AccountScreen>
               const SizedBox(
                 height: 16,
               ),
-              PartagerWidget(
+              ActionWidget(
                 title: 'Éditer mon profil',
                 icon: Icons.edit_outlined,
                 onTap: () {
@@ -260,7 +260,7 @@ class _AccountScreenState extends State<AccountScreen>
               const SizedBox(
                 height: 16,
               ),
-              PartagerWidget(
+              ActionWidget(
                 title: 'Paramètres',
                 icon: Icons.settings,
                 onTap: () {
@@ -268,7 +268,7 @@ class _AccountScreenState extends State<AccountScreen>
 
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                        builder: (context) => const SettingsPage()),
+                        builder: (context) => const SettingsScreen()),
                   );
                 },
               ),

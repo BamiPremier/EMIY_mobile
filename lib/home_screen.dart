@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:umai/account/screens/account.dart';
+import 'package:umai/account/screens/account_screen.dart';
+import 'package:umai/animes/screens/anime_view.dart';
 import 'package:umai/social/screens/social_view.dart';
 import 'package:umai/utils/themes.dart';
 
@@ -19,7 +20,17 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  String get title => _selectedIndex == 1 ? "Social" : "Autre page";
+  String get title => _selectedIndex == 0
+      ? "Social"
+      : _selectedIndex == 3
+          ? 'Animes'
+          : "Autre page";
+
+  Widget get body => _selectedIndex == 0
+      ? const SocialView()
+      : _selectedIndex == 3
+          ? const AnimeView()
+          : Container();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,10 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: Center(
-        child:
-            _selectedIndex == 0 ? const SocialPage() : const Text('Other Page'),
-      ),
+      body: body,
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(

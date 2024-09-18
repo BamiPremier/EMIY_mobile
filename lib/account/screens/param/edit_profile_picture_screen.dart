@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:umai/account/screens/param/change_picture.dart';
+import 'package:umai/account/screens/param/change_picture_screen.dart';
 import 'package:umai/utils/themes.dart';
 
-class EditProfilePicturePage extends StatelessWidget {
-  const EditProfilePicturePage({super.key});
+class EditProfilePictureScreen extends StatelessWidget {
+  const EditProfilePictureScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class EditProfilePicturePage extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                    builder: (context) => const ChangePicturePage()),
+                    builder: (context) => const ChangePictureScreen()),
               );
             },
           ),

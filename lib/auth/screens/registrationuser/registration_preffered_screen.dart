@@ -4,7 +4,7 @@ import 'package:potatoes/potatoes.dart';
 import 'package:umai/auth/bloc/auth_cubit.dart';
 import 'package:umai/auth/bloc/preference_user_cubit.dart';
 import 'package:umai/auth/models/category_anime_response.dart';
-import 'package:umai/auth/screens/registrationuser/registration_anime_selection.dart';
+import 'package:umai/auth/screens/registrationuser/registration_anime_selection_screen.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:umai/utils/themes.dart';
@@ -27,7 +27,7 @@ class _RegistrationPrefferedScreenState
     preferenceUserCubit = context.read<PreferenceUserCubit>();
     preferenceUserCubit.getCategories().then((value) {
       setState(() {
-        categories = value.genreCollection;
+        categories = value.genres;
       });
     });
   }

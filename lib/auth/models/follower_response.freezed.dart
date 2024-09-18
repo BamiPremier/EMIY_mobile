@@ -202,16 +202,14 @@ mixin _$User {
   String get id => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_at')
   int get createdAt => throw _privateConstructorUsedError;
-  String? get uid => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
-  @JsonKey(name: 'user_type')
-  String? get userType => throw _privateConstructorUsedError;
-  String? get type => throw _privateConstructorUsedError;
+  String get type => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
   @JsonKey(name: 'updated_at')
   int get updatedAt => throw _privateConstructorUsedError;
   String? get username => throw _privateConstructorUsedError;
   String? get usertag => throw _privateConstructorUsedError;
+  String? get image => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -226,14 +224,13 @@ abstract class $UserCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: '_id') String id,
       @JsonKey(name: 'created_at') int createdAt,
-      String? uid,
       String email,
-      @JsonKey(name: 'user_type') String? userType,
-      String? type,
+      String type,
       String status,
       @JsonKey(name: 'updated_at') int updatedAt,
       String? username,
-      String? usertag});
+      String? usertag,
+      String? image});
 }
 
 /// @nodoc
@@ -251,14 +248,13 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
   $Res call({
     Object? id = null,
     Object? createdAt = null,
-    Object? uid = freezed,
     Object? email = null,
-    Object? userType = freezed,
-    Object? type = freezed,
+    Object? type = null,
     Object? status = null,
     Object? updatedAt = null,
     Object? username = freezed,
     Object? usertag = freezed,
+    Object? image = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -269,22 +265,14 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as int,
-      uid: freezed == uid
-          ? _value.uid
-          : uid // ignore: cast_nullable_to_non_nullable
-              as String?,
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
-      userType: freezed == userType
-          ? _value.userType
-          : userType // ignore: cast_nullable_to_non_nullable
-              as String?,
-      type: freezed == type
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -300,6 +288,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
       usertag: freezed == usertag
           ? _value.usertag
           : usertag // ignore: cast_nullable_to_non_nullable
+              as String?,
+      image: freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -315,14 +307,13 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: '_id') String id,
       @JsonKey(name: 'created_at') int createdAt,
-      String? uid,
       String email,
-      @JsonKey(name: 'user_type') String? userType,
-      String? type,
+      String type,
       String status,
       @JsonKey(name: 'updated_at') int updatedAt,
       String? username,
-      String? usertag});
+      String? usertag,
+      String? image});
 }
 
 /// @nodoc
@@ -337,14 +328,13 @@ class __$$UserImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? createdAt = null,
-    Object? uid = freezed,
     Object? email = null,
-    Object? userType = freezed,
-    Object? type = freezed,
+    Object? type = null,
     Object? status = null,
     Object? updatedAt = null,
     Object? username = freezed,
     Object? usertag = freezed,
+    Object? image = freezed,
   }) {
     return _then(_$UserImpl(
       id: null == id
@@ -355,22 +345,14 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as int,
-      uid: freezed == uid
-          ? _value.uid
-          : uid // ignore: cast_nullable_to_non_nullable
-              as String?,
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
-      userType: freezed == userType
-          ? _value.userType
-          : userType // ignore: cast_nullable_to_non_nullable
-              as String?,
-      type: freezed == type
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -387,6 +369,10 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.usertag
           : usertag // ignore: cast_nullable_to_non_nullable
               as String?,
+      image: freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -397,14 +383,13 @@ class _$UserImpl implements _User {
   const _$UserImpl(
       {@JsonKey(name: '_id') required this.id,
       @JsonKey(name: 'created_at') required this.createdAt,
-      this.uid,
       required this.email,
-      @JsonKey(name: 'user_type') this.userType,
-      this.type,
+      required this.type,
       required this.status,
       @JsonKey(name: 'updated_at') required this.updatedAt,
       this.username,
-      this.usertag});
+      this.usertag,
+      this.image});
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserImplFromJson(json);
@@ -416,14 +401,9 @@ class _$UserImpl implements _User {
   @JsonKey(name: 'created_at')
   final int createdAt;
   @override
-  final String? uid;
-  @override
   final String email;
   @override
-  @JsonKey(name: 'user_type')
-  final String? userType;
-  @override
-  final String? type;
+  final String type;
   @override
   final String status;
   @override
@@ -433,10 +413,12 @@ class _$UserImpl implements _User {
   final String? username;
   @override
   final String? usertag;
+  @override
+  final String? image;
 
   @override
   String toString() {
-    return 'User(id: $id, createdAt: $createdAt, uid: $uid, email: $email, userType: $userType, type: $type, status: $status, updatedAt: $updatedAt, username: $username, usertag: $usertag)';
+    return 'User(id: $id, createdAt: $createdAt, email: $email, type: $type, status: $status, updatedAt: $updatedAt, username: $username, usertag: $usertag, image: $image)';
   }
 
   @override
@@ -447,23 +429,21 @@ class _$UserImpl implements _User {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
-            (identical(other.uid, uid) || other.uid == uid) &&
             (identical(other.email, email) || other.email == email) &&
-            (identical(other.userType, userType) ||
-                other.userType == userType) &&
             (identical(other.type, type) || other.type == type) &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt) &&
             (identical(other.username, username) ||
                 other.username == username) &&
-            (identical(other.usertag, usertag) || other.usertag == usertag));
+            (identical(other.usertag, usertag) || other.usertag == usertag) &&
+            (identical(other.image, image) || other.image == image));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, createdAt, uid, email,
-      userType, type, status, updatedAt, username, usertag);
+  int get hashCode => Object.hash(runtimeType, id, createdAt, email, type,
+      status, updatedAt, username, usertag, image);
 
   @JsonKey(ignore: true)
   @override
@@ -483,14 +463,13 @@ abstract class _User implements User {
   const factory _User(
       {@JsonKey(name: '_id') required final String id,
       @JsonKey(name: 'created_at') required final int createdAt,
-      final String? uid,
       required final String email,
-      @JsonKey(name: 'user_type') final String? userType,
-      final String? type,
+      required final String type,
       required final String status,
       @JsonKey(name: 'updated_at') required final int updatedAt,
       final String? username,
-      final String? usertag}) = _$UserImpl;
+      final String? usertag,
+      final String? image}) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
@@ -501,14 +480,9 @@ abstract class _User implements User {
   @JsonKey(name: 'created_at')
   int get createdAt;
   @override
-  String? get uid;
-  @override
   String get email;
   @override
-  @JsonKey(name: 'user_type')
-  String? get userType;
-  @override
-  String? get type;
+  String get type;
   @override
   String get status;
   @override
@@ -518,6 +492,8 @@ abstract class _User implements User {
   String? get username;
   @override
   String? get usertag;
+  @override
+  String? get image;
   @override
   @JsonKey(ignore: true)
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>

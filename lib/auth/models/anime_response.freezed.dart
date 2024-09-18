@@ -318,7 +318,7 @@ class _$PaginationImpl implements _Pagination {
   const _$PaginationImpl(
       {required this.page,
       required this.take,
-      @JsonKey(name: 'next_page') required this.nextPage,
+      @JsonKey(name: 'next_page') this.nextPage,
       required this.total});
 
   factory _$PaginationImpl.fromJson(Map<String, dynamic> json) =>
@@ -373,7 +373,7 @@ abstract class _Pagination implements Pagination {
   const factory _Pagination(
       {required final int page,
       required final int take,
-      @JsonKey(name: 'next_page') required final int? nextPage,
+      @JsonKey(name: 'next_page') final int? nextPage,
       required final int total}) = _$PaginationImpl;
 
   factory _Pagination.fromJson(Map<String, dynamic> json) =
@@ -403,6 +403,8 @@ mixin _$Anime {
   int get id => throw _privateConstructorUsedError;
   Title get title => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
+  CoverImage get coverImage => throw _privateConstructorUsedError;
+  String? get bannerImage => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -414,9 +416,15 @@ abstract class $AnimeCopyWith<$Res> {
   factory $AnimeCopyWith(Anime value, $Res Function(Anime) then) =
       _$AnimeCopyWithImpl<$Res, Anime>;
   @useResult
-  $Res call({int id, Title title, String description});
+  $Res call(
+      {int id,
+      Title title,
+      String description,
+      CoverImage coverImage,
+      String? bannerImage});
 
   $TitleCopyWith<$Res> get title;
+  $CoverImageCopyWith<$Res> get coverImage;
 }
 
 /// @nodoc
@@ -435,6 +443,8 @@ class _$AnimeCopyWithImpl<$Res, $Val extends Anime>
     Object? id = null,
     Object? title = null,
     Object? description = null,
+    Object? coverImage = null,
+    Object? bannerImage = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -449,6 +459,14 @@ class _$AnimeCopyWithImpl<$Res, $Val extends Anime>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
+      coverImage: null == coverImage
+          ? _value.coverImage
+          : coverImage // ignore: cast_nullable_to_non_nullable
+              as CoverImage,
+      bannerImage: freezed == bannerImage
+          ? _value.bannerImage
+          : bannerImage // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 
@@ -457,6 +475,14 @@ class _$AnimeCopyWithImpl<$Res, $Val extends Anime>
   $TitleCopyWith<$Res> get title {
     return $TitleCopyWith<$Res>(_value.title, (value) {
       return _then(_value.copyWith(title: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $CoverImageCopyWith<$Res> get coverImage {
+    return $CoverImageCopyWith<$Res>(_value.coverImage, (value) {
+      return _then(_value.copyWith(coverImage: value) as $Val);
     });
   }
 }
@@ -468,10 +494,17 @@ abstract class _$$AnimeImplCopyWith<$Res> implements $AnimeCopyWith<$Res> {
       __$$AnimeImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, Title title, String description});
+  $Res call(
+      {int id,
+      Title title,
+      String description,
+      CoverImage coverImage,
+      String? bannerImage});
 
   @override
   $TitleCopyWith<$Res> get title;
+  @override
+  $CoverImageCopyWith<$Res> get coverImage;
 }
 
 /// @nodoc
@@ -488,6 +521,8 @@ class __$$AnimeImplCopyWithImpl<$Res>
     Object? id = null,
     Object? title = null,
     Object? description = null,
+    Object? coverImage = null,
+    Object? bannerImage = freezed,
   }) {
     return _then(_$AnimeImpl(
       id: null == id
@@ -502,6 +537,14 @@ class __$$AnimeImplCopyWithImpl<$Res>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
+      coverImage: null == coverImage
+          ? _value.coverImage
+          : coverImage // ignore: cast_nullable_to_non_nullable
+              as CoverImage,
+      bannerImage: freezed == bannerImage
+          ? _value.bannerImage
+          : bannerImage // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -510,7 +553,11 @@ class __$$AnimeImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$AnimeImpl implements _Anime {
   const _$AnimeImpl(
-      {required this.id, required this.title, required this.description});
+      {required this.id,
+      required this.title,
+      required this.description,
+      required this.coverImage,
+      this.bannerImage});
 
   factory _$AnimeImpl.fromJson(Map<String, dynamic> json) =>
       _$$AnimeImplFromJson(json);
@@ -521,10 +568,14 @@ class _$AnimeImpl implements _Anime {
   final Title title;
   @override
   final String description;
+  @override
+  final CoverImage coverImage;
+  @override
+  final String? bannerImage;
 
   @override
   String toString() {
-    return 'Anime(id: $id, title: $title, description: $description)';
+    return 'Anime(id: $id, title: $title, description: $description, coverImage: $coverImage, bannerImage: $bannerImage)';
   }
 
   @override
@@ -535,12 +586,17 @@ class _$AnimeImpl implements _Anime {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
-                other.description == description));
+                other.description == description) &&
+            (identical(other.coverImage, coverImage) ||
+                other.coverImage == coverImage) &&
+            (identical(other.bannerImage, bannerImage) ||
+                other.bannerImage == bannerImage));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, title, description);
+  int get hashCode =>
+      Object.hash(runtimeType, id, title, description, coverImage, bannerImage);
 
   @JsonKey(ignore: true)
   @override
@@ -560,7 +616,9 @@ abstract class _Anime implements Anime {
   const factory _Anime(
       {required final int id,
       required final Title title,
-      required final String description}) = _$AnimeImpl;
+      required final String description,
+      required final CoverImage coverImage,
+      final String? bannerImage}) = _$AnimeImpl;
 
   factory _Anime.fromJson(Map<String, dynamic> json) = _$AnimeImpl.fromJson;
 
@@ -570,6 +628,10 @@ abstract class _Anime implements Anime {
   Title get title;
   @override
   String get description;
+  @override
+  CoverImage get coverImage;
+  @override
+  String? get bannerImage;
   @override
   @JsonKey(ignore: true)
   _$$AnimeImplCopyWith<_$AnimeImpl> get copyWith =>
@@ -722,5 +784,199 @@ abstract class _Title implements Title {
   @override
   @JsonKey(ignore: true)
   _$$TitleImplCopyWith<_$TitleImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+CoverImage _$CoverImageFromJson(Map<String, dynamic> json) {
+  return _CoverImage.fromJson(json);
+}
+
+/// @nodoc
+mixin _$CoverImage {
+  String get extraLarge => throw _privateConstructorUsedError;
+  String get large => throw _privateConstructorUsedError;
+  String get medium => throw _privateConstructorUsedError;
+  String? get color => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $CoverImageCopyWith<CoverImage> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $CoverImageCopyWith<$Res> {
+  factory $CoverImageCopyWith(
+          CoverImage value, $Res Function(CoverImage) then) =
+      _$CoverImageCopyWithImpl<$Res, CoverImage>;
+  @useResult
+  $Res call({String extraLarge, String large, String medium, String? color});
+}
+
+/// @nodoc
+class _$CoverImageCopyWithImpl<$Res, $Val extends CoverImage>
+    implements $CoverImageCopyWith<$Res> {
+  _$CoverImageCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? extraLarge = null,
+    Object? large = null,
+    Object? medium = null,
+    Object? color = freezed,
+  }) {
+    return _then(_value.copyWith(
+      extraLarge: null == extraLarge
+          ? _value.extraLarge
+          : extraLarge // ignore: cast_nullable_to_non_nullable
+              as String,
+      large: null == large
+          ? _value.large
+          : large // ignore: cast_nullable_to_non_nullable
+              as String,
+      medium: null == medium
+          ? _value.medium
+          : medium // ignore: cast_nullable_to_non_nullable
+              as String,
+      color: freezed == color
+          ? _value.color
+          : color // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$CoverImageImplCopyWith<$Res>
+    implements $CoverImageCopyWith<$Res> {
+  factory _$$CoverImageImplCopyWith(
+          _$CoverImageImpl value, $Res Function(_$CoverImageImpl) then) =
+      __$$CoverImageImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String extraLarge, String large, String medium, String? color});
+}
+
+/// @nodoc
+class __$$CoverImageImplCopyWithImpl<$Res>
+    extends _$CoverImageCopyWithImpl<$Res, _$CoverImageImpl>
+    implements _$$CoverImageImplCopyWith<$Res> {
+  __$$CoverImageImplCopyWithImpl(
+      _$CoverImageImpl _value, $Res Function(_$CoverImageImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? extraLarge = null,
+    Object? large = null,
+    Object? medium = null,
+    Object? color = freezed,
+  }) {
+    return _then(_$CoverImageImpl(
+      extraLarge: null == extraLarge
+          ? _value.extraLarge
+          : extraLarge // ignore: cast_nullable_to_non_nullable
+              as String,
+      large: null == large
+          ? _value.large
+          : large // ignore: cast_nullable_to_non_nullable
+              as String,
+      medium: null == medium
+          ? _value.medium
+          : medium // ignore: cast_nullable_to_non_nullable
+              as String,
+      color: freezed == color
+          ? _value.color
+          : color // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$CoverImageImpl implements _CoverImage {
+  const _$CoverImageImpl(
+      {required this.extraLarge,
+      required this.large,
+      required this.medium,
+      this.color});
+
+  factory _$CoverImageImpl.fromJson(Map<String, dynamic> json) =>
+      _$$CoverImageImplFromJson(json);
+
+  @override
+  final String extraLarge;
+  @override
+  final String large;
+  @override
+  final String medium;
+  @override
+  final String? color;
+
+  @override
+  String toString() {
+    return 'CoverImage(extraLarge: $extraLarge, large: $large, medium: $medium, color: $color)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CoverImageImpl &&
+            (identical(other.extraLarge, extraLarge) ||
+                other.extraLarge == extraLarge) &&
+            (identical(other.large, large) || other.large == large) &&
+            (identical(other.medium, medium) || other.medium == medium) &&
+            (identical(other.color, color) || other.color == color));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, extraLarge, large, medium, color);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CoverImageImplCopyWith<_$CoverImageImpl> get copyWith =>
+      __$$CoverImageImplCopyWithImpl<_$CoverImageImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$CoverImageImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _CoverImage implements CoverImage {
+  const factory _CoverImage(
+      {required final String extraLarge,
+      required final String large,
+      required final String medium,
+      final String? color}) = _$CoverImageImpl;
+
+  factory _CoverImage.fromJson(Map<String, dynamic> json) =
+      _$CoverImageImpl.fromJson;
+
+  @override
+  String get extraLarge;
+  @override
+  String get large;
+  @override
+  String get medium;
+  @override
+  String? get color;
+  @override
+  @JsonKey(ignore: true)
+  _$$CoverImageImplCopyWith<_$CoverImageImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

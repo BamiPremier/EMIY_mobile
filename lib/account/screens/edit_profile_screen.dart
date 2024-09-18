@@ -1,57 +1,31 @@
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
+import 'package:umai/account/screens/param/edit_profile_picture_screen.dart';
 import 'package:umai/auth/bloc/auth_cubit.dart';
-import 'package:umai/auth/screens/registrationuser/registration_preffered.dart';
+import 'package:umai/auth/screens/registrationuser/registration_preffered_screen.dart';
+import 'package:umai/account/widgets/large_text_field.dart';
+import 'package:umai/account/widgets/profile_text_field.dart';
 import 'package:umai/common/utils/validators.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:flutter/material.dart';
-import 'package:umai/common/widgets/customtextfield.dart';
+import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/dialogs.dart';
 
-class RegistrationUsernameScreen extends StatefulWidget {
-  const RegistrationUsernameScreen({super.key});
+class EditProfileScreen extends StatefulWidget {
+  const EditProfileScreen({super.key});
 
   @override
-  State<RegistrationUsernameScreen> createState() =>
-      _RegistrationUsernameScreenState();
+  State<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
-class _RegistrationUsernameScreenState extends State<RegistrationUsernameScreen>
+class _EditProfileScreenState extends State<EditProfileScreen>
     with CompletableMixin {
   late final authCubit = context.read<AuthCubit>();
   final userNameNode = FocusNode();
-  final userTagNode = FocusNode();
+  final idUserdNode = FocusNode();
   final TextEditingController userNameController = TextEditingController();
   final TextEditingController userTagController = TextEditingController();
-  String generateUserTag(String username) {
-    // Convertir en minuscules
-    String tag = username.toLowerCase();
-
-    // Remplacer les espaces par des tirets
-    tag = tag.replaceAll(' ', '-');
-
-    // Supprimer les accents
-    tag = tag
-        .replaceAllMapped(RegExp(r'[àáâãäå]'), (match) => 'a')
-        .replaceAllMapped(RegExp(r'[èéêë]'), (match) => 'e')
-        .replaceAllMapped(RegExp(r'[ìíîï]'), (match) => 'i')
-        .replaceAllMapped(RegExp(r'[òóôõö]'), (match) => 'o')
-        .replaceAllMapped(RegExp(r'[ùúûü]'), (match) => 'u')
-        .replaceAllMapped(RegExp(r'[ýÿ]'), (match) => 'y')
-        .replaceAllMapped(RegExp(r'[ñ]'), (match) => 'n');
-
-    // Supprimer tous les caractères non autorisés
-    tag = tag.replaceAll(RegExp(r'[^a-z0-9\-_.]'), '');
-
-    // Supprimer les tirets consécutifs
-    tag = tag.replaceAll(RegExp(r'-+'), '-');
-
-    // Supprimer les tirets au début et à la fin
-    tag = tag.trim().toLowerCase();
-
-    return tag;
-  }
-
+  int counter = 0;
   @override
   void initState() {
     super.initState();
@@ -62,7 +36,7 @@ class _RegistrationUsernameScreenState extends State<RegistrationUsernameScreen>
     userNameController.dispose();
     userTagController.dispose();
     userNameNode.dispose();
-    userTagNode.dispose();
+    idUserdNode.dispose();
 
     super.dispose();
   }
@@ -73,53 +47,90 @@ class _RegistrationUsernameScreenState extends State<RegistrationUsernameScreen>
       listener: onEventReceived,
       child: Scaffold(
         appBar: AppBar(
-            title: const Text(
-          "Tu es nouveau?",
-        )),
+          title: const Text(
+            "Éditer mon profil",
+          ),
+          centerTitle: true,
+        ),
         body: SafeArea(
           minimum: const EdgeInsets.only(bottom: 48),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            margin: const EdgeInsets.only(top: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Expanded(
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      InkWell(
+                          onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const EditProfilePictureScreen())),
+                          child: Container(
+                            margin: const EdgeInsets.only(right: 16),
+                            width: 56,
+                            height: 56,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image: AssetImage(Assets.user),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          )),
+                      Expanded(
+                        child: Container(
+                          height: 56,
+                          alignment: Alignment.center,
+                          child: ProfileTextField(
+                            controller: userNameController,
+                            focusNode: userNameNode,
+                            hintText: "@userxxyz",
+                            keyboardType: TextInputType.text,
+                            textCapitalization: TextCapitalization.none,
+                            textInputAction: TextInputAction.next,
+                            onEditingCompleted: () => FocusScope.of(context)
+                                .requestFocus(idUserdNode),
+                            validator: (value) => Validators.empty(value),
+                          ),
+                        ),
+                      )
+                    ]),
+                Container(
+                  margin: const EdgeInsets.only(top: 16),
                   child: Column(
                     children: [
-                      CustomTextField(
+                      ProfileTextField(
                         controller: userNameController,
                         focusNode: userNameNode,
                         subText:
                             "Il sera visible lors de tes différentes intéractions",
-                        hintText: "Ton nom d'utilisateur",
+                        hintText: "Nom d'utilisateur",
                         keyboardType: TextInputType.text,
                         textCapitalization: TextCapitalization.none,
                         textInputAction: TextInputAction.next,
-                        onChanged: (value) {
-                          setState(() {
-                            userTagController.text = generateUserTag(value);
-                          });
-                        },
                         onEditingCompleted: () =>
-                            FocusScope.of(context).requestFocus(userNameNode),
+                            FocusScope.of(context).requestFocus(idUserdNode),
                         validator: (value) => Validators.empty(value),
                       ),
-                      const SizedBox(height: 10),
-                      CustomTextField(
+                      const SizedBox(height: 32),
+                      LargeTextField(
                           controller: userTagController,
-                          focusNode: userTagNode,
-                          subText: "Pour que tes amis te retrouvent facilement",
-                          hintText: "Ton identifiant unique",
+                          focusNode: idUserdNode,
+                          counter: counter,
+                          hintText: "Ma bio...",
                           keyboardType: TextInputType.text,
                           textCapitalization: TextCapitalization.none,
+                          textInputAction: TextInputAction.next,
+                          onEditingCompleted: () {},
                           onChanged: (value) {
                             setState(() {
-                              userTagController.text = generateUserTag(value);
+                              counter = userTagController.text.length;
                             });
                           },
-                          textInputAction: TextInputAction.next,
-                          onEditingCompleted: () =>
-                              FocusScope.of(context).requestFocus(userTagNode),
                           validator: (value) => Validators.empty(value),
                           prefixIcon: const Icon(
                             Icons.alternate_email,
@@ -144,7 +155,7 @@ class _RegistrationUsernameScreenState extends State<RegistrationUsernameScreen>
                     username: userNameController.text,
                     userTag: userTagController.text,
                   ),
-                  text: "Continuer",
+                  text: "Enregistrer",
                 ),
               ],
             ),

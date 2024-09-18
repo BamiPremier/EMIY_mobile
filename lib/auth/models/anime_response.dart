@@ -19,7 +19,7 @@ class Pagination with _$Pagination {
   const factory Pagination({
     required int page,
     required int take,
-    @JsonKey(name: 'next_page') required int? nextPage,
+    @JsonKey(name: 'next_page') int? nextPage,
     required int total,
   }) = _Pagination;
 
@@ -33,6 +33,8 @@ class Anime with _$Anime {
     required int id,
     required Title title,
     required String description,
+    required CoverImage coverImage,
+    String? bannerImage,
   }) = _Anime;
 
   factory Anime.fromJson(Map<String, dynamic> json) => _$AnimeFromJson(json);
@@ -46,4 +48,17 @@ class Title with _$Title {
   }) = _Title;
 
   factory Title.fromJson(Map<String, dynamic> json) => _$TitleFromJson(json);
+}
+
+@freezed
+class CoverImage with _$CoverImage {
+  const factory CoverImage({
+    required String extraLarge,
+    required String large,
+    required String medium,
+    String? color,
+  }) = _CoverImage;
+
+  factory CoverImage.fromJson(Map<String, dynamic> json) =>
+      _$CoverImageFromJson(json);
 }

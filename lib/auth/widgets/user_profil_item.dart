@@ -21,7 +21,7 @@ class UserProfileItem extends StatelessWidget {
         radius: 28,
         backgroundImage: AssetImage('imageUrl'),
       ),
-      title: Text(user.email, style: Theme.of(context).textTheme.bodyLarge),
+      title: Text(user.username!, style: Theme.of(context).textTheme.bodyLarge),
       subtitle: Text(
         'description',
         style: Theme.of(context).textTheme.labelMedium!.copyWith(

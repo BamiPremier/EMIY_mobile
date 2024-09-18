@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:umai/utils/themes.dart';
 
 enum _ButtonHierarchy { primary, secondary, tertiary, quaternary }
@@ -8,12 +8,14 @@ class UmaiButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final String text;
   final bool large;
+  final Widget? icon;
 
   const UmaiButton.primary({
     super.key,
     required this.onPressed,
     required this.text,
     this.large = true,
+    this.icon,
   }) : _hierarchy = _ButtonHierarchy.primary;
 
   const UmaiButton.secondary({
@@ -21,6 +23,7 @@ class UmaiButton extends StatelessWidget {
     required this.onPressed,
     required this.text,
     this.large = true,
+    this.icon,
   }) : _hierarchy = _ButtonHierarchy.secondary;
 
   const UmaiButton.tertiary({
@@ -28,6 +31,7 @@ class UmaiButton extends StatelessWidget {
     required this.onPressed,
     required this.text,
     this.large = true,
+    this.icon,
   }) : _hierarchy = _ButtonHierarchy.tertiary;
 
   const UmaiButton.quaternary({
@@ -35,6 +39,7 @@ class UmaiButton extends StatelessWidget {
     required this.onPressed,
     required this.text,
     this.large = true,
+    this.icon,
   }) : _hierarchy = _ButtonHierarchy.quaternary;
 
   Color _backgroundColor(BuildContext context) {
@@ -60,10 +65,17 @@ class UmaiButton extends StatelessWidget {
       style: FilledButton.styleFrom(
         backgroundColor: _backgroundColor(context),
       ),
-      child: Text(
-        text,
-        textAlign: TextAlign.center,
-        style: Theme.of(context).textTheme.labelLarge,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (icon != null) icon!,
+          if (icon != null) const SizedBox(width: 8),
+          Text(
+            text,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.labelLarge,
+          ),
+        ],
       ),
     );
   }

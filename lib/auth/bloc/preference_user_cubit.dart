@@ -20,9 +20,11 @@ class PreferenceUserCubit extends Cubit<PreferenceUserState> {
     emit(const CategoryLoadingState());
 
     try {
-      final response = await preferenceUserService.getCategoryAnimes(page: 1);
-      emit(CategorySuccessLoadedState(response));
-      return response;
+      final response = await preferenceUserService.getCategoryAnimes();
+
+      final categories = CategoryAnimeResponse.fromJson(response);
+      emit(CategorySuccessLoadedState(categories));
+      return categories;
     } catch (error, trace) {
       emit(CategoryErrorState(error, trace));
       emit(stateBefore);
@@ -46,45 +48,78 @@ class PreferenceUserCubit extends Cubit<PreferenceUserState> {
     }
   }
 
-  void selectAnime(AnimeResponse anime) {
-    final currentState = state;
-    if (currentState is SelectedPrefenceUserState) {
-      final updatedAnimes = List<AnimeResponse>.from(currentState.anime)
-        ..add(anime);
-      emit(SelectedPrefenceUserState(
-          currentState.category, updatedAnimes, currentState.follow));
-    } else {
-      emit(SelectedPrefenceUserState(const [], [anime], const []));
-    }
-  }
+  // void selectAnimeWatchList(String anime) {
+  //   final currentState = state;
+  //   if (currentState is WatchListSelectAnimeState) {
+  //     final updatedAnimes = List<String>.from(currentState.anime)..add(anime);
+  //     emit(WatchListSelectAnimeState(updatedAnimes));
+  //   } else {
+  //     emit(WatchListSelectAnimeState([anime]));
+  //   }
+  // }
 
-  void selectFollow(FollowerResponse follower) {
-    final currentState = state;
-    if (currentState is SelectedPrefenceUserState) {
-      final updatedFollowers = List<FollowerResponse>.from(currentState.follow)
-        ..add(follower);
-      emit(SelectedPrefenceUserState(
-          currentState.category, currentState.anime, updatedFollowers));
-    } else {
-      emit(SelectedPrefenceUserState(const [], const [], [follower]));
-    }
-  }
+  // void selectAnimeViewed(String anime) {
+  //   final currentState = state;
+  //   if (currentState is AnimeViewedSelectAnimeState) {
+  //     final updatedAnimes = List<String>.from(currentState.anime)..add(anime);
+  //     emit(AnimeViewedSelectAnimeState(updatedAnimes));
+  //   } else {
+  //     emit(AnimeViewedSelectAnimeState([anime]));
+  //   }
+  // }
 
-  void completePreferenceUser() {
+  // void selectFollow(String follower) {
+  //   final currentState = state;
+  //   if (currentState is SelectFollowerState) {
+  //     final updatedFollowers = List<String>.from(currentState.followers)
+  //       ..add(follower);
+  //     emit(SelectFollowerState(updatedFollowers));
+  //   } else {
+  //     emit(SelectFollowerState([follower]));
+  //   }
+  // }
+
+  void addToWatchList(anime) {
     final stateBefore = state;
 
-    emit(const PreferenceUserLoadingState());
+    emit(const WatchListAddLoadingState());
 
-    // preferenceUserService
-    //     .completePreferenceUser(/* username: username, userTag: userTag */)
-    //     .then((response) {
-    //   // userCubit.preferencesService.saveUser(response.user);
-    //   emit(const PreferenceUserSuccessState());
+    preferenceUserService.addToWatchList(anime: anime).then((response) {
+      emit(WatchListAddSuccesState());
 
-    //   emit(stateBefore);
-    // }, onError: (error, trace) {
-    //   emit(PreferenceUserErrorState(error, trace));
-    //   emit(stateBefore);
-    // });
+      emit(stateBefore);
+    }, onError: (error, trace) {
+      emit(WatchListAddErrorState(error, trace));
+      emit(stateBefore);
+    });
+  }
+
+  void addToViewedList(anime) {
+    final stateBefore = state;
+
+    emit(const AnimeViewedAddLoadingState());
+    preferenceUserService.addToViewerList(anime: anime).then((response) {
+      emit(AnimeViewedAddSuccesState());
+
+      emit(stateBefore);
+    }, onError: (error, trace) {
+      emit(AnimeViewedAddErrorState(error, trace));
+      emit(stateBefore);
+    });
+  }
+
+  void addToFollowerList(follower) {
+    final stateBefore = state;
+
+    emit(const FollowerAddLoadingState());
+    preferenceUserService.addToFollowerList(follower: follower).then(
+        (response) {
+      emit(FollowerAddSuccessState());
+
+      emit(stateBefore);
+    }, onError: (error, trace) {
+      emit(FollowerAddErrorState(error, trace));
+      emit(stateBefore);
+    });
   }
 }

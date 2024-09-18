@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:potatoes/libs.dart';
 import 'package:umai/auth/bloc/auth_cubit.dart';
-import 'package:umai/auth/screens/registrationuser/registration_username.dart';
+import 'package:umai/auth/screens/registrationuser/registration_username_screen.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:umai/home_screen.dart';
@@ -52,10 +52,10 @@ class _LoginWelcomeBackScreenState extends State<LoginWelcomeBackScreen> {
                 child: UmaiButton.secondary(
                   onPressed: () {
                     log('3333333333333333');
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (context) => const HomeScreen()),
-                    );
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => const HomeScreen()),
+                        (route) => false);
                     log('3333333333333333');
                   },
                   text: "Merci",

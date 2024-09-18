@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:umai/common/services/api_service.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 Future<void> showError(BuildContext context, [dynamic error]) {
   return showAppBottomSheet(
@@ -58,4 +59,18 @@ String _translateError(dynamic error) {
   if (error.trace != null) return defaultMessage;
 
   return error.message ?? defaultMessage;
+}
+
+void showSuccessToast(
+    {required BuildContext context,
+    required String content,
+    bool? isError,
+    Toast? toastLength}) {
+  Fluttertoast.showToast(
+      msg: content,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.TOP,
+      timeInSecForIosWeb: 6,
+      textColor: Colors.white,
+      fontSize: 16.0);
 }

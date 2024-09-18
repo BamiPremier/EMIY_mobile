@@ -5,8 +5,8 @@ import 'package:potatoes/potatoes.dart';
 import 'package:potatoes/common/widgets/loaders.dart';
 
 import 'package:umai/auth/bloc/auth_cubit.dart';
-import 'package:umai/auth/screens/login_welcome_back.dart';
-import 'package:umai/auth/screens/registrationuser/registration_username.dart';
+import 'package:umai/auth/screens/login_welcome_back_screen.dart';
+import 'package:umai/auth/screens/registrationuser/registration_username_screen.dart';
 import 'package:umai/auth/widgets/auth_button.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/common/widgets/buttons.dart';

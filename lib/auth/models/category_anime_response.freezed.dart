@@ -21,8 +21,7 @@ CategoryAnimeResponse _$CategoryAnimeResponseFromJson(
 
 /// @nodoc
 mixin _$CategoryAnimeResponse {
-  @JsonKey(name: 'GenreCollection')
-  List<String> get genreCollection => throw _privateConstructorUsedError;
+  List<String> get genres => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +35,7 @@ abstract class $CategoryAnimeResponseCopyWith<$Res> {
           $Res Function(CategoryAnimeResponse) then) =
       _$CategoryAnimeResponseCopyWithImpl<$Res, CategoryAnimeResponse>;
   @useResult
-  $Res call({@JsonKey(name: 'GenreCollection') List<String> genreCollection});
+  $Res call({List<String> genres});
 }
 
 /// @nodoc
@@ -53,12 +52,12 @@ class _$CategoryAnimeResponseCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? genreCollection = null,
+    Object? genres = null,
   }) {
     return _then(_value.copyWith(
-      genreCollection: null == genreCollection
-          ? _value.genreCollection
-          : genreCollection // ignore: cast_nullable_to_non_nullable
+      genres: null == genres
+          ? _value.genres
+          : genres // ignore: cast_nullable_to_non_nullable
               as List<String>,
     ) as $Val);
   }
@@ -73,7 +72,7 @@ abstract class _$$CategoryAnimeResponseImplCopyWith<$Res>
       __$$CategoryAnimeResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({@JsonKey(name: 'GenreCollection') List<String> genreCollection});
+  $Res call({List<String> genres});
 }
 
 /// @nodoc
@@ -88,12 +87,12 @@ class __$$CategoryAnimeResponseImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? genreCollection = null,
+    Object? genres = null,
   }) {
     return _then(_$CategoryAnimeResponseImpl(
-      genreCollection: null == genreCollection
-          ? _value._genreCollection
-          : genreCollection // ignore: cast_nullable_to_non_nullable
+      genres: null == genres
+          ? _value._genres
+          : genres // ignore: cast_nullable_to_non_nullable
               as List<String>,
     ));
   }
@@ -102,26 +101,23 @@ class __$$CategoryAnimeResponseImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$CategoryAnimeResponseImpl implements _CategoryAnimeResponse {
-  const _$CategoryAnimeResponseImpl(
-      {@JsonKey(name: 'GenreCollection')
-      required final List<String> genreCollection})
-      : _genreCollection = genreCollection;
+  const _$CategoryAnimeResponseImpl({required final List<String> genres})
+      : _genres = genres;
 
   factory _$CategoryAnimeResponseImpl.fromJson(Map<String, dynamic> json) =>
       _$$CategoryAnimeResponseImplFromJson(json);
 
-  final List<String> _genreCollection;
+  final List<String> _genres;
   @override
-  @JsonKey(name: 'GenreCollection')
-  List<String> get genreCollection {
-    if (_genreCollection is EqualUnmodifiableListView) return _genreCollection;
+  List<String> get genres {
+    if (_genres is EqualUnmodifiableListView) return _genres;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_genreCollection);
+    return EqualUnmodifiableListView(_genres);
   }
 
   @override
   String toString() {
-    return 'CategoryAnimeResponse(genreCollection: $genreCollection)';
+    return 'CategoryAnimeResponse(genres: $genres)';
   }
 
   @override
@@ -129,14 +125,13 @@ class _$CategoryAnimeResponseImpl implements _CategoryAnimeResponse {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CategoryAnimeResponseImpl &&
-            const DeepCollectionEquality()
-                .equals(other._genreCollection, _genreCollection));
+            const DeepCollectionEquality().equals(other._genres, _genres));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_genreCollection));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_genres));
 
   @JsonKey(ignore: true)
   @override
@@ -154,17 +149,14 @@ class _$CategoryAnimeResponseImpl implements _CategoryAnimeResponse {
 }
 
 abstract class _CategoryAnimeResponse implements CategoryAnimeResponse {
-  const factory _CategoryAnimeResponse(
-          {@JsonKey(name: 'GenreCollection')
-          required final List<String> genreCollection}) =
+  const factory _CategoryAnimeResponse({required final List<String> genres}) =
       _$CategoryAnimeResponseImpl;
 
   factory _CategoryAnimeResponse.fromJson(Map<String, dynamic> json) =
       _$CategoryAnimeResponseImpl.fromJson;
 
   @override
-  @JsonKey(name: 'GenreCollection')
-  List<String> get genreCollection;
+  List<String> get genres;
   @override
   @JsonKey(ignore: true)
   _$$CategoryAnimeResponseImplCopyWith<_$CategoryAnimeResponseImpl>

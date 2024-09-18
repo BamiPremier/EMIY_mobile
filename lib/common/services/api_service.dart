@@ -34,8 +34,13 @@ class ApiService extends potatoes.ApiService {
       Response response = await request;
 
       if (response.data != null) {
-        return defaultExtractResult(
-            response.data, mapperKey, mapper, messageMapper);
+        if (response.data is Map) {
+          return defaultExtractResult(
+              response.data, mapperKey, mapper, messageMapper);
+        } else {
+          return response.data;
+          
+        }
       } else {
         if (response.data['error'] != null) {
           throw response.data['error'];

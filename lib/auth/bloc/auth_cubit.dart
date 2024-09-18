@@ -48,6 +48,7 @@ class AuthCubit extends Cubit<AuthState> {
         (response) {
       log('=================${response}============');
       userCubit.preferencesService.saveUser(response.user);
+
       emit(const CompleteUserSuccessUserState());
 
       emit(stateBefore);
