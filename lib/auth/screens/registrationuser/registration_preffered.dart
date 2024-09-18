@@ -47,6 +47,7 @@ class _RegistrationPrefferedScreenState
           "Tu regardes quoi?",
         )),
         body: SafeArea(
+          minimum: const EdgeInsets.only(bottom: 48),
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(children: [

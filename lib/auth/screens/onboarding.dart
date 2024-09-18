@@ -64,7 +64,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       child: Scaffold(
         backgroundColor: ThemeApp.primaryYellow,
         body: SafeArea(
-          minimum: const EdgeInsets.only(bottom: 65),
+          minimum: const EdgeInsets.only(bottom: 48),
           child: Column(
             children: [
               const Spacer(flex: 2),

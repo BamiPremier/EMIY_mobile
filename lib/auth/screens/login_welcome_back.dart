@@ -29,6 +29,7 @@ class _LoginWelcomeBackScreenState extends State<LoginWelcomeBackScreen> {
     return Scaffold(
       backgroundColor: ThemeApp.primaryYellow,
       body: SafeArea(
+        minimum: const EdgeInsets.only(bottom: 48),
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 48),
           child: Column(

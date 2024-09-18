@@ -77,6 +77,7 @@ class _RegistrationUsernameScreenState extends State<RegistrationUsernameScreen>
           "Tu es nouveau?",
         )),
         body: SafeArea(
+          minimum: const EdgeInsets.only(bottom: 48),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             child: Column(

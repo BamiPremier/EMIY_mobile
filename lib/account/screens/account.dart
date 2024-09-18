@@ -50,6 +50,7 @@ class _AccountScreenState extends State<AccountScreen>
           ],
         ),
         body: SafeArea(
+          minimum: const EdgeInsets.only(bottom: 48),
           child: Container(
             margin: const EdgeInsets.only(top: 16),
             child: Column(children: [

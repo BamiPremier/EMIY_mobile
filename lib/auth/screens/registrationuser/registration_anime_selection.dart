@@ -58,6 +58,7 @@ class _RegistrationAnimeSelectionScreenState
       child: Scaffold(
         appBar: AppBar(title: const Text("Tu regardes quoi?")),
         body: SafeArea(
+          minimum: const EdgeInsets.only(bottom: 48),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(

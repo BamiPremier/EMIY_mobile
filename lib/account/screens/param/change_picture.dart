@@ -31,19 +31,21 @@ class ChangePicturePage extends StatelessWidget {
         ],
       ),
       backgroundColor: ThemeApp.black,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.network(
-              'https://img.freepik.com/photos-gratuite/representations-experience-utilisateur-design-interface_23-2150104489.jpg?t=st=1726481260~exp=1726484860~hmac=71aa8b5d32271a5f3d6a968bb6731cb8d35a797e60f574caa80514a1ff4bcac3&w=900',
-              height: 375,
-              width: double.infinity,
-              fit: BoxFit.cover,
+      body: SafeArea(
+          minimum: const EdgeInsets.only(bottom: 48),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.network(
+                  'https://img.freepik.com/photos-gratuite/representations-experience-utilisateur-design-interface_23-2150104489.jpg?t=st=1726481260~exp=1726484860~hmac=71aa8b5d32271a5f3d6a968bb6731cb8d35a797e60f574caa80514a1ff4bcac3&w=900',
+                  height: 375,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          )),
       bottomNavigationBar: SafeArea(
         minimum: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
         child: Column(

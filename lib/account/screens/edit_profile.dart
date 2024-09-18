@@ -53,6 +53,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
           centerTitle: true,
         ),
         body: SafeArea(
+          minimum: const EdgeInsets.only(bottom: 48),
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             margin: const EdgeInsets.only(top: 16),

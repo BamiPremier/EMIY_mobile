@@ -50,6 +50,7 @@ class _RegistrationFollowScreenState extends State<RegistrationFollowScreen>
           "Rejoins la communauté!",
         )),
         body: SafeArea(
+          minimum: const EdgeInsets.only(bottom: 48),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
