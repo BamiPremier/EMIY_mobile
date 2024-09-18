@@ -5,6 +5,7 @@ import 'package:umai/auth/bloc/auth_cubit.dart';
 import 'package:umai/auth/screens/registrationuser/registration_username.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:flutter/material.dart';
+import 'package:umai/home_screen.dart';
 import 'package:umai/utils/app_dimension.dart';
 import 'package:umai/utils/themes.dart';
 
@@ -52,8 +53,7 @@ class _LoginWelcomeBackScreenState extends State<LoginWelcomeBackScreen> {
                     log('3333333333333333');
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                          builder: (context) =>
-                              const RegistrationUsernameScreen()),
+                          builder: (context) => const HomeScreen()),
                     );
                     log('3333333333333333');
                   },

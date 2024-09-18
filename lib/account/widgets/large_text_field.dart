@@ -44,6 +44,7 @@ class LargeTextField extends StatelessWidget {
               onEditingComplete: onEditingCompleted,
               validator: validator,
               cursorHeight: 16,
+              style: Theme.of(context).inputDecorationTheme.labelStyle,
               onChanged: onChanged,
               decoration: InputDecoration(
                 focusedBorder: OutlineInputBorder(
@@ -52,6 +53,7 @@ class LargeTextField extends StatelessWidget {
                       BorderSide(color: Theme.of(context).disabledColor),
                 ),
                 hintText: hintText,
+                hintStyle: Theme.of(context).inputDecorationTheme.labelStyle,
                 filled: true,
                 fillColor:
                     Theme.of(context).colorScheme.surfaceContainerHighest,

@@ -40,6 +40,7 @@ class ProfileTextField extends StatelessWidget {
           validator: validator,
           cursorHeight: 16,
           decoration: InputDecoration(
+            hintStyle: Theme.of(context).inputDecorationTheme.labelStyle,
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(4.0),
               borderSide: BorderSide(color: Theme.of(context).disabledColor),

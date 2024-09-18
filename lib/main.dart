@@ -142,13 +142,13 @@ class MyApp extends StatelessWidget {
             return BlocBuilder<UserCubit, UserState>(
               buildWhen: (previous, _) => previous is InitializingUserState,
               builder: (context, state) {
-                // if (state is UserNotLoggedState) return splashScreen;
-                // if (state is UserLoggedState) return const HomeScreen();
-                // if (state is CompleteUserProfileState)
-                //   return const RegistrationUsernameScreen();
-                // if (state is InitializingUserState) return const SizedBox();
-                return HomeScreen();
-                // return splashScreen;
+                if (state is UserNotLoggedState) return splashScreen;
+                if (state is UserLoggedState) return const HomeScreen();
+                if (state is CompleteUserProfileState)
+                  return const RegistrationUsernameScreen();
+                if (state is InitializingUserState) return const SizedBox();
+
+                return splashScreen;
               },
             );
           }),

@@ -6,6 +6,7 @@ import 'package:umai/auth/bloc/anime_cubit.dart';
 import 'package:umai/auth/bloc/auth_cubit.dart';
 import 'package:umai/auth/models/anime_response.dart';
 import 'package:umai/auth/screens/registrationuser/registration_follow.dart';
+import 'package:umai/auth/widgets/anime_item.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 
@@ -77,18 +78,7 @@ class _RegistrationAnimeSelectionScreenState
                                     page: 1)),
                         // cubit: animeCubit,
                         viewType: ViewType.grid,
-                        itemBuilder: (context, anime) => Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 16),
-                              color: Colors.grey,
-                              child: Center(
-                                child: Text(
-                                  anime.title.romaji,
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                              ),
-                            ),
+                        itemBuilder: (context, anime) => AnimeItem(anime: anime),
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 3,

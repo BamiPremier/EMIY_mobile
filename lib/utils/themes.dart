@@ -299,7 +299,7 @@ abstract class ThemeApp {
       listTileTheme:
           theme.listTileTheme.copyWith(titleTextStyle: textTheme.titleSmall),
       popupMenuTheme:
-          theme.popupMenuTheme.copyWith(textStyle: textTheme.labelSmall),
+          theme.popupMenuTheme.copyWith(textStyle: textTheme.labelMedium),
       switchTheme: theme.switchTheme.copyWith(
         thumbColor: WidgetStateProperty.resolveWith((states) =>
             states.contains(WidgetState.selected) ? primaryYellow : null),

@@ -2,8 +2,7 @@ import 'package:umai/auth/models/auth_response.dart';
 import 'package:umai/auth/models/auth_response_complete_user.dart';
 import 'package:umai/common/models/user.dart';
 import 'package:umai/common/services/api_service.dart';
-import 'package:potatoes/libs.dart';
-import 'package:crypto/crypto.dart';
+import 'package:potatoes/libs.dart'; 
 import 'dart:convert';
 
 import 'package:umai/common/services/preferences_service.dart';
@@ -49,11 +48,5 @@ class AuthService extends ApiService {
       mapper: AuthResponse.fromJson,
     );
   }
-
-  String hashToken(String token) {
-    var bytes = utf8.encode(token); // Encode le token en bytes
-    var digest = sha256.convert(bytes); // Applique le hachage SHA-256
-    return digest
-        .toString(); // Retourne le hash sous forme de chaîne hexadécimale
-  }
+  
 }

@@ -40,18 +40,22 @@ class CustomTextField extends StatelessWidget {
             textInputAction: textInputAction,
             onEditingComplete: onEditingCompleted,
             validator: validator,
+            style: Theme.of(context).inputDecorationTheme.labelStyle,
             decoration: InputDecoration(
+              hintStyle: Theme.of(context).inputDecorationTheme.labelStyle,
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(4.0),
+                borderSide: BorderSide(color: Theme.of(context).disabledColor),
+              ),
               hintText: hintText,
-              border: UnderlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).dividerColor),
+              filled: true,
+              fillColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(4.0),
+                borderSide: BorderSide.none,
               ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                    color: Theme.of(context).dividerColor, width: 2.0),
-              ),
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).dividerColor),
-              ),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               prefixStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
                   color: Theme.of(context).colorScheme.onSurfaceVariant),
               prefixIcon: prefixIcon,

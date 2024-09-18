@@ -55,18 +55,5 @@ class PreferenceUserService extends ApiService {
             }),
         mapper: FollowerResponse.fromJson);
   }
-
-  // Future<Pagination> completePreferenceUser(/* {
-  //   int page = 1,
-  // } */
-  //     ) async {
-  //   return compute(
-  //       dio.get(_followers,
-  //           options:
-  //               Options(headers: await preferencesService.getAuthHeaders()),
-  //           queryParameters: {
-  //             // 'next': page,
-  //           }),
-  //       mapper: Pagination.fromJson);
-  // }
+ 
 }
