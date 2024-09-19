@@ -89,7 +89,7 @@ class _AnimeItemState extends State<AnimeItem> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 24,
                     )
                   ],
@@ -122,7 +122,7 @@ class _AnimeItemState extends State<AnimeItem> {
           value: 'visited',
           onTap: () => preferenceUserCubit.addToViewedList(anime),
           child: ListTile(
-            leading: Icon(Icons.check_circle_outline),
+            leading: const Icon(Icons.check_circle_outline),
             title: Text("J'ai vu",
                 style: Theme.of(context).popupMenuTheme.textStyle),
           ),
@@ -131,7 +131,7 @@ class _AnimeItemState extends State<AnimeItem> {
           onTap: () => preferenceUserCubit.addToWatchList(anime),
           value: 'add_to_list',
           child: ListTile(
-            leading: Icon(Icons.add_circle_outline),
+            leading: const Icon(Icons.add_circle_outline),
             title: Text("Ajouter à la liste",
                 style: Theme.of(context).popupMenuTheme.textStyle),
           ),

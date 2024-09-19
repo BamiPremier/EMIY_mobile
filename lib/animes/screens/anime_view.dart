@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:umai/animes/screens/anime_info.dart';
-import 'package:umai/social/widget/post_card.dart';
 import 'package:umai/utils/themes.dart';
 
 class AnimeView extends StatefulWidget {
@@ -146,7 +145,7 @@ class _AnimeViewState extends State<AnimeView> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 32,
                           )
                         ],

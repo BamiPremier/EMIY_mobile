@@ -9,13 +9,7 @@ import 'package:umai/auth/models/follower_response.dart';
 import 'package:umai/auth/screens/login_welcome_back_screen.dart';
 import 'package:umai/auth/widgets/user_profil_item.dart';
 import 'package:umai/common/widgets/buttons.dart';
-import 'package:flutter/material.dart';
-import 'package:umai/home_screen.dart';
-
-import 'package:umai/utils/assets.dart';
-import 'dart:math';
-
-import 'package:umai/utils/dialogs.dart';
+import 'package:flutter/material.dart'; 
 
 class RegistrationFollowScreen extends StatefulWidget {
   const RegistrationFollowScreen({super.key});

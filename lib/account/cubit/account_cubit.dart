@@ -8,7 +8,7 @@ part 'account_state.dart';
 class AccountCubit extends Cubit<AccountState> {
   final AccountService accountService;
 
-  AccountCubit(this.accountService) : super(AccountIdleState());
+  AccountCubit(this.accountService) : super(const AccountIdleState());
 
   User? get user => accountService.preferencesService.user;
 
@@ -17,7 +17,7 @@ class AccountCubit extends Cubit<AccountState> {
 
     emit(const AccountLoadingState());
     accountService.updateUser(data: user).then((response) {
-      emit(AccountSuccessState());
+      emit(const AccountSuccessState());
 
       emit(stateBefore);
     }, onError: (error, trace) {

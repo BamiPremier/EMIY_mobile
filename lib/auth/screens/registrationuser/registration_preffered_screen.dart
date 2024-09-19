@@ -1,13 +1,10 @@
-import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
+ 
 import 'package:potatoes/libs.dart';
-import 'package:potatoes/potatoes.dart';
-import 'package:umai/auth/bloc/auth_cubit.dart';
-import 'package:umai/auth/bloc/preference_user_cubit.dart';
-import 'package:umai/auth/models/category_anime_response.dart';
+import 'package:potatoes/potatoes.dart'; 
+import 'package:umai/auth/bloc/preference_user_cubit.dart'; 
 import 'package:umai/auth/screens/registrationuser/registration_anime_selection_screen.dart';
 import 'package:umai/common/widgets/buttons.dart';
-import 'package:flutter/material.dart';
-import 'package:umai/utils/themes.dart';
+import 'package:flutter/material.dart'; 
 
 class RegistrationPrefferedScreen extends StatefulWidget {
   const RegistrationPrefferedScreen({super.key});

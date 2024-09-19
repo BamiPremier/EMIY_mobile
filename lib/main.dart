@@ -4,12 +4,9 @@ import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart' hide PreferencesService;
 import 'package:umai/account/cubit/account_cubit.dart';
-import 'package:umai/account/screens/account_screen.dart';
 import 'package:umai/account/services/account_service.dart';
 import 'package:umai/auth/bloc/follow_user_cubit.dart';
 import 'package:umai/auth/bloc/preference_user_cubit.dart';
-import 'package:umai/auth/screens/registrationuser/registration_follow_screen.dart';
-import 'package:umai/auth/screens/registrationuser/registration_preffered_screen.dart';
 import 'package:umai/auth/screens/registrationuser/registration_username_screen.dart';
 import 'package:umai/auth/services/preference_user_service.dart';
 import 'package:umai/firebase_options.dart';
@@ -145,8 +142,9 @@ class MyApp extends StatelessWidget {
               builder: (context, state) {
                 if (state is UserNotLoggedState) return splashScreen;
                 if (state is UserLoggedState) return const HomeScreen();
-                if (state is CompleteUserProfileState)
+                if (state is CompleteUserProfileState) {
                   return const RegistrationUsernameScreen();
+                }
                 if (state is InitializingUserState) return const SizedBox();
 
                 return splashScreen;

@@ -1,11 +1,8 @@
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/account/cubit/account_cubit.dart';
-import 'package:umai/account/screens/param/edit_profile_picture_screen.dart';
-import 'package:umai/auth/bloc/auth_cubit.dart';
-import 'package:umai/auth/screens/registrationuser/registration_preffered_screen.dart';
+import 'package:umai/account/screens/param/edit_profile_picture_screen.dart'; 
 import 'package:umai/account/widgets/large_text_field.dart';
-import 'package:umai/account/widgets/profile_text_field.dart';
 import 'package:umai/common/utils/validators.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:flutter/material.dart';

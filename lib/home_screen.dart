@@ -88,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _buildIconWithDecoration({required icon, required bool selected}) {
     return Container(
-        padding: EdgeInsets.symmetric(vertical: 4, horizontal: 20),
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 20),
         decoration: selected
             ? BoxDecoration(
                 color: ThemeApp.primaryYellow,

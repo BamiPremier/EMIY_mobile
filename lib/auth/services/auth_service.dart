@@ -1,9 +1,6 @@
 import 'package:umai/auth/models/auth_response.dart';
 import 'package:umai/auth/models/auth_response_complete_user.dart';
-import 'package:umai/common/models/user.dart';
 import 'package:umai/common/services/api_service.dart';
-import 'package:potatoes/libs.dart';
-import 'dart:convert';
 
 import 'package:umai/common/services/preferences_service.dart';
 
@@ -11,7 +8,7 @@ class AuthService extends ApiService {
   final PreferencesService preferencesService;
 
   static const String _auth = '/auth';
-  static const String _complete_profile = '/auth/userUID/complete';
+  static const String _completeProfile = '/auth/userUID/complete';
 
   const AuthService(
     super._dio,
@@ -24,7 +21,7 @@ class AuthService extends ApiService {
   }) async {
     return compute(
       dio.patch(
-        _complete_profile.replaceAll('userUID', preferencesService.userUID!),
+        _completeProfile.replaceAll('userUID', preferencesService.userUID!),
         data: {
           'user_tag': userTag,
           'user_name': userName,

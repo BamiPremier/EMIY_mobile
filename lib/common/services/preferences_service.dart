@@ -8,8 +8,6 @@ import 'package:crypto/crypto.dart';
 class PreferencesService extends potatoes.PreferencesService {
   static const String _keyUser = 'user';
   static const String _keyUserUID = 'user_id';
-  static const String _keyLogged = 'logged';
-  static const String _keyCurrentSession = 'session_id';
   static const String _keyAuthToken = 'auth_token';
   const PreferencesService(
     super.preferences,

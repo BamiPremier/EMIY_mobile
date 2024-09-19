@@ -8,7 +8,6 @@ import 'package:umai/account/screens/section/animes.dart';
 import 'package:umai/account/screens/section/sociale.dart';
 import 'package:umai/account/screens/section/watchlist.dart';
 import 'package:umai/common/widgets/action_widget.dart';
-import 'package:umai/common/services/user_service.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/utils/assets.dart';
 
@@ -213,11 +212,11 @@ class _AccountScreenState extends State<AccountScreen>
               Expanded(
                 child: TabBarView(
                   controller: _tabController,
-                  children: [
+                  children: const [
                     Activite(),
                     Animes(),
-                    const WatchList(),
-                    const Sociale(),
+                    WatchList(),
+                    Sociale(),
                   ],
                 ),
               ),

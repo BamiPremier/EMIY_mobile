@@ -40,7 +40,6 @@ class AnimeCubit extends AutoListCubit<AnimeResponse> {
     };
   }
 
-  @override
   Future<PaginatedList<Anime>> getAnimes(
       {required List<String> listCategory, int page = 1}) {
     {

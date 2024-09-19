@@ -7,7 +7,7 @@ class SocialView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      children: [
+      children: const [
         PostCard(
           username: 'Hari Randolf',
           userImage: 'https://via.placeholder.com/50',

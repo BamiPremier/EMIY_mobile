@@ -1,17 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:potatoes/libs.dart';
-import 'package:umai/account/cubit/account_cubit.dart';
-import 'package:umai/account/screens/edit_profile_screen.dart';
-import 'package:umai/account/screens/param/settings_screen.dart';
-import 'package:umai/account/screens/section/activites.dart';
-import 'package:umai/account/screens/section/animes.dart';
-import 'package:umai/account/screens/section/sociale.dart';
-import 'package:umai/account/screens/section/watchlist.dart';
-import 'package:umai/common/widgets/action_widget.dart';
-import 'package:umai/common/services/user_service.dart';
+import 'package:flutter/material.dart'; 
+import 'package:umai/common/widgets/action_widget.dart'; 
 import 'package:umai/common/widgets/bottom_sheet.dart';
-import 'package:umai/common/widgets/buttons.dart';
-import 'package:umai/utils/assets.dart';
+import 'package:umai/common/widgets/buttons.dart'; 
 import 'package:umai/utils/themes.dart';
 
 class AnimeInfoScreen extends StatefulWidget {
@@ -167,7 +157,7 @@ class _AnimeInfoScreenState extends State<AnimeInfoScreen>
                   children: [
                     Expanded(
                       child: UmaiButton.primary(
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.add,
                           color: ThemeApp.black,
                         ),
@@ -187,7 +177,7 @@ class _AnimeInfoScreenState extends State<AnimeInfoScreen>
                     const SizedBox(width: 8),
                     Container(
                         padding: const EdgeInsets.all(16.0),
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                           color: ThemeApp.black,
                         ),
@@ -217,7 +207,7 @@ class _AnimeInfoScreenState extends State<AnimeInfoScreen>
                   style: Theme.of(context)
                       .textTheme
                       .bodySmall!
-                      .copyWith(color: Color(0xff79747E)),
+                      .copyWith(color: const Color(0xff79747E)),
                 ),
                 const SizedBox(height: 8),
                 Row(
@@ -282,11 +272,11 @@ class _AnimeInfoScreenState extends State<AnimeInfoScreen>
             child: TabBarView(
               controller: _tabController,
               children: [
-                Center(child: Text("Épisodes Content")),
+                const Center(child: Text("Épisodes Content")),
                 SizedBox(
                     height: double.infinity,
                     child: GridView.builder(
-                      padding: EdgeInsets.all(0),
+                      padding: const EdgeInsets.all(0),
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 3,
@@ -372,7 +362,7 @@ class _AnimeInfoScreenState extends State<AnimeInfoScreen>
                                           ),
                                         ],
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 30,
                                       )
                                     ],
@@ -384,7 +374,7 @@ class _AnimeInfoScreenState extends State<AnimeInfoScreen>
                         ),
                       ),
                     )),
-                Center(child: Text("Quiz Content")),
+                const Center(child: Text("Quiz Content")),
               ],
             ),
           ),
