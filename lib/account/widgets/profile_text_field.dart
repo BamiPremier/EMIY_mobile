@@ -41,17 +41,25 @@ class ProfileTextField extends StatelessWidget {
           cursorHeight: 16,
           decoration: InputDecoration(
             hintStyle: Theme.of(context).inputDecorationTheme.labelStyle,
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(4.0),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0),
+              borderSide:
+                  BorderSide(color: Theme.of(context).colorScheme.error),
+            ),
+            disabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0),
               borderSide: BorderSide(color: Theme.of(context).disabledColor),
             ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0),
+              borderSide: BorderSide.none,
+            ),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide.none),
             hintText: hintText,
             filled: true,
             fillColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(4.0),
-              borderSide: BorderSide.none,
-            ),
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
           ),

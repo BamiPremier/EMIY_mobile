@@ -11,4 +11,18 @@ class AccountCubit extends Cubit<AccountState> {
   AccountCubit(this.accountService) : super(AccountIdleState());
 
   User? get user => accountService.preferencesService.user;
+
+  void updateUser({required user}) {
+    final stateBefore = state;
+
+    emit(const AccountLoadingState());
+    accountService.updateUser(data: user).then((response) {
+      emit(AccountSuccessState());
+
+      emit(stateBefore);
+    }, onError: (error, trace) {
+      emit(AccountErrorState(error, trace));
+      emit(stateBefore);
+    });
+  }
 }

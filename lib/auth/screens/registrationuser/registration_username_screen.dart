@@ -67,6 +67,7 @@ class _RegistrationUsernameScreenState extends State<RegistrationUsernameScreen>
     super.dispose();
   }
 
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthCubit, AuthState>(
@@ -78,56 +79,61 @@ class _RegistrationUsernameScreenState extends State<RegistrationUsernameScreen>
         )),
         body: SafeArea(
           minimum: const EdgeInsets.only(bottom: 48),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      CustomTextField(
-                        controller: userNameController,
-                        focusNode: userNameNode,
-                        subText:
-                            "Il sera visible lors de tes différentes intéractions",
-                        hintText: "Ton nom d'utilisateur",
-                        keyboardType: TextInputType.text,
-                        textCapitalization: TextCapitalization.none,
-                        textInputAction: TextInputAction.next,
-                        onChanged: (value) {
-                          setState(() {
-                            userTagController.text = generateUserTag(value);
-                          });
-                        },
-                        onEditingCompleted: () =>
-                            FocusScope.of(context).requestFocus(userNameNode),
-                        validator: (value) => Validators.empty(value),
-                      ),
-                      const SizedBox(height: 10),
-                      CustomTextField(
-                          controller: userTagController,
-                          focusNode: userTagNode,
-                          subText: "Pour que tes amis te retrouvent facilement",
-                          hintText: "Ton identifiant unique",
+          child: Form(
+            key: _formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        CustomTextField(
+                          controller: userNameController,
+                          focusNode: userNameNode,
+                          helperText:
+                              "Il sera visible lors de tes différentes intéractions",
+                          hintText: "Ton nom d'utilisateur",
                           keyboardType: TextInputType.text,
                           textCapitalization: TextCapitalization.none,
+                          textInputAction: TextInputAction.next,
                           onChanged: (value) {
                             setState(() {
                               userTagController.text = generateUserTag(value);
                             });
                           },
-                          textInputAction: TextInputAction.next,
                           onEditingCompleted: () =>
-                              FocusScope.of(context).requestFocus(userTagNode),
+                              FocusScope.of(context).requestFocus(userNameNode),
                           validator: (value) => Validators.empty(value),
-                          prefixIcon: const Icon(
-                            Icons.alternate_email,
-                          )),
-                    ],
+                        ),
+                        const SizedBox(height: 10),
+                        CustomTextField(
+                            controller: userTagController,
+                            focusNode: userTagNode,
+                            helperText:
+                                "Pour que tes amis te retrouvent facilement",
+                            hintText: "Ton identifiant unique",
+                            keyboardType: TextInputType.text,
+                            textCapitalization: TextCapitalization.none,
+                            onChanged: (value) {
+                              setState(() {
+                                userTagController.text = generateUserTag(value);
+                              });
+                            },
+                            textInputAction: TextInputAction.next,
+                            onEditingCompleted: () => FocusScope.of(context)
+                                .requestFocus(userTagNode),
+                            validator: (value) => Validators.empty(value),
+                            prefixIcon: const Icon(
+                              Icons.alternate_email,
+                            )),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -140,10 +146,14 @@ class _RegistrationUsernameScreenState extends State<RegistrationUsernameScreen>
               mainAxisSize: MainAxisSize.min,
               children: [
                 UmaiButton.primary(
-                  onPressed: () => authCubit.completeUserName(
-                    username: userNameController.text,
-                    userTag: userTagController.text,
-                  ),
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      authCubit.completeUserName(
+                        username: userNameController.text,
+                        userTag: userTagController.text,
+                      );
+                    }
+                  },
                   text: "Continuer",
                 ),
               ],

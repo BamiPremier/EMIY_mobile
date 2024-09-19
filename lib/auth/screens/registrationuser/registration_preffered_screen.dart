@@ -75,8 +75,15 @@ class _RegistrationPrefferedScreenState
                                   state.category
                                       .any((category) => category == item);
                           return FilterChip(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 6.0),
                             label: Text(item),
+                            labelStyle: Theme.of(context)
+                                .textTheme
+                                .labelLarge!
+                                .copyWith(fontWeight: FontWeight.normal),
                             selected: isSelected,
+                            side: isSelected ? BorderSide.none : null,
                             onSelected: (selected) {
                               context
                                   .read<PreferenceUserCubit>()

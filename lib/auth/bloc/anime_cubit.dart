@@ -16,11 +16,11 @@ class AnimeCubit extends AutoListCubit<AnimeResponse> {
             return service
                 .getAnimes(page: page, listCategory: listCategory)
                 .then((p) => PaginatedList(
-                    items: p.animes
+                    items: p.content
                         .map((e) => AnimeResponse.fromJson(e.toJson()))
                         .toList(),
-                    page: p.pagination.page,
-                    total: p.pagination.total));
+                    page: p.page,
+                    total: p.total));
           },
         );
 
@@ -32,11 +32,11 @@ class AnimeCubit extends AutoListCubit<AnimeResponse> {
       print(page);
       return service.getAnimes(page: page, listCategory: listCategory).then(
           (p) => PaginatedList(
-              items: p.animes
+              items: p.content
                   .map((e) => AnimeResponse.fromJson(e.toJson()))
                   .toList(),
-              page: p.pagination.page,
-              total: p.pagination.total));
+              page: p.page,
+              total: p.total));
     };
   }
 
@@ -49,10 +49,7 @@ class AnimeCubit extends AutoListCubit<AnimeResponse> {
           .then((p) {
         print('==================p${p}');
 
-        return PaginatedList(
-            items: p.animes,
-            page: p.pagination.page,
-            total: p.pagination.total);
+        return PaginatedList(items: p.content, page: p.page, total: p.total);
       });
     }
   }

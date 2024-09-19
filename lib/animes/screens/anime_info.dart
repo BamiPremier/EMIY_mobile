@@ -227,7 +227,10 @@ class _AnimeInfoScreenState extends State<AnimeInfoScreen>
                             vertical: 6, horizontal: 16),
                         label: Text(
                           "Action",
-                          style: Theme.of(context).textTheme.labelLarge,
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelLarge!
+                              .copyWith(fontWeight: FontWeight.normal),
                         )),
                     const SizedBox(width: 8),
                     Chip(
@@ -235,7 +238,10 @@ class _AnimeInfoScreenState extends State<AnimeInfoScreen>
                             vertical: 6, horizontal: 16),
                         label: Text(
                           "Aventure",
-                          style: Theme.of(context).textTheme.labelLarge,
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelLarge!
+                              .copyWith(fontWeight: FontWeight.normal),
                         )),
                     const SizedBox(width: 8),
                     Chip(
@@ -243,7 +249,10 @@ class _AnimeInfoScreenState extends State<AnimeInfoScreen>
                             vertical: 6, horizontal: 16),
                         label: Text(
                           "comédie",
-                          style: Theme.of(context).textTheme.labelLarge,
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelLarge!
+                              .copyWith(fontWeight: FontWeight.normal),
                         )),
                   ],
                 ),

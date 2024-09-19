@@ -8,32 +8,19 @@ part of 'anime_response.dart';
 
 _$AnimeResponseImpl _$$AnimeResponseImplFromJson(Map<String, dynamic> json) =>
     _$AnimeResponseImpl(
-      pagination:
-          Pagination.fromJson(json['pagination'] as Map<String, dynamic>),
-      animes: (json['animes'] as List<dynamic>)
+      page: (json['page'] as num).toInt(),
+      size: (json['size'] as num).toInt(),
+      content: (json['content'] as List<dynamic>)
           .map((e) => Anime.fromJson(e as Map<String, dynamic>))
           .toList(),
+      total: (json['total'] as num).toInt(),
     );
 
 Map<String, dynamic> _$$AnimeResponseImplToJson(_$AnimeResponseImpl instance) =>
     <String, dynamic>{
-      'pagination': instance.pagination,
-      'animes': instance.animes,
-    };
-
-_$PaginationImpl _$$PaginationImplFromJson(Map<String, dynamic> json) =>
-    _$PaginationImpl(
-      page: (json['page'] as num).toInt(),
-      take: (json['take'] as num).toInt(),
-      nextPage: (json['next_page'] as num?)?.toInt(),
-      total: (json['total'] as num).toInt(),
-    );
-
-Map<String, dynamic> _$$PaginationImplToJson(_$PaginationImpl instance) =>
-    <String, dynamic>{
       'page': instance.page,
-      'take': instance.take,
-      'next_page': instance.nextPage,
+      'size': instance.size,
+      'content': instance.content,
       'total': instance.total,
     };
 

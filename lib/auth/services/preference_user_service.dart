@@ -17,7 +17,7 @@ class PreferenceUserService extends ApiService {
   const PreferenceUserService(
     super._dio,
     this.preferencesService,
-  );
+);
 
   Future getCategoryAnimes() async {
     return compute(
@@ -58,7 +58,7 @@ class PreferenceUserService extends ApiService {
   addToWatchList({required anime}) async {
     return compute(
       dio.post(
-        _watchlist_add,
+        _watchlist_add + "?id=$anime",
         data: {
           'id': anime,
         },

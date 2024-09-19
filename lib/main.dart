@@ -150,6 +150,7 @@ class MyApp extends StatelessWidget {
                 if (state is InitializingUserState) return const SizedBox();
 
                 return splashScreen;
+                // return const RegistrationUsernameScreen();
               },
             );
           }),

@@ -6,25 +6,14 @@ part 'anime_response.g.dart';
 @freezed
 class AnimeResponse with _$AnimeResponse {
   const factory AnimeResponse({
-    required Pagination pagination,
-    required List<Anime> animes,
+    required int page,
+    required int size,
+    required List<Anime> content,
+    required int total,
   }) = _AnimeResponse;
 
   factory AnimeResponse.fromJson(Map<String, dynamic> json) =>
       _$AnimeResponseFromJson(json);
-}
-
-@freezed
-class Pagination with _$Pagination {
-  const factory Pagination({
-    required int page,
-    required int take,
-    @JsonKey(name: 'next_page') int? nextPage,
-    required int total,
-  }) = _Pagination;
-
-  factory Pagination.fromJson(Map<String, dynamic> json) =>
-      _$PaginationFromJson(json);
 }
 
 @freezed
