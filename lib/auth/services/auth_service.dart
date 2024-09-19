@@ -11,6 +11,7 @@ class AuthService extends ApiService {
   final PreferencesService preferencesService;
 
   static const String _auth = '/auth';
+  static const String _complete_profile = '/auth/userUID/complete';
 
   const AuthService(
     super._dio,
@@ -23,7 +24,7 @@ class AuthService extends ApiService {
   }) async {
     return compute(
       dio.patch(
-        '$_auth/${preferencesService.userUID}/complete',
+        _complete_profile.replaceAll('userUID', preferencesService.userUID!),
         data: {
           'user_tag': userTag,
           'user_name': userName,
