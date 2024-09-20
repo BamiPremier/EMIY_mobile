@@ -20,8 +20,10 @@ FollowerResponse _$FollowerResponseFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$FollowerResponse {
-  List<User> get users => throw _privateConstructorUsedError;
-  Pagination get pagination => throw _privateConstructorUsedError;
+  int get page => throw _privateConstructorUsedError;
+  int get size => throw _privateConstructorUsedError;
+  List<User> get content => throw _privateConstructorUsedError;
+  int get total => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,9 +37,7 @@ abstract class $FollowerResponseCopyWith<$Res> {
           FollowerResponse value, $Res Function(FollowerResponse) then) =
       _$FollowerResponseCopyWithImpl<$Res, FollowerResponse>;
   @useResult
-  $Res call({List<User> users, Pagination pagination});
-
-  $PaginationCopyWith<$Res> get pagination;
+  $Res call({int page, int size, List<User> content, int total});
 }
 
 /// @nodoc
@@ -53,27 +53,29 @@ class _$FollowerResponseCopyWithImpl<$Res, $Val extends FollowerResponse>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? users = null,
-    Object? pagination = null,
+    Object? page = null,
+    Object? size = null,
+    Object? content = null,
+    Object? total = null,
   }) {
     return _then(_value.copyWith(
-      users: null == users
-          ? _value.users
-          : users // ignore: cast_nullable_to_non_nullable
+      page: null == page
+          ? _value.page
+          : page // ignore: cast_nullable_to_non_nullable
+              as int,
+      size: null == size
+          ? _value.size
+          : size // ignore: cast_nullable_to_non_nullable
+              as int,
+      content: null == content
+          ? _value.content
+          : content // ignore: cast_nullable_to_non_nullable
               as List<User>,
-      pagination: null == pagination
-          ? _value.pagination
-          : pagination // ignore: cast_nullable_to_non_nullable
-              as Pagination,
+      total: null == total
+          ? _value.total
+          : total // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $PaginationCopyWith<$Res> get pagination {
-    return $PaginationCopyWith<$Res>(_value.pagination, (value) {
-      return _then(_value.copyWith(pagination: value) as $Val);
-    });
   }
 }
 
@@ -85,10 +87,7 @@ abstract class _$$FollowerResponseImplCopyWith<$Res>
       __$$FollowerResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<User> users, Pagination pagination});
-
-  @override
-  $PaginationCopyWith<$Res> get pagination;
+  $Res call({int page, int size, List<User> content, int total});
 }
 
 /// @nodoc
@@ -102,18 +101,28 @@ class __$$FollowerResponseImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? users = null,
-    Object? pagination = null,
+    Object? page = null,
+    Object? size = null,
+    Object? content = null,
+    Object? total = null,
   }) {
     return _then(_$FollowerResponseImpl(
-      users: null == users
-          ? _value._users
-          : users // ignore: cast_nullable_to_non_nullable
+      page: null == page
+          ? _value.page
+          : page // ignore: cast_nullable_to_non_nullable
+              as int,
+      size: null == size
+          ? _value.size
+          : size // ignore: cast_nullable_to_non_nullable
+              as int,
+      content: null == content
+          ? _value._content
+          : content // ignore: cast_nullable_to_non_nullable
               as List<User>,
-      pagination: null == pagination
-          ? _value.pagination
-          : pagination // ignore: cast_nullable_to_non_nullable
-              as Pagination,
+      total: null == total
+          ? _value.total
+          : total // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -122,26 +131,33 @@ class __$$FollowerResponseImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$FollowerResponseImpl implements _FollowerResponse {
   const _$FollowerResponseImpl(
-      {required final List<User> users, required this.pagination})
-      : _users = users;
+      {required this.page,
+      required this.size,
+      required final List<User> content,
+      required this.total})
+      : _content = content;
 
   factory _$FollowerResponseImpl.fromJson(Map<String, dynamic> json) =>
       _$$FollowerResponseImplFromJson(json);
 
-  final List<User> _users;
   @override
-  List<User> get users {
-    if (_users is EqualUnmodifiableListView) return _users;
+  final int page;
+  @override
+  final int size;
+  final List<User> _content;
+  @override
+  List<User> get content {
+    if (_content is EqualUnmodifiableListView) return _content;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_users);
+    return EqualUnmodifiableListView(_content);
   }
 
   @override
-  final Pagination pagination;
+  final int total;
 
   @override
   String toString() {
-    return 'FollowerResponse(users: $users, pagination: $pagination)';
+    return 'FollowerResponse(page: $page, size: $size, content: $content, total: $total)';
   }
 
   @override
@@ -149,15 +165,16 @@ class _$FollowerResponseImpl implements _FollowerResponse {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$FollowerResponseImpl &&
-            const DeepCollectionEquality().equals(other._users, _users) &&
-            (identical(other.pagination, pagination) ||
-                other.pagination == pagination));
+            (identical(other.page, page) || other.page == page) &&
+            (identical(other.size, size) || other.size == size) &&
+            const DeepCollectionEquality().equals(other._content, _content) &&
+            (identical(other.total, total) || other.total == total));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_users), pagination);
+  int get hashCode => Object.hash(runtimeType, page, size,
+      const DeepCollectionEquality().hash(_content), total);
 
   @JsonKey(ignore: true)
   @override
@@ -176,16 +193,22 @@ class _$FollowerResponseImpl implements _FollowerResponse {
 
 abstract class _FollowerResponse implements FollowerResponse {
   const factory _FollowerResponse(
-      {required final List<User> users,
-      required final Pagination pagination}) = _$FollowerResponseImpl;
+      {required final int page,
+      required final int size,
+      required final List<User> content,
+      required final int total}) = _$FollowerResponseImpl;
 
   factory _FollowerResponse.fromJson(Map<String, dynamic> json) =
       _$FollowerResponseImpl.fromJson;
 
   @override
-  List<User> get users;
+  int get page;
   @override
-  Pagination get pagination;
+  int get size;
+  @override
+  List<User> get content;
+  @override
+  int get total;
   @override
   @JsonKey(ignore: true)
   _$$FollowerResponseImplCopyWith<_$FollowerResponseImpl> get copyWith =>
@@ -207,9 +230,8 @@ mixin _$User {
   String get status => throw _privateConstructorUsedError;
   @JsonKey(name: 'updated_at')
   int get updatedAt => throw _privateConstructorUsedError;
-  String? get username => throw _privateConstructorUsedError;
-  String? get usertag => throw _privateConstructorUsedError;
-  String? get image => throw _privateConstructorUsedError;
+  String get username => throw _privateConstructorUsedError;
+  String get usertag => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -228,9 +250,8 @@ abstract class $UserCopyWith<$Res> {
       String type,
       String status,
       @JsonKey(name: 'updated_at') int updatedAt,
-      String? username,
-      String? usertag,
-      String? image});
+      String username,
+      String usertag});
 }
 
 /// @nodoc
@@ -252,9 +273,8 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? type = null,
     Object? status = null,
     Object? updatedAt = null,
-    Object? username = freezed,
-    Object? usertag = freezed,
-    Object? image = freezed,
+    Object? username = null,
+    Object? usertag = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -281,18 +301,14 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as int,
-      username: freezed == username
+      username: null == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
-              as String?,
-      usertag: freezed == usertag
+              as String,
+      usertag: null == usertag
           ? _value.usertag
           : usertag // ignore: cast_nullable_to_non_nullable
-              as String?,
-      image: freezed == image
-          ? _value.image
-          : image // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
     ) as $Val);
   }
 }
@@ -311,9 +327,8 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       String type,
       String status,
       @JsonKey(name: 'updated_at') int updatedAt,
-      String? username,
-      String? usertag,
-      String? image});
+      String username,
+      String usertag});
 }
 
 /// @nodoc
@@ -332,9 +347,8 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? type = null,
     Object? status = null,
     Object? updatedAt = null,
-    Object? username = freezed,
-    Object? usertag = freezed,
-    Object? image = freezed,
+    Object? username = null,
+    Object? usertag = null,
   }) {
     return _then(_$UserImpl(
       id: null == id
@@ -361,18 +375,14 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as int,
-      username: freezed == username
+      username: null == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
-              as String?,
-      usertag: freezed == usertag
+              as String,
+      usertag: null == usertag
           ? _value.usertag
           : usertag // ignore: cast_nullable_to_non_nullable
-              as String?,
-      image: freezed == image
-          ? _value.image
-          : image // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
     ));
   }
 }
@@ -387,9 +397,8 @@ class _$UserImpl implements _User {
       required this.type,
       required this.status,
       @JsonKey(name: 'updated_at') required this.updatedAt,
-      this.username,
-      this.usertag,
-      this.image});
+      required this.username,
+      required this.usertag});
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserImplFromJson(json);
@@ -410,15 +419,13 @@ class _$UserImpl implements _User {
   @JsonKey(name: 'updated_at')
   final int updatedAt;
   @override
-  final String? username;
+  final String username;
   @override
-  final String? usertag;
-  @override
-  final String? image;
+  final String usertag;
 
   @override
   String toString() {
-    return 'User(id: $id, createdAt: $createdAt, email: $email, type: $type, status: $status, updatedAt: $updatedAt, username: $username, usertag: $usertag, image: $image)';
+    return 'User(id: $id, createdAt: $createdAt, email: $email, type: $type, status: $status, updatedAt: $updatedAt, username: $username, usertag: $usertag)';
   }
 
   @override
@@ -436,14 +443,13 @@ class _$UserImpl implements _User {
                 other.updatedAt == updatedAt) &&
             (identical(other.username, username) ||
                 other.username == username) &&
-            (identical(other.usertag, usertag) || other.usertag == usertag) &&
-            (identical(other.image, image) || other.image == image));
+            (identical(other.usertag, usertag) || other.usertag == usertag));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, createdAt, email, type,
-      status, updatedAt, username, usertag, image);
+      status, updatedAt, username, usertag);
 
   @JsonKey(ignore: true)
   @override
@@ -467,9 +473,8 @@ abstract class _User implements User {
       required final String type,
       required final String status,
       @JsonKey(name: 'updated_at') required final int updatedAt,
-      final String? username,
-      final String? usertag,
-      final String? image}) = _$UserImpl;
+      required final String username,
+      required final String usertag}) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
@@ -489,185 +494,11 @@ abstract class _User implements User {
   @JsonKey(name: 'updated_at')
   int get updatedAt;
   @override
-  String? get username;
+  String get username;
   @override
-  String? get usertag;
-  @override
-  String? get image;
+  String get usertag;
   @override
   @JsonKey(ignore: true)
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-Pagination _$PaginationFromJson(Map<String, dynamic> json) {
-  return _Pagination.fromJson(json);
-}
-
-/// @nodoc
-mixin _$Pagination {
-  int get page => throw _privateConstructorUsedError;
-  int get take => throw _privateConstructorUsedError;
-  int get total => throw _privateConstructorUsedError;
-
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $PaginationCopyWith<Pagination> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $PaginationCopyWith<$Res> {
-  factory $PaginationCopyWith(
-          Pagination value, $Res Function(Pagination) then) =
-      _$PaginationCopyWithImpl<$Res, Pagination>;
-  @useResult
-  $Res call({int page, int take, int total});
-}
-
-/// @nodoc
-class _$PaginationCopyWithImpl<$Res, $Val extends Pagination>
-    implements $PaginationCopyWith<$Res> {
-  _$PaginationCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? page = null,
-    Object? take = null,
-    Object? total = null,
-  }) {
-    return _then(_value.copyWith(
-      page: null == page
-          ? _value.page
-          : page // ignore: cast_nullable_to_non_nullable
-              as int,
-      take: null == take
-          ? _value.take
-          : take // ignore: cast_nullable_to_non_nullable
-              as int,
-      total: null == total
-          ? _value.total
-          : total // ignore: cast_nullable_to_non_nullable
-              as int,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$PaginationImplCopyWith<$Res>
-    implements $PaginationCopyWith<$Res> {
-  factory _$$PaginationImplCopyWith(
-          _$PaginationImpl value, $Res Function(_$PaginationImpl) then) =
-      __$$PaginationImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({int page, int take, int total});
-}
-
-/// @nodoc
-class __$$PaginationImplCopyWithImpl<$Res>
-    extends _$PaginationCopyWithImpl<$Res, _$PaginationImpl>
-    implements _$$PaginationImplCopyWith<$Res> {
-  __$$PaginationImplCopyWithImpl(
-      _$PaginationImpl _value, $Res Function(_$PaginationImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? page = null,
-    Object? take = null,
-    Object? total = null,
-  }) {
-    return _then(_$PaginationImpl(
-      page: null == page
-          ? _value.page
-          : page // ignore: cast_nullable_to_non_nullable
-              as int,
-      take: null == take
-          ? _value.take
-          : take // ignore: cast_nullable_to_non_nullable
-              as int,
-      total: null == total
-          ? _value.total
-          : total // ignore: cast_nullable_to_non_nullable
-              as int,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$PaginationImpl implements _Pagination {
-  const _$PaginationImpl(
-      {required this.page, required this.take, required this.total});
-
-  factory _$PaginationImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PaginationImplFromJson(json);
-
-  @override
-  final int page;
-  @override
-  final int take;
-  @override
-  final int total;
-
-  @override
-  String toString() {
-    return 'Pagination(page: $page, take: $take, total: $total)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$PaginationImpl &&
-            (identical(other.page, page) || other.page == page) &&
-            (identical(other.take, take) || other.take == take) &&
-            (identical(other.total, total) || other.total == total));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, page, take, total);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$PaginationImplCopyWith<_$PaginationImpl> get copyWith =>
-      __$$PaginationImplCopyWithImpl<_$PaginationImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$PaginationImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _Pagination implements Pagination {
-  const factory _Pagination(
-      {required final int page,
-      required final int take,
-      required final int total}) = _$PaginationImpl;
-
-  factory _Pagination.fromJson(Map<String, dynamic> json) =
-      _$PaginationImpl.fromJson;
-
-  @override
-  int get page;
-  @override
-  int get take;
-  @override
-  int get total;
-  @override
-  @JsonKey(ignore: true)
-  _$$PaginationImplCopyWith<_$PaginationImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

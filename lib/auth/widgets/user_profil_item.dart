@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:umai/auth/models/follower_response.dart';
+import 'package:umai/common/models/follower_response.dart';
 import 'package:umai/utils/themes.dart';
 
 class UserProfileItem extends StatelessWidget {

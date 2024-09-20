@@ -21,7 +21,7 @@ class Anime with _$Anime {
   const factory Anime({
     required int id,
     required Title title,
-    required String description,
+    String? description,
     required CoverImage coverImage,
     String? bannerImage,
   }) = _Anime;

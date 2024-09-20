@@ -9,18 +9,21 @@ part of 'follower_response.dart';
 _$FollowerResponseImpl _$$FollowerResponseImplFromJson(
         Map<String, dynamic> json) =>
     _$FollowerResponseImpl(
-      users: (json['users'] as List<dynamic>)
+      page: (json['page'] as num).toInt(),
+      size: (json['size'] as num).toInt(),
+      content: (json['content'] as List<dynamic>)
           .map((e) => User.fromJson(e as Map<String, dynamic>))
           .toList(),
-      pagination:
-          Pagination.fromJson(json['pagination'] as Map<String, dynamic>),
+      total: (json['total'] as num).toInt(),
     );
 
 Map<String, dynamic> _$$FollowerResponseImplToJson(
         _$FollowerResponseImpl instance) =>
     <String, dynamic>{
-      'users': instance.users,
-      'pagination': instance.pagination,
+      'page': instance.page,
+      'size': instance.size,
+      'content': instance.content,
+      'total': instance.total,
     };
 
 _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
@@ -30,9 +33,8 @@ _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
       type: json['type'] as String,
       status: json['status'] as String,
       updatedAt: (json['updated_at'] as num).toInt(),
-      username: json['username'] as String?,
-      usertag: json['usertag'] as String?,
-      image: json['image'] as String?,
+      username: json['username'] as String,
+      usertag: json['usertag'] as String,
     );
 
 Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
@@ -45,19 +47,4 @@ Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
       'updated_at': instance.updatedAt,
       'username': instance.username,
       'usertag': instance.usertag,
-      'image': instance.image,
-    };
-
-_$PaginationImpl _$$PaginationImplFromJson(Map<String, dynamic> json) =>
-    _$PaginationImpl(
-      page: (json['page'] as num).toInt(),
-      take: (json['take'] as num).toInt(),
-      total: (json['total'] as num).toInt(),
-    );
-
-Map<String, dynamic> _$$PaginationImplToJson(_$PaginationImpl instance) =>
-    <String, dynamic>{
-      'page': instance.page,
-      'take': instance.take,
-      'total': instance.total,
     };

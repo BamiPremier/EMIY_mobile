@@ -7,8 +7,10 @@ part 'follower_response.g.dart';
 @freezed
 class FollowerResponse with _$FollowerResponse {
   const factory FollowerResponse({
-    required List<User> users,
-    required Pagination pagination,
+    required int page,
+    required int size,
+    required List<User> content,
+    required int total,
   }) = _FollowerResponse;
 
   factory FollowerResponse.fromJson(Map<String, dynamic> json) =>
@@ -24,22 +26,9 @@ class User with _$User {
     required String type,
     required String status,
     @JsonKey(name: 'updated_at') required int updatedAt,
-    String? username,
-    String? usertag,
-    String? image,
+    required String username,
+    required String usertag,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
-}
-
-@freezed
-class Pagination with _$Pagination {
-  const factory Pagination({
-    required int page,
-    required int take,
-    required int total,
-  }) = _Pagination;
-
-  factory Pagination.fromJson(Map<String, dynamic> json) =>
-      _$PaginationFromJson(json);
 }

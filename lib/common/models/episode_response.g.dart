@@ -1,22 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'anime_response.dart';
+part of 'episode_response.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$AnimeResponseImpl _$$AnimeResponseImplFromJson(Map<String, dynamic> json) =>
-    _$AnimeResponseImpl(
+_$EpisodeResponseImpl _$$EpisodeResponseImplFromJson(
+        Map<String, dynamic> json) =>
+    _$EpisodeResponseImpl(
       page: (json['page'] as num).toInt(),
       size: (json['size'] as num).toInt(),
       content: (json['content'] as List<dynamic>)
-          .map((e) => Anime.fromJson(e as Map<String, dynamic>))
+          .map((e) => Episode.fromJson(e as Map<String, dynamic>))
           .toList(),
       total: (json['total'] as num).toInt(),
     );
 
-Map<String, dynamic> _$$AnimeResponseImplToJson(_$AnimeResponseImpl instance) =>
+Map<String, dynamic> _$$EpisodeResponseImplToJson(
+        _$EpisodeResponseImpl instance) =>
     <String, dynamic>{
       'page': instance.page,
       'size': instance.size,
@@ -24,7 +26,8 @@ Map<String, dynamic> _$$AnimeResponseImplToJson(_$AnimeResponseImpl instance) =>
       'total': instance.total,
     };
 
-_$AnimeImpl _$$AnimeImplFromJson(Map<String, dynamic> json) => _$AnimeImpl(
+_$EpisodeImpl _$$EpisodeImplFromJson(Map<String, dynamic> json) =>
+    _$EpisodeImpl(
       id: (json['id'] as num).toInt(),
       title: Title.fromJson(json['title'] as Map<String, dynamic>),
       description: json['description'] as String,
@@ -33,7 +36,7 @@ _$AnimeImpl _$$AnimeImplFromJson(Map<String, dynamic> json) => _$AnimeImpl(
       bannerImage: json['bannerImage'] as String?,
     );
 
-Map<String, dynamic> _$$AnimeImplToJson(_$AnimeImpl instance) =>
+Map<String, dynamic> _$$EpisodeImplToJson(_$EpisodeImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,

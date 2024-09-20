@@ -1,6 +1,5 @@
- 
-import 'package:umai/auth/models/anime_response.dart';
-import 'package:umai/auth/models/follower_response.dart';
+import 'package:umai/common/models/anime_response.dart';
+import 'package:umai/common/models/follower_response.dart';
 import 'package:umai/common/services/api_service.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/services/preferences_service.dart';
@@ -8,7 +7,7 @@ import 'package:umai/common/services/preferences_service.dart';
 class PreferenceUserService extends ApiService {
   static const String _category = '/auth/animes-genre';
   static const String _anime = '/auth/animes-by-genres';
-  static const String _followers = '/follow/list-to-follow';
+  static const String _followers = '/auth/list-to-follow';
   static const String _watchlistAdd = '/watchlist/add';
   static const String _viewerAdd = '/animes_viewed/add';
   static const String _folllowerAdd = '/follow/user-follow-with-id';
@@ -16,7 +15,7 @@ class PreferenceUserService extends ApiService {
   const PreferenceUserService(
     super._dio,
     this.preferencesService,
-);
+  );
 
   Future getCategoryAnimes() async {
     return compute(

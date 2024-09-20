@@ -1,8 +1,8 @@
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
-import 'package:umai/auth/models/anime_response.dart';
-import 'package:umai/auth/models/category_anime_response.dart';
-import 'package:umai/auth/models/follower_response.dart';
+import 'package:umai/common/models/anime_response.dart';
+import 'package:umai/common/models/category_anime_response.dart';
+import 'package:umai/common/models/follower_response.dart';
 import 'package:umai/auth/services/preference_user_service.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 

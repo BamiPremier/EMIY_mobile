@@ -1,15 +1,17 @@
 import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
+import 'package:potatoes/auto_list/models/paginated_list.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/auth/bloc/follow_user_cubit.dart';
 import 'package:umai/auth/bloc/preference_user_cubit.dart';
 import 'package:umai/auth/bloc/auth_cubit.dart';
-import 'package:umai/auth/models/follower_response.dart';
+import 'package:umai/auth/services/preference_user_service.dart';
+import 'package:umai/common/models/follower_response.dart';
 import 'package:umai/auth/screens/login_welcome_back_screen.dart';
 import 'package:umai/auth/widgets/user_profil_item.dart';
 import 'package:umai/common/widgets/buttons.dart';
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 
 class RegistrationFollowScreen extends StatefulWidget {
   const RegistrationFollowScreen({super.key});
@@ -61,8 +63,16 @@ class _RegistrationFollowScreenState extends State<RegistrationFollowScreen>
                 child: AutoListView.get<User>(
                     cubit: AutoListCubit(
                         provider: ({int page = 1}) => context
-                            .read<FollowUserCubit>()
-                            .getFollowers(page: page)),
+                                .read<PreferenceUserService>()
+                                .getFollowers(
+                                  page: page,
+                                )
+                                .then((p) {
+                              return PaginatedList(
+                                  items: p.content,
+                                  page: p.page,
+                                  total: p.total);
+                            })),
                     itemBuilder: (context, user) => UserProfileItem(
                           user: user,
                           // ignore: avoid_print

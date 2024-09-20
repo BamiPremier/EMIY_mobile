@@ -222,7 +222,7 @@ Anime _$AnimeFromJson(Map<String, dynamic> json) {
 mixin _$Anime {
   int get id => throw _privateConstructorUsedError;
   Title get title => throw _privateConstructorUsedError;
-  String get description => throw _privateConstructorUsedError;
+  String? get description => throw _privateConstructorUsedError;
   CoverImage get coverImage => throw _privateConstructorUsedError;
   String? get bannerImage => throw _privateConstructorUsedError;
 
@@ -239,7 +239,7 @@ abstract class $AnimeCopyWith<$Res> {
   $Res call(
       {int id,
       Title title,
-      String description,
+      String? description,
       CoverImage coverImage,
       String? bannerImage});
 
@@ -262,7 +262,7 @@ class _$AnimeCopyWithImpl<$Res, $Val extends Anime>
   $Res call({
     Object? id = null,
     Object? title = null,
-    Object? description = null,
+    Object? description = freezed,
     Object? coverImage = null,
     Object? bannerImage = freezed,
   }) {
@@ -275,10 +275,10 @@ class _$AnimeCopyWithImpl<$Res, $Val extends Anime>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as Title,
-      description: null == description
+      description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       coverImage: null == coverImage
           ? _value.coverImage
           : coverImage // ignore: cast_nullable_to_non_nullable
@@ -317,7 +317,7 @@ abstract class _$$AnimeImplCopyWith<$Res> implements $AnimeCopyWith<$Res> {
   $Res call(
       {int id,
       Title title,
-      String description,
+      String? description,
       CoverImage coverImage,
       String? bannerImage});
 
@@ -340,7 +340,7 @@ class __$$AnimeImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? title = null,
-    Object? description = null,
+    Object? description = freezed,
     Object? coverImage = null,
     Object? bannerImage = freezed,
   }) {
@@ -353,10 +353,10 @@ class __$$AnimeImplCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as Title,
-      description: null == description
+      description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       coverImage: null == coverImage
           ? _value.coverImage
           : coverImage // ignore: cast_nullable_to_non_nullable
@@ -375,7 +375,7 @@ class _$AnimeImpl implements _Anime {
   const _$AnimeImpl(
       {required this.id,
       required this.title,
-      required this.description,
+      this.description,
       required this.coverImage,
       this.bannerImage});
 
@@ -387,7 +387,7 @@ class _$AnimeImpl implements _Anime {
   @override
   final Title title;
   @override
-  final String description;
+  final String? description;
   @override
   final CoverImage coverImage;
   @override
@@ -436,7 +436,7 @@ abstract class _Anime implements Anime {
   const factory _Anime(
       {required final int id,
       required final Title title,
-      required final String description,
+      final String? description,
       required final CoverImage coverImage,
       final String? bannerImage}) = _$AnimeImpl;
 
@@ -447,7 +447,7 @@ abstract class _Anime implements Anime {
   @override
   Title get title;
   @override
-  String get description;
+  String? get description;
   @override
   CoverImage get coverImage;
   @override

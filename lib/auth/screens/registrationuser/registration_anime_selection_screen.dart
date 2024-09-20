@@ -1,10 +1,11 @@
 import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
+import 'package:potatoes/auto_list/models/paginated_list.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
-import 'package:potatoes/potatoes.dart';
-import 'package:umai/auth/bloc/anime_cubit.dart'; 
+import 'package:potatoes/potatoes.dart'; 
 import 'package:umai/auth/bloc/preference_user_cubit.dart';
-import 'package:umai/auth/models/anime_response.dart';
+import 'package:umai/auth/services/preference_user_service.dart';
+import 'package:umai/common/models/anime_response.dart';
 import 'package:umai/auth/screens/registrationuser/registration_follow_screen.dart';
 import 'package:umai/auth/widgets/anime_item.dart';
 import 'package:umai/common/widgets/buttons.dart';
@@ -18,37 +19,21 @@ class RegistrationAnimeSelectionScreen extends StatefulWidget {
     super.key,
     required this.listCategory,
   });
-
-  static Widget get({
-    required BuildContext context,
-    required List<String> listCategory,
-  }) {
-    print('-------${listCategory}');
-    return BlocProvider(
-      create: (_) => AnimeCubit(context.read(), listCategory),
-      child: RegistrationAnimeSelectionScreen(listCategory: listCategory),
-    );
-  }
-
+ 
   @override
   State<RegistrationAnimeSelectionScreen> createState() =>
       _RegistrationAnimeSelectionScreenState();
 }
 
 class _RegistrationAnimeSelectionScreenState
-    extends State<RegistrationAnimeSelectionScreen> with CompletableMixin {
-  late final animeCubit;
-
+    extends State<RegistrationAnimeSelectionScreen> with CompletableMixin { 
   @override
   void initState() {
     super.initState();
-
-    animeCubit = context.read<AnimeCubit>();
   }
 
   @override
-  void dispose() {
-    animeCubit.close();
+  void dispose() { 
     super.dispose();
   }
 
@@ -75,11 +60,18 @@ class _RegistrationAnimeSelectionScreenState
                         child: AutoListView.get<Anime>(
                             cubit: AutoListCubit(
                                 provider: ({int page = 1}) => context
-                                    .read<AnimeCubit>()
-                                    .getAnimes(
-                                        listCategory: widget.listCategory,
-                                        page: page)),
-                            // cubit: animeCubit,
+                                        .read<PreferenceUserService>()
+                                        .getAnimes(
+                                            page: page,
+                                            listCategory: widget.listCategory)
+                                        .then((p) {
+                                      print('==================p${p}');
+
+                                      return PaginatedList(
+                                          items: p.content,
+                                          page: p.page,
+                                          total: p.total);
+                                    })),
                             viewType: ViewType.grid,
                             itemBuilder: (context, anime) =>
                                 AnimeItem(anime: anime),

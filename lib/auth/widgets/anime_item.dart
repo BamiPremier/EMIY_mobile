@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/auth/bloc/preference_user_cubit.dart';
-import 'package:umai/auth/models/anime_response.dart';
+import 'package:umai/common/models/anime_response.dart';
 import 'package:umai/utils/themes.dart';
 
 class AnimeItem extends StatefulWidget {
