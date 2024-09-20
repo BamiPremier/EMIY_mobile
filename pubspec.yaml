@@ -37,7 +37,6 @@ dependencies:
   sign_in_with_apple: ^6.1.2
   image_picker: ^1.0.4
   flutter_svg: ^2.0.7
-  cached_network_image: ^3.3.0
   path_provider: ^2.1.2
   auto_size_text: ^3.0.0
   freezed_annotation: ^2.4.1
@@ -49,6 +48,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
   fluttertoast: ^8.2.2
+  cached_network_image: ^3.4.1
 
   flutter_localizations:
     sdk: flutter
@@ -73,9 +73,9 @@ flutter_launcher_icons:
   android: "ic_launcher"
   ios: true
   remove_alpha_ios: true
-  image_path: "assets/images/Icon.png"
+  image_path: "assets/logo/icon.png"
   adaptive_icon_background: "#FFCC33"
-  adaptive_icon_foreground: "assets/images/Icon.png"
+  adaptive_icon_foreground: "assets/logo/icon_transparent.png.png"
 
 flutter:
   uses-material-design: true

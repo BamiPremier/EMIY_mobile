@@ -8,9 +8,10 @@ import 'package:umai/account/services/account_service.dart';
 import 'package:umai/auth/bloc/categorie_cubit.dart';
 import 'package:umai/auth/bloc/follow_user_cubit.dart';
 import 'package:umai/auth/bloc/preference_user_cubit.dart';
+import 'package:umai/auth/screens/registrationuser/registration_follow_screen.dart';
 import 'package:umai/auth/screens/registrationuser/registration_preffered_screen.dart';
 import 'package:umai/auth/screens/registrationuser/registration_username_screen.dart';
-import 'package:umai/auth/services/preference_user_service.dart';
+
 import 'package:umai/firebase_options.dart';
 import 'package:umai/auth/bloc/auth_cubit.dart';
 import 'package:umai/auth/screens/onboarding_screen.dart';
@@ -77,8 +78,6 @@ class MyApp extends StatelessWidget {
 
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider(
-            create: (_) => PreferenceUserService(dio, preferencesService)),
         RepositoryProvider(create: (_) => AuthService(dio, preferencesService)),
         RepositoryProvider(create: (_) => UserService(dio, preferencesService)),
         RepositoryProvider(
@@ -95,7 +94,6 @@ class MyApp extends StatelessWidget {
               create: (context) => CategorieCubit(
                     context.read(),
                   )),
-          BlocProvider(create: (context) => SelectedCategorieCubit()),
           BlocProvider(
               create: (context) =>
                   PreferenceUserCubit(context.read(), context.read())),
@@ -154,7 +152,7 @@ class MyApp extends StatelessWidget {
                   return const RegistrationUsernameScreen();
                 }
                 if (state is InitializingUserState) return const SizedBox();
-
+// RegistrationFollowScreen
                 return splashScreen;
               },
             );

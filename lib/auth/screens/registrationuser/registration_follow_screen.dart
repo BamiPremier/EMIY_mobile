@@ -6,7 +6,7 @@ import 'package:potatoes/potatoes.dart';
 import 'package:umai/auth/bloc/follow_user_cubit.dart';
 import 'package:umai/auth/bloc/preference_user_cubit.dart';
 import 'package:umai/auth/bloc/auth_cubit.dart';
-import 'package:umai/auth/services/preference_user_service.dart';
+import 'package:umai/auth/services/auth_service.dart';
 import 'package:umai/common/models/follower_response.dart';
 import 'package:umai/auth/screens/login_welcome_back_screen.dart';
 import 'package:umai/auth/widgets/user_profil_item.dart';
@@ -44,55 +44,53 @@ class _RegistrationFollowScreenState extends State<RegistrationFollowScreen>
           title: const Text(
         "Rejoins la communauté!",
       )),
-      body: SafeArea(
-        minimum: const EdgeInsets.only(bottom: 48),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            Container(
-                margin: const EdgeInsets.symmetric(vertical: 16),
-                alignment: Alignment.centerLeft,
-                child: Text(
-                    'Fais-toi des amis et reste informé(e) de leur activité dans l’application',
-                    style: Theme.of(context).textTheme.bodySmall)),
-            Expanded(
-                // margin: const EdgeInsets.symmetric(vertical: 16),
-                // height: MediaQuery.of(context).size.height * .73,
-                // padding: const EdgeInsets.all(8.0),
-                child: AutoListView.get<User>(
-                    cubit: AutoListCubit(
-                        provider: ({int page = 1}) => context
-                                .read<PreferenceUserService>()
-                                .getFollowers(
-                                  page: page,
-                                )
-                                .then((p) {
-                              return PaginatedList(
-                                  items: p.content,
-                                  page: p.page,
-                                  total: p.total);
-                            })),
-                    itemBuilder: (context, user) => UserProfileItem(
-                          user: user,
-                          // ignore: avoid_print
-                          onFollowPressed: () => print(''),
-                        ),
-                    emptyBuilder: (context) => const Center(
-                          child: Text("Empty list"),
-                        ),
-                    errorBuilder: (context, retry) => Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Text("An error occured"),
-                            TextButton(
-                              onPressed: retry,
-                              child: const Text("Retry"),
-                            )
-                          ],
-                        )))
-          ]),
-        ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child:
+            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          Container(
+              margin: const EdgeInsets.symmetric(vertical: 16),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                  'Fais-toi des amis et reste informé(e) de leur activité dans l’application',
+                  style: Theme.of(context).textTheme.bodySmall)),
+          Expanded(
+              // margin: const EdgeInsets.symmetric(vertical: 16),
+              // height: MediaQuery.of(context).size.height * .73,
+              // padding: const EdgeInsets.all(8.0),
+              child: AutoListView.get<User>(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  cubit: AutoListCubit(
+                      provider: ({int page = 1}) => context
+                              .read<AuthService>()
+                              .getFollowers(
+                                page: page,
+                              )
+                              .then((p) {
+                            return PaginatedList(
+                                items: p.content, page: p.page, total: p.total);
+                          })),
+                  itemBuilder: (context, user) => UserProfileItem(
+                        user: user,
+                        // ignore: avoid_print
+                        onFollowPressed: () =>
+                            preferenceUserCubit.followUser(follower: user.id),
+                      ),
+                  emptyBuilder: (context) => const Center(
+                        child: Text("Empty list"),
+                      ),
+                  errorBuilder: (context, retry) => Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text("An error occured"),
+                          TextButton(
+                            onPressed: retry,
+                            child: const Text("Retry"),
+                          )
+                        ],
+                      )))
+        ]),
       ),
       bottomNavigationBar: Container(
         color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,

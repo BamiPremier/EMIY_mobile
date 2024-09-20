@@ -1,11 +1,11 @@
 import 'dart:developer';
 
 import 'package:potatoes/auto_content/bloc/auto_content_cubit.dart';
-import 'package:umai/auth/services/preference_user_service.dart';
+import 'package:umai/auth/services/auth_service.dart'; 
 import 'package:umai/common/models/category_anime_response.dart';
 
 class CategorieCubit extends AutoContentCubit<List<String>> {
-  final PreferenceUserService service;
+  final AuthService service;
   CategorieCubit(
     this.service,
   ) : super(
@@ -15,44 +15,40 @@ class CategorieCubit extends AutoContentCubit<List<String>> {
             return categories.genres;
           },
         );
-}
 
-class SelectedCategorieCubit extends AutoContentCubit<List<String>> {
-  SelectedCategorieCubit()
-      : super(
-          provider: () async {
-            return [];
-          },
-        );
-
-  List<String> getSelectedCategories() {
-    final currentState = state as AutoContentReadyState<List<String>>;
-    return currentState.value;
-  }
- 
   void selectCategory(String category) {
-    final currentState = state as AutoContentReadyState<List<String>>;
-    final updatedCategories = List<String>.from(currentState.value);
+    if (state is CategoryReadyWithSelectionState) {
+      var stateBefore = state as CategoryReadyWithSelectionState;
+      List<String> updatedCategories;
 
-    log(category);
-    log(updatedCategories.toString());
+      if (stateBefore.selectedCategories.contains(category)) {
+        updatedCategories =
+            stateBefore.selectedCategories.where((c) => c != category).toList();
+      } else {
+        updatedCategories = [...stateBefore.selectedCategories, category];
+      }
 
-    if (updatedCategories.contains(category)) {
-      updatedCategories.remove(category);
+      emit(CategoryReadyWithSelectionState(
+          stateBefore.value, updatedCategories));
     } else {
-      updatedCategories.add(category);
+      var stateBefore = state as CategoryReadyState;
+      emit(CategoryReadyWithSelectionState(stateBefore.value, [category]));
     }
-    log(updatedCategories.toString());
-    emit(AutoContentReadyState(updatedCategories));
   }
 
   bool isCategorySelected(String category) {
-    final currentState = state as AutoContentReadyState<List<String>>;
-    return currentState.value.contains(category);
+    var currentState = state as CategoryReadyWithSelectionState;
+    return currentState.selectedCategories.contains(category);
   }
+}
 
-  bool isEmpty() {
-    final currentState = state as AutoContentReadyState<List<String>>;
-    return currentState.value.isEmpty;
-  }
+typedef CategoryState = AutoContentState<List<String>>;
+typedef CategoryReadyState = AutoContentReadyState<List<String>>;
+
+class CategoryReadyWithSelectionState extends CategoryReadyState {
+  final List<String> selectedCategories;
+  const CategoryReadyWithSelectionState(super.value,
+      [this.selectedCategories = const []]);
+  @override
+  List<Object?> get props => [...super.props, selectedCategories];
 }

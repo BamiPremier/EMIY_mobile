@@ -59,6 +59,7 @@ class AuthButton extends StatelessWidget {
       ),
       label: AutoSizeText(provider.name,
           maxLines: 1,
+          minFontSize: 10,
           style: Theme.of(context).textTheme.labelLarge!.copyWith(
                 color: textColor,
               )),

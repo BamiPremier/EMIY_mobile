@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/auth/bloc/auth_cubit.dart';
@@ -19,39 +20,7 @@ class RegistrationUsernameScreen extends StatefulWidget {
 class _RegistrationUsernameScreenState extends State<RegistrationUsernameScreen>
     with CompletableMixin {
   late final authCubit = context.read<AuthCubit>();
-  final userNameNode = FocusNode();
   final userTagNode = FocusNode();
-  final TextEditingController userNameController = TextEditingController();
-  final TextEditingController userTagController = TextEditingController();
-  String generateUserTag(String username) {
-    // Convertir en minuscules
-    String tag = username.toLowerCase();
-
-    // Remplacer les espaces par des tirets
-    tag = tag.replaceAll(' ', '-');
-
-    // Supprimer les accents
-    tag = tag
-        .replaceAllMapped(RegExp(r'[àáâãäå]'), (match) => 'a')
-        .replaceAllMapped(RegExp(r'[èéêë]'), (match) => 'e')
-        .replaceAllMapped(RegExp(r'[ìíîï]'), (match) => 'i')
-        .replaceAllMapped(RegExp(r'[òóôõö]'), (match) => 'o')
-        .replaceAllMapped(RegExp(r'[ùúûü]'), (match) => 'u')
-        .replaceAllMapped(RegExp(r'[ýÿ]'), (match) => 'y')
-        .replaceAllMapped(RegExp(r'[ñ]'), (match) => 'n');
-
-    // Supprimer tous les caractères non autorisés
-    tag = tag.replaceAll(RegExp(r'[^a-z0-9\-_.]'), '');
-
-    // Supprimer les tirets consécutifs
-    tag = tag.replaceAll(RegExp(r'-+'), '-');
-
-    // Supprimer les tirets au début et à la fin
-    tag = tag.trim().toLowerCase();
-
-    return tag;
-  }
-
   @override
   void initState() {
     super.initState();
@@ -59,9 +28,6 @@ class _RegistrationUsernameScreenState extends State<RegistrationUsernameScreen>
 
   @override
   void dispose() {
-    userNameController.dispose();
-    userTagController.dispose();
-    userNameNode.dispose();
     userTagNode.dispose();
 
     super.dispose();
@@ -70,98 +36,111 @@ class _RegistrationUsernameScreenState extends State<RegistrationUsernameScreen>
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthCubit, AuthState>(
-      listener: onEventReceived,
-      child: Scaffold(
-        appBar: AppBar(
-            title: const Text(
-          "Tu es nouveau?",
-        )),
-        body: SafeArea(
-          minimum: const EdgeInsets.only(bottom: 48),
-          child: Form(
-            key: _formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Expanded(
-                    child: Column(
-                      children: [
-                        CustomTextField(
-                          controller: userNameController,
-                          focusNode: userNameNode,
-                          helperText:
-                              "Il sera visible lors de tes différentes intéractions",
-                          hintText: "Ton nom d'utilisateur",
-                          keyboardType: TextInputType.text,
-                          textCapitalization: TextCapitalization.none,
-                          textInputAction: TextInputAction.next,
-                          onChanged: (value) {
-                            setState(() {
-                              userTagController.text = generateUserTag(value);
-                            });
-                          },
-                          onEditingCompleted: () =>
-                              FocusScope.of(context).requestFocus(userNameNode),
-                          validator: (value) => Validators.empty(value),
+    return BlocConsumer<AuthCubit, AuthState>(
+        listener: onEventReceived,
+        builder: (context, state) {
+          var authIdleState = (state as AuthIdleState);
+          return Scaffold(
+            appBar: AppBar(
+                title: const Text(
+              "Tu es nouveau?",
+            )),
+            body: SafeArea(
+              minimum: const EdgeInsets.only(bottom: 48),
+              child: Form(
+                key: _formKey,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          children: [
+                            CustomTextField(
+                              controller: authIdleState.userNameController,
+                              helperText:
+                                  "Il sera visible lors de tes différentes intéractions",
+                              hintText: "Ton nom d'utilisateur",
+                              keyboardType: TextInputType.text,
+                              textCapitalization: TextCapitalization.none,
+                              textInputAction: TextInputAction.next,
+                              onChanged: (value) =>
+                                  authCubit.updateUserNameAndTag(value),
+                              onEditingCompleted: () => FocusScope.of(context)
+                                  .requestFocus(userTagNode),
+                              validator: (value) => Validators.empty(value),
+                            ),
+                            const SizedBox(height: 10),
+                            CustomTextField(
+                                controller: authIdleState.userTagController,
+                                helperText:
+                                    "Pour que tes amis te retrouvent facilement",
+                                hintText: "Ton identifiant unique",
+                                keyboardType: TextInputType.text,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'[a-z0-9\-_.]')),
+                                  LengthLimitingTextInputFormatter(30),
+                                ],
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'L\'identifiant ne peut pas être vide';
+                                  }
+
+                                  final RegExp userTagRegex =
+                                      RegExp(r'^[a-z0-9\-_.]{3,30}$');
+
+                                  if (!userTagRegex.hasMatch(value)) {
+                                    return 'L\'identifiant doit contenir entre 3 et 30 caractères alphanumériques, tirets, points ou underscores';
+                                  }
+
+                                  return null;
+                                },
+                                textCapitalization: TextCapitalization.none,
+                                onChanged: (value) {},
+                                textInputAction: TextInputAction.done,
+                                onEditingCompleted: () => FocusScope.of(context)
+                                    .requestFocus(userTagNode),
+                                // validator: (value) => Validators.empty(value),
+                                prefixIcon: const Icon(
+                                  Icons.alternate_email,
+                                )),
+                          ],
                         ),
-                        const SizedBox(height: 10),
-                        CustomTextField(
-                            controller: userTagController,
-                            focusNode: userTagNode,
-                            helperText:
-                                "Pour que tes amis te retrouvent facilement",
-                            hintText: "Ton identifiant unique",
-                            keyboardType: TextInputType.text,
-                            textCapitalization: TextCapitalization.none,
-                            onChanged: (value) {
-                              setState(() {
-                                userTagController.text = generateUserTag(value);
-                              });
-                            },
-                            textInputAction: TextInputAction.next,
-                            onEditingCompleted: () => FocusScope.of(context)
-                                .requestFocus(userTagNode),
-                            validator: (value) => Validators.empty(value),
-                            prefixIcon: const Icon(
-                              Icons.alternate_email,
-                            )),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
-          ),
-        ),
-        bottomNavigationBar: Container(
-          color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
-          child: SafeArea(
-            minimum:
-                const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                UmaiButton.primary(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      authCubit.completeUserName(
-                        username: userNameController.text,
-                        userTag: userTagController.text,
-                      );
-                    }
-                  },
-                  text: "Continuer",
+            bottomNavigationBar: Container(
+              color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+              child: SafeArea(
+                minimum: const EdgeInsets.symmetric(
+                    horizontal: 32.0, vertical: 16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    UmaiButton.primary(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          authCubit.completeUserName(
+                            username: authIdleState.userNameController.text,
+                            userTag: authIdleState.userTagController.text,
+                          );
+                        }
+                      },
+                      text: "Continuer",
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
-    );
+          );
+        });
   }
 
   void onEventReceived(BuildContext context, AuthState state) async {

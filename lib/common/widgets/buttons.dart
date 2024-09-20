@@ -64,6 +64,9 @@ class UmaiButton extends StatelessWidget {
       onPressed: onPressed,
       style: FilledButton.styleFrom(
         backgroundColor: _backgroundColor(context),
+        textStyle: Theme.of(context).textTheme.labelLarge!.copyWith(
+              color: ThemeApp.mainText,
+            ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -73,7 +76,9 @@ class UmaiButton extends StatelessWidget {
           Text(
             text,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.labelLarge,
+            style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                  color: ThemeApp.mainText,
+                ),
           ),
         ],
       ),

@@ -15,8 +15,7 @@ class AnimeService extends ApiService {
   Future<AnimeResponse> getAnimes({int page = 1}) async {
     return compute(
         dio.get(_anime,
-            options:
-                Options(headers: await preferencesService.getAuthHeaders()),
+            options: Options(headers: withAuth()),
             queryParameters: {
               'page': page,
               'take': 10,
@@ -28,8 +27,7 @@ class AnimeService extends ApiService {
       {int page = 1, required String anime}) async {
     return compute(
         dio.get(_anime,
-            options:
-                Options(headers: await preferencesService.getAuthHeaders()),
+            options: Options(headers: withAuth()),
             queryParameters: {'page': page, 'take': 10, 'anime': anime}),
         mapper: EpisodeResponse.fromJson);
   }
@@ -38,8 +36,7 @@ class AnimeService extends ApiService {
       {int page = 1, required String genre}) async {
     return compute(
         dio.get(_anime,
-            options:
-                Options(headers: await preferencesService.getAuthHeaders()),
+            options: Options(headers: withAuth()),
             queryParameters: {
               'page': page,
               'take': 10,

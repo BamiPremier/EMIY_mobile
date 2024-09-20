@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/auth/bloc/preference_user_cubit.dart';
@@ -16,6 +17,7 @@ class _AnimeItemState extends State<AnimeItem> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTapDown: (details) {
         showContextMenu(
           context: context,
@@ -30,14 +32,19 @@ class _AnimeItemState extends State<AnimeItem> {
         child: Stack(
           children: [
             // Image at the top of the card
-            ClipRRect(
-              child: Image.network(
-                widget.anime.coverImage.large, height: 368,
-                width: double.infinity,
-                // height: 500.0,
-                // width: 300.0,
-                fit: BoxFit.cover,
+            CachedNetworkImage(
+              imageUrl: widget.anime.coverImage.large,
+              height: 368,
+              width: double.infinity,
+              fit: BoxFit.cover,
+              placeholder: (context, url) => const Center(
+                child: SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
               ),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
 
             // The voting area (counters and buttons) at the bottom
@@ -107,7 +114,7 @@ class _AnimeItemState extends State<AnimeItem> {
     required Offset position,
     required String anime,
   }) async {
-    await showMenu(
+    return showMenu(
       context: context,
       position: RelativeRect.fromLTRB(
         position.dx,
@@ -118,22 +125,46 @@ class _AnimeItemState extends State<AnimeItem> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
       color: Colors.white,
       items: <PopupMenuEntry>[
-        PopupMenuItem(
+        PopupMenuItem<String>(
           value: 'visited',
-          onTap: () => preferenceUserCubit.addToViewedList(anime),
           child: ListTile(
-            leading: const Icon(Icons.check_circle_outline),
+            leading: BlocBuilder<PreferenceUserCubit, PreferenceUserState>(
+                builder: (context, state) => state is AnimeViewedAddLoadingState
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Icon(Icons.check_circle_outline)),
             title: Text("J'ai vu",
                 style: Theme.of(context).popupMenuTheme.textStyle),
+            onTap: () {
+              preferenceUserCubit.addToViewedList(anime);
+              Navigator.of(context).pop();
+              showContextMenu(
+                  context: context, position: position, anime: anime);
+            },
           ),
         ),
-        PopupMenuItem(
-          onTap: () => preferenceUserCubit.addToWatchList(anime),
+        PopupMenuItem<String>(
           value: 'add_to_list',
           child: ListTile(
-            leading: const Icon(Icons.add_circle_outline),
+            leading: BlocBuilder<PreferenceUserCubit, PreferenceUserState>(
+                builder: (context, state) => (state is WatchListAddLoadingState)
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Icon(Icons.add_circle_outline)),
             title: Text("Ajouter à la liste",
                 style: Theme.of(context).popupMenuTheme.textStyle),
+            onTap: () {
+              preferenceUserCubit.addToWatchList(anime);
+              Navigator.of(context).pop();
+              showContextMenu(
+                  context: context, position: position, anime: anime);
+            },
           ),
         ),
       ],

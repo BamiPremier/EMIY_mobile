@@ -20,8 +20,6 @@ class RegistrationPrefferedScreen extends StatefulWidget {
 class _RegistrationPrefferedScreenState
     extends State<RegistrationPrefferedScreen> with WidgetsBindingObserver {
   late final CategorieCubit categorieCubit = context.read<CategorieCubit>();
-  late final SelectedCategorieCubit selectedCategorieCubit =
-      context.read<SelectedCategorieCubit>();
 
   @override
   void initState() {
@@ -36,7 +34,7 @@ class _RegistrationPrefferedScreenState
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SelectedCategorieCubit, AutoContentState<List<String>>>(
+    return BlocBuilder<CategorieCubit, CategoryState>(
         builder: (context, state) {
       return Scaffold(
         appBar: AppBar(
@@ -66,7 +64,9 @@ class _RegistrationPrefferedScreenState
                       runSpacing: 8,
                       children: categories.map((category) {
                         final isSelected =
-                            selectedCategorieCubit.isCategorySelected(category);
+                            state is CategoryReadyWithSelectionState
+                                ? categorieCubit.isCategorySelected(category)
+                                : false;
 
                         return FilterChip(
                           padding: const EdgeInsets.symmetric(
@@ -79,7 +79,7 @@ class _RegistrationPrefferedScreenState
                           selected: isSelected,
                           side: isSelected ? BorderSide.none : null,
                           onSelected: (selected) {
-                            selectedCategorieCubit.selectCategory(category);
+                            categorieCubit.selectCategory(category);
                           },
                           showCheckmark: false,
                           avatar: isSelected ? const Icon(Icons.remove) : null,
@@ -100,20 +100,17 @@ class _RegistrationPrefferedScreenState
               mainAxisSize: MainAxisSize.min,
               children: [
                 UmaiButton.primary(
-                  onPressed: () {
-                    selectedCategorieCubit.isEmpty()
-                        ? showWarningToast(
-                            context: context,
-                            content: "Veuillez sélectionner au moins un genre")
-                        : Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    RegistrationAnimeSelectionScreen(
-                                      listCategory: selectedCategorieCubit
-                                          .getSelectedCategories(),
-                                    )),
-                          );
-                  },
+                  onPressed:
+                      (categorieCubit.state is CategoryReadyWithSelectionState)
+                          ? (categorieCubit.state
+                                      as CategoryReadyWithSelectionState)
+                                  .selectedCategories
+                                  .isNotEmpty
+                              ? () => nextScreen((categorieCubit.state
+                                      as CategoryReadyWithSelectionState)
+                                  .selectedCategories)
+                              : null
+                          : null,
                   text: "Continuer",
                 ),
               ],
@@ -122,5 +119,14 @@ class _RegistrationPrefferedScreenState
         ),
       );
     });
+  }
+
+  void nextScreen(List<String> listCategory) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) =>
+            RegistrationAnimeSelectionScreen(listCategory: listCategory),
+      ),
+    );
   }
 }

@@ -2,9 +2,9 @@ import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
 import 'package:potatoes/auto_list/models/paginated_list.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
-import 'package:potatoes/potatoes.dart'; 
+import 'package:potatoes/potatoes.dart';
 import 'package:umai/auth/bloc/preference_user_cubit.dart';
-import 'package:umai/auth/services/preference_user_service.dart';
+import 'package:umai/auth/services/auth_service.dart';
 import 'package:umai/common/models/anime_response.dart';
 import 'package:umai/auth/screens/registrationuser/registration_follow_screen.dart';
 import 'package:umai/auth/widgets/anime_item.dart';
@@ -19,21 +19,21 @@ class RegistrationAnimeSelectionScreen extends StatefulWidget {
     super.key,
     required this.listCategory,
   });
- 
+
   @override
   State<RegistrationAnimeSelectionScreen> createState() =>
       _RegistrationAnimeSelectionScreenState();
 }
 
 class _RegistrationAnimeSelectionScreenState
-    extends State<RegistrationAnimeSelectionScreen> with CompletableMixin { 
+    extends State<RegistrationAnimeSelectionScreen> with CompletableMixin {
   @override
   void initState() {
     super.initState();
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     super.dispose();
   }
 
@@ -44,58 +44,57 @@ class _RegistrationAnimeSelectionScreenState
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(title: const Text("Tu regardes quoi?")),
-            body: SafeArea(
-              minimum: const EdgeInsets.only(bottom: 48),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  children: [
-                    Container(
-                        margin: const EdgeInsets.only(top: 8, bottom: 16),
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                            'Choisis tes animes favoris ou rajoutes-en dans ta washlist',
-                            style: Theme.of(context).textTheme.bodySmall)),
-                    Expanded(
-                        child: AutoListView.get<Anime>(
-                            cubit: AutoListCubit(
-                                provider: ({int page = 1}) => context
-                                        .read<PreferenceUserService>()
-                                        .getAnimes(
-                                            page: page,
-                                            listCategory: widget.listCategory)
-                                        .then((p) {
-                                      print('==================p${p}');
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                children: [
+                  Container(
+                      margin: const EdgeInsets.only(top: 8, bottom: 16),
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                          'Choisis tes animes favoris ou rajoutes-en dans ta washlist',
+                          style: Theme.of(context).textTheme.bodySmall)),
+                  Expanded(
+                      child: AutoListView.get<Anime>(
+                          padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).viewInsets.bottom),
+                          cubit: AutoListCubit(
+                              provider: ({int page = 1}) => context
+                                      .read<AuthService>()
+                                      .getAnimes(
+                                          page: page,
+                                          listCategory: widget.listCategory)
+                                      .then((p) {
+                                    print('==================p${p}');
 
-                                      return PaginatedList(
-                                          items: p.content,
-                                          page: p.page,
-                                          total: p.total);
-                                    })),
-                            viewType: ViewType.grid,
-                            itemBuilder: (context, anime) =>
-                                AnimeItem(anime: anime),
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 3,
-                                    crossAxisSpacing: 2.0,
-                                    mainAxisSpacing: 2.0,
-                                    childAspectRatio: .65),
-                            emptyBuilder: (context) => const Center(
-                                  child: Text("Empty list"),
-                                ),
-                            errorBuilder: (context, retry) => Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const Text("An error occured"),
-                                    TextButton(
-                                      onPressed: retry,
-                                      child: const Text("Retry"),
-                                    )
-                                  ],
-                                )))
-                  ],
-                ),
+                                    return PaginatedList(
+                                        items: p.content,
+                                        page: p.page,
+                                        total: p.total);
+                                  })),
+                          viewType: ViewType.grid,
+                          itemBuilder: (context, anime) =>
+                              AnimeItem(anime: anime),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                  crossAxisSpacing: 2.0,
+                                  mainAxisSpacing: 2.0,
+                                  childAspectRatio: .65),
+                          emptyBuilder: (context) => const Center(
+                                child: Text("Empty list"),
+                              ),
+                          errorBuilder: (context, retry) => Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Text("An error occured"),
+                                  TextButton(
+                                    onPressed: retry,
+                                    child: const Text("Retry"),
+                                  )
+                                ],
+                              )))
+                ],
               ),
             ),
             bottomNavigationBar: Container(
@@ -125,20 +124,14 @@ class _RegistrationAnimeSelectionScreenState
   }
 
   void onEventReceived(BuildContext context, PreferenceUserState state) async {
-    await waitForDialog();
-
-    if (state is WatchListAddLoadingState) {
-      loadingDialogCompleter = showLoadingBarrier(context: context);
-    } else if (state is WatchListAddSuccesState) {
+    if (state is WatchListAddSuccesState) {
       showSuccessToast(
           context: context, content: "Anime ajouté à votre watchlist");
     } else if (state is WatchListAddErrorState) {
       showError(context, state.error);
     }
 
-    if (state is AnimeViewedAddLoadingState) {
-      loadingDialogCompleter = showLoadingBarrier(context: context);
-    } else if (state is AnimeViewedAddSuccesState) {
+    if (state is AnimeViewedAddSuccesState) {
       showSuccessToast(
           context: context, content: "Anime ajouté à votre liste de vue");
     } else if (state is AnimeViewedAddErrorState) {

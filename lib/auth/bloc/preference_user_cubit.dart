@@ -1,17 +1,17 @@
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
+import 'package:umai/auth/services/auth_service.dart';
 import 'package:umai/common/models/anime_response.dart';
 import 'package:umai/common/models/category_anime_response.dart';
 import 'package:umai/common/models/follower_response.dart';
-import 'package:umai/auth/services/preference_user_service.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 
 part 'preference_user_state.dart';
 
 class PreferenceUserCubit extends Cubit<PreferenceUserState> {
   final UserCubit userCubit;
-  final PreferenceUserService preferenceUserService;
-  PreferenceUserCubit(this.userCubit, this.preferenceUserService)
+  final AuthService authService;
+  PreferenceUserCubit(this.userCubit, this.authService)
       : super(const PreferenceUserIdleState());
 
   Future<CategoryAnimeResponse> getCategories() async {
@@ -20,7 +20,7 @@ class PreferenceUserCubit extends Cubit<PreferenceUserState> {
     emit(const CategoryLoadingState());
 
     try {
-      final response = await preferenceUserService.getCategoryAnimes();
+      final response = await authService.getCategoryAnimes();
 
       final categories = CategoryAnimeResponse.fromJson(response);
       emit(CategorySuccessLoadedState(categories));
@@ -48,43 +48,12 @@ class PreferenceUserCubit extends Cubit<PreferenceUserState> {
     }
   }
 
-  // void selectAnimeWatchList(String anime) {
-  //   final currentState = state;
-  //   if (currentState is WatchListSelectAnimeState) {
-  //     final updatedAnimes = List<String>.from(currentState.anime)..add(anime);
-  //     emit(WatchListSelectAnimeState(updatedAnimes));
-  //   } else {
-  //     emit(WatchListSelectAnimeState([anime]));
-  //   }
-  // }
-
-  // void selectAnimeViewed(String anime) {
-  //   final currentState = state;
-  //   if (currentState is AnimeViewedSelectAnimeState) {
-  //     final updatedAnimes = List<String>.from(currentState.anime)..add(anime);
-  //     emit(AnimeViewedSelectAnimeState(updatedAnimes));
-  //   } else {
-  //     emit(AnimeViewedSelectAnimeState([anime]));
-  //   }
-  // }
-
-  // void selectFollow(String follower) {
-  //   final currentState = state;
-  //   if (currentState is SelectFollowerState) {
-  //     final updatedFollowers = List<String>.from(currentState.followers)
-  //       ..add(follower);
-  //     emit(SelectFollowerState(updatedFollowers));
-  //   } else {
-  //     emit(SelectFollowerState([follower]));
-  //   }
-  // }
-
   void addToWatchList(anime) {
     final stateBefore = state;
 
     emit(const WatchListAddLoadingState());
 
-    preferenceUserService.addToWatchList(anime: anime).then((response) {
+    authService.addToWatchList(anime: anime).then((response) {
       emit(WatchListAddSuccesState());
 
       emit(stateBefore);
@@ -98,7 +67,7 @@ class PreferenceUserCubit extends Cubit<PreferenceUserState> {
     final stateBefore = state;
 
     emit(const AnimeViewedAddLoadingState());
-    preferenceUserService.addToViewerList(anime: anime).then((response) {
+    authService.addToViewerList(anime: anime).then((response) {
       emit(AnimeViewedAddSuccesState());
 
       emit(stateBefore);
@@ -108,12 +77,25 @@ class PreferenceUserCubit extends Cubit<PreferenceUserState> {
     });
   }
 
-  void addToFollowerList(follower) {
+  void followUser({required String follower}) {
     final stateBefore = state;
 
     emit(const FollowerAddLoadingState());
-    preferenceUserService.addToFollowerList(follower: follower).then(
-        (response) {
+    authService.followUser(follower: follower).then((response) {
+      emit(FollowerAddSuccessState());
+
+      emit(stateBefore);
+    }, onError: (error, trace) {
+      emit(FollowerAddErrorState(error, trace));
+      emit(stateBefore);
+    });
+  }
+
+  void unFollowUser({required String follower}) {
+    final stateBefore = state;
+
+    emit(const FollowerAddLoadingState());
+    authService.unFollowUser(follower: follower).then((response) {
       emit(FollowerAddSuccessState());
 
       emit(stateBefore);

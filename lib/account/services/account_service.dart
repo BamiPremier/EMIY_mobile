@@ -1,11 +1,10 @@
-
 import 'package:umai/common/services/api_service.dart';
-import 'package:potatoes/libs.dart'; 
+import 'package:potatoes/libs.dart';
 import 'package:umai/common/services/preferences_service.dart';
 
 class AccountService extends ApiService {
   final PreferencesService preferencesService;
-   static const String _updateUser = '/users/update';
+  static const String _updateUser = '/users/update';
 
   const AccountService(
     super._dio,
@@ -16,7 +15,7 @@ class AccountService extends ApiService {
       dio.post(
         _updateUser,
         data: data,
-        options: Options(headers: await preferencesService.getAuthHeaders()),
+        options: Options(headers: withAuth()),
       ),
     );
   }

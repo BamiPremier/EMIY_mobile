@@ -3,10 +3,15 @@ part of 'auth_cubit.dart';
 mixin AuthState on Equatable {}
 
 class AuthIdleState extends CubitSuccessState with AuthState {
-  const AuthIdleState();
+  AuthIdleState()
+      : userNameController = TextEditingController(),
+        userTagController = TextEditingController();
 
+  final TextEditingController userNameController;
+  final TextEditingController userTagController;
   @override
-  List<Object?> get props => [identityHashCode(this)];
+  List<Object?> get props =>
+      [userNameController, userTagController, identityHashCode(this)];
 }
 
 class AuthLoadingState extends CubitLoadingState with AuthState {

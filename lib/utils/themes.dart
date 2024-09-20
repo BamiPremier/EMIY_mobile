@@ -202,10 +202,13 @@ abstract class ThemeApp {
         style: ElevatedButton.styleFrom(
           backgroundColor: primaryYellow,
           foregroundColor: mainText,
+          shape: RoundedRectangleBorder(
+              side: BorderSide.none,
+              borderRadius: BorderRadius.circular(100.0)),
           elevation: 0,
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+          side: BorderSide.none,
+          textStyle: textTheme.labelMedium,
+          maximumSize: const Size.fromHeight(40.0),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
