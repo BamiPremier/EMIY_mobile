@@ -5,7 +5,7 @@ import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart' hide PreferencesService;
 import 'package:umai/account/cubit/account_cubit.dart';
 import 'package:umai/account/services/account_service.dart';
-import 'package:umai/auth/bloc/categorie_cubit.dart';
+import 'package:umai/auth/bloc/genre_cubit.dart';
 import 'package:umai/auth/bloc/follow_user_cubit.dart';
 import 'package:umai/auth/bloc/preference_user_cubit.dart';
 import 'package:umai/auth/screens/registrationuser/registration_follow_screen.dart';
@@ -89,7 +89,7 @@ class MyApp extends StatelessWidget {
               create: (context) => UserCubit(
                     context.read(),
                     preferencesService,
-                  )),
+                  )..userMe()),
           BlocProvider(
               create: (context) => GenreCubit(
                     context.read(),
@@ -145,14 +145,14 @@ class MyApp extends StatelessWidget {
             return BlocBuilder<UserCubit, UserState>(
               buildWhen: (previous, _) => previous is InitializingUserState,
               builder: (context, state) {
-                return const RegistrationPrefferedScreen();
+                // return const RegistrationPrefferedScreen();
                 if (state is UserNotLoggedState) return splashScreen;
                 if (state is UserLoggedState) return const HomeScreen();
                 if (state is CompleteUserProfileState) {
                   return const RegistrationUsernameScreen();
                 }
                 if (state is InitializingUserState) return const SizedBox();
-// RegistrationFollowScreen
+ 
                 return splashScreen;
               },
             );

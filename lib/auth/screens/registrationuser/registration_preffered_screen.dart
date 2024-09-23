@@ -2,7 +2,7 @@ import 'package:potatoes/auto_content/bloc/auto_content_cubit.dart';
 import 'package:potatoes/auto_content/widgets/auto_content_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
-import 'package:umai/auth/bloc/categorie_cubit.dart';
+import 'package:umai/auth/bloc/genre_cubit.dart';
 import 'package:umai/auth/bloc/preference_user_cubit.dart';
 import 'package:umai/auth/screens/registrationuser/registration_anime_selection_screen.dart';
 import 'package:umai/common/widgets/buttons.dart';

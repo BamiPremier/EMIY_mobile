@@ -20,19 +20,19 @@ User _$UserFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$User {
-  @JsonKey(name: '_id')
   String get id => throw _privateConstructorUsedError;
-  @JsonKey(name: 'created_at')
-  int get createdAt => throw _privateConstructorUsedError;
-  String get email => throw _privateConstructorUsedError;
+  String get username => throw _privateConstructorUsedError;
+  String get usertag => throw _privateConstructorUsedError;
   String get type => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
-  @JsonKey(name: 'updated_at')
-  int get updatedAt => throw _privateConstructorUsedError;
-  @JsonKey(name: '__v')
-  int get version => throw _privateConstructorUsedError;
-  String? get username => throw _privateConstructorUsedError;
-  String? get usertag => throw _privateConstructorUsedError;
+  @JsonKey(name: 'followers_count')
+  int get followersCount => throw _privateConstructorUsedError;
+  @JsonKey(name: 'following_count')
+  int get followingCount => throw _privateConstructorUsedError;
+  @JsonKey(name: 'animes_viewed_count')
+  int get animesViewedCount => throw _privateConstructorUsedError;
+  @JsonKey(name: 'watchlist_count')
+  int get watchlistCount => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -45,15 +45,15 @@ abstract class $UserCopyWith<$Res> {
       _$UserCopyWithImpl<$Res, User>;
   @useResult
   $Res call(
-      {@JsonKey(name: '_id') String id,
-      @JsonKey(name: 'created_at') int createdAt,
-      String email,
+      {String id,
+      String username,
+      String usertag,
       String type,
       String status,
-      @JsonKey(name: 'updated_at') int updatedAt,
-      @JsonKey(name: '__v') int version,
-      String? username,
-      String? usertag});
+      @JsonKey(name: 'followers_count') int followersCount,
+      @JsonKey(name: 'following_count') int followingCount,
+      @JsonKey(name: 'animes_viewed_count') int animesViewedCount,
+      @JsonKey(name: 'watchlist_count') int watchlistCount});
 }
 
 /// @nodoc
@@ -70,27 +70,27 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
   @override
   $Res call({
     Object? id = null,
-    Object? createdAt = null,
-    Object? email = null,
+    Object? username = null,
+    Object? usertag = null,
     Object? type = null,
     Object? status = null,
-    Object? updatedAt = null,
-    Object? version = null,
-    Object? username = freezed,
-    Object? usertag = freezed,
+    Object? followersCount = null,
+    Object? followingCount = null,
+    Object? animesViewedCount = null,
+    Object? watchlistCount = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as int,
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+      usertag: null == usertag
+          ? _value.usertag
+          : usertag // ignore: cast_nullable_to_non_nullable
               as String,
       type: null == type
           ? _value.type
@@ -100,22 +100,22 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as String,
-      updatedAt: null == updatedAt
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
+      followersCount: null == followersCount
+          ? _value.followersCount
+          : followersCount // ignore: cast_nullable_to_non_nullable
               as int,
-      version: null == version
-          ? _value.version
-          : version // ignore: cast_nullable_to_non_nullable
+      followingCount: null == followingCount
+          ? _value.followingCount
+          : followingCount // ignore: cast_nullable_to_non_nullable
               as int,
-      username: freezed == username
-          ? _value.username
-          : username // ignore: cast_nullable_to_non_nullable
-              as String?,
-      usertag: freezed == usertag
-          ? _value.usertag
-          : usertag // ignore: cast_nullable_to_non_nullable
-              as String?,
+      animesViewedCount: null == animesViewedCount
+          ? _value.animesViewedCount
+          : animesViewedCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      watchlistCount: null == watchlistCount
+          ? _value.watchlistCount
+          : watchlistCount // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -128,15 +128,15 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: '_id') String id,
-      @JsonKey(name: 'created_at') int createdAt,
-      String email,
+      {String id,
+      String username,
+      String usertag,
       String type,
       String status,
-      @JsonKey(name: 'updated_at') int updatedAt,
-      @JsonKey(name: '__v') int version,
-      String? username,
-      String? usertag});
+      @JsonKey(name: 'followers_count') int followersCount,
+      @JsonKey(name: 'following_count') int followingCount,
+      @JsonKey(name: 'animes_viewed_count') int animesViewedCount,
+      @JsonKey(name: 'watchlist_count') int watchlistCount});
 }
 
 /// @nodoc
@@ -150,27 +150,27 @@ class __$$UserImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? createdAt = null,
-    Object? email = null,
+    Object? username = null,
+    Object? usertag = null,
     Object? type = null,
     Object? status = null,
-    Object? updatedAt = null,
-    Object? version = null,
-    Object? username = freezed,
-    Object? usertag = freezed,
+    Object? followersCount = null,
+    Object? followingCount = null,
+    Object? animesViewedCount = null,
+    Object? watchlistCount = null,
   }) {
     return _then(_$UserImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as int,
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+      usertag: null == usertag
+          ? _value.usertag
+          : usertag // ignore: cast_nullable_to_non_nullable
               as String,
       type: null == type
           ? _value.type
@@ -180,70 +180,69 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as String,
-      updatedAt: null == updatedAt
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
+      followersCount: null == followersCount
+          ? _value.followersCount
+          : followersCount // ignore: cast_nullable_to_non_nullable
               as int,
-      version: null == version
-          ? _value.version
-          : version // ignore: cast_nullable_to_non_nullable
+      followingCount: null == followingCount
+          ? _value.followingCount
+          : followingCount // ignore: cast_nullable_to_non_nullable
               as int,
-      username: freezed == username
-          ? _value.username
-          : username // ignore: cast_nullable_to_non_nullable
-              as String?,
-      usertag: freezed == usertag
-          ? _value.usertag
-          : usertag // ignore: cast_nullable_to_non_nullable
-              as String?,
+      animesViewedCount: null == animesViewedCount
+          ? _value.animesViewedCount
+          : animesViewedCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      watchlistCount: null == watchlistCount
+          ? _value.watchlistCount
+          : watchlistCount // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$UserImpl extends _User {
+class _$UserImpl implements _User {
   const _$UserImpl(
-      {@JsonKey(name: '_id') required this.id,
-      @JsonKey(name: 'created_at') required this.createdAt,
-      required this.email,
+      {required this.id,
+      required this.username,
+      required this.usertag,
       required this.type,
       required this.status,
-      @JsonKey(name: 'updated_at') required this.updatedAt,
-      @JsonKey(name: '__v') required this.version,
-      this.username,
-      this.usertag})
-      : super._();
+      @JsonKey(name: 'followers_count') required this.followersCount,
+      @JsonKey(name: 'following_count') required this.followingCount,
+      @JsonKey(name: 'animes_viewed_count') required this.animesViewedCount,
+      @JsonKey(name: 'watchlist_count') required this.watchlistCount});
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserImplFromJson(json);
 
   @override
-  @JsonKey(name: '_id')
   final String id;
   @override
-  @JsonKey(name: 'created_at')
-  final int createdAt;
+  final String username;
   @override
-  final String email;
+  final String usertag;
   @override
   final String type;
   @override
   final String status;
   @override
-  @JsonKey(name: 'updated_at')
-  final int updatedAt;
+  @JsonKey(name: 'followers_count')
+  final int followersCount;
   @override
-  @JsonKey(name: '__v')
-  final int version;
+  @JsonKey(name: 'following_count')
+  final int followingCount;
   @override
-  final String? username;
+  @JsonKey(name: 'animes_viewed_count')
+  final int animesViewedCount;
   @override
-  final String? usertag;
+  @JsonKey(name: 'watchlist_count')
+  final int watchlistCount;
 
   @override
   String toString() {
-    return 'User(id: $id, createdAt: $createdAt, email: $email, type: $type, status: $status, updatedAt: $updatedAt, version: $version, username: $username, usertag: $usertag)';
+    return 'User(id: $id, username: $username, usertag: $usertag, type: $type, status: $status, followersCount: $followersCount, followingCount: $followingCount, animesViewedCount: $animesViewedCount, watchlistCount: $watchlistCount)';
   }
 
   @override
@@ -252,23 +251,34 @@ class _$UserImpl extends _User {
         (other.runtimeType == runtimeType &&
             other is _$UserImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.email, email) || other.email == email) &&
-            (identical(other.type, type) || other.type == type) &&
-            (identical(other.status, status) || other.status == status) &&
-            (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt) &&
-            (identical(other.version, version) || other.version == version) &&
             (identical(other.username, username) ||
                 other.username == username) &&
-            (identical(other.usertag, usertag) || other.usertag == usertag));
+            (identical(other.usertag, usertag) || other.usertag == usertag) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.followersCount, followersCount) ||
+                other.followersCount == followersCount) &&
+            (identical(other.followingCount, followingCount) ||
+                other.followingCount == followingCount) &&
+            (identical(other.animesViewedCount, animesViewedCount) ||
+                other.animesViewedCount == animesViewedCount) &&
+            (identical(other.watchlistCount, watchlistCount) ||
+                other.watchlistCount == watchlistCount));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, createdAt, email, type,
-      status, updatedAt, version, username, usertag);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      username,
+      usertag,
+      type,
+      status,
+      followersCount,
+      followingCount,
+      animesViewedCount,
+      watchlistCount);
 
   @JsonKey(ignore: true)
   @override
@@ -284,43 +294,44 @@ class _$UserImpl extends _User {
   }
 }
 
-abstract class _User extends User {
+abstract class _User implements User {
   const factory _User(
-      {@JsonKey(name: '_id') required final String id,
-      @JsonKey(name: 'created_at') required final int createdAt,
-      required final String email,
+      {required final String id,
+      required final String username,
+      required final String usertag,
       required final String type,
       required final String status,
-      @JsonKey(name: 'updated_at') required final int updatedAt,
-      @JsonKey(name: '__v') required final int version,
-      final String? username,
-      final String? usertag}) = _$UserImpl;
-  const _User._() : super._();
+      @JsonKey(name: 'followers_count') required final int followersCount,
+      @JsonKey(name: 'following_count') required final int followingCount,
+      @JsonKey(name: 'animes_viewed_count')
+      required final int animesViewedCount,
+      @JsonKey(name: 'watchlist_count')
+      required final int watchlistCount}) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
   @override
-  @JsonKey(name: '_id')
   String get id;
   @override
-  @JsonKey(name: 'created_at')
-  int get createdAt;
+  String get username;
   @override
-  String get email;
+  String get usertag;
   @override
   String get type;
   @override
   String get status;
   @override
-  @JsonKey(name: 'updated_at')
-  int get updatedAt;
+  @JsonKey(name: 'followers_count')
+  int get followersCount;
   @override
-  @JsonKey(name: '__v')
-  int get version;
+  @JsonKey(name: 'following_count')
+  int get followingCount;
   @override
-  String? get username;
+  @JsonKey(name: 'animes_viewed_count')
+  int get animesViewedCount;
   @override
-  String? get usertag;
+  @JsonKey(name: 'watchlist_count')
+  int get watchlistCount;
   @override
   @JsonKey(ignore: true)
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>

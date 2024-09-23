@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/auth/services/auth_service.dart';
@@ -13,24 +15,7 @@ class PreferenceUserCubit extends Cubit<PreferenceUserState> {
   final AuthService authService;
   PreferenceUserCubit(this.userCubit, this.authService)
       : super(const PreferenceUserIdleState());
-
-  Future<GenreAnime> getCategories() async {
-    final stateBefore = state;
-
-    emit(const GenreLoadingState());
-
-    try {
-      final response = await authService.getGenreAnimes();
-
-      final categories = GenreAnime.fromJson(response);
-      emit(GenreSuccessLoadedState(categories));
-      return categories;
-    } catch (error, trace) {
-      emit(GenreErrorState(error, trace));
-      emit(stateBefore);
-      rethrow;
-    }
-  }
+ 
 
   void selectGenre(String Genre) {
     final currentState = state;
@@ -58,7 +43,11 @@ class PreferenceUserCubit extends Cubit<PreferenceUserState> {
 
       emit(stateBefore);
     }, onError: (error, trace) {
-      emit(WatchListAddErrorState(error, trace));
+      // ignore: avoid_print
+      print('====A====' + error.toString());
+      // ignore: avoid_print
+      print('====B====' + trace.toString());
+      emit(WatchListAddErrorState(error.toString(), trace));
       emit(stateBefore);
     });
   }
@@ -72,7 +61,8 @@ class PreferenceUserCubit extends Cubit<PreferenceUserState> {
 
       emit(stateBefore);
     }, onError: (error, trace) {
-      emit(AnimeViewedAddErrorState(error, trace));
+      print('====A====' + error.toString());
+      emit(AnimeViewedAddErrorState(error.toString(), trace));
       emit(stateBefore);
     });
   }

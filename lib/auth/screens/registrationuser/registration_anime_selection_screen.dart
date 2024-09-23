@@ -126,16 +126,16 @@ class _RegistrationAnimeSelectionScreenState
   void onEventReceived(BuildContext context, PreferenceUserState state) async {
     if (state is WatchListAddSuccesState) {
       showSuccessToast(
-          context: context, content: "Anime ajouté à votre watchlist");
+           "Anime ajouté à votre watchlist");
     } else if (state is WatchListAddErrorState) {
-      showError(context, state.error);
+      showErrorToast(state.error);
     }
 
     if (state is AnimeViewedAddSuccesState) {
       showSuccessToast(
-          context: context, content: "Anime ajouté à votre liste de vue");
+          "Anime ajouté à votre liste de vue");
     } else if (state is AnimeViewedAddErrorState) {
-      showError(context, state.error);
+      showErrorToast(state.error);
     }
   }
 }

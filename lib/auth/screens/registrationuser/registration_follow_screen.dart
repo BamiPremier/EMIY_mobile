@@ -75,7 +75,7 @@ class _RegistrationFollowScreenState extends State<RegistrationFollowScreen>
                           })) */
                           itemBuilder: (context, user) => UserProfileItem(
                               user: user,
-                              isFollowed: followCubit.isUserSelected(user),
+
                               // ignore: avoid_print
                               onFollowPressed: () => preferenceUserCubit
                                   .followUser(follower: user),
@@ -129,7 +129,7 @@ class _RegistrationFollowScreenState extends State<RegistrationFollowScreen>
     } else if (state is FollowerAddSuccessState) {
       followCubit.selectUser(state.user);
     } else if (state is FollowerAddErrorState) {
-      showError(context, state.error);
+      showErrorToast(state.error);
     }
   }
 }

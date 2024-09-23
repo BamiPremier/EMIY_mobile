@@ -30,7 +30,7 @@ class UserCubit extends ObjectCubit<User, UserState> {
 
   void _getInitialState([bool refresh = false]) {
     final user = preferencesService.user;
-     
+
     if (user == null) {
       emit(const UserNotLoggedState());
     } else {
@@ -53,6 +53,16 @@ class UserCubit extends ObjectCubit<User, UserState> {
     if (user != null) return user;
     throw UnsupportedError(
         'cannot retrieve user when not logged: Current state is ${state.runtimeType}');
+  }
+
+  void userMe() {
+    final user = preferencesService.user;
+    if (user != null) {
+      userService.me(id: user.id).then((response) {
+        log(response.toString());
+        preferencesService.saveUser(response);
+      }, onError: (error, trace) {});
+    }
   }
 
   void signOut() {

@@ -6,6 +6,7 @@ import 'package:umai/auth/services/auth_service.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
+import 'package:umai/common/models/user.dart';
 
 part 'auth_state.dart';
 
@@ -24,7 +25,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(const AuthLoadingState());
 
     authService.authUser(email: email, token: token).then((response) {
-      userCubit.preferencesService.saveUser(response.user);
+      userCubit.preferencesService.saveUser(response.user );
       userCubit.preferencesService.saveAuthToken(response.accessToken);
       if (response.user.status != "PENDING_REGISTRATION") {
         emit(const AuthSuccessActiveUserState());

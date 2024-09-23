@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
 import 'package:potatoes/auto_list/models/paginated_list.dart';
 import 'package:umai/auth/services/auth_service.dart';
@@ -27,22 +29,19 @@ class FollowUserCubit extends AutoListCubit<User> {
   }
 
   void selectUser(User user) {
-    if (state is UserFollowState) {
-      var stateBefore = state as UserFollowState;
-      List<User> updatedSelectedUser;
-
-      if (stateBefore.selectedUser.contains(user)) {
-        updatedSelectedUser =
-            stateBefore.selectedUser.where((c) => c != user).toList();
-      } else {
-        updatedSelectedUser = [...stateBefore.selectedUser, user];
+    var stateBefore = state as FollowUserReadyState;
+    var updatedSelectedUser = stateBefore.items.items.map((c) {
+      if (c.id == user.id) {
+        return user;
       }
-
-      emit(UserFollowState(stateBefore.items, updatedSelectedUser));
-    } else {
-      var stateBefore = state as FollowUserReadyState;
-      emit(UserFollowState(stateBefore.items, [user]));
-    }
+      return c;
+    }).toList();
+    log(user.toString());
+    log(updatedSelectedUser.toString());
+    emit(UserFollowState(PaginatedList<User>(
+        items: updatedSelectedUser,
+        page: stateBefore.items.page,
+        total: stateBefore.items.total)));
   }
 
   bool isUserSelected(User user) {

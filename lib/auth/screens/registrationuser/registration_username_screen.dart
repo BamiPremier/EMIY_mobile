@@ -154,7 +154,7 @@ class _RegistrationUsernameScreenState extends State<RegistrationUsernameScreen>
             builder: (context) => const RegistrationPrefferedScreen()),
       );
     } else if (state is AuthErrorState) {
-      showError(context, state.error);
+      showErrorToast(state.error);
     }
   }
 }

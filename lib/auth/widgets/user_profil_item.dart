@@ -7,13 +7,12 @@ class UserProfileItem extends StatelessWidget {
   final User user;
   final VoidCallback? onFollowPressed;
   final VoidCallback? onUnFollowPressed;
-  final bool isFollowed;
+
   const UserProfileItem({
     super.key,
     required this.user,
     required this.onFollowPressed,
     required this.onUnFollowPressed,
-    required this.isFollowed,
   });
 
   @override
@@ -32,27 +31,28 @@ class UserProfileItem extends StatelessWidget {
           radius: 28,
           child: CircularProgressIndicator(strokeWidth: 2),
         ),
-        errorWidget: (context, url, error) => CircleAvatar(
+        errorWidget: (context, url, error) => const CircleAvatar(
           radius: 28,
           child: Icon(Icons.person, size: 28, color: Colors.white),
         ),
       ),
       title: Text(
-        user.username!,
+        user.username,
       ),
-      titleTextStyle: Theme.of(context)
-          .textTheme
-          .bodyLarge!
-          .copyWith(fontWeight: FontWeight.normal, fontSize: 24),
-      subtitle: const Text(
-        'description',
+      titleTextStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
+          fontWeight: FontWeight.normal,
+          fontSize: 16,
+          height: 2.4,
+          letterSpacing: 0.5),
+      subtitle: Text(
+        '${user.animesViewedCount} animes • ${user.followingCount} suivent',
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
       subtitleTextStyle: Theme.of(context).textTheme.labelMedium!.copyWith(
             color: Theme.of(context).colorScheme.secondary,
           ),
-      trailing: isFollowed == false
+      trailing: !user.followed /* ?  ( isFollowed == false) */
           ? ElevatedButton(
               onPressed: onFollowPressed,
               style: FilledButton.styleFrom(

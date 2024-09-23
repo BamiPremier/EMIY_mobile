@@ -77,7 +77,7 @@ class _AccountScreenState extends State<AccountScreen>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            context.read<AccountCubit>().user!.email,
+                            context.read<AccountCubit>().user!.usertag,
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           const SizedBox(height: 4),
@@ -122,7 +122,7 @@ class _AccountScreenState extends State<AccountScreen>
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              '14',
+                              '${context.read<AccountCubit>().user!.followersCount}',
                               style: Theme.of(context).textTheme.labelLarge,
                             ),
                             Text(
@@ -136,7 +136,7 @@ class _AccountScreenState extends State<AccountScreen>
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              '38',
+                              '${context.read<AccountCubit>().user!.followingCount}',
                               style: Theme.of(context).textTheme.labelLarge,
                             ),
                             Text(
@@ -169,7 +169,7 @@ class _AccountScreenState extends State<AccountScreen>
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              '257',
+                              '${context.read<AccountCubit>().user!.animesViewedCount}',
                               style: Theme.of(context).textTheme.labelLarge,
                             ),
                             Text(
@@ -183,7 +183,7 @@ class _AccountScreenState extends State<AccountScreen>
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              '9',
+                              '${context.read<AccountCubit>().user!.watchlistCount}',
                               style: Theme.of(context).textTheme.labelLarge,
                             ),
                             Text(

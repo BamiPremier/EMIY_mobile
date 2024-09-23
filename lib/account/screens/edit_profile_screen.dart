@@ -1,7 +1,7 @@
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/account/cubit/account_cubit.dart';
-import 'package:umai/account/screens/param/edit_profile_picture_screen.dart'; 
+import 'package:umai/account/screens/param/edit_profile_picture_screen.dart';
 import 'package:umai/account/widgets/large_text_field.dart';
 import 'package:umai/common/utils/validators.dart';
 import 'package:umai/common/widgets/buttons.dart';
@@ -186,9 +186,9 @@ class _EditProfileScreenState extends State<EditProfileScreen>
       loadingDialogCompleter = showLoadingBarrier(context: context);
     } else if (state is AccountSuccessState) {
       showSuccessToast(
-          context: context, content: "Mise à jour effectuée avec succes");
+          "Mise à jour effectuée avec succes");
     } else if (state is AccountErrorState) {
-      showError(context, state.error);
+      showErrorToast(state.error);
     }
   }
 }

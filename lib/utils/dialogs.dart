@@ -42,19 +42,19 @@ String _translateError(dynamic error) {
   const String defaultMessage =
       'Une erreur est survenue, veuillez-réessayer plus tard.';
 
-  if (error is String) return error;
-  if (error == null || error is! ApiError) return defaultMessage;
-  if (error.errors != null) {
-    if (error.errors!.isNotEmpty) {
-      // liste les erreurs détectées
-      return error.errors!.values
-          .fold('', (previous, value) => '$previous\n$value');
-    }
-  } else if (error.dio != null) {
-    if (kDebugMode) {
-      return error.dio?.message ?? defaultMessage;
-    }
-  }
+  // if (error is String) return error;
+  // if (error == null || error is! ApiError) return defaultMessage;
+  // if (error.errors != null) {
+  //   if (error.errors!.isNotEmpty) {
+  //     // liste les erreurs détectées
+  //     return error.errors!.values
+  //         .fold('', (previous, value) => '$previous\n$value');
+  //   }
+  // } else if (error.dio != null) {
+  //   if (kDebugMode) {
+  //     return error.dio?.message ?? defaultMessage;
+  //   }
+  // }
   if (error.isUnauthenticatedError) return unauthenticatedMessage;
   if (error.isNoInternetConnectionError) return noInternetMessage;
   if (error.trace != null) return defaultMessage;
@@ -63,24 +63,21 @@ String _translateError(dynamic error) {
 }
 
 void showSuccessToast(
-    {required BuildContext context,
-    required String content,
-    bool? isError,
-    Toast? toastLength}) {
+  String content,
+) {
   Fluttertoast.showToast(
       msg: content,
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.TOP,
       timeInSecForIosWeb: 6,
       textColor: Colors.white,
+      backgroundColor: ThemeApp.primaryGreen,
       fontSize: 16.0);
 }
 
-void showWarningToast(
-    {required BuildContext context,
-    required String content,
-    bool? isError,
-    Toast? toastLength}) {
+void showErrorToast(
+  String content,
+) {
   Fluttertoast.showToast(
       msg: content,
       toastLength: Toast.LENGTH_SHORT,

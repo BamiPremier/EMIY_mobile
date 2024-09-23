@@ -137,9 +137,8 @@ class _OnboardingScreenState extends State<OnboardingScreen>
           );
       }
     } catch (e) {
-      return showError(
-        context,
-        e,
+      return showErrorToast(
+        e.toString(),
       );
     }
   }
@@ -198,15 +197,13 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       Navigator.of(context).push(
         MaterialPageRoute(builder: (context) => const LoginWelcomeBackScreen()),
       );
-
-      
     } else if (state is AuthSuccessInActiveUserState) {
       Navigator.of(context).push(
         MaterialPageRoute(
             builder: (context) => const RegistrationUsernameScreen()),
       );
     } else if (state is AuthErrorState) {
-      showError(context, state.error);
+      showErrorToast(state.error);
     }
   }
 }

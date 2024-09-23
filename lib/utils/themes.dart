@@ -5,6 +5,7 @@ import 'package:umai/utils/assets.dart';
 
 abstract class ThemeApp {
   static const Color primaryYellow = Color(0xFFFFCC33);
+  static const Color primaryGreen = Color.fromARGB(255, 77, 122, 77);
   static const Color primaryBlack = Color(0xFF090909);
   static const Color primaryRed = Color(0xFFE30613);
   static const Color mainText = primaryBlack;

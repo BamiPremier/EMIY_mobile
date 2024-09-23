@@ -77,7 +77,7 @@ class AuthService extends ApiService {
             queryParameters: {
               'page': page,
               'genre': listGenre,
-              'take': 12,
+              'size': 12,
             }),
         mapper: AnimeResponse.fromJson);
   }
@@ -134,7 +134,7 @@ class AuthService extends ApiService {
     return compute(
       dio.delete(
         _folllowerRemove,
-        queryParameters: {
+        data: {
           'idFollowing': follower,
         },
         options: Options(headers: withAuth()),
