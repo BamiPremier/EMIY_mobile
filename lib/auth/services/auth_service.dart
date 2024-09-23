@@ -1,6 +1,7 @@
 import 'package:potatoes/libs.dart';
 import 'package:umai/auth/models/auth_response.dart';
 import 'package:umai/auth/models/auth_response_complete_user.dart';
+import 'package:umai/common/models/genre_anime.dart';
 import 'package:umai/common/models/anime_response.dart';
 import 'package:umai/common/services/api_service.dart';
 import 'package:umai/common/models/anime_response.dart';
@@ -13,13 +14,13 @@ import 'package:umai/common/services/preferences_service.dart';
 class AuthService extends ApiService {
   final PreferencesService preferencesService;
 
-  static const String _category = '/auth/animes-genre';
+  static const String _genre = '/auth/animes-genre';
   static const String _anime = '/auth/animes-by-genres';
   static const String _followers = '/auth/list-to-follow';
-  static const String _watchlistAdd = '/watchlist/add';
-  static const String _viewerAdd = '/animes_viewed/add';
-  static const String _folllowerAdd = '/follow/user-follow-with-id';
-  static const String _folllowerRemove = '/follow/user-unfollow-with-id';
+  static const String _watchlistAdd = '/animes/watchlist';
+  static const String _viewerAdd = '/animes/viewed';
+  static const String _folllowerAdd = '/users/follow';
+  static const String _folllowerRemove = '/users/unfollow';
   static const String _auth = '/auth';
   static const String _completeProfile = '/auth/userUID/complete';
 
@@ -58,23 +59,24 @@ class AuthService extends ApiService {
     );
   }
 
-  Future getCategoryAnimes() async {
+  Future getGenreAnimes() async {
     return compute(
       dio.get(
-        _category,
+        _genre,
         options: Options(headers: withAuth()),
       ),
+      mapper: GenreAnime.fromJson,
     );
   }
 
   Future<AnimeResponse> getAnimes(
-      {int page = 1, required List<String> listCategory}) async {
+      {int page = 1, required List<String> listGenre}) async {
     return compute(
         dio.get(_anime,
             options: Options(headers: withAuth()),
             queryParameters: {
               'page': page,
-              'genre': listCategory,
+              'genre': listGenre,
               'take': 12,
             }),
         mapper: AnimeResponse.fromJson);
@@ -95,7 +97,7 @@ class AuthService extends ApiService {
   Future addToWatchList({required anime}) async {
     return compute(
       dio.post(
-        "$_watchlistAdd?id=$anime",
+        _watchlistAdd,
         data: {
           'id': anime,
         },
@@ -130,9 +132,9 @@ class AuthService extends ApiService {
 
   Future unFollowUser({required follower}) async {
     return compute(
-      dio.post(
+      dio.delete(
         _folllowerRemove,
-        data: {
+        queryParameters: {
           'idFollowing': follower,
         },
         options: Options(headers: withAuth()),

@@ -16,14 +16,14 @@ class PreferenceUserIdleState extends CubitSuccessState
 
 class SelectedPrefenceUserState extends CubitSuccessState
     with PreferenceUserState {
-  final List<String> category;
+  final List<String> Genre;
   final List<AnimeResponse> anime;
   final List<FollowerResponse> follow;
 
-  SelectedPrefenceUserState(this.category, this.anime, this.follow);
+  SelectedPrefenceUserState(this.Genre, this.anime, this.follow);
 
   @override
-  List<Object?> get props => [category, anime, follow];
+  List<Object?> get props => [Genre, anime, follow];
 }
 
 class PreferenceUserLoadingState extends CubitLoadingState
@@ -46,33 +46,33 @@ class PreferenceUserErrorState extends CubitErrorState
   PreferenceUserErrorState(super.error, [super.trace]);
 }
 
-class CategoryIdleState extends CubitSuccessState with PreferenceUserState {
-  const CategoryIdleState();
+class GenreIdleState extends CubitSuccessState with PreferenceUserState {
+  const GenreIdleState();
 
   @override
   List<Object?> get props => [identityHashCode(this)];
 }
 
-class CategoryLoadingState extends CubitLoadingState with PreferenceUserState {
-  const CategoryLoadingState();
+class GenreLoadingState extends CubitLoadingState with PreferenceUserState {
+  const GenreLoadingState();
 }
 
-class CategorySuccessLoadedState extends CubitInformationState
+class GenreSuccessLoadedState extends CubitInformationState
     with PreferenceUserState {
-  final CategoryAnimeResponse category;
+  final GenreAnime  genre;
 
-  CategorySuccessLoadedState(
-    this.category,
+  GenreSuccessLoadedState(
+    this.genre,
   );
 
   @override
   List<Object?> get props => [
-        category,
+        genre,
       ];
 }
 
-class CategoryErrorState extends CubitErrorState with PreferenceUserState {
-  CategoryErrorState(super.error, [super.trace]);
+class GenreErrorState extends CubitErrorState with PreferenceUserState {
+  GenreErrorState(super.error, [super.trace]);
 }
 
 // WatchList
@@ -164,7 +164,11 @@ class FollowerAddLoadingState extends CubitLoadingState
 
 class FollowerAddSuccessState extends CubitInformationState
     with PreferenceUserState {
-  FollowerAddSuccessState();
+  final User user;
+  FollowerAddSuccessState(this.user);
+
+  @override
+  List<Object?> get props => [user];
 }
 
 class FollowerAddErrorState extends CubitErrorState with PreferenceUserState {

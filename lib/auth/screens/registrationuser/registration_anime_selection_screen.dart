@@ -13,11 +13,11 @@ import 'package:flutter/material.dart';
 import 'package:umai/utils/dialogs.dart';
 
 class RegistrationAnimeSelectionScreen extends StatefulWidget {
-  final List<String> listCategory;
+  final List<String> listGenre;
 
   const RegistrationAnimeSelectionScreen({
     super.key,
-    required this.listCategory,
+    required this.listGenre,
   });
 
   @override
@@ -63,7 +63,7 @@ class _RegistrationAnimeSelectionScreenState
                                       .read<AuthService>()
                                       .getAnimes(
                                           page: page,
-                                          listCategory: widget.listCategory)
+                                          listGenre: widget.listGenre)
                                       .then((p) {
                                     print('==================p${p}');
 

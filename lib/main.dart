@@ -91,7 +91,7 @@ class MyApp extends StatelessWidget {
                     preferencesService,
                   )),
           BlocProvider(
-              create: (context) => CategorieCubit(
+              create: (context) => GenreCubit(
                     context.read(),
                   )),
           BlocProvider(

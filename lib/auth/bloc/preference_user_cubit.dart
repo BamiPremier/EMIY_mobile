@@ -2,7 +2,7 @@ import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/auth/services/auth_service.dart';
 import 'package:umai/common/models/anime_response.dart';
-import 'package:umai/common/models/category_anime_response.dart';
+import 'package:umai/common/models/genre_anime.dart';
 import 'package:umai/common/models/follower_response.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 
@@ -14,37 +14,37 @@ class PreferenceUserCubit extends Cubit<PreferenceUserState> {
   PreferenceUserCubit(this.userCubit, this.authService)
       : super(const PreferenceUserIdleState());
 
-  Future<CategoryAnimeResponse> getCategories() async {
+  Future<GenreAnime> getCategories() async {
     final stateBefore = state;
 
-    emit(const CategoryLoadingState());
+    emit(const GenreLoadingState());
 
     try {
-      final response = await authService.getCategoryAnimes();
+      final response = await authService.getGenreAnimes();
 
-      final categories = CategoryAnimeResponse.fromJson(response);
-      emit(CategorySuccessLoadedState(categories));
+      final categories = GenreAnime.fromJson(response);
+      emit(GenreSuccessLoadedState(categories));
       return categories;
     } catch (error, trace) {
-      emit(CategoryErrorState(error, trace));
+      emit(GenreErrorState(error, trace));
       emit(stateBefore);
       rethrow;
     }
   }
 
-  void selectCategory(String category) {
+  void selectGenre(String Genre) {
     final currentState = state;
     if (currentState is SelectedPrefenceUserState) {
-      final updatedCategories = List<String>.from(currentState.category);
-      if (updatedCategories.contains(category)) {
-        updatedCategories.remove(category);
+      final updatedCategories = List<String>.from(currentState.Genre);
+      if (updatedCategories.contains(Genre)) {
+        updatedCategories.remove(Genre);
       } else {
-        updatedCategories.add(category);
+        updatedCategories.add(Genre);
       }
       emit(SelectedPrefenceUserState(
           updatedCategories, currentState.anime, currentState.follow));
     } else {
-      emit(SelectedPrefenceUserState([category], const [], const []));
+      emit(SelectedPrefenceUserState([Genre], const [], const []));
     }
   }
 
@@ -77,12 +77,12 @@ class PreferenceUserCubit extends Cubit<PreferenceUserState> {
     });
   }
 
-  void followUser({required String follower}) {
+  void followUser({required User follower}) {
     final stateBefore = state;
 
     emit(const FollowerAddLoadingState());
-    authService.followUser(follower: follower).then((response) {
-      emit(FollowerAddSuccessState());
+    authService.followUser(follower: follower.id).then((response) {
+      emit(FollowerAddSuccessState(follower));
 
       emit(stateBefore);
     }, onError: (error, trace) {
@@ -91,12 +91,12 @@ class PreferenceUserCubit extends Cubit<PreferenceUserState> {
     });
   }
 
-  void unFollowUser({required String follower}) {
+  void unFollowUser({required User follower}) {
     final stateBefore = state;
 
     emit(const FollowerAddLoadingState());
-    authService.unFollowUser(follower: follower).then((response) {
-      emit(FollowerAddSuccessState());
+    authService.unFollowUser(follower: follower.id).then((response) {
+      emit(FollowerAddSuccessState(follower));
 
       emit(stateBefore);
     }, onError: (error, trace) {

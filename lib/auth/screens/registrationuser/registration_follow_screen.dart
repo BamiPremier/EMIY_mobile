@@ -12,6 +12,7 @@ import 'package:umai/auth/screens/login_welcome_back_screen.dart';
 import 'package:umai/auth/widgets/user_profil_item.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:flutter/material.dart';
+import 'package:umai/utils/dialogs.dart';
 
 class RegistrationFollowScreen extends StatefulWidget {
   const RegistrationFollowScreen({super.key});
@@ -39,79 +40,96 @@ class _RegistrationFollowScreenState extends State<RegistrationFollowScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          title: const Text(
-        "Rejoins la communauté!",
-      )),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child:
-            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          Container(
-              margin: const EdgeInsets.symmetric(vertical: 16),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                  'Fais-toi des amis et reste informé(e) de leur activité dans l’application',
-                  style: Theme.of(context).textTheme.bodySmall)),
-          Expanded(
-              // margin: const EdgeInsets.symmetric(vertical: 16),
-              // height: MediaQuery.of(context).size.height * .73,
-              // padding: const EdgeInsets.all(8.0),
-              child: AutoListView.get<User>(
-                  padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom),
-                  cubit: AutoListCubit(
-                      provider: ({int page = 1}) => context
-                              .read<AuthService>()
-                              .getFollowers(
+    return BlocListener<PreferenceUserCubit, PreferenceUserState>(
+        listener: onEventReceived,
+        child: Scaffold(
+          appBar: AppBar(
+              title: const Text(
+            "Rejoins la communauté!",
+          )),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Container(
+                      margin: const EdgeInsets.symmetric(vertical: 16),
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                          'Fais-toi des amis et reste informé(e) de leur activité dans l’application',
+                          style: Theme.of(context).textTheme.bodySmall)),
+                  Expanded(
+                      // margin: const EdgeInsets.symmetric(vertical: 16),
+                      // height: MediaQuery.of(context).size.height * .73,
+                      // padding: const EdgeInsets.all(8.0),
+                      child: AutoListView.get<User>(
+                          padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).viewInsets.bottom),
+                          cubit: followCubit,
+                          /* 
                                 page: page,
                               )
                               .then((p) {
                             return PaginatedList(
                                 items: p.content, page: p.page, total: p.total);
-                          })),
-                  itemBuilder: (context, user) => UserProfileItem(
-                        user: user,
-                        // ignore: avoid_print
-                        onFollowPressed: () =>
-                            preferenceUserCubit.followUser(follower: user.id),
-                      ),
-                  emptyBuilder: (context) => const Center(
-                        child: Text("Empty list"),
-                      ),
-                  errorBuilder: (context, retry) => Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Text("An error occured"),
-                          TextButton(
-                            onPressed: retry,
-                            child: const Text("Retry"),
-                          )
-                        ],
-                      )))
-        ]),
-      ),
-      bottomNavigationBar: Container(
-        color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
-        child: SafeArea(
-          minimum: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              UmaiButton.primary(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (context) => const LoginWelcomeBackScreen()),
-                  );
-                },
-                text: "Continuer",
-              ),
-            ],
+                          })) */
+                          itemBuilder: (context, user) => UserProfileItem(
+                              user: user,
+                              isFollowed: followCubit.isUserSelected(user),
+                              // ignore: avoid_print
+                              onFollowPressed: () => preferenceUserCubit
+                                  .followUser(follower: user),
+                              onUnFollowPressed: () => preferenceUserCubit
+                                  .unFollowUser(follower: user)),
+                          emptyBuilder: (context) => const Center(
+                                child: Text("Empty list"),
+                              ),
+                          errorBuilder: (context, retry) => Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Text("An error occured"),
+                                  TextButton(
+                                    onPressed: retry,
+                                    child: const Text("Retry"),
+                                  )
+                                ],
+                              )))
+                ]),
           ),
-        ),
-      ),
-    );
+          bottomNavigationBar: Container(
+            color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+            child: SafeArea(
+              minimum:
+                  const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  UmaiButton.primary(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const LoginWelcomeBackScreen()),
+                      );
+                    },
+                    text: "Continuer",
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ));
+  }
+
+  void onEventReceived(BuildContext context, PreferenceUserState state) async {
+    await waitForDialog();
+
+    if (state is FollowerAddLoadingState) {
+      loadingDialogCompleter = showLoadingBarrier(context: context);
+    } else if (state is FollowerAddSuccessState) {
+      followCubit.selectUser(state.user);
+    } else if (state is FollowerAddErrorState) {
+      showError(context, state.error);
+    }
   }
 }

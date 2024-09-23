@@ -1,53 +1,51 @@
 import 'dart:developer';
 
 import 'package:potatoes/auto_content/bloc/auto_content_cubit.dart';
-import 'package:umai/auth/services/auth_service.dart'; 
-import 'package:umai/common/models/category_anime_response.dart';
+import 'package:umai/auth/services/auth_service.dart';
+import 'package:umai/common/models/genre_anime.dart';
 
-class CategorieCubit extends AutoContentCubit<List<String>> {
+class GenreCubit extends AutoContentCubit<List<String>> {
   final AuthService service;
-  CategorieCubit(
+  GenreCubit(
     this.service,
   ) : super(
           provider: () async {
-            final response = await service.getCategoryAnimes();
-            final categories = CategoryAnimeResponse.fromJson(response);
-            return categories.genres;
+            final response = await service.getGenreAnimes();
+            return response.response;
           },
         );
 
-  void selectCategory(String category) {
-    if (state is CategoryReadyWithSelectionState) {
-      var stateBefore = state as CategoryReadyWithSelectionState;
+  void selectGenre(String genre) {
+    if (state is GenreReadyWithSelectionState) {
+      var stateBefore = state as GenreReadyWithSelectionState;
       List<String> updatedCategories;
 
-      if (stateBefore.selectedCategories.contains(category)) {
+      if (stateBefore.selectedCategories.contains(genre)) {
         updatedCategories =
-            stateBefore.selectedCategories.where((c) => c != category).toList();
+            stateBefore.selectedCategories.where((c) => c != genre).toList();
       } else {
-        updatedCategories = [...stateBefore.selectedCategories, category];
+        updatedCategories = [...stateBefore.selectedCategories, genre];
       }
 
-      emit(CategoryReadyWithSelectionState(
-          stateBefore.value, updatedCategories));
+      emit(GenreReadyWithSelectionState(stateBefore.value, updatedCategories));
     } else {
-      var stateBefore = state as CategoryReadyState;
-      emit(CategoryReadyWithSelectionState(stateBefore.value, [category]));
+      var stateBefore = state as GenreReadyState;
+      emit(GenreReadyWithSelectionState(stateBefore.value, [genre]));
     }
   }
 
-  bool isCategorySelected(String category) {
-    var currentState = state as CategoryReadyWithSelectionState;
-    return currentState.selectedCategories.contains(category);
+  bool isGenreSelected(String genre) {
+    var currentState = state as GenreReadyWithSelectionState;
+    return currentState.selectedCategories.contains(genre);
   }
 }
 
-typedef CategoryState = AutoContentState<List<String>>;
-typedef CategoryReadyState = AutoContentReadyState<List<String>>;
+typedef GenreState = AutoContentState<List<String>>;
+typedef GenreReadyState = AutoContentReadyState<List<String>>;
 
-class CategoryReadyWithSelectionState extends CategoryReadyState {
+class GenreReadyWithSelectionState extends GenreReadyState {
   final List<String> selectedCategories;
-  const CategoryReadyWithSelectionState(super.value,
+  const GenreReadyWithSelectionState(super.value,
       [this.selectedCategories = const []]);
   @override
   List<Object?> get props => [...super.props, selectedCategories];

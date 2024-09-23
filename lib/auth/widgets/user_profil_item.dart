@@ -6,11 +6,14 @@ import 'package:umai/utils/themes.dart';
 class UserProfileItem extends StatelessWidget {
   final User user;
   final VoidCallback? onFollowPressed;
-
+  final VoidCallback? onUnFollowPressed;
+  final bool isFollowed;
   const UserProfileItem({
     super.key,
     required this.user,
     required this.onFollowPressed,
+    required this.onUnFollowPressed,
+    required this.isFollowed,
   });
 
   @override
@@ -49,58 +52,52 @@ class UserProfileItem extends StatelessWidget {
       subtitleTextStyle: Theme.of(context).textTheme.labelMedium!.copyWith(
             color: Theme.of(context).colorScheme.secondary,
           ),
-      trailing:
-
-          // Type 1
-          //
-          //
-          // ElevatedButton(
-          //   onPressed: onFollowPressed,
-          //   style: FilledButton.styleFrom(
-          //     backgroundColor: Theme.of(context).colorScheme.primary,
-          //     textStyle: Theme.of(context).textTheme.labelLarge!.copyWith(
-          //           color: ThemeApp.mainText,
-          //         ),
-          //   ),
-          //   child: Row(
-          //     mainAxisSize: MainAxisSize.min,
-          //     children: [
-          //       Icon(Icons.add),
-          //       const SizedBox(width: 8),
-          //       Text(
-          //         'Suivre',
-          //         style: Theme.of(context).textTheme.labelLarge!.copyWith(
-          //               color: ThemeApp.mainText,
-          //             ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
-
-          // Type 2
-
-          ElevatedButton(
-        onPressed: onFollowPressed,
-        style: FilledButton.styleFrom(
-          backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
-          textStyle: Theme.of(context).textTheme.labelLarge!.copyWith(
-                color: Theme.of(context).colorScheme.onTertiaryContainer,
+      trailing: isFollowed == false
+          ? ElevatedButton(
+              onPressed: onFollowPressed,
+              style: FilledButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                textStyle: Theme.of(context).textTheme.labelLarge!.copyWith(
+                      color: ThemeApp.mainText,
+                    ),
               ),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.check),
-            const SizedBox(width: 8),
-            Text(
-              'Suivi(e)',
-              style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                  color: Theme.of(context).colorScheme.onTertiaryContainer),
-
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.add),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Suivre',
+                    style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                          color: ThemeApp.mainText,
+                        ),
+                  ),
+                ],
+              ),
+            )
+          : ElevatedButton(
+              onPressed: onUnFollowPressed,
+              style: FilledButton.styleFrom(
+                backgroundColor:
+                    Theme.of(context).colorScheme.tertiaryContainer,
+                textStyle: Theme.of(context).textTheme.labelLarge!.copyWith(
+                      color: Theme.of(context).colorScheme.onTertiaryContainer,
+                    ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.check),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Suivi(e)',
+                    style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                        color:
+                            Theme.of(context).colorScheme.onTertiaryContainer),
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
     );
   }
 }

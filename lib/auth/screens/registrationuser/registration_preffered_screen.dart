@@ -19,7 +19,7 @@ class RegistrationPrefferedScreen extends StatefulWidget {
 
 class _RegistrationPrefferedScreenState
     extends State<RegistrationPrefferedScreen> with WidgetsBindingObserver {
-  late final CategorieCubit categorieCubit = context.read<CategorieCubit>();
+  late final GenreCubit genreCubit = context.read<GenreCubit>();
 
   @override
   void initState() {
@@ -34,8 +34,7 @@ class _RegistrationPrefferedScreenState
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CategorieCubit, CategoryState>(
-        builder: (context, state) {
+    return BlocBuilder<GenreCubit, GenreState>(builder: (context, state) {
       return Scaffold(
         appBar: AppBar(
             title: const Text(
@@ -52,8 +51,9 @@ class _RegistrationPrefferedScreenState
                       'Quels genres d’animes préfères-tu? Tu recevras une sélection de recommandation en fonction de ces choix',
                       style: Theme.of(context).textTheme.bodySmall)),
               AutoContentView.get<List<String>>(
-                  cubit: categorieCubit,
+                  cubit: genreCubit,
                   autoManage: false,
+                  errorBuilder: (context, error) => Text(error.toString()),
                   loadingBuilder: (_) => Container(
                       alignment: Alignment.center,
                       padding: const EdgeInsets.only(top: 80.0),
@@ -62,16 +62,15 @@ class _RegistrationPrefferedScreenState
                     return Wrap(
                       spacing: 8,
                       runSpacing: 8,
-                      children: categories.map((category) {
-                        final isSelected =
-                            state is CategoryReadyWithSelectionState
-                                ? categorieCubit.isCategorySelected(category)
-                                : false;
+                      children: categories.map((genre) {
+                        final isSelected = state is GenreReadyWithSelectionState
+                            ? genreCubit.isGenreSelected(genre)
+                            : false;
 
                         return FilterChip(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16.0, vertical: 6.0),
-                          label: Text(category),
+                          label: Text(genre),
                           labelStyle: Theme.of(context)
                               .textTheme
                               .labelLarge!
@@ -79,7 +78,7 @@ class _RegistrationPrefferedScreenState
                           selected: isSelected,
                           side: isSelected ? BorderSide.none : null,
                           onSelected: (selected) {
-                            categorieCubit.selectCategory(category);
+                            genreCubit.selectGenre(genre);
                           },
                           showCheckmark: false,
                           avatar: isSelected ? const Icon(Icons.remove) : null,
@@ -100,17 +99,15 @@ class _RegistrationPrefferedScreenState
               mainAxisSize: MainAxisSize.min,
               children: [
                 UmaiButton.primary(
-                  onPressed:
-                      (categorieCubit.state is CategoryReadyWithSelectionState)
-                          ? (categorieCubit.state
-                                      as CategoryReadyWithSelectionState)
-                                  .selectedCategories
-                                  .isNotEmpty
-                              ? () => nextScreen((categorieCubit.state
-                                      as CategoryReadyWithSelectionState)
+                  onPressed: (genreCubit.state is GenreReadyWithSelectionState)
+                      ? (genreCubit.state as GenreReadyWithSelectionState)
+                              .selectedCategories
+                              .isNotEmpty
+                          ? () => nextScreen(
+                              (genreCubit.state as GenreReadyWithSelectionState)
                                   .selectedCategories)
-                              : null
-                          : null,
+                          : null
+                      : null,
                   text: "Continuer",
                 ),
               ],
@@ -121,11 +118,11 @@ class _RegistrationPrefferedScreenState
     });
   }
 
-  void nextScreen(List<String> listCategory) {
+  void nextScreen(List<String> listGenre) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) =>
-            RegistrationAnimeSelectionScreen(listCategory: listCategory),
+            RegistrationAnimeSelectionScreen(listGenre: listGenre),
       ),
     );
   }

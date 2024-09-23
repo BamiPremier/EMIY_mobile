@@ -1,4 +1,3 @@
-import 'package:umai/common/models/user.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'follower_response.freezed.dart';
