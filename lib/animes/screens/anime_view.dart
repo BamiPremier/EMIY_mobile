@@ -32,7 +32,7 @@ class _AnimeViewState extends State<AnimeView> {
                   selectedColor:
                       Theme.of(context).colorScheme.tertiaryContainer,
                   labelStyle: Theme.of(context)
-                      .primaryTextTheme
+                      .textTheme
                       .labelLarge!
                       .copyWith(
                           color: Theme.of(context)

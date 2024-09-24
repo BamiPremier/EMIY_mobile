@@ -56,6 +56,7 @@ class _RegistrationAnimeSelectionScreenState
                           style: Theme.of(context).textTheme.bodySmall)),
                   Expanded(
                       child: AutoListView.get<Anime>(
+                          autoManage: false,
                           padding: EdgeInsets.only(
                               bottom: MediaQuery.of(context).viewInsets.bottom),
                           cubit: AutoListCubit(
@@ -65,8 +66,6 @@ class _RegistrationAnimeSelectionScreenState
                                           page: page,
                                           listGenre: widget.listGenre)
                                       .then((p) {
-                                    print('==================p${p}');
-
                                     return PaginatedList(
                                         items: p.content,
                                         page: p.page,
@@ -125,15 +124,13 @@ class _RegistrationAnimeSelectionScreenState
 
   void onEventReceived(BuildContext context, PreferenceUserState state) async {
     if (state is WatchListAddSuccesState) {
-      showSuccessToast(
-           "Anime ajouté à votre watchlist");
+      showSuccessToast("Anime ajouté à votre watchlist");
     } else if (state is WatchListAddErrorState) {
       showErrorToast(state.error);
     }
 
     if (state is AnimeViewedAddSuccesState) {
-      showSuccessToast(
-          "Anime ajouté à votre liste de vue");
+      showSuccessToast("Anime ajouté à votre liste de vue");
     } else if (state is AnimeViewedAddErrorState) {
       showErrorToast(state.error);
     }

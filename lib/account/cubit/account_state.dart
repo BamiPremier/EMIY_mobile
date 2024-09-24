@@ -20,3 +20,15 @@ class AccountSuccessState extends CubitInformationState with AccountState {
 class AccountErrorState extends CubitErrorState with AccountState {
   AccountErrorState(super.error, [super.trace]);
 }
+
+class AccountUpdateProfilePictureLoadingState extends CubitLoadingState with AccountState {
+  const AccountUpdateProfilePictureLoadingState();
+}
+
+class AccountUpdateProfilePictureSuccessState extends CubitInformationState with AccountState {
+  const AccountUpdateProfilePictureSuccessState();
+}
+
+class AccountUpdateProfilePictureErrorState extends CubitErrorState with AccountState {
+  AccountUpdateProfilePictureErrorState(super.error, [super.trace]);
+}

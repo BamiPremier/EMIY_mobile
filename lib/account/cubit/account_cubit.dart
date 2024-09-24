@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:umai/account/services/account_service.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
@@ -22,6 +24,20 @@ class AccountCubit extends Cubit<AccountState> {
       emit(stateBefore);
     }, onError: (error, trace) {
       emit(AccountErrorState(error, trace));
+      emit(stateBefore);
+    });
+  }
+
+  void updateProfilePicture({required File file}) {
+    final stateBefore = state;
+
+    emit(const AccountUpdateProfilePictureLoadingState());
+    accountService.updateProfilePicture(file: file).then((response) {
+      emit(const AccountUpdateProfilePictureSuccessState());
+
+      emit(stateBefore);
+    }, onError: (error, trace) {
+      emit(AccountUpdateProfilePictureErrorState(error, trace));
       emit(stateBefore);
     });
   }

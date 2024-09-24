@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:umai/account/screens/param/change_picture_screen.dart';
+import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/utils/themes.dart';
 
 class EditProfilePictureScreen extends StatelessWidget {
@@ -23,16 +25,47 @@ class EditProfilePictureScreen extends StatelessWidget {
           },
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.mode_edit_outline_outlined,
-                color: ThemeApp.white),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                    builder: (context) => const ChangePictureScreen()),
-              );
-            },
-          ),
+          PopupMenuButton(
+            itemBuilder: (_) => [
+              /*const PopupMenuItem(
+              child: ListTile(
+                leading: Icon(Icons.mic),
+                minLeadingWidth: 24.0,
+                title: Text('Message vocal'),
+                dense: true,
+              ),
+            ),*/
+              const PopupMenuItem(
+                value: ImageSource.camera,
+                child: ListTile(
+                  leading: Icon(Icons.camera_alt),
+                  minLeadingWidth: 24.0,
+                  title: Text('Prendre une photo'),
+                  dense: true,
+                ),
+              ),
+              const PopupMenuItem(
+                value: ImageSource.gallery,
+                child: ListTile(
+                  leading: Icon(Icons.image),
+                  minLeadingWidth: 24.0,
+                  title: Text('Choisir une image'),
+                  dense: true,
+                ),
+              ),
+            ],
+            elevation: 4.0,
+            offset: const Offset(0, -120),
+            onSelected: (value) => onPickImage(source: value, context: context),
+            child: Container(
+              height: 24.0,
+              width: 24.0,
+              child: const Icon(
+                Icons.mode_edit_outline_outlined,
+                color: ThemeApp.white,
+              ),
+            ),
+          )
         ],
       ),
       backgroundColor: ThemeApp.black,
@@ -50,5 +83,15 @@ class EditProfilePictureScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  onPickImage({required ImageSource source, required BuildContext context}) {
+    ImagePicker().pickImage(source: source).then((image) {
+      if (image == null) return;
+      Navigator.of(context).push(
+        MaterialPageRoute(
+            builder: (context) => ChangePictureScreen(image: image)),
+      );
+    });
   }
 }

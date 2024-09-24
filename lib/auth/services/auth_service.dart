@@ -17,8 +17,8 @@ class AuthService extends ApiService {
   static const String _genre = '/auth/animes-genre';
   static const String _anime = '/auth/animes-by-genres';
   static const String _followers = '/auth/list-to-follow';
-  static const String _watchlistAdd = '/animes/watchlist';
-  static const String _viewerAdd = '/animes/viewed';
+  static const String _watchlistAdd = '/animes/idAnime/watchlist';
+  static const String _viewerAdd = '/animes/idAnime/viewed';
   static const String _folllowerAdd = '/users/follow';
   static const String _folllowerRemove = '/users/unfollow';
   static const String _auth = '/auth';
@@ -97,10 +97,7 @@ class AuthService extends ApiService {
   Future addToWatchList({required anime}) async {
     return compute(
       dio.post(
-        _watchlistAdd,
-        data: {
-          'id': anime,
-        },
+        _watchlistAdd.replaceAll('idAnime', anime),
         options: Options(headers: withAuth()),
       ),
     );
@@ -109,10 +106,7 @@ class AuthService extends ApiService {
   Future addToViewerList({required anime}) async {
     return compute(
       dio.post(
-        _viewerAdd,
-        data: {
-          'id': anime,
-        },
+        _viewerAdd.replaceAll('idAnime', anime),
         options: Options(headers: withAuth()),
       ),
     );

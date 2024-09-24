@@ -82,7 +82,7 @@ class _AccountScreenState extends State<AccountScreen>
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            'Proident aliquip officia sint aute tempor adipisicing esse nostrud officia quis ex cillum. Et anim est est cillum sint nulla ex pariatur eiusmod laborum irure laborum cupidatat. Laboris ipsum esse ea dolore tempor dolor sint anim incididunt amet mollit laborum.',
+                            context.read<AccountCubit>().user!.biography ?? '',
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context)

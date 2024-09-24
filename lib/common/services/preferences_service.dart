@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:umai/common/models/user.dart';
 import 'package:potatoes/potatoes.dart' as potatoes;
@@ -42,12 +43,12 @@ class PreferencesService extends potatoes.PreferencesService {
 
     String rawSign = "$userId\$${dateTime.millisecondsSinceEpoch}\$$authToken";
     Digest digest = sha1.convert(utf8.encode(rawSign));
-    print({
+    log({
       "timestamp": dateTime.millisecondsSinceEpoch.toString(),
       "uid": userId,
       "hash": digest.toString(),
       // 'app_version': _appVersion
-    });
+    }.toString());
     return {
       "timestamp": dateTime.millisecondsSinceEpoch.toString(),
       "id": userId,

@@ -15,7 +15,6 @@ class PreferenceUserCubit extends Cubit<PreferenceUserState> {
   final AuthService authService;
   PreferenceUserCubit(this.userCubit, this.authService)
       : super(const PreferenceUserIdleState());
- 
 
   void selectGenre(String Genre) {
     final currentState = state;
@@ -72,6 +71,8 @@ class PreferenceUserCubit extends Cubit<PreferenceUserState> {
 
     emit(const FollowerAddLoadingState());
     authService.followUser(follower: follower.id).then((response) {
+      var follower = User.fromJson(response);
+      log("newfollower : ${follower.toString()}");
       emit(FollowerAddSuccessState(follower));
 
       emit(stateBefore);
@@ -86,6 +87,8 @@ class PreferenceUserCubit extends Cubit<PreferenceUserState> {
 
     emit(const FollowerAddLoadingState());
     authService.unFollowUser(follower: follower.id).then((response) {
+      var follower = User.fromJson(response);
+      log("newfollower  remove: ${follower.toString()}");
       emit(FollowerAddSuccessState(follower));
 
       emit(stateBefore);

@@ -40,85 +40,86 @@ class _RegistrationFollowScreenState extends State<RegistrationFollowScreen>
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<PreferenceUserCubit, PreferenceUserState>(
+    return BlocConsumer<PreferenceUserCubit, PreferenceUserState>(
         listener: onEventReceived,
-        child: Scaffold(
-          appBar: AppBar(
-              title: const Text(
-            "Rejoins la communauté!",
-          )),
-          body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Container(
-                      margin: const EdgeInsets.symmetric(vertical: 16),
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                          'Fais-toi des amis et reste informé(e) de leur activité dans l’application',
-                          style: Theme.of(context).textTheme.bodySmall)),
-                  Expanded(
-                      // margin: const EdgeInsets.symmetric(vertical: 16),
-                      // height: MediaQuery.of(context).size.height * .73,
-                      // padding: const EdgeInsets.all(8.0),
-                      child: AutoListView.get<User>(
-                          padding: EdgeInsets.only(
-                              bottom: MediaQuery.of(context).viewInsets.bottom),
-                          cubit: followCubit,
-                          /* 
-                                page: page,
-                              )
-                              .then((p) {
-                            return PaginatedList(
-                                items: p.content, page: p.page, total: p.total);
-                          })) */
-                          itemBuilder: (context, user) => UserProfileItem(
-                              user: user,
+        builder: (context, state) =>
+            BlocListener<FollowUserCubit, FollowUserState>(
+              listener: (context, state) {},
+              child: Scaffold(
+                appBar: AppBar(
+                    title: const Text(
+                  "Rejoins la communauté!",
+                )),
+                body: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Container(
+                            margin: const EdgeInsets.symmetric(vertical: 16),
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                                'Fais-toi des amis et reste informé(e) de leur activité dans l’application',
+                                style: Theme.of(context).textTheme.bodySmall)),
+                        Expanded(
+                            // margin: const EdgeInsets.symmetric(vertical: 16),
+                            // height: MediaQuery.of(context).size.height * .73,
+                            // padding: const EdgeInsets.all(8.0),
+                            child: AutoListView.get<User>(
+                                padding: EdgeInsets.only(
+                                    bottom: MediaQuery.of(context)
+                                        .viewInsets
+                                        .bottom),
+                                cubit: followCubit,
+                                itemBuilder: (context, user) => UserProfileItem(
+                                    user: user,
 
-                              // ignore: avoid_print
-                              onFollowPressed: () => preferenceUserCubit
-                                  .followUser(follower: user),
-                              onUnFollowPressed: () => preferenceUserCubit
-                                  .unFollowUser(follower: user)),
-                          emptyBuilder: (context) => const Center(
-                                child: Text("Empty list"),
-                              ),
-                          errorBuilder: (context, retry) => Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const Text("An error occured"),
-                                  TextButton(
-                                    onPressed: retry,
-                                    child: const Text("Retry"),
-                                  )
-                                ],
-                              )))
-                ]),
-          ),
-          bottomNavigationBar: Container(
-            color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
-            child: SafeArea(
-              minimum:
-                  const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  UmaiButton.primary(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const LoginWelcomeBackScreen()),
-                      );
-                    },
-                    text: "Continuer",
+                                    // ignore: avoid_print
+                                    onFollowPressed: () => preferenceUserCubit
+                                        .followUser(follower: user),
+                                    onUnFollowPressed: () => preferenceUserCubit
+                                        .unFollowUser(follower: user)),
+                                emptyBuilder: (context) => const Center(
+                                      child: Text("Empty list"),
+                                    ),
+                                errorBuilder: (context, retry) => Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const Text("An error occured"),
+                                        TextButton(
+                                          onPressed: retry,
+                                          child: const Text("Retry"),
+                                        )
+                                      ],
+                                    )))
+                      ]),
+                ),
+                bottomNavigationBar: Container(
+                  color: Theme.of(context)
+                      .bottomNavigationBarTheme
+                      .backgroundColor,
+                  child: SafeArea(
+                    minimum: const EdgeInsets.symmetric(
+                        horizontal: 32.0, vertical: 16.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        UmaiButton.primary(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const LoginWelcomeBackScreen()),
+                            );
+                          },
+                          text: "Continuer",
+                        ),
+                      ],
+                    ),
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
-        ));
+            ));
   }
 
   void onEventReceived(BuildContext context, PreferenceUserState state) async {

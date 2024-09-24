@@ -36,20 +36,13 @@ class FollowUserCubit extends AutoListCubit<User> {
       }
       return c;
     }).toList();
-    log(user.toString());
-    log(updatedSelectedUser.toString());
+
+    log("user : ${user.toString()}");
+    log("updatedSelectedUser : ${updatedSelectedUser.toString()}");
     emit(UserFollowState(PaginatedList<User>(
         items: updatedSelectedUser,
         page: stateBefore.items.page,
         total: stateBefore.items.total)));
-  }
-
-  bool isUserSelected(User user) {
-    if (state is UserFollowState) {
-      var currentState = state as UserFollowState;
-      return currentState.selectedUser.contains(user);
-    }
-    return false;
   }
 }
 
@@ -57,8 +50,7 @@ typedef FollowUserState = AutoListState<User>;
 typedef FollowUserReadyState = AutoListReadyState<User>;
 
 class UserFollowState extends FollowUserReadyState {
-  final List<User> selectedUser;
-  const UserFollowState(super.items, [this.selectedUser = const []]);
+  const UserFollowState(super.items);
   @override
-  List<Object?> get props => [...super.props, selectedUser];
+  List<Object?> get props => [...super.props];
 }

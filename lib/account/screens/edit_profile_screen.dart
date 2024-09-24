@@ -32,6 +32,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
     setState(() {
       userNameController.text = accountCubit.user!.username!;
       userTagController.text = accountCubit.user!.usertag!;
+      userBioController.text = accountCubit.user!.biography ?? '';
     });
     super.initState();
   }
@@ -185,8 +186,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
     if (state is AccountLoadingState) {
       loadingDialogCompleter = showLoadingBarrier(context: context);
     } else if (state is AccountSuccessState) {
-      showSuccessToast(
-          "Mise à jour effectuée avec succes");
+      showSuccessToast("Mise à jour effectuée avec succes");
     } else if (state is AccountErrorState) {
       showErrorToast(state.error);
     }

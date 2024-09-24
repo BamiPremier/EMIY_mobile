@@ -52,7 +52,7 @@ class UserProfileItem extends StatelessWidget {
       subtitleTextStyle: Theme.of(context).textTheme.labelMedium!.copyWith(
             color: Theme.of(context).colorScheme.secondary,
           ),
-      trailing: !user.followed /* ?  ( isFollowed == false) */
+      trailing: !user.followed
           ? ElevatedButton(
               onPressed: onFollowPressed,
               style: FilledButton.styleFrom(
