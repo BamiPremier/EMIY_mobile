@@ -31,8 +31,13 @@ class _AnimeViewState extends State<AnimeView> {
                   label: const Text("Tendances"),
                   selectedColor:
                       Theme.of(context).colorScheme.tertiaryContainer,
-                  labelStyle: Theme.of(context).chipTheme.labelStyle!.copyWith(
-                      color: Theme.of(context).colorScheme.onTertiaryContainer),
+                  labelStyle: Theme.of(context)
+                      .primaryTextTheme
+                      .labelLarge!
+                      .copyWith(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onTertiaryContainer),
                   selected: isSelected == 0,
                   onSelected: (selected) {
                     setState(() {
@@ -44,8 +49,13 @@ class _AnimeViewState extends State<AnimeView> {
                   label: const Text("Saison prochaine"),
                   selectedColor:
                       Theme.of(context).colorScheme.tertiaryContainer,
-                  labelStyle: Theme.of(context).chipTheme.labelStyle!.copyWith(
-                      color: Theme.of(context).colorScheme.onTertiaryContainer),
+                  labelStyle: Theme.of(context)
+                      .primaryTextTheme
+                      .labelLarge!
+                      .copyWith(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onTertiaryContainer),
                   selected: isSelected == 1,
                   onSelected: (selected) {
                     setState(() {
@@ -57,8 +67,13 @@ class _AnimeViewState extends State<AnimeView> {
                   label: const Text("Tous"),
                   selectedColor:
                       Theme.of(context).colorScheme.tertiaryContainer,
-                  labelStyle: Theme.of(context).chipTheme.labelStyle!.copyWith(
-                      color: Theme.of(context).colorScheme.onTertiaryContainer),
+                  labelStyle: Theme.of(context)
+                      .primaryTextTheme
+                      .labelLarge!
+                      .copyWith(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onTertiaryContainer),
                   selected: isSelected == 2,
                   onSelected: (selected) {
                     setState(() {

@@ -87,17 +87,16 @@ abstract class ThemeApp {
       bodyLarge: arco.bodyLarge?.copyWith(
         color: mainText,
         fontSize: 16.0,
-        fontWeight: FontWeight.bold,
         height: 2.4,
         letterSpacing: 0.5,
       ),
-      bodyMedium: robotoTextTheme.bodyMedium?.copyWith(
+      bodyMedium: arco.bodyMedium?.copyWith(
         color: mainText,
         fontSize: 14.0,
         height: 2.0,
         letterSpacing: 0.25,
       ),
-      bodySmall: robotoTextTheme.bodySmall?.copyWith(
+      bodySmall: arco.bodySmall?.copyWith(
         color: mainText,
         fontSize: 12.0,
         height: 1.6,

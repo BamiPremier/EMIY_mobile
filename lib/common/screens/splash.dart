@@ -47,8 +47,16 @@ class _SplashScreenState extends State<SplashScreen>
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 32.0),
-              child: const Text('UMAI'),
+              margin: const EdgeInsets.only(right: 16),
+              width: 180,
+              height: 180,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  image: AssetImage(Assets.logo),
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
             const SizedBox(height: 48.0),
             const CircularProgressIndicator(

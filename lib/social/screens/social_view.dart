@@ -9,7 +9,7 @@ class SocialView extends StatelessWidget {
     return ListView(
       children: const [
         PostCard(
-          username: 'Hari Randolf',
+          username: 'Hari Randoll',
           userImage: 'https://via.placeholder.com/50',
           postText:
               'Lorem ipsum dolor sit amet consectetur. Odio ornare malesuada non et dignissim erat leo amet aliquet.',
@@ -17,11 +17,35 @@ class SocialView extends StatelessWidget {
           backgroundColor: Colors.white,
         ),
         PostCard(
-          username: 'Hari Randolf',
+          username: 'Hari Randoll',
           userImage: 'https://via.placeholder.com/50',
           postText:
               'Lorem ipsum dolor sit amet consectetur. Odio ornare malesuada non et dignissim erat leo amet aliquet.',
-          postImage: '',
+          postImage: 'https://via.placeholder.com/300',
+          backgroundColor: Colors.white,
+        ),
+        PostCard(
+          username: 'Hari Randoll',
+          userImage: 'https://via.placeholder.com/50',
+          postText:
+              'Lorem ipsum dolor sit amet consectetur. Odio ornare malesuada non et dignissim erat leo amet aliquet.',
+          postImage: 'https://via.placeholder.com/300',
+          backgroundColor: Colors.white,
+        ),
+        PostCard(
+          username: 'Hari Randoll',
+          userImage: 'https://via.placeholder.com/50',
+          postText:
+              'Lorem ipsum dolor sit amet consectetur. Odio ornare malesuada non et dignissim erat leo amet aliquet.',
+          postImage: 'https://via.placeholder.com/300',
+          backgroundColor: Colors.white,
+        ),
+        PostCard(
+          username: 'Hari Randoll',
+          userImage: 'https://via.placeholder.com/50',
+          postText:
+              'Lorem ipsum dolor sit amet consectetur. Odio ornare malesuada non et dignissim erat leo amet aliquet.',
+          postImage: 'https://via.placeholder.com/300',
           backgroundColor: Colors.white,
         ),
       ],

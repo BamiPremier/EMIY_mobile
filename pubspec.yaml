@@ -73,15 +73,16 @@ flutter_launcher_icons:
   android: "ic_launcher"
   ios: true
   remove_alpha_ios: true
-  image_path: "assets/logo/icon.png"
+  image_path: "assets/logo/logo.png"
   adaptive_icon_background: "#FFCC33"
-  adaptive_icon_foreground: "assets/logo/icon_transparent.png.png"
+  adaptive_icon_foreground: "assets/logo/icon_transparent.png"
 
 flutter:
   uses-material-design: true
   assets:
     - assets/
     - assets/icons/
+    - assets/logo/
     - assets/images/
 
   fonts:

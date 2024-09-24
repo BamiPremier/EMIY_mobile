@@ -24,7 +24,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               SwitchListTile(
                 title: Text(
                   'Notifications',
-                  style: Theme.of(context).textTheme.bodyLarge,
+                  style: Theme.of(context).primaryTextTheme.bodyLarge,
                 ),
                 subtitle: Text(
                   notificationsEnabled ? 'Activées' : 'Désactivées',
@@ -40,7 +40,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ListTile(
                 title: Text(
                   'Confidentialité',
-                  style: Theme.of(context).textTheme.bodyLarge,
+                  style: Theme.of(context).primaryTextTheme.bodyLarge,
                 ),
                 subtitle: Text(
                   'Voir la politique de confidentialité',
@@ -52,7 +52,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ListTile(
                 title: Text(
                   'Version',
-                  style: Theme.of(context).textTheme.bodyLarge,
+                  style: Theme.of(context).primaryTextTheme.bodyLarge,
                 ),
                 trailing: const Icon(Icons.arrow_right),
                 subtitle: Text(
