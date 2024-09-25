@@ -1,11 +1,15 @@
-import 'package:flutter/material.dart'; 
-import 'package:umai/common/widgets/action_widget.dart'; 
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:umai/common/models/anime_response.dart';
+import 'package:umai/common/widgets/action_widget.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
-import 'package:umai/common/widgets/buttons.dart'; 
+import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/utils/themes.dart';
 
 class AnimeInfoScreen extends StatefulWidget {
-  const AnimeInfoScreen({super.key});
+  const AnimeInfoScreen({required this.anime, super.key});
+
+  final Anime anime;
 
   @override
   State<AnimeInfoScreen> createState() => _AnimeInfoScreenState();
@@ -37,11 +41,19 @@ class _AnimeInfoScreenState extends State<AnimeInfoScreen>
           // Anime Image
           Stack(
             children: [
-              Image.network(
-                'https://img.freepik.com/photos-gratuite/representations-experience-utilisateur-design-interface_23-2150104489.jpg?t=st=1726481260~exp=1726484860~hmac=71aa8b5d32271a5f3d6a968bb6731cb8d35a797e60f574caa80514a1ff4bcac3&w=900',
-                width: double.infinity,
+              CachedNetworkImage(
+                imageUrl: widget.anime.coverImage.extraLarge,
                 height: 250,
+                width: double.infinity,
                 fit: BoxFit.cover,
+                placeholder: (context, url) => const Center(
+                  child: SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                ),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
               Positioned(
                   top: 0,
@@ -76,11 +88,11 @@ class _AnimeInfoScreenState extends State<AnimeInfoScreen>
               children: [
                 // Title and Info
                 Text(
-                  "Re:Zero kara Hajimeru Isekai Seikatsu 3rd Season",
+                  widget.anime.title.english!,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 Text(
-                  "The third season of Re:Zero kara Hajimeru Isekai Seikatsu.",
+                  widget.anime.title.romaji,
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
                 const SizedBox(height: 8),
@@ -286,10 +298,10 @@ class _AnimeInfoScreenState extends State<AnimeInfoScreen>
                       itemCount: 50,
                       shrinkWrap: true,
                       itemBuilder: (context, index) => InkWell(
-                        onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) => const AnimeInfoScreen()),
-                        ),
+                        // onTap: () => Navigator.of(context).push(
+                        //   MaterialPageRoute(
+                        //       builder: (context) => const AnimeInfoScreen(anime: anime,)),
+                        // ),
                         child: Card(
                           elevation: 0,
                           margin: const EdgeInsets.all(0.0),

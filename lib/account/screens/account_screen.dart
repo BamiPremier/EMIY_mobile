@@ -71,16 +71,17 @@ class _AccountScreenState extends State<AccountScreen>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CachedNetworkImage(
-                        imageUrl: context.read<AccountCubit>().user!.imageFull!,
+                        imageUrl:
+                            context.read<AccountCubit>().user!.imageFull ?? '',
                         height: 80,
                         width: 80,
                         fit: BoxFit.cover,
                         imageBuilder: (context, imageProvider) => Container(
-                          margin: const EdgeInsets.only(right: 16),
-                          child: CircleAvatar(
-                          radius: 40,
-                          backgroundImage: imageProvider,
-                        )),
+                            margin: const EdgeInsets.only(right: 16),
+                            child: CircleAvatar(
+                              radius: 40,
+                              backgroundImage: imageProvider,
+                            )),
                         placeholder: (context, url) => const CircleAvatar(
                           radius: 40,
                           backgroundImage: AssetImage(Assets.user),

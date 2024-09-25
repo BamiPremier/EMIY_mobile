@@ -8,9 +8,9 @@ import 'package:umai/utils/themes.dart';
 class AnimeItem extends StatefulWidget {
   final Anime anime;
   final VoidCallback onTap;
-  AnimeItem({required this.anime, required this.onTap});
+  const AnimeItem({super.key, required this.anime, required this.onTap});
   @override
-  _AnimeItemState createState() => _AnimeItemState();
+  State<AnimeItem> createState() => _AnimeItemState();
 }
 
 class _AnimeItemState extends State<AnimeItem> {
@@ -28,7 +28,7 @@ class _AnimeItemState extends State<AnimeItem> {
           children: [
             // Image at the top of the card
             CachedNetworkImage(
-              imageUrl: widget.anime.coverImage.large,
+              imageUrl: widget.anime.coverImage.extraLarge,
               height: 368,
               width: double.infinity,
               fit: BoxFit.cover,
@@ -65,10 +65,10 @@ class _AnimeItemState extends State<AnimeItem> {
                                 .copyWith(
                                     color: Theme.of(context)
                                         .colorScheme
-                                        .inverseSurface)),
+                                        .onInverseSurface)),
                         Icon(
                           Icons.check,
-                          color: Theme.of(context).colorScheme.inverseSurface,
+                          color: Theme.of(context).colorScheme.onInverseSurface,
                           size: 24.0,
                         ),
                       ],
@@ -83,10 +83,10 @@ class _AnimeItemState extends State<AnimeItem> {
                                 .copyWith(
                                     color: Theme.of(context)
                                         .colorScheme
-                                        .inverseSurface)),
+                                        .onInverseSurface)),
                         Icon(
                           Icons.close,
-                          color: Theme.of(context).colorScheme.inverseSurface,
+                          color: Theme.of(context).colorScheme.onInverseSurface,
                           size: 24.0,
                         ),
                       ],

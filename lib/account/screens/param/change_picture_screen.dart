@@ -65,9 +65,11 @@ class _ChangePictureScreenState extends State<ChangePictureScreen>
             mainAxisSize: MainAxisSize.min,
             children: [
               UmaiButton.primary(
-                onPressed: () => accountCubit.updateProfilePicture(
-                  file: File(widget.image.path),
-                ),
+                onPressed: () {
+                  accountCubit.updateProfilePicture(
+                    file: File(widget.image.path),
+                  );
+                },
                 text: "Enregistrer",
               ),
             ],

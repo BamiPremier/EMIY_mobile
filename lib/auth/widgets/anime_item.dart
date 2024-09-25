@@ -7,9 +7,9 @@ import 'package:umai/utils/themes.dart';
 
 class AnimeItem extends StatefulWidget {
   final Anime anime;
-  AnimeItem({required this.anime});
+  const AnimeItem({required this.anime});
   @override
-  _AnimeItemState createState() => _AnimeItemState();
+  State<AnimeItem> createState() => _AnimeItemState();
 }
 
 class _AnimeItemState extends State<AnimeItem> {
@@ -70,10 +70,10 @@ class _AnimeItemState extends State<AnimeItem> {
                                 .copyWith(
                                     color: Theme.of(context)
                                         .colorScheme
-                                        .inverseSurface)),
+                                        .onInverseSurface)),
                         Icon(
                           Icons.check,
-                          color: Theme.of(context).colorScheme.inverseSurface,
+                          color: Theme.of(context).colorScheme.onInverseSurface,
                           size: 24.0,
                         ),
                       ],
@@ -88,10 +88,10 @@ class _AnimeItemState extends State<AnimeItem> {
                                 .copyWith(
                                     color: Theme.of(context)
                                         .colorScheme
-                                        .inverseSurface)),
+                                        .onInverseSurface)),
                         Icon(
                           Icons.close,
-                          color: Theme.of(context).colorScheme.inverseSurface,
+                          color: Theme.of(context).colorScheme.onInverseSurface,
                           size: 24.0,
                         ),
                       ],

@@ -78,10 +78,17 @@ class EditProfilePictureScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CachedNetworkImage(
-              imageUrl: context.read<AccountCubit>().user!.imageFull!,
-              height: 375,
+              imageUrl: context.read<AccountCubit>().user!.imageFull ?? '',
+              // height: 375,
               width: double.infinity,
               fit: BoxFit.cover,
+              // imageBuilder: (context, imageProvider) => Container(
+              //   margin: const EdgeInsets.only(right: 16),
+              //   child: CircleAvatar(
+              //     radius: 40,
+              //     backgroundImage: imageProvider,
+              //   ),
+              // ),
               placeholder: (context, url) => const CircleAvatar(
                 radius: 40,
                 backgroundImage: AssetImage(Assets.user),

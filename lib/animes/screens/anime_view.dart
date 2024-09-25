@@ -23,7 +23,7 @@ class _AnimeViewState extends State<AnimeView> {
     return Column(
       children: [
         Container(
-            margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+            margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 2),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -31,32 +31,43 @@ class _AnimeViewState extends State<AnimeView> {
                   label: const Text("Tendances"),
                   selectedColor:
                       Theme.of(context).colorScheme.tertiaryContainer,
-                  labelStyle: Theme.of(context)
-                      .textTheme
-                      .labelLarge!
-                      .copyWith(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onTertiaryContainer),
+                  labelStyle: isSelected == 0
+                      ? Theme.of(context).textTheme.labelLarge!.copyWith(
+                          color:
+                              Theme.of(context).colorScheme.onTertiaryContainer)
+                      : Theme.of(context).primaryTextTheme.labelLarge!.copyWith(
+                          color:
+                              Theme.of(context).colorScheme.onSurfaceVariant),
                   selected: isSelected == 0,
                   onSelected: (selected) {
                     setState(() {
                       isSelected = 0;
                     });
                   },
+                  side: isSelected == 0
+                      ? BorderSide.none
+                      : BorderSide(
+                          color:
+                              Theme.of(context).colorScheme.onSurfaceVariant),
+                  showCheckmark: false,
                 ),
                 FilterChip(
                   label: const Text("Saison prochaine"),
                   selectedColor:
                       Theme.of(context).colorScheme.tertiaryContainer,
-                  labelStyle: Theme.of(context)
-                      .primaryTextTheme
-                      .labelLarge!
-                      .copyWith(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onTertiaryContainer),
+                  labelStyle: isSelected == 1
+                      ? Theme.of(context).textTheme.labelLarge!.copyWith(
+                          color:
+                              Theme.of(context).colorScheme.onTertiaryContainer)
+                      : Theme.of(context).primaryTextTheme.labelLarge!.copyWith(
+                          color:
+                              Theme.of(context).colorScheme.onSurfaceVariant),
                   selected: isSelected == 1,
+                  side: isSelected == 1
+                      ? BorderSide.none
+                      : BorderSide(
+                          color:
+                              Theme.of(context).colorScheme.onSurfaceVariant),
                   onSelected: (selected) {
                     setState(() {
                       isSelected = 1;
@@ -67,13 +78,18 @@ class _AnimeViewState extends State<AnimeView> {
                   label: const Text("Tous"),
                   selectedColor:
                       Theme.of(context).colorScheme.tertiaryContainer,
-                  labelStyle: Theme.of(context)
-                      .primaryTextTheme
-                      .labelLarge!
-                      .copyWith(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onTertiaryContainer),
+                  labelStyle: isSelected == 2
+                      ? Theme.of(context).textTheme.labelLarge!.copyWith(
+                          color:
+                              Theme.of(context).colorScheme.onTertiaryContainer)
+                      : Theme.of(context).primaryTextTheme.labelLarge!.copyWith(
+                          color:
+                              Theme.of(context).colorScheme.onSurfaceVariant),
+                  side: isSelected == 2
+                      ? BorderSide.none
+                      : BorderSide(
+                          color:
+                              Theme.of(context).colorScheme.onSurfaceVariant),
                   selected: isSelected == 2,
                   onSelected: (selected) {
                     setState(() {
@@ -102,7 +118,9 @@ class _AnimeViewState extends State<AnimeView> {
                     anime: anime,
                     onTap: () => Navigator.of(context).push(
                           MaterialPageRoute(
-                              builder: (context) => const AnimeInfoScreen()),
+                              builder: (context) => AnimeInfoScreen(
+                                    anime: anime,
+                                  )),
                         )),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,

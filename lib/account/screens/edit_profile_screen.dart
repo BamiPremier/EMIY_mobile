@@ -83,15 +83,21 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                                     builder: (context) =>
                                         const EditProfilePictureScreen())),
                             child: CachedNetworkImage(
-                              imageUrl:
-                                  context.read<AccountCubit>().user!.imageFull!,
+                              imageUrl: context
+                                      .read<AccountCubit>()
+                                      .user!
+                                      .imageFull ??
+                                  '',
                               height: 56,
                               width: 56,
                               fit: BoxFit.cover,
                               imageBuilder: (context, imageProvider) =>
-                                  CircleAvatar(
-                                radius: 56,
-                                backgroundImage: imageProvider,
+                                  Container(
+                                margin: const EdgeInsets.only(right: 16),
+                                child: CircleAvatar(
+                                  radius: 56,
+                                  backgroundImage: imageProvider,
+                                ),
                               ),
                               placeholder: (context, url) => const CircleAvatar(
                                 radius: 56,

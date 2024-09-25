@@ -66,13 +66,13 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: _buildIconWithDecoration(
-                icon: Icons.library_add_check_sharp,
-                selected: _selectedIndex == 1),
+                icon: Icons.commute, selected: _selectedIndex == 1),
             label: 'Events',
           ),
           BottomNavigationBarItem(
             icon: _buildIconWithDecoration(
-                icon: Icons.add_alarm, selected: _selectedIndex == 2),
+                icon: Icons.bookmark_outline_rounded,
+                selected: _selectedIndex == 2),
             label: '',
           ),
           BottomNavigationBarItem(
