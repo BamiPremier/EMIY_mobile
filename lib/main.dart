@@ -23,6 +23,8 @@ import 'package:umai/common/services/preferences_service.dart';
 import 'package:umai/common/services/user_service.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:umai/home_screen.dart';
+import 'package:umai/social/cubit/social_cubit.dart';
+import 'package:umai/social/services/social_service.dart';
 import 'package:umai/utils/themes.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -43,6 +45,7 @@ void main() async {
     FirebaseCrashlytics.instance.recordError(error, trace);
     return true;
   };
+
   runApp(Phoenix(
     child: MyApp(
       navigatorKey: GlobalKey(),
@@ -82,6 +85,8 @@ class MyApp extends StatelessWidget {
         RepositoryProvider(create: (_) => UserService(dio, preferencesService)),
         RepositoryProvider(
             create: (_) => AccountService(dio, preferencesService)),
+        RepositoryProvider(
+            create: (_) => SocialService(dio, preferencesService)),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -105,6 +110,11 @@ class MyApp extends StatelessWidget {
                   )),
           BlocProvider(
               create: (context) => AccountCubit(
+                    context.read(),
+                    preferencesService,
+                  )),
+          BlocProvider(
+              create: (context) => SocialCubit(
                     context.read(),
                   )),
         ],

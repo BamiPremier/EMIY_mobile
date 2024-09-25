@@ -21,6 +21,8 @@ class UserProfileItem extends StatelessWidget {
       contentPadding:
           const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
       leading: CachedNetworkImage(
+        // imageUrl: user.imageFull!,
+      
         imageUrl:
             "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx55-uG26UwIxEJkJ.png",
         imageBuilder: (context, imageProvider) => CircleAvatar(

@@ -9,13 +9,12 @@ class UserService extends ApiService {
 
   const UserService(super._dio, this.preferencesService);
 
-  Future<User> me({required String id}) {
+  Future me({required String id}) {
     return compute(
-        dio.get(
-          _get,
-          options: Options(headers: withAuth()),
-        ),
-        mapper: User.fromJson,
-        mapperKey: 'user');
+      dio.get(
+        _get,
+        options: Options(headers: withAuth()),
+      ),
+    );
   }
 }

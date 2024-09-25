@@ -59,8 +59,9 @@ class UserCubit extends ObjectCubit<User, UserState> {
     final user = preferencesService.user;
     if (user != null) {
       userService.me(id: user.id).then((response) {
-        log(response.toString());
-        preferencesService.saveUser(response);
+        var user = User.fromJson(response);
+        log('meee $response');
+        preferencesService.saveUser(user);
       }, onError: (error, trace) {});
     }
   }
@@ -78,6 +79,8 @@ class UserCubit extends ObjectCubit<User, UserState> {
         emit(UserErrorState(error, trace));
         emit(stateBefore);
       });
+    } else {
+      print('User is not logged ${state}');
     }
   }
 

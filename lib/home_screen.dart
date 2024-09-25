@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:umai/account/screens/account_screen.dart';
 import 'package:umai/animes/screens/anime_view.dart';
+import 'package:umai/social/screens/new_post_screen.dart';
 import 'package:umai/social/screens/social_view.dart';
 import 'package:umai/utils/themes.dart';
 
@@ -49,6 +50,13 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: body,
+      floatingActionButton: _selectedIndex == 0
+          ? FloatingActionButton(
+              onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const NewPostScreen())),
+              child: const Icon(Icons.add),
+            )
+          : null,
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(

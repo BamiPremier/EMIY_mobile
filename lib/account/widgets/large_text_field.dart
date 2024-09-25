@@ -11,6 +11,8 @@ class LargeTextField extends StatelessWidget {
   final void Function()? onEditingCompleted;
   final Widget? prefixIcon;
   final int counter;
+  final int maxLines;
+
   final void Function(String)? onChanged;
   const LargeTextField(
       {super.key,
@@ -24,6 +26,7 @@ class LargeTextField extends StatelessWidget {
       this.textInputAction = TextInputAction.done,
       this.onEditingCompleted,
       this.counter = 0,
+      this.maxLines = 4,
       this.onChanged});
 
   @override
@@ -34,7 +37,7 @@ class LargeTextField extends StatelessWidget {
         Stack(
           children: [
             TextFormField(
-              maxLines: 4,
+              maxLines: maxLines,
               maxLength: 150,
               controller: controller,
               focusNode: focusNode,

@@ -23,7 +23,7 @@ class AccountService extends ApiService {
   );
   Future updateUser({required data}) async {
     return compute(
-      dio.post(
+      dio.patch(
         _updateUser,
         data: data,
         options: Options(headers: withAuth()),
@@ -88,12 +88,12 @@ class AccountService extends ApiService {
     required File file,
   }) async {
     return compute(
-        dio.patch(_updateProfilePicture,
-            options: Options(headers: withAuth()),
-            data: FormData.fromMap({
-              'image': await MultipartFile.fromFile(file.path,
-                  filename: basename(file.path))
-            })),
-        mapperKey: 'user');
+      dio.patch(_updateProfilePicture,
+          options: Options(headers: withAuth()),
+          data: FormData.fromMap({
+            'image': await MultipartFile.fromFile(file.path,
+                filename: basename(file.path))
+          })),
+    );
   }
 }

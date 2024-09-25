@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/account/cubit/account_cubit.dart';
@@ -81,15 +82,26 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         const EditProfilePictureScreen())),
-                            child: Container(
-                              margin: const EdgeInsets.only(right: 16),
-                              width: 56,
+                            child: CachedNetworkImage(
+                              imageUrl:
+                                  context.read<AccountCubit>().user!.imageFull!,
                               height: 56,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  image: AssetImage(Assets.user),
-                                  fit: BoxFit.cover,
+                              width: 56,
+                              fit: BoxFit.cover,
+                              imageBuilder: (context, imageProvider) =>
+                                  CircleAvatar(
+                                radius: 56,
+                                backgroundImage: imageProvider,
+                              ),
+                              placeholder: (context, url) => const CircleAvatar(
+                                radius: 56,
+                                backgroundImage: AssetImage(Assets.user),
+                              ),
+                              errorWidget: (context, url, error) => Container(
+                                margin: const EdgeInsets.only(right: 16),
+                                child: const CircleAvatar(
+                                  radius: 56,
+                                  backgroundImage: AssetImage(Assets.user),
                                 ),
                               ),
                             )),

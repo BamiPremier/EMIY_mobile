@@ -1,7 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:potatoes/libs.dart';
+import 'package:umai/account/cubit/account_cubit.dart';
 import 'package:umai/account/screens/param/change_picture_screen.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
+import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/themes.dart';
 
 class EditProfilePictureScreen extends StatelessWidget {
@@ -73,11 +77,22 @@ class EditProfilePictureScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.network(
-              'https://img.freepik.com/photos-gratuite/representations-experience-utilisateur-design-interface_23-2150104489.jpg?t=st=1726481260~exp=1726484860~hmac=71aa8b5d32271a5f3d6a968bb6731cb8d35a797e60f574caa80514a1ff4bcac3&w=900',
+            CachedNetworkImage(
+              imageUrl: context.read<AccountCubit>().user!.imageFull!,
               height: 375,
               width: double.infinity,
               fit: BoxFit.cover,
+              placeholder: (context, url) => const CircleAvatar(
+                radius: 40,
+                backgroundImage: AssetImage(Assets.user),
+              ),
+              errorWidget: (context, url, error) => Container(
+                margin: const EdgeInsets.only(right: 16),
+                child: CircleAvatar(
+                  radius: 40,
+                  backgroundImage: AssetImage(Assets.user),
+                ),
+              ),
             ),
           ],
         ),

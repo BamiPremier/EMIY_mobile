@@ -27,6 +27,7 @@ class AuthCubit extends Cubit<AuthState> {
     authService.authUser(email: email, token: token).then((response) {
       userCubit.preferencesService.saveUser(response.user );
       userCubit.preferencesService.saveAuthToken(response.accessToken);
+      userCubit.reset();
       if (response.user.status != "PENDING_REGISTRATION") {
         emit(const AuthSuccessActiveUserState());
       } else {
