@@ -69,14 +69,15 @@ class LargeTextField extends StatelessWidget {
                 counterText: '',
               ),
             ),
-            Positioned(
-              right: 10,
-              top: 10,
-              child: Text(
-                '$counter/150',
-                style: Theme.of(context).textTheme.bodySmall,
+            if (counter > 0)
+              Positioned(
+                right: 10,
+                top: 10,
+                child: Text(
+                  '$counter/150',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
               ),
-            ),
           ],
         ),
       ],

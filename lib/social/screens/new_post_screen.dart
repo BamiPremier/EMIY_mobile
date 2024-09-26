@@ -13,8 +13,18 @@ import 'package:umai/common/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:umai/common/widgets/customtextfield.dart';
 import 'package:umai/social/cubit/social_cubit.dart';
+import 'package:umai/social/screens/new_post_complete_screen.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/dialogs.dart';
+import 'dart:io';
+
+// import 'package:better_open_file/better_open_file.dart';
+import 'package:camerawesome/camerawesome_plugin.dart';
+import 'package:camerawesome/pigeon.dart';
+import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:umai/utils/themes.dart';
+// import 'utils/file_utils.dart';
 
 class NewPostScreen extends StatefulWidget {
   const NewPostScreen({super.key});
@@ -26,20 +36,6 @@ class NewPostScreen extends StatefulWidget {
 class _NewPostScreenState extends State<NewPostScreen> with CompletableMixin {
   late final socialCubit = context.read<SocialCubit>();
 
-  File? _image;
-  final TextEditingController _contentController = TextEditingController();
-
-  Future<void> _pickImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.camera);
-
-    if (pickedFile != null) {
-      setState(() {
-        _image = File(pickedFile.path);
-      });
-    }
-  }
-
   int counter = 0;
   @override
   void initState() {
@@ -48,8 +44,6 @@ class _NewPostScreenState extends State<NewPostScreen> with CompletableMixin {
 
   @override
   void dispose() {
-    _contentController.dispose();
-
     super.dispose();
   }
 
@@ -60,125 +54,266 @@ class _NewPostScreenState extends State<NewPostScreen> with CompletableMixin {
     return BlocListener<SocialCubit, SocialState>(
       listener: onEventReceived,
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            "NOUVEAU SOCIAL",
-          ),
-        ),
-        body: SafeArea(
-          minimum: const EdgeInsets.only(bottom: 48),
-          child: Form(
-            key: _formKey,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              margin: const EdgeInsets.only(top: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(top: 16),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('contenu'),
-                        LargeTextField(
-                            controller: _contentController,
-                            counter: counter,
-                            hintText: "Quoi de neuf?",
-                            keyboardType: TextInputType.text,
-                            textCapitalization: TextCapitalization.none,
-                            textInputAction: TextInputAction.next,
-                            onEditingCompleted: () {},
-                            maxLines: 6,
-                            onChanged: (value) {},
-                            validator: (value) => Validators.empty(value),
-                            prefixIcon: const Icon(
-                              Icons.alternate_email,
-                            )),
-                      ],
-                    ),
-                  ),
-                  Container(
-                      margin: const EdgeInsets.only(top: 16, bottom: 8),
-                      child: const Text('Media')),
-                  GestureDetector(
-                    onTap: _pickImage,
-                    child: _image == null
-                        ? Row(children: [
-                            SvgPicture.asset(
-                              Assets.iconsCamera,
-                              width: 100,
-                              height: 100,
+        body: Container(
+          color: Colors.black,
+          child: Stack(
+            children: [
+              CameraAwesomeBuilder.awesome(
+                  onMediaCaptureEvent: (event) {
+                    switch ((event.status, event.isPicture, event.isVideo)) {
+                      case (MediaCaptureStatus.capturing, true, false):
+                        debugPrint('Capture de photo en cours...');
+                        break;
+                      case (MediaCaptureStatus.success, true, false):
+                        event.captureRequest.when(
+                          single: (single) async {
+                            debugPrint(
+                                'Photo enregistrée: ${single.file?.path}');
 
-                              // Container(
-                              //   width: 100,
-                              //   height: 100,
-                              //   color: Colors.grey[300],
-                              //   child: Icon(Icons.camera_indoor_outlined, size: 50),
-                              // ),
-                            ),
-                            const SizedBox(width: 16.0),
-                            Text('Prendre une photo',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall!
-                                    .copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .outline))
-                          ])
-                        : Row(children: [
-                            SizedBox(
-                              width: 100,
-                              height: 100,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Image(
-                                  image: FileImage(File(_image!.path)),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 16.0),
-                            Container(
-                                width: 232,
-                                child: Text(_image!.path,
-                                    maxLines: 4,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall!
-                                        .copyWith(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .outline))),
-                          ]),
+                            var file = File(single.file?.path ?? '');
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      NewPostCompleteScreen(file: file)),
+                            );
+                          },
+                          multiple: (multiple) {
+                            multiple.fileBySensor.forEach((key, value) {
+                              debugPrint(
+                                  'Photos multiples prises: $key ${value?.path}');
+                              // TODO: Traiter les photos multiples
+                            });
+                          },
+                        );
+                        break;
+                      case (MediaCaptureStatus.failure, true, false):
+                        debugPrint(
+                            'Échec de la capture photo: ${event.exception}');
+
+                        break;
+                      case (MediaCaptureStatus.capturing, false, true):
+                        debugPrint('Capture vidéo en cours...');
+                        break;
+                      case (MediaCaptureStatus.success, false, true):
+                        event.captureRequest.when(
+                          single: (single) {
+                            debugPrint(
+                                'Vidéo enregistrée: ${single.file?.path}');
+                          },
+                          multiple: (multiple) {
+                            multiple.fileBySensor.forEach((key, value) {
+                              debugPrint(
+                                  'Vidéos multiples prises: $key ${value?.path}');
+                            });
+                          },
+                        );
+                        break;
+                      case (MediaCaptureStatus.failure, false, true):
+                        debugPrint(
+                            'Échec de la capture vidéo: ${event.exception}');
+
+                        break;
+                      default:
+                        debugPrint('Événement inconnu: $event');
+                    }
+                  },
+                  saveConfig: SaveConfig.photoAndVideo(
+                    initialCaptureMode: CaptureMode.photo,
+                    photoPathBuilder: (sensors) async {
+                      final Directory extDir = await getTemporaryDirectory();
+                      final testDir = await Directory(
+                        '${extDir.path}/camerawesome',
+                      ).create(recursive: true);
+                      if (sensors.length == 1) {
+                        final String filePath =
+                            '${testDir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
+                        return SingleCaptureRequest(filePath, sensors.first);
+                      }
+                      return MultipleCaptureRequest(
+                        {
+                          for (final sensor in sensors)
+                            sensor:
+                                '${testDir.path}/${sensor.position == SensorPosition.front ? 'front_' : "back_"}${DateTime.now().millisecondsSinceEpoch}.jpg',
+                        },
+                      );
+                    },
+                    videoOptions: VideoOptions(
+                      enableAudio: true,
+                      ios: CupertinoVideoOptions(fps: 30),
+                      android: AndroidVideoOptions(
+                        bitrate: 10000000,
+                        fallbackStrategy: QualityFallbackStrategy.lower,
+                      ),
+                    ),
+                    exifPreferences: ExifPreferences(saveGPSLocation: true),
                   ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        bottomNavigationBar: Container(
-          color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
-          child: SafeArea(
-            minimum:
-                const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                UmaiButton.primary(
-                  onPressed: () {
-                    socialCubit.newPost(
-                      content: _contentController.text,
-                      file: _image!,
+                  sensorConfig: SensorConfig.single(
+                    sensor: Sensor.position(SensorPosition.back),
+                    flashMode: FlashMode.auto,
+                    aspectRatio: CameraAspectRatios.ratio_4_3,
+                    zoom: 0.0,
+                  ),
+                  enablePhysicalButton: true,
+                  previewAlignment: Alignment.center,
+                  previewFit: CameraPreviewFit.contain,
+                  availableFilters: awesomePresetFiltersList,
+                  onMediaTap: (mediaCapture) {
+                    mediaCapture.captureRequest.when(
+                      single: (single) {
+                        debugPrint('Fichier unique: ${single.file?.path}');
+                        // TODO: Afficher l'aperçu du fichier capturé
+                      },
+                      multiple: (multiple) {
+                        multiple.fileBySensor.forEach((key, value) {
+                          debugPrint('Fichiers multiples: $key ${value?.path}');
+                          // TODO: Afficher l'aperçu des fichiers capturés
+                        });
+                      },
                     );
                   },
-                  text: "Publier",
-                ),
-              ],
-            ),
+                  middleContentBuilder: (state) => Container(),
+                  topActionsBuilder: (state) => Container(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.close,
+                                  color: Colors.white, size: 30),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            Row(
+                              children: [
+                                IconButton(
+                                  icon: Icon(
+                                    state.when(
+                                      onPhotoMode: (photoState) {
+                                        switch (
+                                            photoState.sensorConfig.flashMode) {
+                                          case FlashMode.auto:
+                                            return Icons.flash_auto;
+                                          case FlashMode.on:
+                                            return Icons.flash_on;
+                                          case FlashMode.none:
+                                            return Icons.flash_off;
+                                          default:
+                                            return Icons.flash_auto;
+                                        }
+                                      },
+                                      onVideoRecordingMode: (_) =>
+                                          Icons.flash_off,
+                                      onPreparingCamera: (_) => Icons.flash_off,
+                                    ),
+                                    color: Colors.white,
+                                    size: 30,
+                                  ),
+                                  onPressed: () {
+                                    state.when(
+                                      onPhotoMode: (photoState) {
+                                        final FlashMode nextMode = {
+                                          FlashMode.auto: FlashMode.on,
+                                          FlashMode.on: FlashMode.none,
+                                          FlashMode.none: FlashMode.auto,
+                                        }[photoState.sensorConfig.flashMode]!;
+
+                                        debugPrint(
+                                            'Changement du mode flash : ${photoState.sensorConfig.flashMode} -> $nextMode');
+                                        setState(() {
+                                          photoState.sensorConfig
+                                              .setFlashMode(nextMode);
+                                        });
+                                      },
+                                      onVideoRecordingMode: (_) => debugPrint(
+                                          'Mode flash non disponible en enregistrement vidéo'),
+                                      onPreparingCamera: (_) => debugPrint(
+                                          'Caméra en cours de préparation'),
+                                    );
+                                  },
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.flip_camera_android,
+                                      color: Colors.white, size: 30),
+                                  onPressed: () {
+                                    state.switchCameraSensor();
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                  bottomActionsBuilder: (state) => Container(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              InkWell(
+                                child: const SizedBox(
+                                  height: 40.0,
+                                  width: 40.0,
+                                  child: CircleAvatar(
+                                    radius: 28,
+                                    child: Icon(Icons.person,
+                                        size: 28, color: Colors.white),
+                                  ),
+                                ),
+                                onTap: () async {
+                                  final ImagePicker _picker = ImagePicker();
+                                  final XFile? image = await _picker.pickImage(
+                                      source: ImageSource.gallery);
+                                  if (image != null) {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              NewPostCompleteScreen(
+                                                  file: File(image.path))),
+                                    );
+                                    print('Image sélectionnée : ${image.path}');
+                                  }
+                                },
+                              ),
+                              Container(
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 28.0),
+                                  decoration: BoxDecoration(
+                                    color: ThemeApp.white,
+                                    borderRadius: BorderRadius.circular(90),
+                                  ),
+                                  child: IconButton(
+                                    padding: EdgeInsets.zero,
+                                    icon: const Icon(Icons.circle,
+                                        color: ThemeApp.grey, size: 80),
+                                    onPressed: () {
+                                      state.when(
+                                        onPhotoMode: (captureRequest) {
+                                          captureRequest.when(
+                                            onPhotoMode: (single) async {
+                                              single.takePhoto();
+                                            },
+                                          );
+                                        },
+                                      );
+                                    },
+                                  )),
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.text_fields,
+                                  color: Colors.white,
+                                  size: 30,
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            NewPostCompleteScreen(file: null)),
+                                  );
+                                },
+                              ),
+                            ]),
+                      )),
+            ],
           ),
         ),
       ),

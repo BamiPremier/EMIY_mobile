@@ -30,4 +30,50 @@ class SocialService extends ApiService {
       ),
     );
   }
+
+  Future<AnimeResponse> getPost({int page = 1}) async {
+    return compute(
+        dio.get(_newPost,
+            options: Options(headers: withAuth()),
+            queryParameters: {
+              'page': page,
+              'take': 10,
+            }),
+        mapper: AnimeResponse.fromJson);
+  }
+
+  Future likePost({
+    required String postId,
+  }) async {
+    return compute(
+      dio.post(
+        _newPost,
+        data: {},
+        options: Options(headers: withAuth()),
+      ),
+    );
+  }
+
+  Future likeCommentForPost({
+    required String postId,
+  }) async {
+    return compute(
+      dio.post(
+        _newPost,
+        data: {},
+        options: Options(headers: withAuth()),
+      ),
+    );
+  }
+
+  Future<AnimeResponse> getCommentForPost({int page = 1}) async {
+    return compute(
+        dio.get(_newPost,
+            options: Options(headers: withAuth()),
+            queryParameters: {
+              'page': page,
+              'take': 10,
+            }),
+        mapper: AnimeResponse.fromJson);
+  }
 }

@@ -36,7 +36,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: ThemeApp.primaryYellow,
+        backgroundColor:
+            _selectedIndex != 0 ? ThemeApp.primaryYellow : Colors.white,
         title: Text(title),
         centerTitle: true,
         actions: [
