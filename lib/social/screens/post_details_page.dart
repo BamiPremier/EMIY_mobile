@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:umai/social/model/post_response.dart';
 import 'package:umai/social/widget/post_social_card.dart';
+import 'package:umai/social/widget/post_social_card_second.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/themes.dart';
 
@@ -41,7 +42,7 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
       body: ListView(
         children: [
           // Post principal
-          PostSocialCard(
+          PostSocialCardSecond(
             post: widget.post,
           ),
           // SizedBox(height: 16),

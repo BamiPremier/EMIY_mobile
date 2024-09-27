@@ -99,49 +99,69 @@ class PostSocialCard extends StatelessWidget {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.zero,
-                child: Image.network(
-                  post.image,
-                  height: 368,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                  frameBuilder: (BuildContext context, Widget child, int? frame,
-                      bool wasSynchronouslyLoaded) {
-                    if (wasSynchronouslyLoaded) {
-                      return child;
-                    }
-                    return AnimatedOpacity(
-                      opacity: frame == null ? 0 : 1,
-                      duration: const Duration(seconds: 1),
-                      curve: Curves.easeOut,
-                      child: child,
-                    );
-                  },
-                  loadingBuilder: (BuildContext context, Widget child,
-                      ImageChunkEvent? loadingProgress) {
-                    if (loadingProgress == null) {
-                      return child;
-                    }
-                    return SizedBox(
+            post.image == null || post.image == '' || post.image!.isEmpty
+                ? SizedBox()
+                : Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Image.network(
+                      post.image ?? '',
                       height: 368,
                       width: double.infinity,
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          color: Theme.of(context).colorScheme.tertiary,
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                                  (loadingProgress.expectedTotalBytes ?? 1)
-                              : null,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
+                      fit: BoxFit.cover,
+                      frameBuilder: (BuildContext context, Widget child,
+                          int? frame, bool wasSynchronouslyLoaded) {
+                        if (wasSynchronouslyLoaded) {
+                          return child;
+                        }
+                        return AnimatedOpacity(
+                          opacity: frame == null ? 0 : 1,
+                          duration: const Duration(seconds: 1),
+                          curve: Curves.easeOut,
+                          child: child,
+                        );
+                      },
+                      loadingBuilder: (BuildContext context, Widget child,
+                          ImageChunkEvent? loadingProgress) {
+                        if (loadingProgress == null) {
+                          return child;
+                        }
+                        return SizedBox(
+                          height: 368,
+                          width: double.infinity,
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: Theme.of(context).colorScheme.tertiary,
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      (loadingProgress.expectedTotalBytes ?? 1)
+                                  : null,
+                            ),
+                          ),
+                        );
+                      },
+                      errorBuilder: (BuildContext context, Object error,
+                          StackTrace? stackTrace) {
+                        return Container(
+                          height: 368,
+                          width: double.infinity,
+                          color: Colors.grey[300],
+                          child: const Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.error, color: Colors.red, size: 48),
+                                SizedBox(height: 16),
+                                Text(
+                                  "Erreur de chargement de l'image",
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

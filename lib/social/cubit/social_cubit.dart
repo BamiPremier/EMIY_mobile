@@ -31,9 +31,13 @@ class SocialCubit extends Cubit<SocialState> {
       file: file,
     )
         .then((response) {
-      emit(NewPostSuccessState(response));
+      log('=================success===============');
 
-      emit(stateBefore);
+      emit(NewPostSuccessState(response));
+      Future.delayed(const Duration(seconds: 15), () {
+        log('=================reinitialisation===============');
+        emit(stateBefore);
+      });
     }, onError: (error, trace) {
       emit(NewPostErrorState(error, trace));
       emit(stateBefore);

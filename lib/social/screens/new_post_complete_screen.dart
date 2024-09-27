@@ -51,143 +51,141 @@ class _NewPostCompleteScreenState extends State<NewPostCompleteScreen>
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<SocialCubit, SocialState>(
-      listener: onEventReceived,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            "NOUVEAU SOCIAL",
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          "NOUVEAU SOCIAL",
         ),
-        body: SafeArea(
-          minimum: const EdgeInsets.only(bottom: 48),
-          child: Form(
-            key: _formKey,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              margin: const EdgeInsets.only(top: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(top: 16),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('contenu'),
-                        CommentTextField(
-                            controller: _contentController,
-                            hintText: "Quoi de neuf?",
-                            counter: 0,
-                            keyboardType: TextInputType.text,
-                            textCapitalization: TextCapitalization.none,
-                            textInputAction: TextInputAction.next,
-                            onEditingCompleted: () {},
-                            onChanged: (value) {},
-                            validator: (value) => Validators.empty(value),
-                            prefixIcon: const Icon(
-                              Icons.alternate_email,
-                            )),
-                      ],
-                    ),
+      ),
+      body: SafeArea(
+        minimum: const EdgeInsets.only(bottom: 48),
+        child: Form(
+          key: _formKey,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            margin: const EdgeInsets.only(top: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(top: 16),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('contenu'),
+                      CommentTextField(
+                          controller: _contentController,
+                          hintText: "Quoi de neuf?",
+                          counter: 0,
+                          keyboardType: TextInputType.text,
+                          textCapitalization: TextCapitalization.none,
+                          textInputAction: TextInputAction.next,
+                          onEditingCompleted: () {},
+                          onChanged: (value) {},
+                          validator: (value) => Validators.empty(value),
+                          prefixIcon: const Icon(
+                            Icons.alternate_email,
+                          )),
+                    ],
                   ),
-                  Container(
-                      margin: const EdgeInsets.only(top: 16, bottom: 8),
-                      child: const Text('Media')),
-                  widget.file == null
-                      ? Row(children: [
-                          SvgPicture.asset(
-                            Assets.iconsCamera,
-                            width: 100,
-                            height: 100,
+                ),
+                Container(
+                    margin: const EdgeInsets.only(top: 16, bottom: 8),
+                    child: const Text('Media')),
+                widget.file == null
+                    ? Row(children: [
+                        SvgPicture.asset(
+                          Assets.iconsCamera,
+                          width: 100,
+                          height: 100,
 
-                            // Container(
-                            //   width: 100,
-                            //   height: 100,
-                            //   color: Colors.grey[300],
-                            //   child: Icon(Icons.camera_indoor_outlined, size: 50),
-                            // ),
-                          ),
-                          const SizedBox(width: 16.0),
-                          Text('Prendre une photo',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall!
-                                  .copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .outline))
-                        ])
-                      : Row(children: [
-                          SizedBox(
-                            width: 100,
-                            height: 100,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Image(
-                                image: FileImage(widget.file!),
-                                fit: BoxFit.cover,
-                              ),
+                          // Container(
+                          //   width: 100,
+                          //   height: 100,
+                          //   color: Colors.grey[300],
+                          //   child: Icon(Icons.camera_indoor_outlined, size: 50),
+                          // ),
+                        ),
+                        const SizedBox(width: 16.0),
+                        Text('Prendre une photo',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall!
+                                .copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.outline))
+                      ])
+                    : Row(children: [
+                        SizedBox(
+                          width: 100,
+                          height: 100,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image(
+                              image: FileImage(widget.file!),
+                              fit: BoxFit.cover,
                             ),
                           ),
-                          const SizedBox(width: 16.0),
-                          Container(
-                              width: 232,
-                              child: Text(widget.file!.path,
-                                  maxLines: 4,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
-                                      .copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .outline))),
-                        ]),
-                ],
-              ),
+                        ),
+                        const SizedBox(width: 16.0),
+                        Container(
+                            width: 232,
+                            child: Text(widget.file!.path,
+                                maxLines: 4,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall!
+                                    .copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .outline))),
+                      ]),
+              ],
             ),
           ),
         ),
-        bottomNavigationBar: Container(
-          color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
-          child: SafeArea(
-            minimum:
-                const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                UmaiButton.primary(
-                  onPressed: () {
-                    socialCubit.newPost(
-                      content: _contentController.text,
-                      file: widget.file!,
-                    );
-                  },
-                  text: "Publier",
-                ),
-              ],
-            ),
+      ),
+      bottomNavigationBar: Container(
+        color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+        child: SafeArea(
+          minimum: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              UmaiButton.primary(
+                onPressed: () {
+                  socialCubit.newPost(
+                    content: _contentController.text,
+                    file: widget.file!,
+                  );
+
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (_) => const HomeScreen()),
+                      (route) => false);
+                },
+                text: "Publier",
+              ),
+            ],
           ),
         ),
       ),
     );
   }
 
-  void onEventReceived(BuildContext context, SocialState state) async {
-    await waitForDialog();
+  // void onEventReceived(BuildContext context, SocialState state) async {
+  //   await waitForDialog();
 
-    if (state is NewPostLoadingState) {
-      loadingDialogCompleter = showLoadingBarrier(context: context);
-    } else if (state is NewPostSuccessState) {
-      showSuccessToast("Post ajouté avec succes");
-      postCubit.addToFeed(state.post);
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
-          (route) => false);
-    } else if (state is NewPostErrorState) {
-      showErrorToast(state.error);
-    }
-  }
+  //   if (state is NewPostLoadingState) {
+  //     loadingDialogCompleter = showLoadingBarrier(context: context);
+  //   } else if (state is NewPostSuccessState) {
+  //     postCubit.addToFeed(state.post);
+  //     Navigator.of(context).pushAndRemoveUntil(
+  //         MaterialPageRoute(builder: (_) => const HomeScreen()),
+  //         (route) => false);
+  //   } else if (state is NewPostErrorState) {
+  //     showErrorToast(state.error);
+  //   }
+  // }
 }
