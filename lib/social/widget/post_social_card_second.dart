@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:umai/social/model/post_response.dart';
-import 'package:umai/social/screens/post_details_page.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:umai/social/model/post.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/themes.dart';
 
@@ -30,20 +30,19 @@ class PostSocialCardSecond extends StatelessWidget {
                   leading: CachedNetworkImage(
                     imageUrl: post.user.image ?? '',
                     fit: BoxFit.cover,
-                    imageBuilder: (context, imageProvider) => Container(
-                        child: CircleAvatar(
+                    imageBuilder: (context, imageProvider) => CircleAvatar(
                       radius: 28,
                       backgroundImage: imageProvider,
-                    )),
-                    placeholder: (context, url) => const CircleAvatar(
-                      radius: 28,
-                      backgroundImage: AssetImage(Assets.user),
                     ),
-                    errorWidget: (context, url, error) => Container(
-                      child: CircleAvatar(
-                        radius: 28,
-                        backgroundImage: AssetImage(Assets.user),
-                      ),
+                    placeholder: (context, url) => SvgPicture.asset(
+                      Assets.defaultAvatar,
+                      height: 48.0,
+                      width: 48.0,
+                    ),
+                    errorWidget: (context, url, error) => SvgPicture.asset(
+                      Assets.defaultAvatar,
+                      height: 48.0,
+                      width: 48.0,
                     ),
                   ),
                   title: Text(
@@ -55,7 +54,7 @@ class PostSocialCardSecond extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .labelMedium!
-                        .copyWith(color: ThemeApp.grey),
+                        .copyWith(color: AppTheme.grey),
                   ),
                   trailing: PopupMenuButton<String>(
                     onSelected: (value) {

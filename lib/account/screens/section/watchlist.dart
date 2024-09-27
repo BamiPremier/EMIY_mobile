@@ -1,12 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
-import 'package:potatoes/auto_list/models/paginated_list.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
-import 'package:flutter/material.dart';
-import 'package:umai/account/services/account_service.dart';
-import 'package:umai/account/widgets/anime_item.dart';
-import 'package:umai/common/models/anime_response.dart';
+import 'package:umai/animes/models/anime.dart';
+import 'package:umai/animes/widgets/item_anime.dart';
+import 'package:umai/common/services/user_service.dart';
 
 class WatchList extends StatefulWidget {
   const WatchList({super.key});
@@ -21,16 +20,7 @@ class _WatchListState extends State<WatchList> with CompletableMixin {
     return AutoListView.get<Anime>(
         padding:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-        cubit: AutoListCubit(
-            provider: ({int page = 1}) => context
-                    .read<AccountService>()
-                    .getWatchList(
-                      page: page,
-                    )
-                    .then((p) {
-                  return PaginatedList(
-                      items: p.content, page: p.page, total: p.total);
-                })),
+        cubit: AutoListCubit(provider: context.read<UserService>().getWatchList),
         viewType: ViewType.grid,
         itemBuilder: (context, anime) => AnimeItem(anime: anime),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

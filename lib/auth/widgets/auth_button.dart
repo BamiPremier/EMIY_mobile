@@ -1,7 +1,7 @@
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:umai/utils/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:umai/common/widgets/buttons.dart';
+import 'package:umai/utils/assets.dart';
 
 enum AuthProvider { apple, google }
 
@@ -27,8 +27,6 @@ extension AuthProviderExtension on AuthProvider {
   }
 }
 
-enum AuthButtonStyle { primary, secondary, hybride }
-
 class AuthButton extends StatelessWidget {
   final AuthProvider provider;
   final VoidCallback onPressed;
@@ -51,21 +49,27 @@ class AuthButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FilledButton.icon(
-      onPressed: onPressed,
-      icon: SvgPicture.asset(
-        provider.asset,
-        height: 24.0,
-      ),
-      label: AutoSizeText(provider.name,
-          maxLines: 1,
-          minFontSize: 10,
-          style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                color: textColor,
-              )),
-      style: FilledButton.styleFrom(
-        backgroundColor: backgroundColor,
-      ),
-    );
+    switch (provider) {
+      case AuthProvider.apple:
+        return UmaiButton.white(
+          onPressed: onPressed,
+          icon: SvgPicture.asset(
+            provider.asset,
+            height: 24.0,
+          ),
+          text: provider.name,
+          large: true,
+        );
+      case AuthProvider.google:
+        return UmaiButton.black(
+          onPressed: onPressed,
+          icon: SvgPicture.asset(
+            provider.asset,
+            height: 24.0,
+          ),
+          text: provider.name,
+          large: true,
+        );
+    }
   }
 }

@@ -71,7 +71,7 @@ void showSuccessToast(
       gravity: ToastGravity.TOP,
       timeInSecForIosWeb: 6,
       textColor: Colors.white,
-      backgroundColor: ThemeApp.primaryGreen,
+      backgroundColor: AppTheme.primaryGreen,
       fontSize: 16.0);
 }
 
@@ -84,6 +84,6 @@ void showErrorToast(
       gravity: ToastGravity.TOP,
       timeInSecForIosWeb: 6,
       textColor: Colors.white,
-      backgroundColor: ThemeApp.errorRed,
+      backgroundColor: AppTheme.errorRed,
       fontSize: 16.0);
 }

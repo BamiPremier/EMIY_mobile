@@ -1,11 +1,8 @@
-import 'dart:developer';
-
-import 'package:potatoes/libs.dart';
-import 'package:umai/auth/bloc/auth_cubit.dart'; 
-import 'package:umai/common/widgets/buttons.dart';
 import 'package:flutter/material.dart';
-import 'package:umai/home_screen.dart';
-import 'package:umai/utils/app_dimension.dart';
+import 'package:potatoes/libs.dart';
+import 'package:umai/auth/bloc/auth_cubit.dart';
+import 'package:umai/common/widgets/buttons.dart';
+import 'package:umai/common/screens/home.dart';
 import 'package:umai/utils/themes.dart';
 
 class LoginWelcomeBackScreen extends StatefulWidget {
@@ -25,42 +22,33 @@ class _LoginWelcomeBackScreenState extends State<LoginWelcomeBackScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ThemeApp.primaryYellow,
-      body: SafeArea(
-        minimum: const EdgeInsets.only(bottom: 48),
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 48),
-          child: Column(
-            children: [
-              const Spacer(
-                flex: 1,
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    Text('Bon retour parmi nous!',
+    return Theme(
+      data: AppTheme.primaryColorTheme(context),
+      child: Scaffold(
+        body: SafeArea(
+          minimum: const EdgeInsets.only(bottom: 32.0),
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 48),
+            child: Column(
+              children: [
+                Expanded(
+                  child: Center(
+                    child: Text('Bon retour parmi nous!',
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.displaySmall)
-                  ],
+                        style: Theme.of(context).textTheme.displaySmall),
+                  ),
                 ),
-              ),
-              Container(
-                margin:
-                    const EdgeInsets.symmetric(vertical: Dimension.kMarginY),
-                child: UmaiButton.secondary(
+                UmaiButton.white(
                   onPressed: () {
-                    log('3333333333333333');
                     Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                            builder: (context) => const HomeScreen()),
-                        (route) => false);
-                    log('3333333333333333');
+                      MaterialPageRoute(builder: (_) => const HomeScreen()),
+                      (route) => false
+                    );
                   },
                   text: "Merci",
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

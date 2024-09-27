@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:umai/utils/assets.dart';
 
-abstract class ThemeApp {
+abstract class AppTheme {
   static const Color primaryYellow = Color(0xFFFFCC33);
   static const Color primaryGreen = Color.fromARGB(255, 77, 122, 77);
   static const Color primaryBlack = Color(0xFF090909);
@@ -17,10 +17,7 @@ abstract class ThemeApp {
   static const Color disabledGrey = Color(0xFFDDDEE1);
   static const Color disabledGreySurface = Color(0xFFF5F5F5);
   static const Color grey = Color(0xFFD9D9D9);
-  static const Color scaffoldBackground = Color(0xFFFBFCF5);
-  static const Color lightText = Color(0xFFA5ACB8);
   static const Color disabledText = Color(0xFF75788B);
-  static const Color boldText = Color(0xFF202C39);
 
   static TextTheme _textTheme(BuildContext context) {
     final baseTextTheme = Theme.of(context).textTheme;
@@ -32,128 +29,101 @@ abstract class ThemeApp {
       displayLarge: robotoTextTheme.displayLarge?.copyWith(
         color: mainText,
         fontSize: 57.0,
-        height: 6.4,
-        letterSpacing: -0.25,
       ),
       displayMedium: robotoTextTheme.displayMedium?.copyWith(
         color: mainText,
         fontSize: 45.0,
-        height: 5.2,
-        letterSpacing: 0.0,
       ),
       displaySmall: arco.displaySmall?.copyWith(
         color: mainText,
         fontSize: 36.0,
         fontWeight: FontWeight.bold,
-        height: 4.4,
-        letterSpacing: 0.0,
       ),
       headlineLarge: robotoTextTheme.headlineLarge?.copyWith(
         color: mainText,
         fontSize: 32.0,
-        height: 4.0,
-        letterSpacing: 0.0,
       ),
       headlineMedium: robotoTextTheme.headlineMedium?.copyWith(
         color: mainText,
         fontSize: 28.0,
-        height: 3.6,
-        letterSpacing: 0.0,
       ),
       headlineSmall: robotoTextTheme.headlineSmall?.copyWith(
         color: mainText,
         fontSize: 24.0,
-        height: 3.2,
-        letterSpacing: 0.0,
       ),
       titleLarge: arco.titleLarge?.copyWith(
-          color: mainText,
-          fontSize: 20.0,
-          fontWeight: FontWeight.bold,
-          letterSpacing: 0,
-          height: 2.8),
+        color: mainText,
+        fontSize: 20.0,
+        fontWeight: FontWeight.bold,
+      ),
       titleMedium: robotoTextTheme.titleMedium?.copyWith(
         color: mainText,
         fontSize: 16.0,
-        height: 2.4,
-        letterSpacing: 0.15,
       ),
       titleSmall: robotoTextTheme.titleSmall?.copyWith(
         color: mainText,
         fontSize: 14.0,
-        height: 2.0,
-        letterSpacing: 0.1,
       ),
       bodyLarge: arco.bodyLarge?.copyWith(
         color: mainText,
         fontSize: 16.0,
-        height: 2.4,
-        letterSpacing: 0.5,
       ),
       bodyMedium: arco.bodyMedium?.copyWith(
         color: mainText,
         fontSize: 14.0,
-        height: 2.0,
-        letterSpacing: 0.25,
       ),
       bodySmall: arco.bodySmall?.copyWith(
         color: mainText,
         fontSize: 12.0,
-        height: 1.6,
-        letterSpacing: 0.4,
       ),
       labelLarge: arco.labelLarge?.copyWith(
-          color: mainText,
-          fontSize: 14.0,
-          fontWeight: FontWeight.bold,
-          letterSpacing: 0.1,
-          height: 2.0),
+        color: mainText,
+        fontSize: 14.0,
+        fontWeight: FontWeight.bold,
+      ),
       labelMedium: robotoTextTheme.labelMedium?.copyWith(
         color: mainText,
         fontSize: 12.0,
-        height: 1.6,
-        letterSpacing: 0.5,
       ),
       labelSmall: robotoTextTheme.labelSmall?.copyWith(
         color: mainText,
         fontSize: 11.0,
-        height: 1.6,
-        letterSpacing: 0.5,
       ),
+    );
+  }
+
+  static ColorScheme _colorScheme([Brightness brightness = Brightness.light]) {
+    return ColorScheme.fromSeed(
+      seedColor: primaryYellow,
+      primary: primaryYellow,
+      secondary: primaryYellow,
+      tertiary: primaryRed,
+      brightness: brightness,
     );
   }
 
   static ThemeData _baseTheme(BuildContext context) {
     final theme = Theme.of(context);
+    final colorScheme = _colorScheme();
     final textTheme = _textTheme(context);
 
     return ThemeData(
       useMaterial3: true,
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: primaryYellow,
-        primary: primaryYellow,
-        primaryContainer: primaryYellow,
-        secondary: secondaryLight,
-        tertiary: tertiary,
-        error: errorRed,
-        // ignore: deprecated_member_use
-        surfaceVariant: disabledGreySurface,
+      colorScheme: colorScheme.copyWith(
+        surface: white
       ),
       primaryColor: primaryYellow,
       disabledColor: disabledGrey,
-      scaffoldBackgroundColor: Theme.of(context).colorScheme.surface,
-      cardColor: Theme.of(context).colorScheme.surface,
       appBarTheme: theme.appBarTheme.copyWith(
-        backgroundColor: Colors.transparent,
-        scrolledUnderElevation: 0,
-        titleTextStyle:
-            textTheme.titleLarge?.copyWith(color: theme.colorScheme.onSurface),
-        toolbarTextStyle:
-            textTheme.titleLarge?.copyWith(color: theme.colorScheme.onSurface),
         elevation: 0,
-        iconTheme: const IconThemeData(color: mainText),
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(systemNavigationBarColor: white),
+        scrolledUnderElevation: 0,
+        surfaceTintColor: Colors.transparent,
+        systemOverlayStyle: SystemUiOverlayStyle(
+          systemNavigationBarColor: colorScheme.surface,
+          systemNavigationBarDividerColor: colorScheme.surface,
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.dark
+        ),
       ),
       bottomNavigationBarTheme: theme.bottomNavigationBarTheme.copyWith(
         backgroundColor: white,
@@ -228,39 +198,31 @@ abstract class ThemeApp {
         labelPadding: const EdgeInsets.symmetric(horizontal: 16.0),
       ),
       inputDecorationTheme: InputDecorationTheme(
-        fillColor: mainText,
-        focusColor: mainText,
-        hoverColor: mainText,
+        fillColor: colorScheme.surfaceContainerHighest,
+        filled: true,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.0),
-          borderSide: const BorderSide(color: mainText),
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.0),
-          borderSide: BorderSide(color: theme.disabledColor),
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: BorderSide.none,
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
-        // hintStyle: textTheme.bodyLarge
-        //     ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-        labelStyle: textTheme.bodySmall
-            ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-        suffixIconColor: mainText,
-        prefixIconColor: mainText,
-        iconColor: mainText,
-        floatingLabelStyle: textTheme.bodySmall?.copyWith(color: mainText),
-      ),
-      textSelectionTheme: const TextSelectionThemeData(
-        cursorColor: mainText,
-        // selectionColor: mainText.withOpacity(0.3),
-        selectionHandleColor: Color.fromARGB(255, 32, 23, 23),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: BorderSide.none,
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: BorderSide.none,
+        )
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           backgroundColor: primaryYellow,
           side: const BorderSide(color: primaryYellow),
           padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
           textStyle: textTheme.labelMedium,
         ),
       ),
@@ -281,7 +243,6 @@ abstract class ThemeApp {
         backgroundColor: Colors.white,
         selectedColor: primaryYellow,
         labelStyle: Theme.of(context).textTheme.labelLarge,
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
         shape: RoundedRectangleBorder(
             side: const BorderSide(color: black),
             borderRadius: BorderRadius.circular(100.0)),
@@ -313,4 +274,47 @@ abstract class ThemeApp {
   }
 
   static ThemeData lightTheme(BuildContext context) => _baseTheme(context);
+
+  static ThemeData primaryColorTheme(BuildContext context) {
+    final baseTheme = lightTheme(context);
+
+    return baseTheme.copyWith(
+      scaffoldBackgroundColor: primaryYellow,
+      appBarTheme: baseTheme.appBarTheme.copyWith(
+        backgroundColor: primaryYellow,
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          systemNavigationBarColor: primaryYellow,
+          systemNavigationBarDividerColor: primaryYellow,
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.dark,
+        )
+      )
+    );
+  }
+
+  static ThemeData fullBlackTheme(BuildContext context) {
+    final baseTheme = _baseTheme(context);
+    final colorScheme = _colorScheme(Brightness.dark);
+
+    return baseTheme.copyWith(
+      brightness: Brightness.dark,
+      appBarTheme: baseTheme.appBarTheme.copyWith(
+        backgroundColor: colorScheme.surface,
+        foregroundColor: colorScheme.onSurface,
+        iconTheme: baseTheme.appBarTheme.iconTheme?.copyWith(
+          color: colorScheme.onSurface
+        ),
+        titleTextStyle: baseTheme.appBarTheme.titleTextStyle?.copyWith(
+          color: colorScheme.onSurface
+        ),
+        systemOverlayStyle: SystemUiOverlayStyle(
+          systemNavigationBarColor: colorScheme.surface,
+          systemNavigationBarDividerColor: colorScheme.surface,
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.light
+        )
+      ),
+      scaffoldBackgroundColor: colorScheme.surface
+    );
+  }
 }

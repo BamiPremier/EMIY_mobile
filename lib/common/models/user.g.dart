@@ -8,13 +8,13 @@ part of 'user.dart';
 
 _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
       id: json['id'] as String,
-      username: json['username'] as String,
-      usertag: json['usertag'] as String,
+      username: json['username'] as String? ?? '',
+      usertag: json['usertag'] as String? ?? '',
       image: json['image'] as String?,
       imageFull: json['image_full'] as String?,
       biography: json['biography'] as String?,
-      type: json['type'] as String? ?? 'DEFAULT',
-      status: json['status'] as String? ?? 'PENDING_REGISTRATION',
+      type: json['type'] as String,
+      status: json['status'] as String,
       followersCount: (json['followers_count'] as num?)?.toInt() ?? 0,
       followingCount: (json['following_count'] as num?)?.toInt() ?? 0,
       animesViewedCount: (json['animes_viewed_count'] as num?)?.toInt() ?? 0,

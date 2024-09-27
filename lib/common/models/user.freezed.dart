@@ -272,13 +272,13 @@ class __$$UserImplCopyWithImpl<$Res>
 class _$UserImpl implements _User {
   const _$UserImpl(
       {required this.id,
-      required this.username,
-      required this.usertag,
+      this.username = '',
+      this.usertag = '',
       this.image,
       @JsonKey(name: 'image_full') this.imageFull,
       this.biography,
-      this.type = 'DEFAULT',
-      this.status = 'PENDING_REGISTRATION',
+      required this.type,
+      required this.status,
       @JsonKey(name: 'followers_count') this.followersCount = 0,
       @JsonKey(name: 'following_count') this.followingCount = 0,
       @JsonKey(name: 'animes_viewed_count') this.animesViewedCount = 0,
@@ -292,8 +292,10 @@ class _$UserImpl implements _User {
   @override
   final String id;
   @override
+  @JsonKey()
   final String username;
   @override
+  @JsonKey()
   final String usertag;
   @override
   final String? image;
@@ -303,10 +305,8 @@ class _$UserImpl implements _User {
   @override
   final String? biography;
   @override
-  @JsonKey()
   final String type;
   @override
-  @JsonKey()
   final String status;
   @override
   @JsonKey(name: 'followers_count')
@@ -398,13 +398,13 @@ class _$UserImpl implements _User {
 abstract class _User implements User {
   const factory _User(
       {required final String id,
-      required final String username,
-      required final String usertag,
+      final String username,
+      final String usertag,
       final String? image,
       @JsonKey(name: 'image_full') final String? imageFull,
       final String? biography,
-      final String type,
-      final String status,
+      required final String type,
+      required final String status,
       @JsonKey(name: 'followers_count') final int followersCount,
       @JsonKey(name: 'following_count') final int followingCount,
       @JsonKey(name: 'animes_viewed_count') final int animesViewedCount,

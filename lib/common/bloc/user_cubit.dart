@@ -1,8 +1,9 @@
 import 'dart:async';
-import 'dart:developer';
-import 'package:potatoes/potatoes.dart' hide PreferencesService;
+import 'dart:io';
 
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:potatoes/libs.dart';
+import 'package:potatoes/potatoes.dart' hide PreferencesService;
 import 'package:umai/common/models/user.dart';
 import 'package:umai/common/services/preferences_service.dart';
 import 'package:umai/common/services/user_service.dart';
@@ -34,8 +35,8 @@ class UserCubit extends ObjectCubit<User, UserState> {
     if (user == null) {
       emit(const UserNotLoggedState());
     } else {
-      if (user.status == "PENDING_REGISTRATION") {
-        log("User is pending registration");
+      if (refresh) _refreshData();
+      if (user.status == UserStatus.pendingRegistration) {
         emit(const CompleteUserProfileState());
       } else {
         emit(UserLoggedState(user));
@@ -55,15 +56,46 @@ class UserCubit extends ObjectCubit<User, UserState> {
         'cannot retrieve user when not logged: Current state is ${state.runtimeType}');
   }
 
-  void userMe() {
-    final user = preferencesService.user;
-    if (user != null) {
-      userService.me(id: user.id).then((response) {
-        var user = User.fromJson(response);
-        log('meee $response');
-        preferencesService.saveUser(user);
-      }, onError: (error, trace) {});
-    }
+  Future<void> _refreshData() {
+    return userService.getMe()
+      .then((user) async {
+        await preferencesService.saveUser(user);
+        emit(UserLoggedState(user));
+    });
+  }
+
+  void updateUser({
+    String? username,
+    String? biography,
+  }) {
+    final stateBefore = state;
+
+    emit(const UserUpdatingState());
+    userService.updateUser(
+      username: username,
+      biography: biography
+    ).then((user) {
+      preferencesService.saveUser(user);
+      emit(const UserUpdatedState());
+      emit(UserLoggedState(user));
+    }, onError: (error, trace) {
+      emit(UserErrorState(error, trace));
+      emit(stateBefore);
+    });
+  }
+
+  void updateProfilePicture({required File file}) {
+    final stateBefore = state;
+
+    emit(const UserUpdatingState());
+    userService.updateProfilePicture(file: file).then((user) {
+      preferencesService.saveUser(user);
+      emit(const UserUpdatedState());
+      emit(UserLoggedState(user));
+    }, onError: (error, trace) {
+      emit(UserErrorState(error, trace));
+      emit(stateBefore);
+    });
   }
 
   void signOut() {
@@ -72,6 +104,7 @@ class UserCubit extends ObjectCubit<User, UserState> {
       emit(const UserLoggingOut());
 
       Future.wait([
+        GoogleSignIn().signOut(),
         preferencesService.clear(),
         Future.delayed(const Duration(seconds: 2))
       ]).then((value) => emit(const UserNotLoggedState()),

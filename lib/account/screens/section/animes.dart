@@ -1,42 +1,30 @@
+import 'package:flutter/material.dart';
 import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
-import 'package:potatoes/auto_list/models/paginated_list.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
-import 'package:flutter/material.dart';
-import 'package:umai/account/services/account_service.dart';
-import 'package:umai/common/models/anime_response.dart';
-import 'package:umai/common/widgets/anime_item.dart';
+import 'package:umai/animes/models/anime.dart';
+import 'package:umai/animes/widgets/item_anime.dart';
+import 'package:umai/common/services/user_service.dart';
 
-class Animes extends StatefulWidget {
-  const Animes({super.key});
+class AnimesTab extends StatefulWidget {
+  const AnimesTab({super.key});
 
   @override
-  State<Animes> createState() => _AnimesState();
+  State<AnimesTab> createState() => _AnimesTabState();
 }
 
-class _AnimesState extends State<Animes> with CompletableMixin {
+class _AnimesTabState extends State<AnimesTab> with CompletableMixin {
   @override
   Widget build(BuildContext context) {
     return AutoListView.get<Anime>(
         padding:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         cubit: AutoListCubit(
-            provider: ({int page = 1}) => context
-                    .read<AccountService>()
-                    .getAnimeView(
-                      page: page,
-                    )
-                    .then((p) {
-                  return PaginatedList(
-                      items: p.content, page: p.page, total: p.total);
-                })),
+          provider: context.read<UserService>().getAnimeViewed
+        ),
         viewType: ViewType.grid,
-        itemBuilder: (context, anime) => AnimeItem(
-            anime: anime,
-            onTap: () {
-              print(anime.id);
-            }),
+        itemBuilder: (context, anime) => AnimeItem(anime: anime),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
             crossAxisSpacing: 2.0,

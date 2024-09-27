@@ -1,9 +1,9 @@
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:dio_cache_interceptor_hive_store/dio_cache_interceptor_hive_store.dart';
 import 'package:path_provider/path_provider.dart';
-
-import 'package:potatoes/potatoes.dart' as potatoes;
+import 'package:potatoes/auto_list/models/paginated_list.dart';
 import 'package:potatoes/libs.dart';
+import 'package:potatoes/potatoes.dart' as potatoes;
 
 class ApiLinks extends potatoes.Links {
   const ApiLinks();
@@ -12,11 +12,11 @@ class ApiLinks extends potatoes.Links {
   String get devUrl => "https://umai.caelis-tech.studio/api";
 
   @override
-  String get productionUrl => "https://umai.caelis-tech.studio/api";
+  // TODO: implement productionUrl
+  String get productionUrl =>  throw UnimplementedError();
 
   @override
-  // TODO: implement stagingUrl
-  String get stagingUrl => throw UnimplementedError();
+  String get stagingUrl => "https://umai.caelis-tech.studio/api";
 }
 
 class ApiService extends potatoes.ApiService {
@@ -54,20 +54,22 @@ class ApiService extends potatoes.ApiService {
       throw potatoes.ApiError.unknown(e.toString(), s);
     }
   }
+
+  PaginatedList<T> toPaginatedList<T>(
+    Map<String, dynamic> data,
+    T Function(Map<String, dynamic> item) mapper
+  ) {
+    return PaginatedList(
+      items: (data['content'] as List<dynamic>)
+        .map((e) => mapper(e as Map<String, dynamic>))
+        .toList(),
+      page: data['page'],
+      total: data['total']
+    );
+  }
 }
 
 class ApiError extends potatoes.ApiError {
-  static const ApiError facebookAuthInvalid =
-      ApiError.unknown("La connexion à Facebook a échoué. Veuillez réessayer");
-  static const ApiError otpIsInvalid =
-      ApiError.unknown("Le code entré n'est pas correct");
-  static const ApiError otpResent =
-      ApiError.unknown("Un nouveau code a été envoyé");
-  static const ApiError passwordReset = ApiError.unknown(
-      "Votre mot de passe a été réinitialisé. Vous pouvez maintenant vous connecter");
-  static const ApiError passwordChanged =
-      ApiError.unknown("Le mot de passe a été mis à jour");
-
   final Map<String, String>? errors;
 
   ApiError.fromDio(super.dio)

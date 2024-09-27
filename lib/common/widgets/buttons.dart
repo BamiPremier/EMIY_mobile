@@ -1,10 +1,15 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:umai/utils/themes.dart';
 
-enum _ButtonHierarchy { primary, secondary, tertiary, quaternary }
+enum _ButtonStyle {
+  primary,
+  black,
+  white
+}
 
 class UmaiButton extends StatelessWidget {
-  final _ButtonHierarchy _hierarchy;
+  final _ButtonStyle _hierarchy;
   final VoidCallback? onPressed;
   final String text;
   final bool large;
@@ -16,45 +21,43 @@ class UmaiButton extends StatelessWidget {
     required this.text,
     this.large = true,
     this.icon,
-  }) : _hierarchy = _ButtonHierarchy.primary;
+  }) : _hierarchy = _ButtonStyle.primary;
 
-  const UmaiButton.secondary({
+  const UmaiButton.black({
     super.key,
     required this.onPressed,
     required this.text,
     this.large = true,
     this.icon,
-  }) : _hierarchy = _ButtonHierarchy.secondary;
+  }) : _hierarchy = _ButtonStyle.black;
 
-  const UmaiButton.tertiary({
+  const UmaiButton.white({
     super.key,
     required this.onPressed,
     required this.text,
     this.large = true,
     this.icon,
-  }) : _hierarchy = _ButtonHierarchy.tertiary;
-
-  const UmaiButton.quaternary({
-    super.key,
-    required this.onPressed,
-    required this.text,
-    this.large = true,
-    this.icon,
-  }) : _hierarchy = _ButtonHierarchy.quaternary;
+  }) : _hierarchy = _ButtonStyle.white;
 
   Color _backgroundColor(BuildContext context) {
     switch (_hierarchy) {
-      case _ButtonHierarchy.primary:
-        if (large) {
-          return Theme.of(context).colorScheme.primary;
-        }
-        return Theme.of(context).colorScheme.primaryContainer;
-      case _ButtonHierarchy.secondary:
-        return ThemeApp.white;
-      case _ButtonHierarchy.tertiary:
-        return Theme.of(context).colorScheme.primaryContainer;
-      case _ButtonHierarchy.quaternary:
-        return Theme.of(context).disabledColor;
+      case _ButtonStyle.primary:
+        return Theme.of(context).colorScheme.primary;
+      case _ButtonStyle.black:
+        return AppTheme.black;
+      case _ButtonStyle.white:
+        return AppTheme.white;
+    }
+  }
+
+  Color _foregroundColor(BuildContext context) {
+    switch (_hierarchy) {
+      case _ButtonStyle.primary:
+        return AppTheme.black;
+      case _ButtonStyle.black:
+        return AppTheme.white;
+      case _ButtonStyle.white:
+        return AppTheme.black;
     }
   }
 
@@ -64,21 +67,21 @@ class UmaiButton extends StatelessWidget {
       onPressed: onPressed,
       style: FilledButton.styleFrom(
         backgroundColor: _backgroundColor(context),
-        textStyle: Theme.of(context).textTheme.labelLarge!.copyWith(
-              color: ThemeApp.mainText,
-            ),
+        foregroundColor: _foregroundColor(context),
+        textStyle: Theme.of(context).textTheme.labelLarge,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           if (icon != null) icon!,
           if (icon != null) const SizedBox(width: 8),
-          Text(
-            text,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                  color: ThemeApp.mainText,
-                ),
+          Expanded(
+            child: AutoSizeText(
+              text,
+              maxLines: 1,
+              minFontSize: 10,
+              textAlign: TextAlign.center,
+            ),
           ),
         ],
       ),

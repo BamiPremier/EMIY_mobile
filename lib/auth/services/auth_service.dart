@@ -1,52 +1,23 @@
+import 'package:potatoes/auto_list/models/paginated_list.dart';
 import 'package:potatoes/libs.dart';
+import 'package:umai/animes/models/anime.dart';
 import 'package:umai/auth/models/auth_response.dart';
-import 'package:umai/auth/models/auth_response_complete_user.dart';
-import 'package:umai/common/models/genre_anime.dart';
-import 'package:umai/common/models/anime_response.dart';
+import 'package:umai/common/models/user.dart';
 import 'package:umai/common/services/api_service.dart';
-import 'package:umai/common/models/anime_response.dart';
-import 'package:umai/common/models/follower_response.dart';
-import 'package:umai/common/services/api_service.dart';
-import 'package:potatoes/libs.dart';
-import 'package:umai/common/services/preferences_service.dart';
-import 'package:umai/common/services/preferences_service.dart';
 
 class AuthService extends ApiService {
-  final PreferencesService preferencesService;
-
-  static const String _genre = '/auth/animes-genre';
-  static const String _anime = '/auth/animes-by-genres';
-  static const String _followers = '/auth/list-to-follow';
-  static const String _watchlistAdd = '/animes/idAnime/watchlist';
-  static const String _viewerAdd = '/animes/idAnime/viewed';
-  static const String _folllowerAdd = '/users/follow';
-  static const String _folllowerRemove = '/users/unfollow';
   static const String _auth = '/auth';
-  static const String _completeProfile = '/auth/userUID/complete';
+  static const String _completeProfile = '/auth/complete';
+  static const String _genres = '/auth/animes-genre';
+  static const String _animes = '/auth/animes-by-genres';
+  static const String _people = '/auth/list-to-follow';
 
-  const AuthService(
-    super._dio,
-    this.preferencesService,
-  );
+  const AuthService(super._dio);
 
-  Future<AuthResponseCompleteUser> completeUserProfile({
-    required String userTag,
-    required String userName,
-  }) async {
-    return compute(
-      dio.patch(
-        _completeProfile.replaceAll('userUID', preferencesService.userUID!),
-        data: {
-          'user_tag': userTag,
-          'user_name': userName,
-        },
-      ),
-      mapper: AuthResponseCompleteUser.fromJson,
-    );
-  }
-
-  Future<AuthResponse> authUser(
-      {required String email, required String token}) {
+  Future<AuthResponse> authUser({
+    required String email,
+    required String token
+  }) {
     return compute(
       dio.post(
         _auth,
@@ -59,80 +30,60 @@ class AuthService extends ApiService {
     );
   }
 
-  Future getGenreAnimes() async {
+  Future<User> completeUserProfile({
+    required String userTag,
+    required String userName,
+  }) {
+    return compute(
+      dio.patch(
+        _completeProfile,
+        options: Options(headers: withAuth()),
+        data: {
+          'user_tag': userTag,
+          'user_name': userName,
+        },
+      ),
+      mapper: User.fromJson,
+    );
+  }
+
+  Future<List<String>> getGenres() {
     return compute(
       dio.get(
-        _genre,
+        _genres,
         options: Options(headers: withAuth()),
       ),
-      mapper: GenreAnime.fromJson,
+      mapper: (result) => (result['response'] as List<dynamic>)
+        .map((e) => e as String)
+        .toList(),
     );
   }
 
-  Future<AnimeResponse> getAnimes(
-      {int page = 1, required List<String> listGenre}) async {
-    return compute(
-        dio.get(_anime,
-            options: Options(headers: withAuth()),
-            queryParameters: {
-              'page': page,
-              'genre': listGenre,
-              'size': 12,
-            }),
-        mapper: AnimeResponse.fromJson);
-  }
-
-  Future<FollowerResponse> getFollowers({
+  Future<PaginatedList<Anime>> getAnimes({
     int page = 1,
-  }) async {
+    required List<String> genres
+  }) {
     return compute(
-        dio.get(_followers,
-            options: Options(headers: withAuth()),
-            queryParameters: {
-              'page': page,
-            }),
-        mapper: FollowerResponse.fromJson);
-  }
-
-  Future addToWatchList({required anime}) async {
-    return compute(
-      dio.post(
-        _watchlistAdd.replaceAll('idAnime', anime),
+      dio.get(
+        _animes,
         options: Options(headers: withAuth()),
+        queryParameters: {
+          'page': page,
+          'genre': genres,
+          'size': 12,
+        }
       ),
+      mapper: (result) => toPaginatedList(result, Anime.fromJson)
     );
   }
 
-  Future addToViewerList({required anime}) async {
+  Future<PaginatedList<User>> getPeopleToFollow({int page = 1}) {
     return compute(
-      dio.post(
-        _viewerAdd.replaceAll('idAnime', anime),
+      dio.get(_people,
         options: Options(headers: withAuth()),
+        queryParameters: {'page': page}
       ),
-    );
-  }
-
-  Future followUser({required follower}) async {
-    return compute(
-      dio.post(
-        _folllowerAdd,
-        data: {
-          'idFollowing': follower,
-        },
-        options: Options(headers: withAuth()),
-      ),
-    );
-  }
-
-  Future unFollowUser({required follower}) async {
-    return compute(
-      dio.delete(
-        _folllowerRemove,
-        data: {
-          'idFollowing': follower,
-        },
-        options: Options(headers: withAuth()),
-      ),
+        mapper: (result) => toPaginatedList(result, User.fromJson)
     );
   }
 }

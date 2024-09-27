@@ -1,19 +1,10 @@
-import 'dart:developer';
-
 import 'package:potatoes/auto_content/bloc/auto_content_cubit.dart';
 import 'package:umai/auth/services/auth_service.dart';
-import 'package:umai/common/models/genre_anime.dart';
 
-class GenreCubit extends AutoContentCubit<List<String>> {
+class GenresListCubit extends AutoContentCubit<List<String>> {
   final AuthService service;
-  GenreCubit(
-    this.service,
-  ) : super(
-          provider: () async {
-            final response = await service.getGenreAnimes();
-            return response.response;
-          },
-        );
+
+  GenresListCubit(this.service) : super(provider: service.getGenres);
 
   void selectGenre(String genre) {
     if (state is GenreReadyWithSelectionState) {
@@ -35,8 +26,11 @@ class GenreCubit extends AutoContentCubit<List<String>> {
   }
 
   bool isGenreSelected(String genre) {
-    var currentState = state as GenreReadyWithSelectionState;
-    return currentState.selectedCategories.contains(genre);
+    if (state is GenreReadyWithSelectionState) {
+      return (state as GenreReadyWithSelectionState)
+        .selectedCategories.contains(genre);
+    }
+    return false;
   }
 }
 

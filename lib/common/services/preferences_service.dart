@@ -1,23 +1,18 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 
-import 'package:umai/common/models/user.dart';
-import 'package:potatoes/potatoes.dart' as potatoes;
 import 'package:crypto/crypto.dart';
+import 'package:potatoes_secured_preferences/potatoes_secured_preferences.dart';
+import 'package:umai/common/models/user.dart';
 
-class PreferencesService extends potatoes.PreferencesService {
+class PreferencesService extends SecuredPreferencesService {
   static const String _keyUser = 'user';
   static const String _keyUserUID = 'user_id';
   static const String _keyAuthToken = 'auth_token';
-  const PreferencesService(
-    super.preferences,
-  );
 
-  String? get userUID => preferences.getString(_keyUserUID);
+  const PreferencesService(super.preferences, super.secureStorage);
 
   User? get user {
-    // preferences.clear();
     final value = preferences.getString(_keyUser);
 
     if (value == null) return null;
@@ -32,28 +27,22 @@ class PreferencesService extends potatoes.PreferencesService {
   }
 
   Future<void> saveAuthToken(String token) {
-    return preferences.setString(_keyAuthToken, token);
+    return secureStorage.write(key: _keyAuthToken, value: token);
   }
 
   @override
   FutureOr<Map<String, String>> getAuthHeaders() async {
-    final String userId = userUID!;
-    final String authToken = (preferences.getString(_keyAuthToken))!;
+    final String userId = user!.id;
+    final String authToken = (await secureStorage.read(key: _keyAuthToken))!;
     final DateTime dateTime = DateTime.now();
 
     String rawSign = "$userId\$${dateTime.millisecondsSinceEpoch}\$$authToken";
     Digest digest = sha1.convert(utf8.encode(rawSign));
-    log({
-      "timestamp": dateTime.millisecondsSinceEpoch.toString(),
-      "uid": userId,
-      "hash": digest.toString(),
-      // 'app_version': _appVersion
-    }.toString());
+
     return {
       "timestamp": dateTime.millisecondsSinceEpoch.toString(),
       "id": userId,
       "hash": digest.toString(),
-      'app_version': '1.0.0'
     };
   }
 }

@@ -1,15 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:potatoes/common/widgets/loaders.dart';
 import 'package:potatoes/libs.dart';
-import 'package:umai/account/cubit/account_cubit.dart';
 import 'package:umai/account/screens/edit_profile_screen.dart';
 import 'package:umai/account/screens/param/settings_screen.dart';
-import 'package:umai/account/screens/section/activites.dart';
+import 'package:umai/account/screens/section/activities.dart';
 import 'package:umai/account/screens/section/animes.dart';
-import 'package:umai/account/screens/section/sociale.dart';
+import 'package:umai/account/screens/section/posts.dart';
 import 'package:umai/account/screens/section/watchlist.dart';
-import 'package:umai/auth/screens/login_welcome_back_screen.dart';
 import 'package:umai/auth/screens/onboarding_screen.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/widgets/action_widget.dart';
@@ -45,206 +44,195 @@ class _AccountScreenState extends State<AccountScreen>
   Widget build(BuildContext context) {
     return BlocListener<UserCubit, UserState>(
       listener: onEventReceived,
-      child: BlocBuilder<AccountCubit, AccountState>(
+      child: BlocBuilder<UserCubit, UserState>(
         builder: (context, state) => Scaffold(
           appBar: AppBar(
-            title: Text(
-              context.read<AccountCubit>().user!.username!,
-            ),
+            title: Text(context.read<UserCubit>().user.username),
             centerTitle: true,
             actions: [
               IconButton(
-                  onPressed: () => actionsOptions(),
-                  icon: const Icon(Icons.more_vert))
+                onPressed: onActionsPressed,
+                icon: const Icon(Icons.more_vert)
+              )
             ],
           ),
-          body: SafeArea(
-            minimum: const EdgeInsets.only(bottom: 48),
-            child: Container(
-              margin: const EdgeInsets.only(top: 16),
-              child: Column(children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CachedNetworkImage(
-                        imageUrl:
-                            context.read<AccountCubit>().user!.imageFull ?? '',
-                        height: 80,
-                        width: 80,
-                        fit: BoxFit.cover,
-                        imageBuilder: (context, imageProvider) => Container(
-                            margin: const EdgeInsets.only(right: 16),
-                            child: CircleAvatar(
-                              radius: 40,
-                              backgroundImage: imageProvider,
-                            )),
-                        placeholder: (context, url) => const CircleAvatar(
-                          radius: 40,
-                          backgroundImage: AssetImage(Assets.user),
-                        ),
-                        errorWidget: (context, url, error) => Container(
+          body: DefaultTabController(
+            length: 4,
+            child: Column(children: [
+              const SizedBox(height: 16.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CachedNetworkImage(
+                      imageUrl: context.read<UserCubit>().user.image ?? '',
+                      height: 80,
+                      width: 80,
+                      fit: BoxFit.cover,
+                      imageBuilder: (context, imageProvider) => Container(
                           margin: const EdgeInsets.only(right: 16),
                           child: CircleAvatar(
                             radius: 40,
-                            backgroundImage: AssetImage(Assets.user),
-                          ),
-                        ),
+                            backgroundImage: imageProvider,
+                          )),
+                      placeholder: (context, url) => SvgPicture.asset(
+                        Assets.defaultAvatar,
                       ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                      errorWidget: (context, url, error) => SvgPicture.asset(
+                        Assets.defaultAvatar,
+                      ),
+                    ),
+                    const SizedBox(width: 16.0),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '@${context.read<UserCubit>().user.usertag}',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            // TODO
+                            context.read<UserCubit>().user.biography ?? '',
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall!
+                                .copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .surfaceTint),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                ).add(const EdgeInsets.only(bottom: 12)),
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Theme.of(context).colorScheme.outlineVariant,
+                    ),
+                  ),
+                ),
+                margin: const EdgeInsets.only(top: 32),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.account_box),
+                        const SizedBox(width: 16),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              '@${context.read<AccountCubit>().user!.usertag}',
-                              style: Theme.of(context).textTheme.bodyMedium,
+                              '${context.read<UserCubit>().user.followersCount}',
+                              style: Theme.of(context).textTheme.labelLarge,
                             ),
-                            const SizedBox(height: 4),
                             Text(
-                              context.read<AccountCubit>().user!.biography ??
-                                  '',
-                              maxLines: 3,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall!
-                                  .copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .surfaceTint),
+                              "m'ont ajouté",
+                              style: Theme.of(context).textTheme.bodySmall,
                             ),
                           ],
                         ),
-                      )
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                  ).add(const EdgeInsets.only(bottom: 12)),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Theme.of(context).colorScheme.outlineVariant,
-                      ),
+                        const SizedBox(width: 16),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              '${context.read<UserCubit>().user.followingCount}',
+                              style: Theme.of(context).textTheme.labelLarge,
+                            ),
+                            Text(
+                              "ajoutés",
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                  ),
-                  margin: const EdgeInsets.only(top: 32),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(Icons.account_box),
-                          const SizedBox(width: 16),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                '${context.read<AccountCubit>().user!.followersCount}',
-                                style: Theme.of(context).textTheme.labelLarge,
-                              ),
-                              Text(
-                                "m'ont ajouté",
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                            ],
-                          ),
-                          const SizedBox(width: 16),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                '${context.read<AccountCubit>().user!.followingCount}',
-                                style: Theme.of(context).textTheme.labelLarge,
-                              ),
-                              Text(
-                                "ajoutés",
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Container(
-                          margin: const EdgeInsets.only(right: 8),
-                          child: const Icon(Icons.arrow_forward_ios, size: 16)),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                  ),
-                  margin: const EdgeInsets.only(top: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(Icons.account_box),
-                          const SizedBox(width: 16),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                '${context.read<AccountCubit>().user!.animesViewedCount}',
-                                style: Theme.of(context).textTheme.labelLarge,
-                              ),
-                              Text(
-                                "vus",
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                            ],
-                          ),
-                          const SizedBox(width: 24),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                '${context.read<AccountCubit>().user!.watchlistCount}',
-                                style: Theme.of(context).textTheme.labelLarge,
-                              ),
-                              Text(
-                                "à voir",
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Container(
-                          margin: const EdgeInsets.only(right: 8),
-                          child: const Icon(Icons.arrow_forward_ios, size: 16)),
-                    ],
-                  ),
-                ),
-                TabBar(
-                  controller: _tabController,
-                  tabs: const [
-                    Tab(text: 'Activité'),
-                    Tab(text: 'Animes'),
-                    Tab(text: 'Watchlist'),
-                    Tab(text: 'Social'),
+                    Container(
+                        margin: const EdgeInsets.only(right: 8),
+                        child: const Icon(Icons.arrow_forward_ios, size: 16)),
                   ],
                 ),
-                Expanded(
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: const [
-                      Activite(),
-                      Animes(),
-                      WatchList(),
-                      Sociale(),
-                    ],
-                  ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
                 ),
-              ]),
-            ),
+                margin: const EdgeInsets.only(top: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.account_box),
+                        const SizedBox(width: 16),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              '${context.read<UserCubit>().user.animesViewedCount}',
+                              style: Theme.of(context).textTheme.labelLarge,
+                            ),
+                            Text(
+                              "vus",
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(width: 24),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              '${context.read<UserCubit>().user.watchlistCount}',
+                              style: Theme.of(context).textTheme.labelLarge,
+                            ),
+                            Text(
+                              "à voir",
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Container(
+                        margin: const EdgeInsets.only(right: 8),
+                        child: const Icon(Icons.arrow_forward_ios, size: 16)),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              const TabBar(
+                tabs: [
+                  Tab(text: 'Activité'),
+                  Tab(text: 'Animes'),
+                  Tab(text: 'Watchlist'),
+                  Tab(text: 'Social'),
+                ],
+              ),
+              const Expanded(
+                child: TabBarView(
+                  children: [
+                    ActivityTab(),
+                    AnimesTab(),
+                    WatchList(),
+                    PostTab(),
+                  ],
+                ),
+              ),
+            ]),
           ),
         ),
       ),
@@ -266,10 +254,10 @@ class _AccountScreenState extends State<AccountScreen>
     }
   }
 
-  void actionsOptions() => showAppBottomSheet(
+  void onActionsPressed() => showAppBottomSheet(
       context: context,
       horizontalPadding: 0,
-      maxHeight: 250,
+      maxHeight: 280,
       isScrollControlled: true,
       builder: (_) => Padding(
           padding: const EdgeInsets.symmetric(

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
-import 'package:umai/account/cubit/account_cubit.dart';
+import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/themes.dart';
@@ -19,36 +19,23 @@ class ChangePictureScreen extends StatefulWidget {
 
 class _ChangePictureScreenState extends State<ChangePictureScreen>
     with CompletableMixin {
-  late final accountCubit = context.read<AccountCubit>();
+  late final userCubit = context.read<UserCubit>();
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AccountCubit, AccountState>(
+    return BlocListener<UserCubit, UserState>(
       listener: onEventReceived,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: ThemeApp.black,
+          backgroundColor: AppTheme.black,
           title: Text('Photo de profil',
               style: Theme.of(context)
                   .appBarTheme
                   .titleTextStyle!
-                  .copyWith(color: ThemeApp.white)),
+                  .copyWith(color: AppTheme.white)),
           centerTitle: true,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: ThemeApp.white),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          // actions: [
-          //   IconButton(
-          //     icon: const Icon(Icons.mode_edit_outline_outlined,
-          //         color: ThemeApp.white),
-          //     onPressed: () {},
-          //   ),
-          // ],
         ),
-        backgroundColor: ThemeApp.black,
+        backgroundColor: AppTheme.black,
         body: SafeArea(
           minimum: const EdgeInsets.only(bottom: 48),
           child: Center(
@@ -66,7 +53,7 @@ class _ChangePictureScreenState extends State<ChangePictureScreen>
             children: [
               UmaiButton.primary(
                 onPressed: () {
-                  accountCubit.updateProfilePicture(
+                  userCubit.updateProfilePicture(
                     file: File(widget.image.path),
                   );
                 },
@@ -79,14 +66,14 @@ class _ChangePictureScreenState extends State<ChangePictureScreen>
     );
   }
 
-  void onEventReceived(BuildContext context, AccountState state) async {
+  void onEventReceived(BuildContext context, UserState state) async {
     await waitForDialog();
 
-    if (state is AccountUpdateProfilePictureLoadingState) {
+    if (state is UserUpdatingState) {
       loadingDialogCompleter = showLoadingBarrier(context: context);
-    } else if (state is AccountUpdateProfilePictureSuccessState) {
+    } else if (state is UserUpdatedState) {
       Navigator.of(context).pop();
-    } else if (state is AccountUpdateProfilePictureErrorState) {
+    } else if (state is UserErrorState) {
       showErrorToast(state.error);
     }
   }

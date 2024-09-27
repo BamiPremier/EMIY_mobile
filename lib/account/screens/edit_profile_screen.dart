@@ -1,13 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
-import 'package:umai/account/cubit/account_cubit.dart';
 import 'package:umai/account/screens/param/edit_profile_picture_screen.dart';
-import 'package:umai/account/widgets/large_text_field.dart';
+import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/utils/validators.dart';
 import 'package:umai/common/widgets/buttons.dart';
-import 'package:flutter/material.dart';
-import 'package:umai/common/widgets/customtextfield.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/dialogs.dart';
 
@@ -20,41 +20,23 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen>
     with CompletableMixin {
-  late final accountCubit = context.read<AccountCubit>();
-  final userNameNode = FocusNode();
-  final userTagNode = FocusNode();
-  final userBioNode = FocusNode();
-  final TextEditingController userNameController = TextEditingController();
-  final TextEditingController userTagController = TextEditingController();
-  final TextEditingController userBioController = TextEditingController();
-  int counter = 0;
-  @override
-  void initState() {
-    setState(() {
-      userNameController.text = accountCubit.user!.username!;
-      userTagController.text = accountCubit.user!.usertag!;
-      userBioController.text = accountCubit.user!.biography ?? '';
-    });
-    super.initState();
-  }
+  late final userCubit = context.read<UserCubit>();
+  late final TextEditingController userNameController =
+    TextEditingController(text: userCubit.user.username);
+  late final TextEditingController userBioController =
+    TextEditingController(text: userCubit.user.biography);
+  final formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
     userNameController.dispose();
-    userTagController.dispose();
     userBioController.dispose();
-    userNameNode.dispose();
-    userTagNode.dispose();
-    userBioNode.dispose();
-
     super.dispose();
   }
 
-  final _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AccountCubit, AccountState>(
+    return BlocListener<UserCubit, UserState>(
       listener: onEventReceived,
       child: Scaffold(
         appBar: AppBar(
@@ -66,7 +48,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
         body: SafeArea(
           minimum: const EdgeInsets.only(bottom: 48),
           child: Form(
-            key: _formKey,
+            key: formKey,
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               margin: const EdgeInsets.only(top: 16),
@@ -83,11 +65,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                                     builder: (context) =>
                                         const EditProfilePictureScreen())),
                             child: CachedNetworkImage(
-                              imageUrl: context
-                                      .read<AccountCubit>()
-                                      .user!
-                                      .imageFull ??
-                                  '',
+                              imageUrl: '', // TODO
                               height: 56,
                               width: 56,
                               fit: BoxFit.cover,
@@ -99,31 +77,22 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                                   backgroundImage: imageProvider,
                                 ),
                               ),
-                              placeholder: (context, url) => const CircleAvatar(
-                                radius: 56,
-                                backgroundImage: AssetImage(Assets.user),
+                              placeholder: (context, url) => SvgPicture.asset(
+                                Assets.defaultAvatar,
                               ),
-                              errorWidget: (context, url, error) => Container(
-                                margin: const EdgeInsets.only(right: 16),
-                                child: const CircleAvatar(
-                                  radius: 56,
-                                  backgroundImage: AssetImage(Assets.user),
-                                ),
+                              errorWidget: (context, url, error) => SvgPicture.asset(
+                                Assets.defaultAvatar,
                               ),
                             )),
+                        const SizedBox(width: 16.0),
                         Expanded(
                           child: Container(
                             alignment: Alignment.center,
-                            child: CustomTextField(
-                              controller: userNameController,
-                              focusNode: userNameNode,
-                              hintText: "@userxxyz",
-                              keyboardType: TextInputType.text,
-                              textCapitalization: TextCapitalization.none,
-                              textInputAction: TextInputAction.next,
-                              onEditingCompleted: () => FocusScope.of(context)
-                                  .requestFocus(userNameNode),
-                              validator: (value) => Validators.empty(value),
+                            child: TextField(
+                              decoration: InputDecoration(
+                                hintText: "@${userCubit.user.usertag}"
+                              ),
+                              readOnly: true,
                             ),
                           ),
                         )
@@ -132,38 +101,33 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                     margin: const EdgeInsets.only(top: 16),
                     child: Column(
                       children: [
-                        CustomTextField(
-                          controller: userTagController,
-                          focusNode: userTagNode,
-                          helperText:
-                              "Il sera visible lors de tes différentes intéractions",
-                          hintText: "Nom d'utilisateur",
+                        TextFormField(
+                          controller: userNameController,
+                          decoration: const InputDecoration(
+                            helperText: "Il sera visible lors de tes différentes intéractions",
+                            hintText: "Nom d'utilisateur",
+                          ),
                           keyboardType: TextInputType.text,
-                          textCapitalization: TextCapitalization.none,
+                          textCapitalization: TextCapitalization.words,
                           textInputAction: TextInputAction.next,
-                          onEditingCompleted: () =>
-                              FocusScope.of(context).requestFocus(userTagNode),
+                          onEditingComplete: FocusScope.of(context).unfocus,
                           validator: (value) => Validators.empty(value),
                         ),
                         const SizedBox(height: 32),
-                        LargeTextField(
-                            controller: userBioController,
-                            focusNode: userBioNode,
-                            counter: counter,
+                        TextFormField(
+                          controller: userBioController,
+                          decoration: const InputDecoration(
                             hintText: "Ma bio...",
-                            keyboardType: TextInputType.text,
-                            textCapitalization: TextCapitalization.none,
-                            textInputAction: TextInputAction.next,
-                            onEditingCompleted: () {},
-                            onChanged: (value) {
-                              setState(() {
-                                counter = userTagController.text.length;
-                              });
-                            },
-                            validator: (value) => Validators.empty(value),
-                            prefixIcon: const Icon(
-                              Icons.alternate_email,
-                            )),
+                          ),
+                          keyboardType: TextInputType.text,
+                          textCapitalization: TextCapitalization.sentences,
+                          textInputAction: TextInputAction.next,
+                          minLines: 4,
+                          maxLines: 4,
+                          maxLength: 180,
+                          maxLengthEnforcement: MaxLengthEnforcement.truncateAfterCompositionEnds,
+                          onEditingComplete: FocusScope.of(context).unfocus,
+                        ),
                       ],
                     ),
                   ),
@@ -181,13 +145,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
               mainAxisSize: MainAxisSize.min,
               children: [
                 UmaiButton.primary(
-                  onPressed: () {
-                    accountCubit.updateUser(user: {
-                      "username": userNameController.text,
-                      "userTag": userTagController.text,
-                      "biography": userBioController.text
-                    });
-                  },
+                  onPressed: onSaveTap,
                   text: "Enregistrer",
                 ),
               ],
@@ -198,14 +156,23 @@ class _EditProfileScreenState extends State<EditProfileScreen>
     );
   }
 
-  void onEventReceived(BuildContext context, AccountState state) async {
+  void onSaveTap() {
+    if (formKey.currentState?.validate() ?? false) {
+      userCubit.updateUser(
+        username: userNameController.text.trim(),
+        biography: userBioController.text.trim()
+      );
+    }
+  }
+
+  void onEventReceived(BuildContext context, UserState state) async {
     await waitForDialog();
 
-    if (state is AccountLoadingState) {
+    if (state is UserUpdatingState) {
       loadingDialogCompleter = showLoadingBarrier(context: context);
-    } else if (state is AccountSuccessState) {
-      showSuccessToast("Mise à jour effectuée avec succes");
-    } else if (state is AccountErrorState) {
+    } else if (state is UserUpdatedState) {
+      showSuccessToast("Modifications enregistrées");
+    } else if (state is UserErrorState) {
       showErrorToast(state.error);
     }
   }

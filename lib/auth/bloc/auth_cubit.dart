@@ -1,11 +1,8 @@
-import 'dart:async';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:umai/auth/services/auth_service.dart';
-import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
+import 'package:umai/auth/services/auth_service.dart';
+import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/models/user.dart';
 
 part 'auth_state.dart';
@@ -24,14 +21,14 @@ class AuthCubit extends Cubit<AuthState> {
 
     emit(const AuthLoadingState());
 
-    authService.authUser(email: email, token: token).then((response) {
-      userCubit.preferencesService.saveUser(response.user );
-      userCubit.preferencesService.saveAuthToken(response.accessToken);
+    authService.authUser(email: email, token: token).then((response) async {
+      await userCubit.preferencesService.saveUser(response.user);
+      await userCubit.preferencesService.saveAuthToken(response.accessToken);
       userCubit.reset();
-      if (response.user.status != "PENDING_REGISTRATION") {
-        emit(const AuthSuccessActiveUserState());
-      } else {
+      if (response.user.status == UserStatus.pendingRegistration) {
         emit(const AuthSuccessInActiveUserState());
+      } else {
+        emit(const AuthSuccessActiveUserState());
       }
       emit(stateBefore);
     }, onError: (error, trace) {
@@ -48,21 +45,18 @@ class AuthCubit extends Cubit<AuthState> {
 
     emit(const AuthLoadingState());
 
-    await authService
-        .completeUserProfile(userName: username, userTag: userTag)
-        .then((response) {
-      log('=================${response}============');
-      userCubit.preferencesService.saveUser(response.user).then(() async {
+    await authService.completeUserProfile(userName: username, userTag: userTag)
+      .then((user) {
+        userCubit.preferencesService.saveUser(user)
+          .then((_) {
             emit(const CompleteUserSuccessUserState());
-
             emit(stateBefore);
-          } as FutureOr Function(void value));
-    }, onError: (error, trace) {
-      emit(AuthErrorState(error, trace));
-      log('=================${error}============');
-      log('=================${trace}============');
-      emit(stateBefore);
-    });
+          });
+      },
+      onError: (error, trace) {
+        emit(AuthErrorState(error, trace));
+        emit(stateBefore);
+      });
   }
 
   void updateUserNameAndTag(String value) {

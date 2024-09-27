@@ -19,7 +19,7 @@ class ActionWidget extends StatelessWidget {
           // Cercle avec l'icône de partage
           CircleAvatar(
             backgroundColor:
-                ThemeApp.disabledGreySurface, // Couleur d'arrière-plan
+                AppTheme.disabledGreySurface, // Couleur d'arrière-plan
             child: Icon(icon),
           ),
           const SizedBox(width: 16),

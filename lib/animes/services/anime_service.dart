@@ -1,46 +1,45 @@
-import 'package:umai/common/models/anime_response.dart';
-import 'package:umai/common/models/episode_response.dart';
-import 'package:umai/common/services/api_service.dart';
+import 'package:potatoes/auto_list/models/paginated_list.dart';
 import 'package:potatoes/libs.dart';
-import 'package:umai/common/services/preferences_service.dart';
+import 'package:umai/animes/models/anime.dart';
+import 'package:umai/common/services/api_service.dart';
 
 class AnimeService extends ApiService {
   static const String _anime = '/animes';
-  final PreferencesService preferencesService;
-  const AnimeService(
-    super._dio,
-    this.preferencesService,
-  );
 
-  Future<AnimeResponse> getAnimes({int page = 1}) async {
+  static const String _watchlistAdd = '/animes/:idAnime/watchlist';
+  static const String _viewerAdd = '/animes/:idAnime/viewed';
+
+  const AnimeService(super._dio);
+
+  Future<PaginatedList<Anime>> getAnimes({int page = 1}) async {
     return compute(
         dio.get(_anime,
-            options: Options(headers: withAuth()),
-            queryParameters: {
-              'page': page,
-              'take': 10,
-            }),
-        mapper: AnimeResponse.fromJson);
+          options: Options(headers: withAuth()),
+          queryParameters: {
+            'page': page,
+            'size': 10,
+          }),
+        mapper: (result) => toPaginatedList(result, Anime.fromJson)
+    );
   }
 
-  Future<EpisodeResponse> getEpisodesAnime(
-      {int page = 1, required String anime}) async {
+  Future<Anime> addToWatchList({required int anime}) async {
     return compute(
-        dio.get(_anime,
-            options: Options(headers: withAuth()),
-            queryParameters: {'page': page, 'take': 10, 'anime': anime}),
-        mapper: EpisodeResponse.fromJson);
+      dio.post(
+        _watchlistAdd.replaceAll(':idAnime', anime.toString()),
+        options: Options(headers: withAuth()),
+      ),
+      mapper: Anime.fromJson
+    );
   }
 
-  Future<AnimeResponse> getAnimesByGenre(
-      {int page = 1, required String genre}) async {
+  Future<Anime> addToViewerList({required int anime}) async {
     return compute(
-        dio.get(_anime,
-            options: Options(headers: withAuth()),
-            queryParameters: {
-              'page': page,
-              'take': 10,
-            }),
-        mapper: AnimeResponse.fromJson);
+      dio.post(
+        _viewerAdd.replaceAll(':idAnime', anime.toString()),
+        options: Options(headers: withAuth()),
+      ),
+      mapper: Anime.fromJson
+    );
   }
 }

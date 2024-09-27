@@ -1,40 +1,32 @@
+import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
-import 'package:potatoes/libs.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:potatoes/potatoes.dart' hide PreferencesService;
-import 'package:umai/account/cubit/account_cubit.dart';
-import 'package:umai/account/cubit/user_post_cubit.dart';
-import 'package:umai/account/services/account_service.dart';
-import 'package:umai/auth/bloc/genre_cubit.dart';
-import 'package:umai/auth/bloc/follow_user_cubit.dart';
-import 'package:umai/auth/bloc/preference_user_cubit.dart';
-import 'package:umai/auth/screens/registrationuser/registration_follow_screen.dart';
-import 'package:umai/auth/screens/registrationuser/registration_preffered_screen.dart';
-import 'package:umai/auth/screens/registrationuser/registration_username_screen.dart';
-
-import 'package:umai/firebase_options.dart';
+import 'package:potatoes_secured_preferences/potatoes_secured_preferences.dart';
 import 'package:umai/auth/bloc/auth_cubit.dart';
 import 'package:umai/auth/screens/onboarding_screen.dart';
+import 'package:umai/auth/screens/registration/username.dart';
 import 'package:umai/auth/services/auth_service.dart';
+import 'package:umai/common/bloc/home_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
-import 'package:umai/common/screens/splash.dart';
+import 'package:umai/common/screens/home.dart';
 import 'package:umai/common/services/api_service.dart';
 import 'package:umai/common/services/preferences_service.dart';
 import 'package:umai/common/services/user_service.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:umai/home_screen.dart';
-import 'package:umai/social/cubit/post_cubit.dart';
-import 'package:umai/social/cubit/social_cubit.dart';
+import 'package:umai/firebase_options.dart';
+import 'package:umai/social/cubit/new_post_cubit.dart';
 import 'package:umai/social/services/social_service.dart';
 import 'package:umai/utils/themes.dart';
-
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final SharedPreferences preferences = await SharedPreferences.getInstance();
+  const FlutterSecureStorage secureStorage = FlutterSecureStorage(
+    aOptions: AndroidOptions(encryptedSharedPreferences: true)
+  );
   final cacheOptions = await cacheStoreOptions();
   Links.instance = const ApiLinks();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -52,6 +44,7 @@ void main() async {
     child: MyApp(
       navigatorKey: GlobalKey(),
       preferences: preferences,
+      secureStorage: secureStorage,
       cacheOptions: cacheOptions,
     ),
   ));
@@ -60,11 +53,13 @@ void main() async {
 class MyApp extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey;
   final SharedPreferences preferences;
+  final FlutterSecureStorage secureStorage;
   final CacheOptions cacheOptions;
 
   const MyApp(
       {required this.navigatorKey,
       required this.preferences,
+      required this.secureStorage,
       required this.cacheOptions,
       super.key});
 
@@ -72,67 +67,38 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final preferencesService = PreferencesService(
       preferences,
+      secureStorage
     );
 
     final Dio dio = DioClient.instance(
       preferencesService,
-      baseUrl: const ApiLinks().productionUrl,
       connectTimeout: const Duration(minutes: 1),
     );
     dio.interceptors.add(DioCacheInterceptor(options: cacheOptions));
 
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider(create: (_) => AuthService(dio, preferencesService)),
-        RepositoryProvider(create: (_) => UserService(dio, preferencesService)),
-        RepositoryProvider(
-            create: (_) => AccountService(dio, preferencesService)),
-        RepositoryProvider(
-            create: (_) => SocialService(dio, preferencesService)),
+        RepositoryProvider(create: (_) => AuthService(dio)),
+        RepositoryProvider(create: (_) => UserService(dio)),
+        RepositoryProvider(create: (_) => SocialService(dio)),
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider(
-              create: (context) => UserCubit(
-                    context.read(),
-                    preferencesService,
-                  )..userMe()),
-          BlocProvider(
-              create: (context) => GenreCubit(
-                    context.read(),
-                  )),
-          BlocProvider(
-              create: (context) =>
-                  PreferenceUserCubit(context.read(), context.read())),
-          BlocProvider(
-              create: (context) => AuthCubit(context.read(), context.read())),
-          BlocProvider(
-              create: (context) => FollowUserCubit(
-                    context.read(),
-                  )),
-          BlocProvider(
-              create: (context) => AccountCubit(
-                    context.read(),
-                    preferencesService,
-                  )),
-          BlocProvider(
-              create: (context) => SocialCubit(
-                    context.read(),
-                  )),
-          BlocProvider(
-              create: (context) => PostCubit(
-                    context.read(),
-                  )),
-          BlocProvider(
-              create: (context) => UserPostCubit(
-                    context.read(),
-                    preferencesService,
-                  )),
+          BlocProvider(create: (context) => UserCubit(
+            context.read(),
+            preferencesService,
+          )),
+          BlocProvider(create: (context) => AuthCubit(
+            context.read(),
+            context.read())
+          ),
+          BlocProvider(create: (_) => HomeCubit()),
+          BlocProvider(create: (context) => NewPostCubit(context.read()))
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Umai',
-          theme: ThemeApp.lightTheme(context),
+          title: 'Umai!',
+          theme: AppTheme.lightTheme(context),
           themeMode: ThemeMode.light,
           locale: const Locale.fromSubtags(languageCode: 'fr'),
           supportedLocales: const [Locale.fromSubtags(languageCode: 'fr')],
@@ -156,25 +122,16 @@ class MyApp extends StatelessWidget {
             child: child,
           ),
           home: Builder(builder: (context) {
-            final splashScreen =
-                SplashScreen(onFutureCompleted: (BuildContext context) {
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (_) => const OnboardingScreen()),
-                  (route) => false);
-            });
-
             return BlocBuilder<UserCubit, UserState>(
               buildWhen: (previous, _) => previous is InitializingUserState,
               builder: (context, state) {
-                // return const RegistrationPrefferedScreen();
-                if (state is UserNotLoggedState) return splashScreen;
-                if (state is UserLoggedState) return const HomeScreen();
+                if (state is InitializingUserState) return const SizedBox();
+                if (state is UserNotLoggedState) return const OnboardingScreen();
                 if (state is CompleteUserProfileState) {
                   return const RegistrationUsernameScreen();
                 }
-                if (state is InitializingUserState) return const SizedBox();
-
-                return splashScreen;
+                if (state is UserLoggedState) return const HomeScreen();
+                return const OnboardingScreen();
               },
             );
           }),

@@ -46,10 +46,6 @@ class UserUpdatedState extends CubitInformationState with UserState {
   const UserUpdatedState() : super();
 }
 
-class UserPasswordUpdatedState extends CubitInformationState with UserState {
-  const UserPasswordUpdatedState() : super();
-}
-
 class UserErrorState extends CubitErrorState with UserState {
   UserErrorState(super.error, [super.trace]);
 }
