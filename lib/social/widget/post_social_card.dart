@@ -39,7 +39,7 @@ class PostSocialCard extends StatelessWidget {
                         child: ListTile(
                           contentPadding: EdgeInsets.zero,
                           leading: CachedNetworkImage(
-                            imageUrl: post.user.imageFull ?? '',
+                            imageUrl: post.user.image ?? '',
                             height: 80,
                             width: 80,
                             fit: BoxFit.cover,
