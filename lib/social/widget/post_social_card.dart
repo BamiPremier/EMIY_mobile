@@ -28,70 +28,73 @@ class PostSocialCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              padding: const EdgeInsets.only(left: 16.0, right: 0.0),
+              margin: const EdgeInsets.only(left: 16.0, right: 0.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: ListTile(
-                          contentPadding: EdgeInsets.zero,
-                          leading: CachedNetworkImage(
-                            imageUrl: post.user.image ?? '',
-                            height: 80,
-                            width: 80,
-                            fit: BoxFit.cover,
-                            imageBuilder: (context, imageProvider) => Container(
-                                margin: const EdgeInsets.only(right: 16),
-                                child: CircleAvatar(
-                                  radius: 28,
-                                  backgroundImage: imageProvider,
-                                )),
-                            placeholder: (context, url) => const CircleAvatar(
-                              radius: 28,
-                              backgroundImage: AssetImage(Assets.user),
-                            ),
-                            errorWidget: (context, url, error) => Container(
-                              margin: const EdgeInsets.only(right: 16),
-                              child: CircleAvatar(
-                                radius: 28,
-                                backgroundImage: AssetImage(Assets.user),
-                              ),
-                            ),
-                          ),
-                          title: Text(
-                            post.user.username,
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                          subtitle: Text(
-                            'Il y a 10h',
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelMedium!
-                                .copyWith(color: ThemeApp.grey),
-                          ),
+                  ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    leading: CachedNetworkImage(
+                      imageUrl: post.user.image ?? '',
+                      fit: BoxFit.cover,
+                      imageBuilder: (context, imageProvider) => Container(
+                          child: CircleAvatar(
+                        radius: 28,
+                        backgroundImage: imageProvider,
+                      )),
+                      placeholder: (context, url) => const CircleAvatar(
+                        radius: 28,
+                        backgroundImage: AssetImage(Assets.user),
+                      ),
+                      errorWidget: (context, url, error) => Container(
+                        child: CircleAvatar(
+                          radius: 28,
+                          backgroundImage: AssetImage(Assets.user),
                         ),
                       ),
-                      GestureDetector(
-                          behavior: HitTestBehavior.translucent,
-                          onTapDown: (details) {
-                            showContextMenu(
-                              context: context,
-                              position: details.globalPosition,
-                            );
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.only(right: 16.0),
-                            child: const Icon(Icons.more_vert),
-                          ))
-                    ],
+                    ),
+                    title: Text(
+                      post.user.username,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                    subtitle: Text(
+                      'Il y a 10h',
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelMedium!
+                          .copyWith(color: ThemeApp.grey),
+                    ),
+                    trailing: PopupMenuButton<String>(
+                      onSelected: (value) {
+                        // Gérer les options de chaque commentaire
+                      },
+                      padding: EdgeInsets.zero,
+                      itemBuilder: (BuildContext context) {
+                        return ['Signaler', 'Supprimer'].map((String choice) {
+                          return PopupMenuItem<String>(
+                            padding:
+                                const EdgeInsets.only(right: 48.0, left: 16.0),
+                            textStyle: Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface),
+                            value: choice,
+                            child: Text(choice),
+                          );
+                        }).toList();
+                      },
+                    ),
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    post.content,
-                    style: Theme.of(context).textTheme.bodyMedium,
+                  Container(
+                    padding: const EdgeInsets.only(right: 16.0),
+                    child: Text(
+                      post.content,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
                   ),
                 ],
               ),
@@ -163,45 +166,6 @@ class PostSocialCard extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  void showContextMenu({
-    required BuildContext context,
-    required Offset position,
-  }) async {
-    return showMenu(
-      context: context,
-      position: RelativeRect.fromLTRB(
-        position.dx,
-        position.dy,
-        position.dx + 1,
-        position.dy + 1,
-      ),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-      color: Colors.white,
-      items: <PopupMenuEntry>[
-        PopupMenuItem<String>(
-          padding: const EdgeInsets.only(right: 48.0, left: 16.0),
-          value: 'Signaler',
-          textStyle: Theme.of(context).textTheme.bodyLarge,
-          child: ListTile(
-            title: const Text(
-              "Signaler",
-            ),
-            onTap: () {},
-          ),
-        ),
-        PopupMenuItem<String>(
-          padding: const EdgeInsets.only(right: 48.0, left: 16.0),
-          value: 'Supprimer',
-          textStyle: Theme.of(context).textTheme.bodyLarge,
-          child: ListTile(
-            title: const Text("Supprimer"),
-            onTap: () {},
-          ),
-        ),
-      ],
     );
   }
 }

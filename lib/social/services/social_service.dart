@@ -53,7 +53,7 @@ class SocialService extends ApiService {
   Future<PostResponse> getUserPosts(
       {int page = 1, required String userId}) async {
     return compute(
-        dio.get(_feeds,
+        dio.get(_newPost,
             options: Options(headers: withAuth()),
             queryParameters: {
               'page': page,

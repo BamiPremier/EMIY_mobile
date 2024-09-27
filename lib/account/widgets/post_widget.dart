@@ -34,21 +34,17 @@ class PostUserWidget extends StatelessWidget {
                       contentPadding: EdgeInsets.zero,
                       leading: CachedNetworkImage(
                         imageUrl: post.user.image ?? '',
-                        height: 80,
-                        width: 80,
                         fit: BoxFit.cover,
                         imageBuilder: (context, imageProvider) => Container(
-                            margin: const EdgeInsets.only(right: 16),
                             child: CircleAvatar(
-                              radius: 28,
-                              backgroundImage: imageProvider,
-                            )),
+                          radius: 28,
+                          backgroundImage: imageProvider,
+                        )),
                         placeholder: (context, url) => const CircleAvatar(
                           radius: 28,
                           backgroundImage: AssetImage(Assets.user),
                         ),
                         errorWidget: (context, url, error) => Container(
-                          margin: const EdgeInsets.only(right: 16),
                           child: CircleAvatar(
                             radius: 28,
                             backgroundImage: AssetImage(Assets.user),
