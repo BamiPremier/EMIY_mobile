@@ -19,13 +19,12 @@ class FollowUserCubit extends AutoListCubit<User> {
 
   @override
   DataProvider<User> get provider {
-    return ({int page = 1}) => service.getFollowers(page: page).then((p) {
-          return PaginatedList<User>(
-            items: p.content,
-            page: p.page,
-            total: p.total,
-          );
-        });
+    return ({int page = 1}) =>
+        service.getFollowers(page: page).then((p) => PaginatedList<User>(
+              items: p.content,
+              page: p.page,
+              total: p.total,
+            ));
   }
 
   void selectUser(User user) {

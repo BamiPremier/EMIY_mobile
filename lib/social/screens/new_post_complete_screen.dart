@@ -12,7 +12,10 @@ import 'package:umai/common/utils/validators.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:umai/common/widgets/customtextfield.dart';
+import 'package:umai/home_screen.dart';
+import 'package:umai/social/cubit/post_cubit.dart';
 import 'package:umai/social/cubit/social_cubit.dart';
+import 'package:umai/social/widget/comment_text_field.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/dialogs.dart';
 
@@ -28,6 +31,7 @@ class NewPostCompleteScreen extends StatefulWidget {
 class _NewPostCompleteScreenState extends State<NewPostCompleteScreen>
     with CompletableMixin {
   late final socialCubit = context.read<SocialCubit>();
+  late final postCubit = context.read<PostCubit>();
 
   final TextEditingController _contentController = TextEditingController();
 
@@ -72,7 +76,7 @@ class _NewPostCompleteScreenState extends State<NewPostCompleteScreen>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text('contenu'),
-                        LargeTextField(
+                        CommentTextField(
                             controller: _contentController,
                             hintText: "Quoi de neuf?",
                             counter: 0,
@@ -80,7 +84,6 @@ class _NewPostCompleteScreenState extends State<NewPostCompleteScreen>
                             textCapitalization: TextCapitalization.none,
                             textInputAction: TextInputAction.next,
                             onEditingCompleted: () {},
-                            maxLines: 6,
                             onChanged: (value) {},
                             validator: (value) => Validators.empty(value),
                             prefixIcon: const Icon(
@@ -178,7 +181,11 @@ class _NewPostCompleteScreenState extends State<NewPostCompleteScreen>
     if (state is NewPostLoadingState) {
       loadingDialogCompleter = showLoadingBarrier(context: context);
     } else if (state is NewPostSuccessState) {
-      showSuccessToast("Mise à jour effectuée avec succes");
+      showSuccessToast("Post ajouté avec succes");
+      postCubit.addToFeed(state.post);
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (_) => const HomeScreen()),
+          (route) => false);
     } else if (state is NewPostErrorState) {
       showErrorToast(state.error);
     }

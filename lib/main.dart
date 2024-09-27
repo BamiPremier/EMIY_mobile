@@ -4,6 +4,7 @@ import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart' hide PreferencesService;
 import 'package:umai/account/cubit/account_cubit.dart';
+import 'package:umai/account/cubit/user_post_cubit.dart';
 import 'package:umai/account/services/account_service.dart';
 import 'package:umai/auth/bloc/genre_cubit.dart';
 import 'package:umai/auth/bloc/follow_user_cubit.dart';
@@ -23,6 +24,7 @@ import 'package:umai/common/services/preferences_service.dart';
 import 'package:umai/common/services/user_service.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:umai/home_screen.dart';
+import 'package:umai/social/cubit/post_cubit.dart';
 import 'package:umai/social/cubit/social_cubit.dart';
 import 'package:umai/social/services/social_service.dart';
 import 'package:umai/utils/themes.dart';
@@ -116,6 +118,15 @@ class MyApp extends StatelessWidget {
           BlocProvider(
               create: (context) => SocialCubit(
                     context.read(),
+                  )),
+          BlocProvider(
+              create: (context) => PostCubit(
+                    context.read(),
+                  )),
+          BlocProvider(
+              create: (context) => UserPostCubit(
+                    context.read(),
+                    preferencesService,
                   )),
         ],
         child: MaterialApp(

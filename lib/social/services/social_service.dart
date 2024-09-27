@@ -7,15 +7,21 @@ import 'package:potatoes/libs.dart';
 import 'package:umai/common/services/preferences_service.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
+import 'package:umai/social/model/post_response.dart';
 
 class SocialService extends ApiService {
   final PreferencesService preferencesService;
   static const String _newPost = '/posts';
+  static const String _post = '/posts/idPost';
+  static const String _feeds = '/posts/feeds';
+  static const String _likePost = '/posts/like';
+  static const String _commentPost = '/posts/comment';
+  static const String _likeComment = '/posts/comment/like';
   const SocialService(
     super._dio,
     this.preferencesService,
   );
-  Future newPost({
+  Future<Post> newPost({
     required String content,
     required File file,
   }) async {
@@ -23,23 +29,50 @@ class SocialService extends ApiService {
       dio.post(
         _newPost,
         data: FormData.fromMap({
+          'content': content,
           'image': await MultipartFile.fromFile(file.path,
-              filename: basename(file.path))
+              filename: basename(file.path)),
         }),
         options: Options(headers: withAuth()),
       ),
+      mapper: Post.fromJson,
     );
   }
 
-  Future<AnimeResponse> getPost({int page = 1}) async {
+  Future<PostResponse> getFeeds({int page = 1}) async {
     return compute(
-        dio.get(_newPost,
+        dio.get(_feeds,
             options: Options(headers: withAuth()),
             queryParameters: {
               'page': page,
               'take': 10,
             }),
-        mapper: AnimeResponse.fromJson);
+        mapper: PostResponse.fromJson);
+  }
+
+  Future<PostResponse> getUserPosts(
+      {int page = 1, required String userId}) async {
+    return compute(
+        dio.get(_feeds,
+            options: Options(headers: withAuth()),
+            queryParameters: {
+              'page': page,
+              'userId': userId,
+              'take': 10,
+            }),
+        mapper: PostResponse.fromJson);
+  }
+
+  Future getPostInfo({
+    required String postId,
+  }) async {
+    return compute(
+      dio.post(
+        _post.replaceAll('idPost', postId),
+        data: {},
+        options: Options(headers: withAuth()),
+      ),
+    );
   }
 
   Future likePost({
@@ -47,7 +80,7 @@ class SocialService extends ApiService {
   }) async {
     return compute(
       dio.post(
-        _newPost,
+        _likePost,
         data: {},
         options: Options(headers: withAuth()),
       ),
@@ -59,7 +92,7 @@ class SocialService extends ApiService {
   }) async {
     return compute(
       dio.post(
-        _newPost,
+        _likeComment,
         data: {},
         options: Options(headers: withAuth()),
       ),
@@ -68,7 +101,7 @@ class SocialService extends ApiService {
 
   Future<AnimeResponse> getCommentForPost({int page = 1}) async {
     return compute(
-        dio.get(_newPost,
+        dio.get(_commentPost,
             options: Options(headers: withAuth()),
             queryParameters: {
               'page': page,

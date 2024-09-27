@@ -14,10 +14,13 @@ class NewPostLoadingState extends CubitLoadingState with SocialState {
 }
 
 class NewPostSuccessState extends CubitInformationState with SocialState {
-  const NewPostSuccessState();
+  final Post post;
+
+  const NewPostSuccessState(this.post);
+  @override
+  List<Object?> get props => [...super.props, post];
 }
 
 class NewPostErrorState extends CubitErrorState with SocialState {
   NewPostErrorState(super.error, [super.trace]);
 }
- 

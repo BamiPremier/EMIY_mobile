@@ -1,5 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:umai/social/model/post.dart';
+import 'package:umai/social/model/post_response.dart';
 import 'package:umai/social/screens/post_details_page.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/themes.dart';
@@ -37,12 +38,31 @@ class PostSocialCard extends StatelessWidget {
                       Expanded(
                         child: ListTile(
                           contentPadding: EdgeInsets.zero,
-                          leading: const CircleAvatar(
-                            radius: 28,
-                            backgroundImage: AssetImage(Assets.avatar),
+                          leading: CachedNetworkImage(
+                            imageUrl: post.user.imageFull ?? '',
+                            height: 80,
+                            width: 80,
+                            fit: BoxFit.cover,
+                            imageBuilder: (context, imageProvider) => Container(
+                                margin: const EdgeInsets.only(right: 16),
+                                child: CircleAvatar(
+                                  radius: 28,
+                                  backgroundImage: imageProvider,
+                                )),
+                            placeholder: (context, url) => const CircleAvatar(
+                              radius: 28,
+                              backgroundImage: AssetImage(Assets.user),
+                            ),
+                            errorWidget: (context, url, error) => Container(
+                              margin: const EdgeInsets.only(right: 16),
+                              child: CircleAvatar(
+                                radius: 28,
+                                backgroundImage: AssetImage(Assets.user),
+                              ),
+                            ),
                           ),
                           title: Text(
-                            post.username,
+                            post.user.username,
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                           subtitle: Text(
@@ -70,7 +90,7 @@ class PostSocialCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    post.postText,
+                    post.content,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ],
@@ -81,7 +101,7 @@ class PostSocialCard extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.zero,
                 child: Image.network(
-                  post.postImage,
+                  post.image,
                   height: 368,
                   width: double.infinity,
                   fit: BoxFit.cover,

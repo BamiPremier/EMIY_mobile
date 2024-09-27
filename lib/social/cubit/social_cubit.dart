@@ -6,6 +6,7 @@ import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart' hide PreferencesService;
 import 'package:umai/common/services/preferences_service.dart';
 import 'package:umai/common/models/user.dart';
+import 'package:umai/social/model/post_response.dart';
 import 'package:umai/social/services/social_service.dart';
 
 part 'social_state.dart';
@@ -30,7 +31,7 @@ class SocialCubit extends Cubit<SocialState> {
       file: file,
     )
         .then((response) {
-      emit(const NewPostSuccessState());
+      emit(NewPostSuccessState(response));
 
       emit(stateBefore);
     }, onError: (error, trace) {

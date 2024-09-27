@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:umai/social/model/post.dart';
+import 'package:umai/social/model/post_response.dart';
 import 'package:umai/social/widget/post_social_card.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/themes.dart';

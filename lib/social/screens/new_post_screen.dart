@@ -12,6 +12,7 @@ import 'package:umai/common/utils/validators.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:umai/common/widgets/customtextfield.dart';
+import 'package:umai/home_screen.dart';
 import 'package:umai/social/cubit/social_cubit.dart';
 import 'package:umai/social/screens/new_post_complete_screen.dart';
 import 'package:umai/utils/assets.dart';
@@ -51,9 +52,7 @@ class _NewPostScreenState extends State<NewPostScreen> with CompletableMixin {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<SocialCubit, SocialState>(
-      listener: onEventReceived,
-      child: Scaffold(
+    return  Scaffold(
         body: Container(
           color: Colors.black,
           child: Stack(
@@ -316,19 +315,8 @@ class _NewPostScreenState extends State<NewPostScreen> with CompletableMixin {
             ],
           ),
         ),
-      ),
+    
     );
   }
 
-  void onEventReceived(BuildContext context, SocialState state) async {
-    await waitForDialog();
-
-    if (state is NewPostLoadingState) {
-      loadingDialogCompleter = showLoadingBarrier(context: context);
-    } else if (state is NewPostSuccessState) {
-      showSuccessToast("Mise à jour effectuée avec succes");
-    } else if (state is NewPostErrorState) {
-      showErrorToast(state.error);
-    }
-  }
 }

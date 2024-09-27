@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:umai/social/model/post.dart';
+import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
+import 'package:potatoes/libs.dart';
+import 'package:umai/social/cubit/post_cubit.dart';
+import 'package:umai/social/model/post_response.dart';
 import 'package:umai/social/widget/post_social_card.dart';
 import 'package:umai/utils/themes.dart';
 
@@ -8,48 +11,7 @@ class SocialView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Post> posts = [
-      Post(
-        username: 'Hari Randoll',
-        userImage: 'https://via.placeholder.com/50',
-        postText:
-            'Lorem ipsum dolor sit amet consectetur. Odio ornare malesuada non et dignissim erat leo amet aliquet.',
-        postImage:
-            'https://img.freepik.com/photos-gratuite/representations-experience-utilisateur-design-interface_23-2150104489.jpg?t=st=1726481260~exp=1726484860~hmac=71aa8b5d32271a5f3d6a968bb6731cb8d35a797e60f574caa80514a1ff4bcac3&w=900',
-      ),
-      Post(
-        username: 'Hari Randoll',
-        userImage: 'https://via.placeholder.com/50',
-        postText:
-            'Lorem ipsum dolor sit amet consectetur. Odio ornare malesuada non et dignissim erat leo amet aliquet.',
-        postImage:
-            'https://img.freepik.com/photos-gratuite/representations-experience-utilisateur-design-interface_23-2150104489.jpg?t=st=1726481260~exp=1726484860~hmac=71aa8b5d32271a5f3d6a968bb6731cb8d35a797e60f574caa80514a1ff4bcac3&w=900',
-      ),
-      Post(
-        username: 'Hari Randoll',
-        userImage: 'https://via.placeholder.com/50',
-        postText:
-            'Lorem ipsum dolor sit amet consectetur. Odio ornare malesuada non et dignissim erat leo amet aliquet.',
-        postImage:
-            'https://img.freepik.com/photos-gratuite/representations-experience-utilisateur-design-interface_23-2150104489.jpg?t=st=1726481260~exp=1726484860~hmac=71aa8b5d32271a5f3d6a968bb6731cb8d35a797e60f574caa80514a1ff4bcac3&w=900',
-      ),
-      Post(
-        username: 'Hari Randoll',
-        userImage: 'https://via.placeholder.com/50',
-        postText:
-            'Lorem ipsum dolor sit amet consectetur. Odio ornare malesuada non et dignissim erat leo amet aliquet.',
-        postImage:
-            'https://img.freepik.com/photos-gratuite/representations-experience-utilisateur-design-interface_23-2150104489.jpg?t=st=1726481260~exp=1726484860~hmac=71aa8b5d32271a5f3d6a968bb6731cb8d35a797e60f574caa80514a1ff4bcac3&w=900',
-      ),
-      Post(
-        username: 'Hari Randoll',
-        userImage: 'https://via.placeholder.com/50',
-        postText:
-            'Lorem ipsum dolor sit amet consectetur. Odio ornare malesuada non et dignissim erat leo amet aliquet.',
-        postImage:
-            'https://img.freepik.com/photos-gratuite/representations-experience-utilisateur-design-interface_23-2150104489.jpg?t=st=1726481260~exp=1726484860~hmac=71aa8b5d32271a5f3d6a968bb6731cb8d35a797e60f574caa80514a1ff4bcac3&w=900',
-      ),
-    ];
+    late final postCubit = context.read<PostCubit>();
 
     return Column(
       children: [
@@ -66,13 +28,26 @@ class SocialView extends StatelessWidget {
           ),
         ),
         Expanded(
-          child: ListView.builder(
-            itemCount: posts.length,
-            itemBuilder: (context, index) {
-              return PostSocialCard(post: posts[index]);
-            },
-          ),
-        ),
+            child: AutoListView.get<Post>(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                cubit: postCubit,
+                itemBuilder: (context, post) => PostSocialCard(
+                      post: post,
+                    ),
+                emptyBuilder: (context) => const Center(
+                      child: Text("Empty list"),
+                    ),
+                errorBuilder: (context, retry) => Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text("An error occured"),
+                        TextButton(
+                          onPressed: retry,
+                          child: const Text("Retry"),
+                        )
+                      ],
+                    ))),
       ],
     );
   }
