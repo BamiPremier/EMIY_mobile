@@ -15,13 +15,11 @@ class AnimeItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: () {
+      onTapUp: (details) {
         if (_withActions) {
           showContextMenu(
             context: context,
-            // TODO
-            position: Offset.zero
+            position: details.globalPosition
           );
         } else {
           Navigator.of(context).push(MaterialPageRoute(
