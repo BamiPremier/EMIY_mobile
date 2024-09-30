@@ -40,9 +40,9 @@ class AnimeManipCubit extends ObjectCubit<Anime, AnimeManipState> {
         .addToWatchList(
       anime: anime!.id,
     )
-        .then((updatedUser) {
+        .then((updateAnime) {
       emit(WatchListAddSuccesState());
-      update(updatedUser);
+      update(updateAnime);
     }, onError: (error, trace) {
       emit(AnimeManipErrorState(error, trace));
       emit(stateBefore);
@@ -53,9 +53,9 @@ class AnimeManipCubit extends ObjectCubit<Anime, AnimeManipState> {
     final stateBefore = state;
 
     emit(const AnimeManipViewedLoadingState());
-    animeService.addToViewerList(anime: anime!.id).then((updatedUser) {
+    animeService.addToViewerList(anime: anime!.id).then((updateAnime) {
       emit(AnimeViewedAddSuccesState());
-      update(updatedUser);
+      update(updateAnime);
     }, onError: (error, trace) {
       emit(AnimeManipErrorState(error, trace));
       emit(stateBefore);
