@@ -25,41 +25,42 @@ class _ChangePictureScreenState extends State<ChangePictureScreen>
   Widget build(BuildContext context) {
     return BlocListener<UserCubit, UserState>(
       listener: onEventReceived,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppTheme.black,
-          title: Text('Photo de profil',
-              style: Theme.of(context)
-                  .appBarTheme
-                  .titleTextStyle!
-                  .copyWith(color: AppTheme.white)),
-          centerTitle: true,
-        ),
-        backgroundColor: AppTheme.black,
-        body: SafeArea(
-          minimum: const EdgeInsets.only(bottom: 48),
-          child: Center(
-            child: Image(
-              image: FileImage(File(widget.image.path)),
-              fit: BoxFit.cover,
-              width: MediaQuery.of(context).size.width,
+      child: Theme(
+        data: AppTheme.fullBlackTheme(context),
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(
+              'Photo de profil',
+            ),
+            centerTitle: true,
+          ),
+          // backgroundColor: AppTheme.black,
+          body: SafeArea(
+            minimum: const EdgeInsets.only(bottom: 48),
+            child: Center(
+              child: Image(
+                image: FileImage(File(widget.image.path)),
+                fit: BoxFit.cover,
+                width: MediaQuery.of(context).size.width,
+              ),
             ),
           ),
-        ),
-        bottomNavigationBar: SafeArea(
-          minimum: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              UmaiButton.primary(
-                onPressed: () {
-                  userCubit.updateProfilePicture(
-                    file: File(widget.image.path),
-                  );
-                },
-                text: "Enregistrer",
-              ),
-            ],
+          bottomNavigationBar: SafeArea(
+            minimum:
+                const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                UmaiButton.primary(
+                  onPressed: () {
+                    userCubit.updateProfilePicture(
+                      file: File(widget.image.path),
+                    );
+                  },
+                  text: "Enregistrer",
+                ),
+              ],
+            ),
           ),
         ),
       ),

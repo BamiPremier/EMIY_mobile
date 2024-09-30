@@ -20,9 +20,11 @@ class _WatchListState extends State<WatchList> with CompletableMixin {
     return AutoListView.get<Anime>(
         padding:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-        cubit: AutoListCubit(provider: context.read<UserService>().getWatchList),
+        cubit:
+            AutoListCubit(provider: context.read<UserService>().getWatchList),
         viewType: ViewType.grid,
-        itemBuilder: (context, anime) => AnimeItem(anime: anime),
+        itemBuilder: (context, anime) =>
+            AnimeItem.get(context: context, anime: anime, withAction: true),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
             crossAxisSpacing: 2.0,

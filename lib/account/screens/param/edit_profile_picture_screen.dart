@@ -17,6 +17,7 @@ class EditProfilePictureScreen extends StatelessWidget {
       data: AppTheme.fullBlackTheme(context),
       child: Scaffold(
         appBar: AppBar(
+          
           title: const Text('Photo de profil'),
           centerTitle: true,
           actions: [
@@ -41,7 +42,8 @@ class EditProfilePictureScreen extends StatelessWidget {
                   ),
                 ),
               ],
-              onSelected: (value) => onPickImage(source: value, context: context),
+              onSelected: (value) =>
+                  onPickImage(source: value, context: context),
               icon: const Icon(
                 Icons.mode_edit_outline_outlined,
               ),
@@ -85,9 +87,10 @@ class EditProfilePictureScreen extends StatelessWidget {
   onPickImage({required ImageSource source, required BuildContext context}) {
     ImagePicker().pickImage(source: source).then((image) {
       if (image == null) return;
+
       Navigator.of(context).push(
         MaterialPageRoute(
-            builder: (context) => ChangePictureScreen(image: image)),
+            builder: (context) => ChangePictureScreen(image: image!)),
       );
     });
   }

@@ -20,44 +20,35 @@ class _RegistrationFollowScreenState extends State<RegistrationFollowScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Rejoins la communauté!")
-      ),
+      appBar: AppBar(title: const Text("Rejoins la communauté!")),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
+        child:
+            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),
               child: Text(
-                'Fais-toi des amis et reste informé(e) de leur activité dans l\'application',
-                style: Theme.of(context).textTheme.bodySmall
-              )
-            ),
-            Expanded(
+                  'Fais-toi des amis et reste informé(e) de leur activité dans l\'application',
+                  style: Theme.of(context).textTheme.bodySmall)),
+          Expanded(
               child: AutoListView.get<User>(
-                padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom
-                ),
-                cubit: AutoListCubit(
-                  provider: context.read<AuthService>().getPeopleToFollow
-                ),
-                itemBuilder: (context, user) => UserItem(user: user),
-                errorBuilder: (context, retry) => Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Text("An error occured"),
-                    TextButton(
-                      onPressed: retry,
-                      child: const Text("Retry"),
-                    )
-                  ],
-                )
-              )
-            )
-          ]
-        ),
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  cubit: AutoListCubit(
+                      provider: context.read<AuthService>().getPeopleToFollow),
+                  itemBuilder: (context, user) =>
+                      UserItem.get(context: context, user: user),
+                  errorBuilder: (context, retry) => Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text("An error occured"),
+                          TextButton(
+                            onPressed: retry,
+                            child: const Text("Retry"),
+                          )
+                        ],
+                      )))
+        ]),
       ),
       bottomNavigationBar: Container(
         color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
@@ -69,9 +60,9 @@ class _RegistrationFollowScreenState extends State<RegistrationFollowScreen> {
               UmaiButton.primary(
                 onPressed: () {
                   Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => const HomeScreen()),
-                    (route) => false
-                  );
+                      MaterialPageRoute(
+                          builder: (context) => const HomeScreen()),
+                      (route) => false);
                 },
                 text: "Continuer",
               ),

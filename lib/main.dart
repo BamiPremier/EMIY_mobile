@@ -6,8 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:potatoes/potatoes.dart' hide PreferencesService;
 import 'package:potatoes_secured_preferences/potatoes_secured_preferences.dart';
+import 'package:umai/animes/services/anime_service.dart';
 import 'package:umai/auth/bloc/auth_cubit.dart';
 import 'package:umai/auth/screens/onboarding_screen.dart';
+import 'package:umai/auth/screens/registration/genres_selection.dart';
+import 'package:umai/auth/screens/registration/people.dart';
 import 'package:umai/auth/screens/registration/username.dart';
 import 'package:umai/auth/services/auth_service.dart';
 import 'package:umai/common/bloc/home_cubit.dart';
@@ -25,8 +28,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final SharedPreferences preferences = await SharedPreferences.getInstance();
   const FlutterSecureStorage secureStorage = FlutterSecureStorage(
-    aOptions: AndroidOptions(encryptedSharedPreferences: true)
-  );
+      aOptions: AndroidOptions(encryptedSharedPreferences: true));
   final cacheOptions = await cacheStoreOptions();
   Links.instance = const ApiLinks();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -65,10 +67,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final preferencesService = PreferencesService(
-      preferences,
-      secureStorage
-    );
+    final preferencesService = PreferencesService(preferences, secureStorage);
 
     final Dio dio = DioClient.instance(
       preferencesService,
@@ -81,17 +80,17 @@ class MyApp extends StatelessWidget {
         RepositoryProvider(create: (_) => AuthService(dio)),
         RepositoryProvider(create: (_) => UserService(dio)),
         RepositoryProvider(create: (_) => SocialService(dio)),
+        RepositoryProvider(create: (_) => AnimeService(dio)),
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context) => UserCubit(
-            context.read(),
-            preferencesService,
-          )),
-          BlocProvider(create: (context) => AuthCubit(
-            context.read(),
-            context.read())
-          ),
+          BlocProvider(
+              create: (context) => UserCubit(
+                    context.read(),
+                    preferencesService,
+                  )),
+          BlocProvider(
+              create: (context) => AuthCubit(context.read(), context.read())),
           BlocProvider(create: (_) => HomeCubit()),
           BlocProvider(create: (context) => NewPostCubit(context.read()))
         ],
@@ -125,13 +124,14 @@ class MyApp extends StatelessWidget {
             return BlocBuilder<UserCubit, UserState>(
               buildWhen: (previous, _) => previous is InitializingUserState,
               builder: (context, state) {
-                if (state is InitializingUserState) return const SizedBox();
-                if (state is UserNotLoggedState) return const OnboardingScreen();
-                if (state is CompleteUserProfileState) {
-                  return const RegistrationUsernameScreen();
-                }
-                if (state is UserLoggedState) return const HomeScreen();
-                return const OnboardingScreen();
+                // if (state is InitializingUserState) return const SizedBox();
+                // if (state is UserNotLoggedState)
+                //   return const OnboardingScreen();
+                // if (state is CompleteUserProfileState) {
+                //   return const RegistrationUsernameScreen();
+                // }
+                // if (state is UserLoggedState) return const HomeScreen();
+                return const GenresSelectionScreen();
               },
             );
           }),

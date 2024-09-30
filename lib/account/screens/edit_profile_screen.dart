@@ -8,6 +8,7 @@ import 'package:umai/account/screens/param/edit_profile_picture_screen.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/utils/validators.dart';
 import 'package:umai/common/widgets/buttons.dart';
+import 'package:umai/common/widgets/image_profil.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/dialogs.dart';
 
@@ -22,9 +23,9 @@ class _EditProfileScreenState extends State<EditProfileScreen>
     with CompletableMixin {
   late final userCubit = context.read<UserCubit>();
   late final TextEditingController userNameController =
-    TextEditingController(text: userCubit.user.username);
+      TextEditingController(text: userCubit.user.username);
   late final TextEditingController userBioController =
-    TextEditingController(text: userCubit.user.biography);
+      TextEditingController(text: userCubit.user.biography);
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -60,38 +61,23 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         InkWell(
-                            onTap: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const EditProfilePictureScreen())),
-                            child: CachedNetworkImage(
-                              imageUrl: '', // TODO
-                              height: 56,
-                              width: 56,
-                              fit: BoxFit.cover,
-                              imageBuilder: (context, imageProvider) =>
-                                  Container(
-                                margin: const EdgeInsets.only(right: 16),
-                                child: CircleAvatar(
-                                  radius: 56,
-                                  backgroundImage: imageProvider,
-                                ),
-                              ),
-                              placeholder: (context, url) => SvgPicture.asset(
-                                Assets.defaultAvatar,
-                              ),
-                              errorWidget: (context, url, error) => SvgPicture.asset(
-                                Assets.defaultAvatar,
-                              ),
-                            )),
+                          onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const EditProfilePictureScreen())),
+                          child: ImageProfil(
+                            image: userCubit.user.imageFull ?? '',
+                            height: 56,
+                            width: 56,
+                          ),
+                        ),
                         const SizedBox(width: 16.0),
                         Expanded(
                           child: Container(
                             alignment: Alignment.center,
                             child: TextField(
                               decoration: InputDecoration(
-                                hintText: "@${userCubit.user.usertag}"
-                              ),
+                                  hintText: "@${userCubit.user.usertag}"),
                               readOnly: true,
                             ),
                           ),
@@ -104,7 +90,8 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                         TextFormField(
                           controller: userNameController,
                           decoration: const InputDecoration(
-                            helperText: "Il sera visible lors de tes différentes intéractions",
+                            helperText:
+                                "Il sera visible lors de tes différentes intéractions",
                             hintText: "Nom d'utilisateur",
                           ),
                           keyboardType: TextInputType.text,
@@ -125,7 +112,8 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                           minLines: 4,
                           maxLines: 4,
                           maxLength: 180,
-                          maxLengthEnforcement: MaxLengthEnforcement.truncateAfterCompositionEnds,
+                          maxLengthEnforcement:
+                              MaxLengthEnforcement.truncateAfterCompositionEnds,
                           onEditingComplete: FocusScope.of(context).unfocus,
                         ),
                       ],
@@ -159,9 +147,8 @@ class _EditProfileScreenState extends State<EditProfileScreen>
   void onSaveTap() {
     if (formKey.currentState?.validate() ?? false) {
       userCubit.updateUser(
-        username: userNameController.text.trim(),
-        biography: userBioController.text.trim()
-      );
+          username: userNameController.text.trim(),
+          biography: userBioController.text.trim());
     }
   }
 

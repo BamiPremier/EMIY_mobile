@@ -20,11 +20,11 @@ class _AnimesTabState extends State<AnimesTab> with CompletableMixin {
     return AutoListView.get<Anime>(
         padding:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-        cubit: AutoListCubit(
-          provider: context.read<UserService>().getAnimeViewed
-        ),
+        cubit:
+            AutoListCubit(provider: context.read<UserService>().getAnimeViewed),
         viewType: ViewType.grid,
-        itemBuilder: (context, anime) => AnimeItem(anime: anime),
+        itemBuilder: (context, anime) => /*  AnimeItem(anime: anime), */
+            AnimeItem.get(context: context, anime: anime, withAction: true),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
             crossAxisSpacing: 2.0,

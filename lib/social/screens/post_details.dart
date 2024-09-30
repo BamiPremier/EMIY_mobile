@@ -20,20 +20,13 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
         backgroundColor: Colors.white.withOpacity(.3),
         foregroundColor: Colors.white.withOpacity(.3),
         elevation: 0,
-        // flexibleSpace: Container(
-        //   decoration: BoxDecoration(
-        //     image: DecorationImage(
-        //       image: NetworkImage(widget.post.postImage),
-        //       fit: BoxFit.cover,
-        //     ),
-        //   ),
-        //   child: BackdropFilter(
-        //     filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-        //     child: Container(
-        //       color: Colors.black.withOpacity(0.2),
-        //     ),
-        //   ),
-        // ),
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(
+            Icons.arrow_back,
+            color: AppTheme.black,
+          ),
+        ),
       ),
       body: ListView(
         children: [

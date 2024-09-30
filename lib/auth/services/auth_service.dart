@@ -12,12 +12,13 @@ class AuthService extends ApiService {
   static const String _animes = '/auth/animes-by-genres';
   static const String _people = '/auth/list-to-follow';
 
+  static const String _folllow = '/users/follow';
+  static const String _unfollow = '/users/unfollow';
+
   const AuthService(super._dio);
 
-  Future<AuthResponse> authUser({
-    required String email,
-    required String token
-  }) {
+  Future<AuthResponse> authUser(
+      {required String email, required String token}) {
     return compute(
       dio.post(
         _auth,
@@ -54,36 +55,55 @@ class AuthService extends ApiService {
         options: Options(headers: withAuth()),
       ),
       mapper: (result) => (result['response'] as List<dynamic>)
-        .map((e) => e as String)
-        .toList(),
+          .map((e) => e as String)
+          .toList(),
     );
   }
 
-  Future<PaginatedList<Anime>> getAnimes({
-    int page = 1,
-    required List<String> genres
-  }) {
+  Future<PaginatedList<Anime>> getAnimes(
+      {int page = 1, required List<String> genres}) {
     return compute(
-      dio.get(
-        _animes,
-        options: Options(headers: withAuth()),
-        queryParameters: {
-          'page': page,
-          'genre': genres,
-          'size': 12,
-        }
-      ),
-      mapper: (result) => toPaginatedList(result, Anime.fromJson)
-    );
+        dio.get(_animes,
+            options: Options(headers: withAuth()),
+            queryParameters: {
+              'page': page,
+              'genre': genres,
+              'size': 12,
+            }),
+        mapper: (result) => toPaginatedList(result, Anime.fromJson));
   }
 
   Future<PaginatedList<User>> getPeopleToFollow({int page = 1}) {
     return compute(
-      dio.get(_people,
+        dio.get(_people,
+            options: Options(headers: withAuth()),
+            queryParameters: {'page': page}),
+        mapper: (result) => toPaginatedList(result, User.fromJson));
+  }
+
+  Future<User> followUser({required follower}) async {
+    return compute(
+      dio.post(
+        _folllow,
+        data: {
+          'idFollowing': follower,
+        },
         options: Options(headers: withAuth()),
-        queryParameters: {'page': page}
       ),
-        mapper: (result) => toPaginatedList(result, User.fromJson)
+      mapper: User.fromJson,
+    );
+  }
+
+  Future<User> unFollowUser({required follower}) async {
+    return compute(
+      dio.delete(
+        _unfollow,
+        data: {
+          'idFollowing': follower,
+        },
+        options: Options(headers: withAuth()),
+      ),
+      mapper: User.fromJson,
     );
   }
 }

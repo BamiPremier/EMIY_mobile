@@ -101,10 +101,10 @@ class _AnimeHomeScreenState extends State<AnimeHomeScreen> {
                 padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).viewInsets.bottom),
                 cubit: AutoListCubit(
-                  provider: context.read<AnimeService>().getAnimes
-                ),
+                    provider: context.read<AnimeService>().getAnimes),
                 viewType: ViewType.grid,
-                itemBuilder: (context, anime) => AnimeItem(anime: anime),
+                itemBuilder: (context, anime) => AnimeItem.get(
+                    context: context, anime: anime, withAction: true),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     crossAxisSpacing: 2.0,

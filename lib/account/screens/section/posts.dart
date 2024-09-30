@@ -5,6 +5,7 @@ import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/common/services/user_service.dart';
 import 'package:umai/social/model/post.dart';
+import 'package:umai/social/widget/item_post.dart';
 
 class PostTab extends StatefulWidget {
   const PostTab({super.key});
@@ -17,9 +18,10 @@ class _PostTabState extends State<PostTab> with CompletableMixin {
   @override
   Widget build(BuildContext context) {
     return AutoListView.get<Post>(
-        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         cubit: AutoListCubit(provider: context.read<UserService>().getPosts),
-        itemBuilder: (context, post) => const SizedBox(),
+        itemBuilder: (context, post) => PostItem(post: post),
         errorBuilder: (context, retry) => Column(
               mainAxisSize: MainAxisSize.min,
               children: [

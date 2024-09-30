@@ -34,22 +34,21 @@ class _RegistrationAnimeSelectionScreenState
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Text(
-              'Choisis tes animes favoris ou rajoutes-en dans ta washlist',
-              style: Theme.of(context).textTheme.bodySmall),
+                'Choisis tes animes favoris ou rajoutes-en dans ta washlist',
+                style: Theme.of(context).textTheme.bodySmall),
           ),
           const SizedBox(height: 16.0),
           Expanded(
             child: AutoListView.get<Anime>(
-              padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
               cubit: AutoListCubit(
-                provider: ({int page = 1}) => context.read<AuthService>()
-                  .getAnimes(
-                    page: page,
-                    genres: widget.listGenre
-                  )
-              ),
+                  provider: ({int page = 1}) => context
+                      .read<AuthService>()
+                      .getAnimes(page: page, genres: widget.listGenre)),
               viewType: ViewType.grid,
-              itemBuilder: (context, anime) => AnimeItem.withActions(anime: anime),
+              itemBuilder: (context, anime) => AnimeItem.get(
+                  context: context, anime: anime, withAction: true),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                   crossAxisSpacing: 2.0,
@@ -72,8 +71,7 @@ class _RegistrationAnimeSelectionScreenState
       bottomNavigationBar: Container(
         color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
         child: SafeArea(
-          minimum: const EdgeInsets.symmetric(
-              horizontal: 32.0, vertical: 16.0),
+          minimum: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -81,8 +79,7 @@ class _RegistrationAnimeSelectionScreenState
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                        builder: (context) =>
-                        const RegistrationFollowScreen()),
+                        builder: (context) => const RegistrationFollowScreen()),
                   );
                 },
                 text: "Continuer",

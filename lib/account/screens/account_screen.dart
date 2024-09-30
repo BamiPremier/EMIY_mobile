@@ -13,6 +13,7 @@ import 'package:umai/auth/screens/onboarding_screen.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/widgets/action_widget.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
+import 'package:umai/common/widgets/image_profil.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/dialogs.dart';
 
@@ -47,13 +48,12 @@ class _AccountScreenState extends State<AccountScreen>
       child: BlocBuilder<UserCubit, UserState>(
         builder: (context, state) => Scaffold(
           appBar: AppBar(
-            title: Text(context.read<UserCubit>().user.username),
+            title: Text(userCubit.user.username),
             centerTitle: true,
             actions: [
               IconButton(
-                onPressed: onActionsPressed,
-                icon: const Icon(Icons.more_vert)
-              )
+                  onPressed: onActionsPressed,
+                  icon: const Icon(Icons.more_vert))
             ],
           ),
           body: DefaultTabController(
@@ -65,37 +65,23 @@ class _AccountScreenState extends State<AccountScreen>
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CachedNetworkImage(
-                      imageUrl: context.read<UserCubit>().user.image ?? '',
-                      height: 80,
-                      width: 80,
-                      fit: BoxFit.cover,
-                      imageBuilder: (context, imageProvider) => Container(
-                          margin: const EdgeInsets.only(right: 16),
-                          child: CircleAvatar(
-                            radius: 40,
-                            backgroundImage: imageProvider,
-                          )),
-                      placeholder: (context, url) => SvgPicture.asset(
-                        Assets.defaultAvatar,
-                      ),
-                      errorWidget: (context, url, error) => SvgPicture.asset(
-                        Assets.defaultAvatar,
-                      ),
-                    ),
+                    ImageProfil(
+                        image: userCubit.user.image ?? '',
+                        height: 80,
+                        width: 80),
                     const SizedBox(width: 16.0),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '@${context.read<UserCubit>().user.usertag}',
+                            '@${userCubit.user.usertag}',
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           const SizedBox(height: 4),
                           Text(
                             // TODO
-                            context.read<UserCubit>().user.biography ?? '',
+                            userCubit.user.biography ?? '',
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context)
@@ -135,7 +121,7 @@ class _AccountScreenState extends State<AccountScreen>
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              '${context.read<UserCubit>().user.followersCount}',
+                              '${userCubit.user.followersCount}',
                               style: Theme.of(context).textTheme.labelLarge,
                             ),
                             Text(
@@ -149,7 +135,7 @@ class _AccountScreenState extends State<AccountScreen>
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              '${context.read<UserCubit>().user.followingCount}',
+                              '${userCubit.user.followingCount}',
                               style: Theme.of(context).textTheme.labelLarge,
                             ),
                             Text(
@@ -182,7 +168,7 @@ class _AccountScreenState extends State<AccountScreen>
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              '${context.read<UserCubit>().user.animesViewedCount}',
+                              '${userCubit.user.animesViewedCount}',
                               style: Theme.of(context).textTheme.labelLarge,
                             ),
                             Text(
@@ -196,7 +182,7 @@ class _AccountScreenState extends State<AccountScreen>
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              '${context.read<UserCubit>().user.watchlistCount}',
+                              '${userCubit.user.watchlistCount}',
                               style: Theme.of(context).textTheme.labelLarge,
                             ),
                             Text(

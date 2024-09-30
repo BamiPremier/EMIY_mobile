@@ -57,10 +57,8 @@ class UserCubit extends ObjectCubit<User, UserState> {
   }
 
   Future<void> _refreshData() {
-    return userService.getMe()
-      .then((user) async {
-        await preferencesService.saveUser(user);
-        emit(UserLoggedState(user));
+    return userService.getMe().then((user) async {
+      await preferencesService.saveUser(user);
     });
   }
 
@@ -71,10 +69,8 @@ class UserCubit extends ObjectCubit<User, UserState> {
     final stateBefore = state;
 
     emit(const UserUpdatingState());
-    userService.updateUser(
-      username: username,
-      biography: biography
-    ).then((user) {
+    userService.updateUser(username: username, biography: biography).then(
+        (user) {
       preferencesService.saveUser(user);
       emit(const UserUpdatedState());
       emit(UserLoggedState(user));
@@ -112,9 +108,7 @@ class UserCubit extends ObjectCubit<User, UserState> {
         emit(UserErrorState(error, trace));
         emit(stateBefore);
       });
-    } else {
-      print('User is not logged ${state}');
-    }
+    } else {}
   }
 
   @override

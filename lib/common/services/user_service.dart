@@ -20,44 +20,41 @@ class UserService extends ApiService {
   static const String _logout = '/users/logout';
   static const String _animeView = '/users/animes-viewed';
   static const String _animeWatchlist = '/users/animes-watchlist';
-  static const String _posts = '/users/posts';
+  static const String _posts = '/posts';
 
   const UserService(super._dio);
 
   Future<User> getMe() {
     return compute(
-      dio.get(
-        _getMe,
-        options: Options(headers: withAuth()),
-      ),
-      mapper: User.fromJson
-    );
+        dio.get(
+          _getMe,
+          options: Options(headers: withAuth()),
+        ),
+        mapper: User.fromJson);
   }
 
   Future<User> follow({required user}) async {
     return compute(
-      dio.post(
-        _followerAdd,
-        data: {
-          'idFollowing': user,
-        },
-        options: Options(headers: withAuth()),
-      ),
-      mapper: User.fromJson
-    );
+        dio.post(
+          _followerAdd,
+          data: {
+            'idFollowing': user,
+          },
+          options: Options(headers: withAuth()),
+        ),
+        mapper: User.fromJson);
   }
 
   Future<User> unfollow({required user}) async {
     return compute(
-      dio.delete(
-        _followerRemove,
-        data: {
-          'idFollowing': user,
-        },
-        options: Options(headers: withAuth()),
-      ),
-      mapper: User.fromJson
-    );
+        dio.delete(
+          _followerRemove,
+          data: {
+            'idFollowing': user,
+          },
+          options: Options(headers: withAuth()),
+        ),
+        mapper: User.fromJson);
   }
 
   Future<User> updateUser({
@@ -65,32 +62,23 @@ class UserService extends ApiService {
     String? biography,
   }) {
     return compute(
-      dio.patch(
-        _updateUser,
-        data: {
-          'username': username,
-          'biography': biography
-        },
-        options: Options(headers: withAuth()),
-      ),
-      mapper: User.fromJson
-    );
+        dio.patch(
+          _updateUser,
+          data: {'username': username, 'biography': biography},
+          options: Options(headers: withAuth()),
+        ),
+        mapper: User.fromJson);
   }
 
   Future<User> updateProfilePicture({required File file}) async {
     return compute(
-      dio.patch(
-        _updateProfilePicture,
-        options: Options(headers: withAuth()),
-        data: FormData.fromMap({
-          'image': await MultipartFile.fromFile(
-            file.path,
-            filename: basename(file.path)
-          )
-        })
-      ),
-      mapper: User.fromJson
-    );
+        dio.patch(_updateProfilePicture,
+            options: Options(headers: withAuth()),
+            data: FormData.fromMap({
+              'image': await MultipartFile.fromFile(file.path,
+                  filename: basename(file.path))
+            })),
+        mapper: User.fromJson);
   }
 
   Future<void> logout() {
@@ -104,14 +92,13 @@ class UserService extends ApiService {
 
   Future<PaginatedList<Anime>> getAnimeViewed({int page = 1}) async {
     return compute(
-      dio.get(_animeView,
-          options: Options(headers: withAuth()),
-          queryParameters: {
-            'page': page,
-            'size': 12,
-          }),
-      mapper: (result) => toPaginatedList(result, Anime.fromJson)
-    );
+        dio.get(_animeView,
+            options: Options(headers: withAuth()),
+            queryParameters: {
+              'page': page,
+              'size': 12,
+            }),
+        mapper: (result) => toPaginatedList(result, Anime.fromJson));
   }
 
   Future<PaginatedList<Anime>> getWatchList({int page = 1}) async {
@@ -122,8 +109,7 @@ class UserService extends ApiService {
               'page': page,
               'size': 12,
             }),
-        mapper: (result) => toPaginatedList(result, Anime.fromJson)
-    );
+        mapper: (result) => toPaginatedList(result, Anime.fromJson));
   }
 
   Future<PaginatedList<User>> getUserFollowers({int page = 1}) async {
@@ -134,8 +120,7 @@ class UserService extends ApiService {
               'page': page,
               'size': 12,
             }),
-        mapper: (result) => toPaginatedList(result, User.fromJson)
-    );
+        mapper: (result) => toPaginatedList(result, User.fromJson));
   }
 
   Future<PaginatedList<User>> getUserFollowing({int page = 1}) async {
@@ -146,16 +131,14 @@ class UserService extends ApiService {
               'page': page,
               'size': 12,
             }),
-        mapper: (result) => toPaginatedList(result, User.fromJson)
-    );
+        mapper: (result) => toPaginatedList(result, User.fromJson));
   }
 
   Future<PaginatedList<Post>> getPosts({int page = 1}) async {
     return compute(
-      dio.get(_posts,
-          options: Options(headers: withAuth()),
-          queryParameters: {'page': page}),
-      mapper: (result) => toPaginatedList(result, Post.fromJson)
-    );
+        dio.get(_posts,
+            options: Options(headers: withAuth()),
+            queryParameters: {'page': page}),
+        mapper: (result) => toPaginatedList(result, Post.fromJson));
   }
 }

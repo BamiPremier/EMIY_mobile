@@ -50,7 +50,7 @@ dependencies:
   potatoes: ^3.0.2
   potatoes_secured_preferences: ^1.0.0
   sign_in_with_apple: ^6.1.2
-
+  photo_manager: ^3.5.0
   flutter_localizations:
     sdk: flutter
 

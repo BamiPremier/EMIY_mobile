@@ -13,7 +13,7 @@ class ApiLinks extends potatoes.Links {
 
   @override
   // TODO: implement productionUrl
-  String get productionUrl =>  throw UnimplementedError();
+  String get productionUrl => "https://umai.caelis-tech.studio/api";
 
   @override
   String get stagingUrl => "https://umai.caelis-tech.studio/api";
@@ -56,16 +56,13 @@ class ApiService extends potatoes.ApiService {
   }
 
   PaginatedList<T> toPaginatedList<T>(
-    Map<String, dynamic> data,
-    T Function(Map<String, dynamic> item) mapper
-  ) {
+      Map<String, dynamic> data, T Function(Map<String, dynamic> item) mapper) {
     return PaginatedList(
-      items: (data['content'] as List<dynamic>)
-        .map((e) => mapper(e as Map<String, dynamic>))
-        .toList(),
-      page: data['page'],
-      total: data['total']
-    );
+        items: (data['content'] as List<dynamic>)
+            .map((e) => mapper(e as Map<String, dynamic>))
+            .toList(),
+        page: data['page'],
+        total: data['total']);
   }
 }
 

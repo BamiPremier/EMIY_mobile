@@ -173,16 +173,7 @@ class _AnimeDetailsScreenState extends State<AnimeDetailsScreen>
                           Icons.add,
                           color: AppTheme.black,
                         ),
-                        onPressed: () {
-                          // Navigator.of(context).pop();
-
-                          // log('3333333333333333');
-                          // Navigator.of(context).push(
-                          //   MaterialPageRoute(
-                          //       builder: (context) =>
-                          //           const RegistrationUsernameScreen()),
-                          // );
-                        },
+                        onPressed: () {},
                         text: "Ajouter à ma liste",
                       ),
                     ),
