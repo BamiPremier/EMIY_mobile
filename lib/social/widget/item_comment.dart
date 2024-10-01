@@ -17,7 +17,7 @@ import 'package:umai/social/services/social_service.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/themes.dart';
 
-class ItemComment extends StatefulWidget {
+class ItemComment extends StatelessWidget {
   final VoidCallback actionFocus;
 
   const ItemComment._({required this.actionFocus});
@@ -32,13 +32,6 @@ class ItemComment extends StatefulWidget {
       child: ItemComment._(actionFocus: actionFocus),
     );
   }
-
-  @override
-  State<ItemComment> createState() => _ItemCommentState();
-}
-
-class _ItemCommentState extends State<ItemComment> {
-  bool response = false;
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +139,7 @@ class _ItemCommentState extends State<ItemComment> {
                                       Theme.of(context).textTheme.labelSmall!),
                             ),
                       TextButton(
-                        onPressed: widget.actionFocus,
+                        onPressed: actionFocus,
                         style: TextButton.styleFrom(
                           padding: EdgeInsets.zero,
                           textStyle: Theme.of(context).textTheme.labelSmall,
@@ -157,16 +150,15 @@ class _ItemCommentState extends State<ItemComment> {
                     if (comment.commentResponsesCount != 0)
                       TextButton(
                         onPressed: () {
-                          setState(() {
-                            response = !response;
-                          });
+                          commentCubit.seeResponse();
                         },
                         style: TextButton.styleFrom(
                           padding: EdgeInsets.zero,
                           textStyle: Theme.of(context).textTheme.labelSmall,
                         ),
-                        child: Text(
-                            'voir ${comment.commentResponsesCount} réponses'),
+                        child: Text((state is SeeCommentResponsState)
+                            ? 'voir moins'
+                            : 'voir ${comment.commentResponsesCount} réponses'),
                       ),
                   ],
                 ),
@@ -174,7 +166,7 @@ class _ItemCommentState extends State<ItemComment> {
             ],
           ),
         ),
-        if (response)
+        if (state is SeeCommentResponsState)
           AutoListView.get<Comment>(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
@@ -187,7 +179,7 @@ class _ItemCommentState extends State<ItemComment> {
             itemBuilder: (context, comment) => ItemComment.get(
               context: context,
               comment: comment,
-              actionFocus: widget.actionFocus,
+              actionFocus: actionFocus,
             ),
             errorBuilder: (context, retry) => Column(
               mainAxisSize: MainAxisSize.min,

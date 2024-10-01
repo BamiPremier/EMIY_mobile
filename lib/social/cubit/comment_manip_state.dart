@@ -30,4 +30,12 @@ class CommentCommentSuccesState extends CubitInformationState
 class CommentManipErrorState extends CubitErrorState with CommentManipState {
   CommentManipErrorState(super.error, [super.trace]);
 }
- 
+
+class SeeCommentResponsState extends CubitLoadingState with CommentManipState {
+  SeeCommentResponsState();
+}
+
+class UnSeeCommentResponsState extends CubitInformationState
+    with CommentManipState {
+  UnSeeCommentResponsState();
+}

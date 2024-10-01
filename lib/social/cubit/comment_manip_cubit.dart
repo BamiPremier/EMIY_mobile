@@ -32,7 +32,15 @@ class CommentManipCubit extends ObjectCubit<Comment, CommentManipState> {
   void update(Comment object) {
     emit(InitializingCommentManipState(object));
   }
- 
+
+  void seeResponse() {
+    if (state is SeeCommentResponsState) {
+      emit(UnSeeCommentResponsState());
+    }
+    if (state is UnSeeCommentResponsState) {
+      emit(SeeCommentResponsState());
+    }
+  }
 
   void likeComment() {
     final stateBefore = state;
@@ -64,10 +72,9 @@ class CommentManipCubit extends ObjectCubit<Comment, CommentManipState> {
 
   void responseComment() {
     final stateBefore = state;
-    
+
     emit(const CommentManipLoadingState());
-    socialService.commentComment(commentId: comment!.id).then(
-        (updatecomment) {
+    socialService.commentComment(commentId: comment!.id).then((updatecomment) {
       emit(CommentCommentSuccesState());
       update(updatecomment);
     }, onError: (error, trace) {
