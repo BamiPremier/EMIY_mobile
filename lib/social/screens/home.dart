@@ -7,6 +7,7 @@ import 'package:potatoes/libs.dart';
 import 'package:umai/social/cubit/new_post_cubit.dart';
 import 'package:umai/social/model/post.dart';
 import 'package:umai/social/screens/new_post_screen.dart';
+import 'package:umai/social/screens/post_details.dart';
 import 'package:umai/social/services/social_service.dart';
 import 'package:umai/social/widget/item_post.dart';
 import 'package:umai/utils/themes.dart';
@@ -19,38 +20,15 @@ class SocialHomeScreen extends StatefulWidget {
 }
 
 class _SocialHomeScreenState extends State<SocialHomeScreen> {
-  bool _showUploadedMessage = false;
-  Timer? _messageTimer;
-
-  @override
-  void dispose() {
-    _messageTimer?.cancel();
-    super.dispose();
-  }
-
-  void _startMessageTimer() {
-    _showUploadedMessage = true;
-    _messageTimer = Timer(const Duration(seconds: 5), () {
-      setState(() {
-        _showUploadedMessage = false;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       primary: false,
       body: Column(
         children: [
-                            // TODO: Implémenter la logique avec un cubit au liext de statefull builder
-       
-          BlocConsumer<NewPostCubit, NewPostState>(
-            listener: (context, state) {
-              if (state is NewPostUploadingState) {
-                _startMessageTimer();
-              }
-            },
+          // TODO: Implémenter la logique avec un cubit au liext de statefull builder
+
+          BlocBuilder<NewPostCubit, NewPostState>(
             builder: (context, state) {
               if (state is NewPostUploadingState) {
                 return Container(
@@ -65,8 +43,7 @@ class _SocialHomeScreenState extends State<SocialHomeScreen> {
                     style: Theme.of(context).textTheme.labelMedium,
                   ),
                 );
-              } else if (state is NewPostUploadedState &&
-                  _showUploadedMessage) {
+              } else if (state is NewPostUploadedState) {
                 return Container(
                     padding: const EdgeInsets.all(8.0),
                     height: 40,
@@ -83,7 +60,14 @@ class _SocialHomeScreenState extends State<SocialHomeScreen> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            // TODO: Implémenter la logique pour voir le post
+                            var newPostCubit = state as NewPostUploadedState;
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PostDetailsScreen.get(
+                                      context: context,
+                                      post: newPostCubit.post!)),
+                            );
                           },
                           child: Text(
                             'Voir',
@@ -103,7 +87,8 @@ class _SocialHomeScreenState extends State<SocialHomeScreen> {
                       bottom: MediaQuery.of(context).viewInsets.bottom),
                   cubit: AutoListCubit(
                       provider: context.read<SocialService>().getFeed),
-                  itemBuilder: (context, post) => PostItem(post: post),
+                  itemBuilder: (context, post) =>
+                      PostItem.get(context: context, post: post),
                   errorBuilder: (context, retry) => Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [

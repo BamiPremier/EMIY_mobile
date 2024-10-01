@@ -16,7 +16,7 @@ class AnimeItem extends StatelessWidget {
     required Anime anime,
     bool withAction = false,
   }) {
-    return BlocProvider<AnimeManipCubit>(
+    return BlocProvider(
       create: (context) => AnimeManipCubit(context.read(), anime),
       child: AnimeItem._(withAction),
     );
@@ -30,6 +30,7 @@ class AnimeItem extends StatelessWidget {
         listener: onEventReceived,
         builder: (context, state) {
           final animeManipCubit = context.read<AnimeManipCubit>();
+          final anime = animeManipCubit.anime!;
           return GestureDetector(
             onTapUp: (details) {
               if (withAction) {
@@ -58,8 +59,6 @@ class AnimeItem extends StatelessWidget {
                               : Icon(Icons.check_circle_outline),
                           title: const Text("J'ai vu"),
                           onTap: () {
-                            final animeManipCubit =
-                                context.read<AnimeManipCubit>();
                             animeManipCubit.addToViewed();
                           },
                         )),
@@ -76,8 +75,6 @@ class AnimeItem extends StatelessWidget {
                             : const Icon(Icons.check_circle_outline),
                         title: const Text("Ajouter à la liste"),
                         onTap: () {
-                          final animeManipCubit =
-                              context.read<AnimeManipCubit>();
                           animeManipCubit.addToWatchlist();
                         },
                       ),
@@ -86,8 +83,7 @@ class AnimeItem extends StatelessWidget {
                 );
               } else {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) =>
-                        AnimeDetailsScreen(anime: animeManipCubit.anime!)));
+                    builder: (_) => AnimeDetailsScreen(anime: anime)));
               }
             },
             child: Card(
@@ -99,7 +95,7 @@ class AnimeItem extends StatelessWidget {
                 children: [
                   // Image at the top of the card
                   CachedNetworkImage(
-                    imageUrl: animeManipCubit.anime!.coverImage.extraLarge,
+                    imageUrl: anime.coverImage.extraLarge,
                     height: 368,
                     width: double.infinity,
                     fit: BoxFit.cover,

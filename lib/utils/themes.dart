@@ -109,21 +109,19 @@ abstract class AppTheme {
 
     return ThemeData(
       useMaterial3: true,
-      colorScheme: colorScheme.copyWith(
-        surface: white
-      ),
+      colorScheme: colorScheme.copyWith(surface: white),
       primaryColor: primaryYellow,
+      
       disabledColor: disabledGrey,
       appBarTheme: theme.appBarTheme.copyWith(
         elevation: 0,
         scrolledUnderElevation: 0,
         surfaceTintColor: Colors.transparent,
         systemOverlayStyle: SystemUiOverlayStyle(
-          systemNavigationBarColor: colorScheme.surface,
-          systemNavigationBarDividerColor: colorScheme.surface,
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.dark
-        ),
+            systemNavigationBarColor: colorScheme.surface,
+            systemNavigationBarDividerColor: colorScheme.surface,
+            statusBarColor: Colors.transparent,
+            statusBarIconBrightness: Brightness.dark),
       ),
       bottomNavigationBarTheme: theme.bottomNavigationBarTheme.copyWith(
         backgroundColor: white,
@@ -198,31 +196,31 @@ abstract class AppTheme {
         labelPadding: const EdgeInsets.symmetric(horizontal: 16.0),
       ),
       inputDecorationTheme: InputDecorationTheme(
-        fillColor: colorScheme.surfaceContainerHighest,
-        filled: true,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.0),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.0),
-          borderSide: BorderSide.none,
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.0),
-          borderSide: BorderSide.none,
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.0),
-          borderSide: BorderSide.none,
-        )
-      ),
+          fillColor: colorScheme.surfaceContainerHighest,
+          filled: true,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+            borderSide: BorderSide.none,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+            borderSide: BorderSide.none,
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+            borderSide: BorderSide.none,
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+            borderSide: BorderSide.none,
+          )),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           backgroundColor: primaryYellow,
           side: const BorderSide(color: primaryYellow),
           padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
           textStyle: textTheme.labelMedium,
         ),
       ),
@@ -279,17 +277,15 @@ abstract class AppTheme {
     final baseTheme = lightTheme(context);
 
     return baseTheme.copyWith(
-      scaffoldBackgroundColor: primaryYellow,
-      appBarTheme: baseTheme.appBarTheme.copyWith(
-        backgroundColor: primaryYellow,
-        systemOverlayStyle: const SystemUiOverlayStyle(
-          systemNavigationBarColor: primaryYellow,
-          systemNavigationBarDividerColor: primaryYellow,
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.dark,
-        )
-      )
-    );
+        scaffoldBackgroundColor: primaryYellow,
+        appBarTheme: baseTheme.appBarTheme.copyWith(
+            backgroundColor: primaryYellow,
+            systemOverlayStyle: const SystemUiOverlayStyle(
+              systemNavigationBarColor: primaryYellow,
+              systemNavigationBarDividerColor: primaryYellow,
+              statusBarColor: Colors.transparent,
+              statusBarIconBrightness: Brightness.dark,
+            )));
   }
 
   static ThemeData fullBlackTheme(BuildContext context) {
@@ -297,24 +293,19 @@ abstract class AppTheme {
     final colorScheme = _colorScheme(Brightness.dark);
 
     return baseTheme.copyWith(
-      brightness: Brightness.dark,
-      appBarTheme: baseTheme.appBarTheme.copyWith(
-        backgroundColor: colorScheme.surface,
-        foregroundColor: colorScheme.onSurface,
-        iconTheme: baseTheme.appBarTheme.iconTheme?.copyWith(
-          color: colorScheme.onSurface
-        ),
-        titleTextStyle: baseTheme.appBarTheme.titleTextStyle?.copyWith(
-          color: colorScheme.onSurface
-        ),
-        systemOverlayStyle: SystemUiOverlayStyle(
-          systemNavigationBarColor: colorScheme.surface,
-          systemNavigationBarDividerColor: colorScheme.surface,
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.light
-        )
-      ),
-      scaffoldBackgroundColor: colorScheme.surface
-    );
+        brightness: Brightness.dark,
+        appBarTheme: baseTheme.appBarTheme.copyWith(
+            backgroundColor: colorScheme.surface,
+            foregroundColor: colorScheme.onSurface,
+            iconTheme: baseTheme.appBarTheme.iconTheme
+                ?.copyWith(color: colorScheme.onSurface),
+            titleTextStyle: baseTheme.appBarTheme.titleTextStyle
+                ?.copyWith(color: colorScheme.onSurface),
+            systemOverlayStyle: SystemUiOverlayStyle(
+                systemNavigationBarColor: colorScheme.surface,
+                systemNavigationBarDividerColor: colorScheme.surface,
+                statusBarColor: Colors.transparent,
+                statusBarIconBrightness: Brightness.light)),
+        scaffoldBackgroundColor: colorScheme.surface);
   }
 }

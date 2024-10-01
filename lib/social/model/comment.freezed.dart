@@ -22,11 +22,10 @@ Comment _$CommentFromJson(Map<String, dynamic> json) {
 mixin _$Comment {
   String get id => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
-  String? get image => throw _privateConstructorUsedError;
   @JsonKey(name: 'has_liked')
   bool get hasLiked => throw _privateConstructorUsedError;
-  @JsonKey(name: 'comments_count')
-  int get commentsCount => throw _privateConstructorUsedError;
+  @JsonKey(name: 'comment_responses_count')
+  int get commentResponsesCount => throw _privateConstructorUsedError;
   User get user => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -42,9 +41,8 @@ abstract class $CommentCopyWith<$Res> {
   $Res call(
       {String id,
       String content,
-      String? image,
       @JsonKey(name: 'has_liked') bool hasLiked,
-      @JsonKey(name: 'comments_count') int commentsCount,
+      @JsonKey(name: 'comment_responses_count') int commentResponsesCount,
       User user});
 
   $UserCopyWith<$Res> get user;
@@ -65,9 +63,8 @@ class _$CommentCopyWithImpl<$Res, $Val extends Comment>
   $Res call({
     Object? id = null,
     Object? content = null,
-    Object? image = freezed,
     Object? hasLiked = null,
-    Object? commentsCount = null,
+    Object? commentResponsesCount = null,
     Object? user = null,
   }) {
     return _then(_value.copyWith(
@@ -79,17 +76,13 @@ class _$CommentCopyWithImpl<$Res, $Val extends Comment>
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
               as String,
-      image: freezed == image
-          ? _value.image
-          : image // ignore: cast_nullable_to_non_nullable
-              as String?,
       hasLiked: null == hasLiked
           ? _value.hasLiked
           : hasLiked // ignore: cast_nullable_to_non_nullable
               as bool,
-      commentsCount: null == commentsCount
-          ? _value.commentsCount
-          : commentsCount // ignore: cast_nullable_to_non_nullable
+      commentResponsesCount: null == commentResponsesCount
+          ? _value.commentResponsesCount
+          : commentResponsesCount // ignore: cast_nullable_to_non_nullable
               as int,
       user: null == user
           ? _value.user
@@ -117,9 +110,8 @@ abstract class _$$CommentImplCopyWith<$Res> implements $CommentCopyWith<$Res> {
   $Res call(
       {String id,
       String content,
-      String? image,
       @JsonKey(name: 'has_liked') bool hasLiked,
-      @JsonKey(name: 'comments_count') int commentsCount,
+      @JsonKey(name: 'comment_responses_count') int commentResponsesCount,
       User user});
 
   @override
@@ -139,9 +131,8 @@ class __$$CommentImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? content = null,
-    Object? image = freezed,
     Object? hasLiked = null,
-    Object? commentsCount = null,
+    Object? commentResponsesCount = null,
     Object? user = null,
   }) {
     return _then(_$CommentImpl(
@@ -153,17 +144,13 @@ class __$$CommentImplCopyWithImpl<$Res>
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
               as String,
-      image: freezed == image
-          ? _value.image
-          : image // ignore: cast_nullable_to_non_nullable
-              as String?,
       hasLiked: null == hasLiked
           ? _value.hasLiked
           : hasLiked // ignore: cast_nullable_to_non_nullable
               as bool,
-      commentsCount: null == commentsCount
-          ? _value.commentsCount
-          : commentsCount // ignore: cast_nullable_to_non_nullable
+      commentResponsesCount: null == commentResponsesCount
+          ? _value.commentResponsesCount
+          : commentResponsesCount // ignore: cast_nullable_to_non_nullable
               as int,
       user: null == user
           ? _value.user
@@ -176,12 +163,12 @@ class __$$CommentImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$CommentImpl implements _Comment {
-  const _$CommentImpl(
+  _$CommentImpl(
       {required this.id,
       required this.content,
-      this.image,
-      @JsonKey(name: 'has_liked') this.hasLiked = false,
-      @JsonKey(name: 'comments_count') this.commentsCount = 0,
+      @JsonKey(name: 'has_liked') required this.hasLiked,
+      @JsonKey(name: 'comment_responses_count')
+      required this.commentResponsesCount,
       required this.user});
 
   factory _$CommentImpl.fromJson(Map<String, dynamic> json) =>
@@ -192,19 +179,17 @@ class _$CommentImpl implements _Comment {
   @override
   final String content;
   @override
-  final String? image;
-  @override
   @JsonKey(name: 'has_liked')
   final bool hasLiked;
   @override
-  @JsonKey(name: 'comments_count')
-  final int commentsCount;
+  @JsonKey(name: 'comment_responses_count')
+  final int commentResponsesCount;
   @override
   final User user;
 
   @override
   String toString() {
-    return 'Comment(id: $id, content: $content, image: $image, hasLiked: $hasLiked, commentsCount: $commentsCount, user: $user)';
+    return 'Comment(id: $id, content: $content, hasLiked: $hasLiked, commentResponsesCount: $commentResponsesCount, user: $user)';
   }
 
   @override
@@ -214,18 +199,17 @@ class _$CommentImpl implements _Comment {
             other is _$CommentImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.content, content) || other.content == content) &&
-            (identical(other.image, image) || other.image == image) &&
             (identical(other.hasLiked, hasLiked) ||
                 other.hasLiked == hasLiked) &&
-            (identical(other.commentsCount, commentsCount) ||
-                other.commentsCount == commentsCount) &&
+            (identical(other.commentResponsesCount, commentResponsesCount) ||
+                other.commentResponsesCount == commentResponsesCount) &&
             (identical(other.user, user) || other.user == user));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, id, content, image, hasLiked, commentsCount, user);
+      runtimeType, id, content, hasLiked, commentResponsesCount, user);
 
   @JsonKey(ignore: true)
   @override
@@ -242,12 +226,12 @@ class _$CommentImpl implements _Comment {
 }
 
 abstract class _Comment implements Comment {
-  const factory _Comment(
+  factory _Comment(
       {required final String id,
       required final String content,
-      final String? image,
-      @JsonKey(name: 'has_liked') final bool hasLiked,
-      @JsonKey(name: 'comments_count') final int commentsCount,
+      @JsonKey(name: 'has_liked') required final bool hasLiked,
+      @JsonKey(name: 'comment_responses_count')
+      required final int commentResponsesCount,
       required final User user}) = _$CommentImpl;
 
   factory _Comment.fromJson(Map<String, dynamic> json) = _$CommentImpl.fromJson;
@@ -257,13 +241,11 @@ abstract class _Comment implements Comment {
   @override
   String get content;
   @override
-  String? get image;
-  @override
   @JsonKey(name: 'has_liked')
   bool get hasLiked;
   @override
-  @JsonKey(name: 'comments_count')
-  int get commentsCount;
+  @JsonKey(name: 'comment_responses_count')
+  int get commentResponsesCount;
   @override
   User get user;
   @override

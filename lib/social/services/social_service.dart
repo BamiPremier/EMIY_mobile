@@ -17,6 +17,8 @@ class SocialService extends ApiService {
   static const String _listComments = '/posts/:idPost/comments';
   static const String _likeComment = '/posts/comment/:idComment/like';
   static const String _unlikeComment = '/posts/comment/:idComment/unlike';
+  static const String _commentComment = '/posts/comment/:idComment/comment';
+  static const String _listCommentResponse = '/posts/:idPost/comments';
 
   const SocialService(super._dio);
 
@@ -40,10 +42,10 @@ class SocialService extends ApiService {
     );
   }
 
-  Future<Post> deletePost({required String postId}) {
+  Future<Post> deletePost({required String idPost}) {
     return compute(
       dio.delete(
-        _deletePost.replaceAll(':idPost', postId),
+        _deletePost.replaceAll(':idPost', idPost),
         options: Options(headers: withAuth()),
       ),
     );
@@ -71,21 +73,21 @@ class SocialService extends ApiService {
         mapper: (result) => toPaginatedList(result, Post.fromJson));
   }
 
-  Future<Post> getPost({required String postId}) {
+  Future<Post> getPost({required String idPost}) {
     return compute(
       dio.get(
-        _getPost.replaceAll(':idPost', postId),
+        _getPost.replaceAll(':idPost', idPost),
         options: Options(headers: withAuth()),
       ),
     );
   }
 
   Future<Post> likePost({
-    required String postId,
+    required String idPost,
   }) async {
     return compute(
       dio.post(
-        _likePost.replaceAll(':idPost', postId),
+        _likePost.replaceAll(':idPost', idPost),
         options: Options(headers: withAuth()),
       ),
       mapper: Post.fromJson,
@@ -93,38 +95,74 @@ class SocialService extends ApiService {
   }
 
   Future<Post> unLikePost({
-    required String postId,
+    required String idPost,
   }) async {
     return compute(
       dio.delete(
-        _likePost.replaceAll(':idPost', postId),
+        _likePost.replaceAll(':idPost', idPost),
         options: Options(headers: withAuth()),
       ),
       mapper: Post.fromJson,
     );
   }
 
-  Future<Post> commentPost({
-    required String postId,
+  Future<Comment> commentPost({
+    required String idPost,
+    required String content,
   }) async {
     return compute(
       dio.post(
-        _commentPost.replaceAll(':idPost', postId),
+        _commentPost.replaceAll(':idPost', idPost),
         options: Options(headers: withAuth()),
+        data: {'content': content},
       ),
-      mapper: Post.fromJson,
+      mapper: Comment.fromJson,
     );
   }
 
-  Future<PaginatedList<Comment>> listComments({
-    required String postId,
+  Future<PaginatedList<Comment>> getComments({
+    required String idPost,
+    int page = 1,
   }) async {
     return compute(
       dio.get(
-        _listComments.replaceAll(':idPost', postId),
+        _listComments.replaceAll(':idPost', idPost),
         options: Options(headers: withAuth()),
+        queryParameters: {
+          'page': page,
+          'size': 10,
+        },
       ),
       mapper: (result) => toPaginatedList(result, Comment.fromJson),
+    );
+  }
+
+  Future<PaginatedList<Comment>> getCommentsResponse({
+    required String commentId,
+    int page = 1,
+  }) async {
+    return compute(
+      dio.get(
+        _listCommentResponse.replaceAll(':commentId', commentId),
+        options: Options(headers: withAuth()),
+        queryParameters: {
+          'page': page,
+          'size': 10,
+        },
+      ),
+      mapper: (result) => toPaginatedList(result, Comment.fromJson),
+    );
+  }
+
+  Future<Comment> commentComment({
+    required String commentId,
+  }) async {
+    return compute(
+      dio.post(
+        _commentComment.replaceAll(':commentId', commentId),
+        options: Options(headers: withAuth()),
+      ),
+      mapper: Comment.fromJson,
     );
   }
 

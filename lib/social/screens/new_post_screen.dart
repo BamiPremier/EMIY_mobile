@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:camerawesome/camerawesome_plugin.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:umai/social/cubit/new_post_cubit.dart';
 import 'package:umai/social/screens/new_post_publish_screen.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/themes.dart';
+import 'package:photo_manager/photo_manager.dart';
 
 class NewPostScreen extends StatefulWidget {
   const NewPostScreen({super.key});
@@ -28,10 +30,23 @@ class _NewPostScreenState extends State<NewPostScreen> with CompletableMixin {
       child: Scaffold(
         // TODO convert to CameraAwesomeBuilder.custom
         body: CameraAwesomeBuilder.custom(
+          previewPadding: EdgeInsets.zero,
+          previewAlignment: Alignment.center,
+          progressIndicator: Container(
+            color: Colors.black,
+            child: Center(
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: 300,
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  border: Border.all(color: Colors.white, width: 2),
+                ),
+              ),
+            ),
+          ),
           builder: (cameraState, previewSize) {
             return cameraState.when(
-              onPreparingCamera: (state) =>
-                  const Center(child: CircularProgressIndicator()),
               onPhotoMode: (state) => TakePhotoUI(
                   state: state,
                   onFilterTap: () {
@@ -86,6 +101,40 @@ class TakePhotoUI extends StatefulWidget {
 }
 
 class _TakePhotoUIState extends State<TakePhotoUI> {
+  AssetEntity? lastImage;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchLastImage();
+  }
+
+  Future<void> _fetchLastImage() async {
+    final PermissionState result = await PhotoManager.requestPermissionExtend();
+
+    if (result.isAuth) {
+      final List<AssetPathEntity> paths = await PhotoManager.getAssetPathList(
+        onlyAll: true,
+        type: RequestType.image,
+      );
+
+      if (paths.isNotEmpty) {
+        final AssetPathEntity mainAlbum = paths.first;
+
+        final List<AssetEntity> images =
+            await mainAlbum.getAssetListPaged(page: 0, size: 1);
+
+        if (images.isNotEmpty) {
+          setState(() {
+            lastImage = images.first;
+          });
+        }
+      }
+    } else {
+      PhotoManager.openSetting();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -165,14 +214,37 @@ class _TakePhotoUIState extends State<TakePhotoUI> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               InkWell(
-                child: const SizedBox(
-                  height: 40.0,
-                  width: 40.0,
-                  child: CircleAvatar(
-                    radius: 28,
-                    child: Icon(Icons.person, size: 28, color: Colors.white),
-                  ),
-                ),
+                child: lastImage != null
+                    ? FutureBuilder<Uint8List?>(
+                        future: lastImage!.thumbnailDataWithSize(
+                            ThumbnailSize(300, 300)), // Taille de la vignette
+                        builder: (BuildContext context,
+                            AsyncSnapshot<Uint8List?> snapshot) {
+                          if (snapshot.connectionState ==
+                                  ConnectionState.done &&
+                              snapshot.hasData) {
+                            return SizedBox(
+                              height: 40.0,
+                              width: 40.0,
+                              child: CircleAvatar(
+                                radius: 28,
+                                backgroundImage: MemoryImage(snapshot.data!),
+                              ),
+                            );
+                          } else {
+                            return CircularProgressIndicator(); // Loader si l'image n'est pas prête
+                          }
+                        },
+                      )
+                    : const SizedBox(
+                        height: 40.0,
+                        width: 40.0,
+                        child: CircleAvatar(
+                          radius: 28,
+                          child:
+                              Icon(Icons.person, size: 28, color: Colors.white),
+                        ),
+                      ),
                 onTap: () async {
                   final ImagePicker _picker = ImagePicker();
                   final XFile? image =

@@ -6,12 +6,12 @@ part 'comment.g.dart';
 
 @freezed
 class Comment with _$Comment {
-  const factory Comment({
+  factory Comment({
     required String id,
     required String content,
-    String? image,
-    @JsonKey(name: 'has_liked') @Default(false) bool hasLiked,
-    @JsonKey(name: 'comments_count') @Default(0) int commentsCount,
+    @JsonKey(name: 'has_liked') required bool hasLiked,
+    @JsonKey(name: 'comment_responses_count')
+    required int commentResponsesCount,
     required User user,
   }) = _Comment;
 

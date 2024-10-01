@@ -6,27 +6,36 @@ import 'package:umai/auth/bloc/auth_cubit.dart';
 import 'package:umai/common/bloc/follow_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/widgets/image_profil.dart';
+import 'package:umai/social/cubit/post_manip_cubit.dart';
 import 'package:umai/social/model/post.dart';
 import 'package:umai/social/screens/post_details.dart';
+import 'package:umai/social/widget/button_post.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/themes.dart';
 
 class PostItem extends StatelessWidget {
-  final Post post;
+  static Widget get({required BuildContext context, required Post post}) {
+    return BlocProvider(
+      create: (context) => PostManipCubit(context.read(), post),
+      child: const PostItem._(),
+    );
+  }
 
-  const PostItem({
-    super.key,
-    required this.post,
-  });
+  const PostItem._();
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return BlocBuilder<PostManipCubit, PostManipState>(
+        builder: (context, state) {
+      final postCubit = context.read<PostManipCubit>();
+      final post = postCubit.post!;
+
+      return InkWell(
         onTap: () {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => PostDetailsScreen(post: post)),
+                builder: (context) => PostDetailsScreen.from(cubit: postCubit)),
           );
         },
         child: Container(
@@ -95,7 +104,7 @@ class PostItem extends StatelessWidget {
                 ),
               ),
               post.image == null || post.image == '' || post.image!.isEmpty
-                  ? SizedBox()
+                  ? const SizedBox()
                   : Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Image.network(
@@ -160,29 +169,11 @@ class PostItem extends StatelessWidget {
                         },
                       ),
                     ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.favorite_border),
-                        onPressed: () {},
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.chat_bubble_outline),
-                        onPressed: () {},
-                      ),
-                    ],
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.share),
-                    onPressed: () {},
-                  ),
-                ],
-              ),
+              ButtonPost(postCubit: context.read<PostManipCubit>())
             ],
           ),
-        ));
+        ),
+      );
+    });
   }
 }

@@ -10,9 +10,8 @@ _$CommentImpl _$$CommentImplFromJson(Map<String, dynamic> json) =>
     _$CommentImpl(
       id: json['id'] as String,
       content: json['content'] as String,
-      image: json['image'] as String?,
-      hasLiked: json['has_liked'] as bool? ?? false,
-      commentsCount: (json['comments_count'] as num?)?.toInt() ?? 0,
+      hasLiked: json['has_liked'] as bool,
+      commentResponsesCount: (json['comment_responses_count'] as num).toInt(),
       user: User.fromJson(json['user'] as Map<String, dynamic>),
     );
 
@@ -20,8 +19,7 @@ Map<String, dynamic> _$$CommentImplToJson(_$CommentImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'content': instance.content,
-      'image': instance.image,
       'has_liked': instance.hasLiked,
-      'comments_count': instance.commentsCount,
+      'comment_responses_count': instance.commentResponsesCount,
       'user': instance.user,
     };

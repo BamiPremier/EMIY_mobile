@@ -21,7 +21,8 @@ class _PostTabState extends State<PostTab> with CompletableMixin {
         padding:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         cubit: AutoListCubit(provider: context.read<UserService>().getPosts),
-        itemBuilder: (context, post) => PostItem(post: post),
+        itemBuilder: (context, post) =>
+            PostItem.get(context: context, post: post),
         errorBuilder: (context, retry) => Column(
               mainAxisSize: MainAxisSize.min,
               children: [

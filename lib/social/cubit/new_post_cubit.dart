@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:potatoes/libs.dart';
@@ -20,12 +21,17 @@ class NewPostCubit extends Cubit<NewPostState> {
 
     final stateBefore = state;
     emit(const NewPostUploadingState());
-    socialService.create(
+    socialService
+        .create(
       content: content,
       file: file,
-    ).then((post) {
+    )
+        .then((post) {
       emit(NewPostUploadedState(post));
-      emit(const NewPostIdleState());
+
+      Timer(const Duration(seconds: 5), () {
+        emit(const NewPostIdleState());
+      });
     }, onError: (error, trace) {
       emit(NewPostErrorState(error, trace));
       emit(stateBefore);

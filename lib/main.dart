@@ -9,8 +9,6 @@ import 'package:potatoes_secured_preferences/potatoes_secured_preferences.dart';
 import 'package:umai/animes/services/anime_service.dart';
 import 'package:umai/auth/bloc/auth_cubit.dart';
 import 'package:umai/auth/screens/onboarding_screen.dart';
-import 'package:umai/auth/screens/registration/genres_selection.dart';
-import 'package:umai/auth/screens/registration/people.dart';
 import 'package:umai/auth/screens/registration/username.dart';
 import 'package:umai/auth/services/auth_service.dart';
 import 'package:umai/common/bloc/home_cubit.dart';
@@ -124,14 +122,14 @@ class MyApp extends StatelessWidget {
             return BlocBuilder<UserCubit, UserState>(
               buildWhen: (previous, _) => previous is InitializingUserState,
               builder: (context, state) {
-                // if (state is InitializingUserState) return const SizedBox();
-                // if (state is UserNotLoggedState)
-                //   return const OnboardingScreen();
-                // if (state is CompleteUserProfileState) {
-                //   return const RegistrationUsernameScreen();
-                // }
-                // if (state is UserLoggedState) return const HomeScreen();
-                return const GenresSelectionScreen();
+                if (state is InitializingUserState) return const SizedBox();
+                if (state is UserNotLoggedState)
+                  return const OnboardingScreen();
+                if (state is CompleteUserProfileState) {
+                  return const RegistrationUsernameScreen();
+                }
+                if (state is UserLoggedState) return const HomeScreen();
+                return const OnboardingScreen();
               },
             );
           }),
