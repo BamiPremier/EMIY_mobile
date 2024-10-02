@@ -8,18 +8,27 @@ import 'package:umai/social/model/comment.dart';
 import 'package:umai/social/model/post.dart';
 
 class SocialService extends ApiService {
+  //Action post
+
   static const String _newPost = '/posts';
   static const String _getPost = '/posts/:idPost';
   static const String _deletePost = '/posts/:idPost';
+  static const String _signalerPost = '/posts/:idPost/report';
+  static const String _sharePost = '/posts/:idPost/share';
   static const String _feed = '/posts/feed';
   static const String _likePost = '/posts/:idPost/like';
   static const String _commentPost = '/posts/:idPost/comment';
+
+//Action comment
+
   static const String _listComments = '/posts/:idPost/comments';
   static const String _likeComment = '/posts/comment/:idComment/like';
   static const String _unlikeComment = '/posts/comment/:idComment/unlike';
   static const String _commentComment = '/posts/comment/:idComment/comment';
   static const String _listCommentResponse = '/posts/:idPost/comments';
 
+  static const String _deleteComment = '/posts/comment/:idComment';
+  static const String _signalerComment = '/posts/comment/:idComment/report';
   const SocialService(super._dio);
 
   Future<Post> create({
@@ -39,6 +48,16 @@ class SocialService extends ApiService {
         options: Options(headers: withAuth()),
       ),
       mapper: Post.fromJson,
+    );
+  }
+
+  Future<Post> signalerPost({required String idPost, required String reason}) {
+    return compute(
+      dio.post(
+        _signalerPost.replaceAll(':idPost', idPost),
+        options: Options(headers: withAuth()),
+        data: {'reason': reason},
+      ),
     );
   }
 
@@ -130,7 +149,7 @@ class SocialService extends ApiService {
         options: Options(headers: withAuth()),
         queryParameters: {
           'page': page,
-          'size': 10,
+          'size': 20,
         },
       ),
       mapper: (result) => toPaginatedList(result, Comment.fromJson),
@@ -184,6 +203,32 @@ class SocialService extends ApiService {
     return compute(
       dio.delete(
         _unlikeComment.replaceAll(':idComment', commentId),
+        options: Options(headers: withAuth()),
+      ),
+      mapper: Comment.fromJson,
+    );
+  }
+
+  Future<Comment> signalerComment({
+    required String commentId,
+    required String reason,
+  }) async {
+    return compute(
+      dio.post(
+        _signalerComment.replaceAll(':commentId', commentId),
+        options: Options(headers: withAuth()),
+        data: {'reason': reason},
+      ),
+      mapper: Comment.fromJson,
+    );
+  }
+
+  Future<Comment> deleteComment({
+    required String commentId,
+  }) async {
+    return compute(
+      dio.delete(
+        _deleteComment.replaceAll(':commentId', commentId),
         options: Options(headers: withAuth()),
       ),
       mapper: Comment.fromJson,

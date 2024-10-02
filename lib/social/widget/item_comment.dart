@@ -71,12 +71,21 @@ class ItemComment extends StatelessWidget {
                     const SizedBox(width: 8),
                     PopupMenuButton<String>(
                       onSelected: (value) {
-                        // Gérer les options de chaque commentaire
+                        if (value == 'Signaler') {
+                          commentCubit.signalerComment();
+                        } else if (value == 'Supprimer') {
+                          commentCubit.deleteComment();
+                        } else if (value == 'Copier') {}
                       },
                       padding: EdgeInsets.zero,
                       itemBuilder: (BuildContext context) {
-                        return ['Copier', 'Signaler', 'Supprimer']
-                            .map((String choice) {
+                        List<String> options = ['Copier', 'Signaler'];
+
+                        if (comment.user.id ==
+                            context.read<UserCubit>().user.id) {
+                          options.add('Supprimer');
+                        }
+                        return options.map((String choice) {
                           return PopupMenuItem<String>(
                             padding:
                                 const EdgeInsets.only(right: 48.0, left: 16.0),

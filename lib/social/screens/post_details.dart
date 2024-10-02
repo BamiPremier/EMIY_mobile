@@ -5,7 +5,9 @@ import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
+import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/widgets/image_profil.dart';
+import 'package:umai/social/cubit/load_comment_cubit.dart';
 import 'package:umai/social/cubit/post_manip_cubit.dart';
 import 'package:umai/social/model/comment.dart';
 import 'package:umai/social/model/post.dart';
@@ -18,15 +20,24 @@ import 'package:umai/utils/themes.dart';
 
 class PostDetailsScreen extends StatefulWidget {
   static Widget from({required PostManipCubit cubit}) {
-    return BlocProvider.value(
-      value: cubit,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: cubit),
+        BlocProvider(
+            create: (context) =>
+                LoadCommentCubit(context.read(), cubit.post!.id)),
+      ],
       child: const PostDetailsScreen._(),
     );
   }
 
   static Widget get({required BuildContext context, required Post post}) {
-    return BlocProvider(
-      create: (context) => PostManipCubit(context.read(), post),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => PostManipCubit(context.read(), post)),
+        BlocProvider(
+            create: (context) => LoadCommentCubit(context.read(), post.id)),
+      ],
       child: const PostDetailsScreen._(),
     );
   }
@@ -39,14 +50,19 @@ class PostDetailsScreen extends StatefulWidget {
 
 class _PostDetailsScreenState extends State<PostDetailsScreen> {
   late final post = context.read<PostManipCubit>().post!;
+
+  late final loadCommentCubit = context.read<LoadCommentCubit>();
   final focusNode = FocusNode();
   final TextEditingController _commentController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PostManipCubit, PostManipState>(
-        builder: (context, state) {
+    return BlocConsumer<PostManipCubit, PostManipState>(
+        listener: (context, state) {
+      if (state is CommentPostSuccesState) {
+        loadCommentCubit.putFirst(state.comment);
+      }
+    }, builder: (context, state) {
       final postCubit = context.read<PostManipCubit>();
-
       return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.white.withOpacity(.3),
@@ -92,12 +108,20 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                               ),
                               trailing: PopupMenuButton<String>(
                                 onSelected: (value) {
-                                  // Gérer les options de chaque commentaire
+                                  if (value == 'Signaler') {
+                                    postCubit.signalerPost();
+                                  } else if (value == 'Supprimer') {
+                                    postCubit.deletePost();
+                                  }
                                 },
                                 padding: EdgeInsets.zero,
                                 itemBuilder: (BuildContext context) {
-                                  return ['Signaler', 'Supprimer']
-                                      .map((String choice) {
+                                  List<String> options = ['Signaler'];
+                                  if (post.user.id ==
+                                      context.read<UserCubit>().user.id) {
+                                    options.add('Supprimer');
+                                  }
+                                  return options.map((String choice) {
                                     return PopupMenuItem<String>(
                                       padding: const EdgeInsets.only(
                                           right: 48.0, left: 16.0),
@@ -209,10 +233,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                         physics: NeverScrollableScrollPhysics(),
                         padding: EdgeInsets.only(
                             bottom: MediaQuery.of(context).viewInsets.bottom),
-                        cubit: AutoListCubit(
-                            provider: ({int page = 1}) => context
-                                .read<SocialService>()
-                                .getComments(idPost: post.id, page: page)),
+                        cubit: loadCommentCubit,
                         itemBuilder: (context, comment) => ItemComment.get(
                           context: context,
                           comment: comment,

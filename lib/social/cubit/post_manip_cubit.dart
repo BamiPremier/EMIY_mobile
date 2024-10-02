@@ -1,6 +1,7 @@
 import 'package:potatoes/libs.dart';
 
 import 'package:potatoes/potatoes.dart';
+import 'package:umai/social/model/comment.dart';
 import 'package:umai/social/model/post.dart';
 import 'package:umai/social/services/social_service.dart';
 part 'post_manip_state.dart';
@@ -66,15 +67,41 @@ class PostManipCubit extends ObjectCubit<Post, PostManipState> {
     });
   }
 
+  void signalerPost() {
+    final stateBefore = state;
+
+    socialService
+        .signalerPost(
+      idPost: post!.id,
+      reason: 'reason',
+    )
+        .then((updatePost) {}, onError: (error, trace) {
+      emit(PostManipErrorState(error, trace));
+      emit(stateBefore);
+    });
+  }
+
+  void deletePost() {
+    final stateBefore = state;
+
+    socialService
+        .deletePost(
+      idPost: post!.id,
+    )
+        .then((updatePost) {}, onError: (error, trace) {
+      emit(PostManipErrorState(error, trace));
+      emit(stateBefore);
+    });
+  }
+
   void commentPost({required String content}) {
     final stateBefore = state;
 
     emit(const PostManipLoadingState());
     socialService.commentPost(idPost: post!.id, content: content).then(
-        (updatepost) {
-      emit(CommentPostSuccesState());
+        (comment) {
+      emit(CommentPostSuccesState(comment));
       // update(updatepost);
-      
     }, onError: (error, trace) {
       emit(PostManipErrorState(error, trace));
       emit(stateBefore);

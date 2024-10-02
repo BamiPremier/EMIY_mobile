@@ -65,7 +65,11 @@ class PostItem extends StatelessWidget {
                       ),
                       trailing: PopupMenuButton<String>(
                         onSelected: (value) {
-                          // Gérer les options de chaque commentaire
+                          if (value == 'Signaler') {
+                            postCubit.signalerPost();
+                          } else if (value == 'Supprimer') {
+                            postCubit.deletePost();
+                          }
                         },
                         padding: EdgeInsets.zero,
                         itemBuilder: (BuildContext context) {

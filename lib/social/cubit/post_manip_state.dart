@@ -20,7 +20,13 @@ class LikePostSuccesState extends CubitInformationState with PostManipState {
 }
 
 class CommentPostSuccesState extends CubitInformationState with PostManipState {
-  CommentPostSuccesState();
+  final Comment comment;
+
+  const CommentPostSuccesState(this.comment);
+
+  @override
+  List<Object?> get props => [comment];
+  
 }
 
 class PostManipErrorState extends CubitErrorState with PostManipState {
