@@ -38,22 +38,28 @@ class ButtonPost extends StatelessWidget {
                       },
                     )
                   : IconButton(
-                      icon: const Icon(
-                        Icons.favorite_border,
-                        color: Colors.black,
+                      icon: Icon(
+                        Icons.favorite_border_outlined,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                       onPressed: () {
                         postCubit.likePost();
                       },
                     ),
               IconButton(
-                icon: const Icon(Icons.chat_bubble_outline),
+                icon: Icon(
+                  Icons.chat_bubble_outline,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
                 onPressed: actionFocus,
               ),
             ],
           ),
           IconButton(
-            icon: const Icon(Icons.share),
+            icon: Icon(
+              Icons.share,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
             onPressed: () {},
           ),
         ],
