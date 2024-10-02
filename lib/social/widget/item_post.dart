@@ -3,20 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/auth/bloc/auth_cubit.dart';
-import 'package:umai/common/bloc/follow_cubit.dart';
+import 'package:umai/common/bloc/person_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/widgets/image_profil.dart';
-import 'package:umai/social/cubit/post_manip_cubit.dart';
+import 'package:umai/social/cubit/post_cubit.dart';
 import 'package:umai/social/model/post.dart';
 import 'package:umai/social/screens/post_details.dart';
 import 'package:umai/social/widget/button_post.dart';
 import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/text_utils.dart';
 import 'package:umai/utils/themes.dart';
 
 class PostItem extends StatelessWidget {
   static Widget get({required BuildContext context, required Post post}) {
     return BlocProvider(
-      create: (context) => PostManipCubit(context.read(), post),
+      create: (context) => PostCubit(context.read(), post),
       child: const PostItem._(),
     );
   }
@@ -25,9 +26,8 @@ class PostItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PostManipCubit, PostManipState>(
-        builder: (context, state) {
-      final postCubit = context.read<PostManipCubit>();
+    return BlocBuilder<PostCubit, PostState>(builder: (context, state) {
+      final postCubit = context.read<PostCubit>();
       final post = postCubit.post!;
 
       return InkWell(
@@ -53,7 +53,7 @@ class PostItem extends StatelessWidget {
                       leading: ImageProfil(
                           image: post.user.image ?? '', height: 48, width: 48),
                       title: Text(
-                        post.user.username,
+                        TextUtils.capitalizeEachWord(post.user.username),
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                       subtitle: Text(
@@ -173,7 +173,7 @@ class PostItem extends StatelessWidget {
                         },
                       ),
                     ),
-              ButtonPost(postCubit: context.read<PostManipCubit>())
+              ButtonPost(postCubit: context.read<PostCubit>())
             ],
           ),
         ),

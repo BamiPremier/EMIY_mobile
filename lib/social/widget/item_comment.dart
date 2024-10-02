@@ -5,16 +5,17 @@ import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/auth/bloc/auth_cubit.dart';
-import 'package:umai/common/bloc/follow_cubit.dart';
+import 'package:umai/common/bloc/person_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/widgets/image_profil.dart';
-import 'package:umai/social/cubit/comment_manip_cubit.dart';
-import 'package:umai/social/cubit/post_manip_cubit.dart';
+import 'package:umai/social/cubit/comment_cubit.dart';
+import 'package:umai/social/cubit/post_cubit.dart';
 import 'package:umai/social/model/comment.dart';
 import 'package:umai/social/model/post.dart';
 import 'package:umai/social/screens/post_details.dart';
 import 'package:umai/social/services/social_service.dart';
 import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/text_utils.dart';
 import 'package:umai/utils/themes.dart';
 
 class ItemComment extends StatelessWidget {
@@ -28,35 +29,39 @@ class ItemComment extends StatelessWidget {
     required VoidCallback actionFocus,
   }) {
     return BlocProvider(
-      create: (context) => CommentManipCubit(context.read(), comment),
+      create: (context) => CommentCubit(context.read(), comment),
       child: ItemComment._(actionFocus: actionFocus),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CommentManipCubit, CommentManipState>(
-        builder: (context, state) {
-      final commentCubit = context.read<CommentManipCubit>();
+    return BlocBuilder<CommentCubit, CommentState>(builder: (context, state) {
+      final commentCubit = context.read<CommentCubit>();
       final comment = commentCubit.comment!;
       return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Card(
-          shape: const RoundedRectangleBorder(
+          shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.zero,
-            side: BorderSide(color: AppTheme.grey, width: 0.3),
+            side: BorderSide(
+                color: Theme.of(context).colorScheme.outlineVariant,
+                width: 0.5),
           ),
+          color: AppTheme.white,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ListTile(
-                contentPadding: const EdgeInsets.only(top: 8.0)
-                    .add(const EdgeInsets.symmetric(horizontal: 16.0)),
+                contentPadding: const EdgeInsets.only(top: 8.0, left: 16.0),
                 leading: ImageProfil(
                   image: comment.user.image ?? '',
                   height: 40,
                   width: 40,
                 ),
-                title: Text(comment.user.username),
+                title: Text(
+                  TextUtils.capitalizeEachWord(comment.user.username),
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
                 subtitle: null,
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -64,7 +69,7 @@ class ItemComment extends StatelessWidget {
                   children: [
                     Text(
                       'Il y a 18h',
-                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                      style: Theme.of(context).textTheme.labelMedium!.copyWith(
                             color: AppTheme.grey,
                           ),
                     ),
@@ -108,7 +113,10 @@ class ItemComment extends StatelessWidget {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: Text(comment.content),
+                child: Text(
+                  comment.content,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(right: 16.0),
@@ -165,7 +173,7 @@ class ItemComment extends StatelessWidget {
                           padding: EdgeInsets.zero,
                           textStyle: Theme.of(context).textTheme.labelSmall,
                         ),
-                        child: Text((state is SeeCommentResponsState)
+                        child: Text((state is SeeCommentResponseState)
                             ? 'voir moins'
                             : 'voir ${comment.commentResponsesCount} réponses'),
                       ),
@@ -175,7 +183,7 @@ class ItemComment extends StatelessWidget {
             ],
           ),
         ),
-        if (state is SeeCommentResponsState)
+        if (state is SeeCommentResponseState)
           AutoListView.get<Comment>(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),

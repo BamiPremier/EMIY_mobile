@@ -10,8 +10,9 @@ import 'package:umai/social/model/post.dart';
 
 class UserService extends ApiService {
   static const String _getMe = '/users/me';
-  static const String _followerAdd = '/users/follow';
-  static const String _followerRemove = '/users/unfollow';
+
+  static const String _follow = '/users/follow';
+  static const String _unfollow = '/users/unfollow';
 
   static const String _updateUser = '/users';
   static const String _updateProfilePicture = '/users/picture';
@@ -36,7 +37,7 @@ class UserService extends ApiService {
   Future<User> follow({required user}) async {
     return compute(
         dio.post(
-          _followerAdd,
+          _follow,
           data: {
             'idFollowing': user,
           },
@@ -45,10 +46,10 @@ class UserService extends ApiService {
         mapper: User.fromJson);
   }
 
-  Future<User> unfollow({required user}) async {
+  Future<User> unFollow({required user}) async {
     return compute(
         dio.delete(
-          _followerRemove,
+          _unfollow,
           data: {
             'idFollowing': user,
           },

@@ -4,17 +4,17 @@ import 'package:umai/social/model/comment.dart';
 import 'package:umai/social/model/comment.dart';
 import 'package:umai/social/services/social_service.dart';
 
-part 'comment_manip_state.dart';
+part 'comment_state.dart';
 
-class CommentManipCubit extends ObjectCubit<Comment, CommentManipState> {
+class CommentCubit extends ObjectCubit<Comment, CommentState> {
   final SocialService socialService;
 
-  CommentManipCubit(this.socialService, Comment comment)
-      : super(InitializingCommentManipState(comment));
+  CommentCubit(this.socialService, Comment comment)
+      : super(InitializingCommentState(comment));
 
   @override
-  Comment? getObject(CommentManipState state) {
-    if (state is InitializingCommentManipState) {
+  Comment? getObject(CommentState state) {
+    if (state is InitializingCommentState) {
       return state.comment;
     }
     return null;
@@ -30,15 +30,15 @@ class CommentManipCubit extends ObjectCubit<Comment, CommentManipState> {
 
   @override
   void update(Comment object) {
-    emit(InitializingCommentManipState(object));
+    emit(InitializingCommentState(object));
   }
 
   void seeResponse() {
-    if (state is SeeCommentResponsState) {
-      emit(UnSeeCommentResponsState());
+    if (state is SeeCommentResponseState) {
+      emit(UnSeeCommentResponseState());
     }
-    if (state is UnSeeCommentResponsState) {
-      emit(SeeCommentResponsState());
+    if (state is UnSeeCommentResponseState) {
+      emit(SeeCommentResponseState());
     }
   }
 
@@ -51,7 +51,7 @@ class CommentManipCubit extends ObjectCubit<Comment, CommentManipState> {
       commentId: comment!.id,
     )
         .then((updatecomment) {}, onError: (error, trace) {
-      emit(CommentManipErrorState(error, trace));
+      emit(CommentErrorState(error, trace));
       emit(stateBefore);
     });
   }
@@ -66,7 +66,7 @@ class CommentManipCubit extends ObjectCubit<Comment, CommentManipState> {
       reason: 'reason',
     )
         .then((updatecomment) {}, onError: (error, trace) {
-      emit(CommentManipErrorState(error, trace));
+      emit(CommentErrorState(error, trace));
       emit(stateBefore);
     });
   }
@@ -80,7 +80,7 @@ class CommentManipCubit extends ObjectCubit<Comment, CommentManipState> {
       commentId: comment!.id,
     )
         .then((updatecomment) {}, onError: (error, trace) {
-      emit(CommentManipErrorState(error, trace));
+      emit(CommentErrorState(error, trace));
       emit(stateBefore);
     });
   }
@@ -94,7 +94,7 @@ class CommentManipCubit extends ObjectCubit<Comment, CommentManipState> {
       commentId: comment!.id,
     )
         .then((updatecomment) {}, onError: (error, trace) {
-      emit(CommentManipErrorState(error, trace));
+      emit(CommentErrorState(error, trace));
       emit(stateBefore);
     });
   }
@@ -102,13 +102,14 @@ class CommentManipCubit extends ObjectCubit<Comment, CommentManipState> {
   void responseComment() {
     final stateBefore = state;
 
-    emit(const CommentManipLoadingState());
+    emit(const CommentLoadingState());
     socialService.commentComment(commentId: comment!.id).then((updatecomment) {
       emit(CommentCommentSuccesState());
       update(updatecomment);
     }, onError: (error, trace) {
-      emit(CommentManipErrorState(error, trace));
+      emit(CommentErrorState(error, trace));
       emit(stateBefore);
     });
   }
+
 }

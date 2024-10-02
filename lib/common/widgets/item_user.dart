@@ -1,14 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
-import 'package:umai/common/bloc/follow_cubit.dart';
+import 'package:umai/common/bloc/person_cubit.dart';
 import 'package:umai/common/models/user.dart';
 import 'package:umai/utils/themes.dart';
 
 class UserItem extends StatelessWidget {
   static Widget get({required BuildContext context, required User user}) {
     return BlocProvider(
-      create: (context) => FollowCubit(context.read(), user),
+      create: (context) => PersonCubit(context.read(), user),
       child: const UserItem._(),
     );
   }
@@ -17,9 +17,9 @@ class UserItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FollowCubit, FollowState>(
+    return BlocBuilder<PersonCubit, PersonState>(
       builder: (context, state) {
-        final followCubit = context.read<FollowCubit>();
+        final followCubit = context.read<PersonCubit>();
         return ListTile(
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
@@ -60,8 +60,8 @@ class UserItem extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      state is FollowLoadingState
-                          ? SizedBox(
+                      state is PersonLoadingState
+                          ? const SizedBox(
                               width: 20,
                               height: 20,
                               child: CircularProgressIndicator(
@@ -69,7 +69,7 @@ class UserItem extends StatelessWidget {
                                 color: AppTheme.white,
                               ),
                             )
-                          : Icon(Icons.add),
+                          : const Icon(Icons.add),
                       const SizedBox(width: 8),
                       Text(
                         'Suivre',
@@ -93,8 +93,8 @@ class UserItem extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      state is FollowLoadingState
-                          ? SizedBox(
+                      state is PersonLoadingState
+                          ? const SizedBox(
                               width: 20,
                               height: 20,
                               child: CircularProgressIndicator(

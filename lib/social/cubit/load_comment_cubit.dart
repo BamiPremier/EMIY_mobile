@@ -21,10 +21,35 @@ class LoadCommentCubit extends AutoListCubit<Comment> {
         });
 
   void putFirst(Comment comment) {
-    if (state is AutoListReadyState<Comment>) {
-      final list = (state as AutoListReadyState<Comment>).items;
+    if (state is LoadCommentListState) {
+      final list = (state as LoadCommentListState).items;
 
-      emit(AutoListReadyState(list.prepend(others: [comment])));
+      emit(LoadCommentListState(list.prepend(others: [comment])));
     }
   }
+
+  void selectComment(Comment comment) {
+    print(state);
+    final list = (state as LoadCommentReadyState).items;
+    print(list);
+    emit(LoadCommentListState(list, comment));
+  }
+
+  void unselectComment() {
+    print(state);
+    final list = (state as LoadCommentReadyState).items;
+    print(list);
+    emit(LoadCommentReadyState(list));
+  }
+}
+
+typedef LoadCommentState = AutoListState<Comment>;
+typedef LoadCommentReadyState = AutoListReadyState<Comment>;
+
+class LoadCommentListState extends LoadCommentReadyState {
+  final Comment? selectedComment;
+
+  const LoadCommentListState(super.items, [this.selectedComment = null]);
+  @override
+  List<Object?> get props => [...super.props, selectedComment];
 }

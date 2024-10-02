@@ -7,8 +7,9 @@ import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/widgets/image_profil.dart';
+import 'package:umai/social/cubit/comment_cubit.dart';
 import 'package:umai/social/cubit/load_comment_cubit.dart';
-import 'package:umai/social/cubit/post_manip_cubit.dart';
+import 'package:umai/social/cubit/post_cubit.dart';
 import 'package:umai/social/model/comment.dart';
 import 'package:umai/social/model/post.dart';
 import 'package:umai/social/services/social_service.dart';
@@ -16,10 +17,11 @@ import 'package:umai/social/widget/button_post.dart';
 import 'package:umai/social/widget/item_comment.dart';
 import 'package:umai/social/widget/post_social_card_second.dart';
 import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/text_utils.dart';
 import 'package:umai/utils/themes.dart';
 
 class PostDetailsScreen extends StatefulWidget {
-  static Widget from({required PostManipCubit cubit}) {
+  static Widget from({required PostCubit cubit}) {
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(value: cubit),
@@ -34,7 +36,7 @@ class PostDetailsScreen extends StatefulWidget {
   static Widget get({required BuildContext context, required Post post}) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => PostManipCubit(context.read(), post)),
+        BlocProvider(create: (context) => PostCubit(context.read(), post)),
         BlocProvider(
             create: (context) => LoadCommentCubit(context.read(), post.id)),
       ],
@@ -49,20 +51,19 @@ class PostDetailsScreen extends StatefulWidget {
 }
 
 class _PostDetailsScreenState extends State<PostDetailsScreen> {
-  late final post = context.read<PostManipCubit>().post!;
+  late final post = context.read<PostCubit>().post!;
 
   late final loadCommentCubit = context.read<LoadCommentCubit>();
   final focusNode = FocusNode();
   final TextEditingController _commentController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<PostManipCubit, PostManipState>(
-        listener: (context, state) {
+    return BlocConsumer<PostCubit, PostState>(listener: (context, state) {
       if (state is CommentPostSuccesState) {
         loadCommentCubit.putFirst(state.comment);
       }
     }, builder: (context, state) {
-      final postCubit = context.read<PostManipCubit>();
+      final postCubit = context.read<PostCubit>();
       return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.white.withOpacity(.3),
@@ -96,7 +97,8 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                                 width: 48.0,
                               ),
                               title: Text(
-                                post.user.username,
+                                TextUtils.capitalizeEachWord(
+                                    post.user.username),
                                 style: Theme.of(context).textTheme.bodyLarge,
                               ),
                               subtitle: Text(
@@ -227,7 +229,14 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                                 },
                               ),
                             ),
-                      ButtonPost(postCubit: context.read<PostManipCubit>()),
+                      ButtonPost(
+                          postCubit: context.read<PostCubit>(),
+                          actionFocus: () {
+                            context.read<LoadCommentCubit>().unselectComment();
+                            if (!focusNode.hasFocus) {
+                              FocusScope.of(context).requestFocus(focusNode);
+                            }
+                          }),
                       AutoListView.get<Comment>(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
@@ -235,11 +244,16 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                             bottom: MediaQuery.of(context).viewInsets.bottom),
                         cubit: loadCommentCubit,
                         itemBuilder: (context, comment) => ItemComment.get(
-                          context: context,
-                          comment: comment,
-                          actionFocus: () =>
-                              FocusScope.of(context).requestFocus(focusNode),
-                        ),
+                            context: context,
+                            comment: comment,
+                            actionFocus: () {
+                              context
+                                  .read<LoadCommentCubit>()
+                                  .selectComment(comment);
+                              if (!focusNode.hasFocus) {
+                                FocusScope.of(context).requestFocus(focusNode);
+                              }
+                            }),
                         errorBuilder: (context, retry) => Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -268,17 +282,33 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                       .backgroundColor,
                   child: Row(
                     children: [
-                      Expanded(
-                        child: TextFormField(
-                          controller: _commentController,
-                          decoration: const InputDecoration(
-                            hintText: "Ajouter un commentaire...",
-                          ),
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.done,
-                          textCapitalization: TextCapitalization.none,
-                          focusNode: focusNode,
-                        ),
+                      BlocBuilder<LoadCommentCubit, LoadCommentState>(
+                        builder: (context, state) {
+                          return Expanded(
+                            child: TextFormField(
+                                controller: _commentController,
+                                decoration: InputDecoration(
+                                  hintText: (state is LoadCommentListState)
+                                      ? 'Réponse à ${TextUtils.capitalizeEachWord(state.selectedComment!.user.username)}'
+                                      : "Ajouter un commentaire...",
+                                  hintStyle: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurfaceVariant,
+                                          overflow: TextOverflow.ellipsis),
+                                ),
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.done,
+                                textCapitalization:
+                                    TextCapitalization.sentences,
+                                focusNode: focusNode,
+                                onTapOutside: (_) =>
+                                    FocusScope.of(context).unfocus()),
+                          );
+                        },
                       ),
                       SizedBox(width: 8),
                       IconButton(
@@ -290,7 +320,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                               borderRadius: BorderRadius.circular(100),
                               border: Border.all(color: AppTheme.primaryYellow),
                             ),
-                            child: state is PostManipLoadingState
+                            child: state is PostLoadingState
                                 ? const SizedBox(
                                     width: 10,
                                     height: 10,

@@ -12,8 +12,6 @@ class AuthService extends ApiService {
   static const String _animes = '/auth/animes-by-genres';
   static const String _people = '/auth/list-to-follow';
 
-  static const String _folllow = '/users/follow';
-  static const String _unfollow = '/users/unfollow';
 
   const AuthService(super._dio);
 
@@ -80,30 +78,6 @@ class AuthService extends ApiService {
             queryParameters: {'page': page}),
         mapper: (result) => toPaginatedList(result, User.fromJson));
   }
-
-  Future<User> followUser({required follower}) async {
-    return compute(
-      dio.post(
-        _folllow,
-        data: {
-          'idFollowing': follower,
-        },
-        options: Options(headers: withAuth()),
-      ),
-      mapper: User.fromJson,
-    );
-  }
-
-  Future<User> unFollowUser({required follower}) async {
-    return compute(
-      dio.delete(
-        _unfollow,
-        data: {
-          'idFollowing': follower,
-        },
-        options: Options(headers: withAuth()),
-      ),
-      mapper: User.fromJson,
-    );
-  }
+ 
+ 
 }

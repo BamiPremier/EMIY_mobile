@@ -28,30 +28,13 @@ class _NewPostScreenState extends State<NewPostScreen> with CompletableMixin {
     return Theme(
       data: AppTheme.fullBlackTheme(context),
       child: Scaffold(
-        // TODO convert to CameraAwesomeBuilder.custom
         body: CameraAwesomeBuilder.custom(
-          previewPadding: EdgeInsets.zero,
-          previewAlignment: Alignment.center,
-          progressIndicator: Container(
-            color: Colors.black,
-            child: Center(
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: 300,
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  border: Border.all(color: Colors.white, width: 2),
-                ),
-              ),
-            ),
-          ),
+          progressIndicator: const LoadingCamera(),
           builder: (cameraState, previewSize) {
             return cameraState.when(
               onPhotoMode: (state) => TakePhotoUI(
-                  state: state,
-                  onFilterTap: () {
-                    state.setFilter(AwesomeFilter.Sierra);
-                  }),
+                state: state,
+              ),
             );
           },
           onMediaCaptureEvent: (event) {
@@ -88,12 +71,10 @@ class _NewPostScreenState extends State<NewPostScreen> with CompletableMixin {
 
 class TakePhotoUI extends StatefulWidget {
   final PhotoCameraState state;
-  final VoidCallback onFilterTap;
 
   const TakePhotoUI({
     Key? key,
     required this.state,
-    required this.onFilterTap,
   }) : super(key: key);
 
   @override
@@ -131,7 +112,8 @@ class _TakePhotoUIState extends State<TakePhotoUI> {
         }
       }
     } else {
-      PhotoManager.openSetting();
+      PhotoManager.requestPermissionExtend();
+      _fetchLastImage();
     }
   }
 
@@ -291,6 +273,93 @@ class _TakePhotoUIState extends State<TakePhotoUI> {
           ),
         ),
       ],
+    );
+  }
+}
+
+class LoadingCamera extends StatelessWidget {
+  const LoadingCamera({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Theme(
+      data: AppTheme.fullBlackTheme(context),
+      child: Stack(
+        children: [
+          Positioned(
+            top: 16,
+            left: 0,
+            right: 0,
+            child: Container(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    icon:
+                        const Icon(Icons.close, color: Colors.white, size: 30),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.flash_auto,
+                            color: Colors.white, size: 30),
+                        onPressed: () {},
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.flip_camera_android,
+                            color: Colors.white, size: 30),
+                        onPressed: () {},
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 16,
+            left: 0,
+            right: 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(
+                  height: 40.0,
+                  width: 40.0,
+                  child: CircleAvatar(
+                    radius: 28,
+                    child: Icon(Icons.person, size: 28, color: Colors.white),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 28.0),
+                  decoration: BoxDecoration(
+                    color: AppTheme.white,
+                    borderRadius: BorderRadius.circular(90),
+                  ),
+                  child: const IconButton(
+                    padding: EdgeInsets.zero,
+                    icon: Icon(Icons.circle, color: AppTheme.grey, size: 80),
+                    onPressed: null,
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.text_fields,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                  onPressed: () {},
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

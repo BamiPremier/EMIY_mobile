@@ -23,7 +23,6 @@ class SocialService extends ApiService {
 
   static const String _listComments = '/posts/:idPost/comments';
   static const String _likeComment = '/posts/comment/:idComment/like';
-  static const String _unlikeComment = '/posts/comment/:idComment/unlike';
   static const String _commentComment = '/posts/comment/:idComment/comment';
   static const String _listCommentResponse = '/posts/:idPost/comments';
 
@@ -202,7 +201,7 @@ class SocialService extends ApiService {
   }) async {
     return compute(
       dio.delete(
-        _unlikeComment.replaceAll(':idComment', commentId),
+        _likeComment.replaceAll(':idComment', commentId),
         options: Options(headers: withAuth()),
       ),
       mapper: Comment.fromJson,
