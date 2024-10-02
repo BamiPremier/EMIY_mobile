@@ -33,19 +33,15 @@ class PostCubit extends ObjectCubit<Post, PostState> {
   }
 
   void likePost() {
-    print(state);
     if (state is InitializingPostState) {
       final stateBefore = state;
-      var newPost = post!.copyWith(hasLiked: !post!.hasLiked);
+      var newPost = post.copyWith(hasLiked: !post.hasLiked);
       update(newPost);
-      // emit(const PostLoadingState());
       socialService
           .likePost(
-        idPost: post!.id,
+        idPost: post.id,
       )
-          .then((updatepost) {
-        // update(updatepost);
-      }, onError: (error, trace) {
+          .then((updatepost) {}, onError: (error, trace) {
         emit(PostErrorState(error, trace));
         emit(stateBefore);
       });
@@ -55,15 +51,31 @@ class PostCubit extends ObjectCubit<Post, PostState> {
   void unLikePost() {
     if (state is InitializingPostState) {
       final stateBefore = state;
-      var newPost = post!.copyWith(hasLiked: !post!.hasLiked);
+      var newPost = post.copyWith(hasLiked: !post.hasLiked);
       update(newPost);
-      // emit(const PostLoadingState());
       socialService
           .unLikePost(
-        idPost: post!.id,
+        idPost: post.id,
       )
-          .then((updatepost) {
-        // update(updatepost);
+          .then((updatepost) {}, onError: (error, trace) {
+        emit(PostErrorState(error, trace));
+        emit(stateBefore);
+      });
+    }
+  }
+
+  void sharePost() {
+    if (state is InitializingPostState) {
+      final stateBefore = state;
+
+      emit(const PostLoadingState());
+      socialService
+          .sharePost(
+        idPost: post.id,
+      )
+          .then((reponse) {
+        emit(SharePostPostSuccesState(reponse['shareLink']));
+        emit(stateBefore);
       }, onError: (error, trace) {
         emit(PostErrorState(error, trace));
         emit(stateBefore);
@@ -77,7 +89,7 @@ class PostCubit extends ObjectCubit<Post, PostState> {
 
       socialService
           .signalerPost(
-        idPost: post!.id,
+        idPost: post.id,
         reason: 'reason',
       )
           .then((updatePost) {}, onError: (error, trace) {
@@ -93,7 +105,7 @@ class PostCubit extends ObjectCubit<Post, PostState> {
 
       socialService
           .deletePost(
-        idPost: post!.id,
+        idPost: post.id,
       )
           .then((updatePost) {}, onError: (error, trace) {
         emit(PostErrorState(error, trace));
@@ -107,11 +119,10 @@ class PostCubit extends ObjectCubit<Post, PostState> {
       final stateBefore = state;
 
       emit(const PostLoadingState());
-      socialService.commentPost(idPost: post!.id, content: content).then(
+      socialService.commentPost(idPost: post.id, content: content).then(
           (comment) {
         emit(CommentPostSuccesState(comment));
         emit(stateBefore);
-        // update(updatepost);
       }, onError: (error, trace) {
         emit(PostErrorState(error, trace));
         emit(stateBefore);

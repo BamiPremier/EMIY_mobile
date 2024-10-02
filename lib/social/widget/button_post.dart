@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:potatoes/common/widgets/loaders.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/auth/bloc/auth_cubit.dart';
 import 'package:umai/common/bloc/person_cubit.dart';
@@ -10,7 +11,9 @@ import 'package:umai/social/cubit/post_cubit.dart';
 import 'package:umai/social/model/post.dart';
 import 'package:umai/social/screens/post_details.dart';
 import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/themes.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ButtonPost extends StatelessWidget {
   final PostCubit postCubit;
@@ -20,8 +23,12 @@ class ButtonPost extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PostCubit, PostState>(builder: (context, state) {
-      final post = postCubit.post!;
+    return BlocListener<PostCubit, PostState>(listener: (context, state) {
+      if (state is SharePostPostSuccesState) {
+        Share.share('Suivre ce lien pour voir le post : ${state.link}');
+      }
+    }, child: BlocBuilder<PostCubit, PostState>(builder: (context, state) {
+      final post = postCubit.post;
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -60,10 +67,10 @@ class ButtonPost extends StatelessWidget {
               Icons.share,
               color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
-            onPressed: () {},
+            onPressed: () => postCubit.sharePost(),
           ),
         ],
       );
-    });
+    }));
   }
 }

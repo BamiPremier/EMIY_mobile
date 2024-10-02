@@ -28,6 +28,23 @@ class LoadCommentCubit extends AutoListCubit<Comment> {
     }
   }
 
+  void deleteComment(Comment comment) {
+    print(state);
+    if (state is LoadCommentReadyState) {
+      final list = (state as LoadCommentReadyState).items;
+
+      socialService.deleteComment(commentId: comment.id).then((_) {
+        emit(LoadCommentReadyState(PaginatedList(
+          items: List.from(list.items)..removeWhere((c) => c.id == comment.id),
+          total: list.total - 1,
+          page: list.page,
+        )));
+      }, onError: (error) {
+        // emit(LoadCommentErrorState(error));
+      });
+    }
+  }
+
   void selectComment(Comment comment) {
     print(state);
     final list = (state as LoadCommentReadyState).items;

@@ -27,7 +27,7 @@ class PostDetailsScreen extends StatefulWidget {
         BlocProvider.value(value: cubit),
         BlocProvider(
             create: (context) =>
-                LoadCommentCubit(context.read(), cubit.post!.id)),
+                LoadCommentCubit(context.read(), cubit.post.id)),
       ],
       child: const PostDetailsScreen._(),
     );
@@ -237,34 +237,36 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                               FocusScope.of(context).requestFocus(focusNode);
                             }
                           }),
-                      AutoListView.get<Comment>(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        padding: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).viewInsets.bottom),
-                        cubit: loadCommentCubit,
-                        itemBuilder: (context, comment) => ItemComment.get(
-                            context: context,
-                            comment: comment,
-                            actionFocus: () {
-                              context
-                                  .read<LoadCommentCubit>()
-                                  .selectComment(comment);
-                              if (!focusNode.hasFocus) {
-                                FocusScope.of(context).requestFocus(focusNode);
-                              }
-                            }),
-                        errorBuilder: (context, retry) => Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Text("Une erreur est survenue"),
-                            TextButton(
-                              onPressed: retry,
-                              child: const Text("Réessayer"),
-                            )
-                          ],
-                        ),
-                      )
+                      BlocListener<LoadCommentCubit, LoadCommentState>(
+                          listener: (context, state) {},
+                          child: AutoListView.get<Comment>(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              padding: EdgeInsets.only(
+                                  bottom:
+                                      MediaQuery.of(context).viewInsets.bottom),
+                              cubit: loadCommentCubit,
+                              itemBuilder: (context, comment) =>
+                                  ItemComment.get(
+                                      context: context,
+                                      comment: comment,
+                                      actionFocus: () {
+                                      
+                                        if (!focusNode.hasFocus) {
+                                          FocusScope.of(context)
+                                              .requestFocus(focusNode);
+                                        }
+                                      }),
+                              errorBuilder: (context, retry) => Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Text("Une erreur est survenue"),
+                                      TextButton(
+                                        onPressed: retry,
+                                        child: const Text("Réessayer"),
+                                      )
+                                    ],
+                                  )))
                     ],
                   ),
                 ),
@@ -288,7 +290,8 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                             child: TextFormField(
                                 controller: _commentController,
                                 decoration: InputDecoration(
-                                  hintText: (state is LoadCommentListState)
+                                  hintText: (state is LoadCommentListState &&
+                                          state.selectedComment != null)
                                       ? 'Réponse à ${TextUtils.capitalizeEachWord(state.selectedComment!.user.username)}'
                                       : "Ajouter un commentaire...",
                                   hintStyle: Theme.of(context)

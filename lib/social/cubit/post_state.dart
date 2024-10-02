@@ -19,6 +19,15 @@ class LikePostSuccesState extends CubitInformationState with PostState {
   LikePostSuccesState();
 }
 
+class SharePostPostSuccesState extends CubitInformationState with PostState {
+  final String link;
+
+  const SharePostPostSuccesState(this.link);
+
+  @override
+  List<Object?> get props => [link];
+}
+
 class CommentPostSuccesState extends CubitInformationState with PostState {
   final Comment comment;
 

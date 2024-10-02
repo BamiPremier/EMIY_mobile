@@ -60,6 +60,15 @@ class SocialService extends ApiService {
     );
   }
 
+  Future sharePost({required String idPost}) {
+    return compute(
+      dio.post(
+        _sharePost.replaceAll(':idPost', idPost),
+        options: Options(headers: withAuth()),
+      ),
+    );
+  }
+
   Future<Post> deletePost({required String idPost}) {
     return compute(
       dio.delete(
@@ -227,7 +236,7 @@ class SocialService extends ApiService {
   }) async {
     return compute(
       dio.delete(
-        _deleteComment.replaceAll(':commentId', commentId),
+        _deleteComment.replaceAll(':idComment', commentId),
         options: Options(headers: withAuth()),
       ),
       mapper: Comment.fromJson,
