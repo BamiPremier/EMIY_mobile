@@ -21,17 +21,19 @@ import 'package:umai/utils/themes.dart';
 
 class ItemComment extends StatelessWidget {
   final VoidCallback actionFocus;
+  final String idPost;
 
-  const ItemComment._({required this.actionFocus});
+  const ItemComment._({required this.actionFocus, required this.idPost  });
 
   static Widget get({
     required BuildContext context,
     required Comment comment,
     required VoidCallback actionFocus,
+    required String idPost,
   }) {
     return BlocProvider(
       create: (context) => CommentCubit(context.read(), comment),
-      child: ItemComment._(actionFocus: actionFocus),
+      child: ItemComment._(actionFocus: actionFocus, idPost: idPost),
     );
   }
 
@@ -204,11 +206,12 @@ class ItemComment extends StatelessWidget {
               cubit: AutoListCubit(
                   provider: ({int page = 1}) => context
                       .read<SocialService>()
-                      .getComments(idPost: comment.id, page: page)),
+                      .getComments(target: comment.id,idPost : idPost, page: page)),
               itemBuilder: (context, comment) => ItemComment.get(
                 context: context,
                 comment: comment,
                 actionFocus: actionFocus,
+                idPost: idPost,
               ),
               errorBuilder: (context, retry) => Column(
                 mainAxisSize: MainAxisSize.min,

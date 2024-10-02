@@ -36,8 +36,7 @@ class CommentCubit extends ObjectCubit<Comment, CommentState> {
   void seeResponse() {
     if (state is SeeCommentResponseState) {
       emit(UnSeeCommentResponseState());
-    }
-    if (state is UnSeeCommentResponseState) {
+    } else {
       emit(SeeCommentResponseState());
     }
   }
@@ -85,17 +84,4 @@ class CommentCubit extends ObjectCubit<Comment, CommentState> {
     });
   }
  
-  void responseComment() {
-    final stateBefore = state;
-
-    emit(const CommentLoadingState());
-    socialService.commentComment(commentId: comment!.id).then((updatecomment) {
-      emit(CommentCommentSuccesState());
-      update(updatecomment);
-    }, onError: (error, trace) {
-      emit(CommentErrorState(error, trace));
-      emit(stateBefore);
-    });
-  }
-
 }

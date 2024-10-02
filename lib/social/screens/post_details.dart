@@ -248,10 +248,10 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                               cubit: loadCommentCubit,
                               itemBuilder: (context, comment) =>
                                   ItemComment.get(
+                                      idPost: postCubit.post.id,
                                       context: context,
                                       comment: comment,
                                       actionFocus: () {
-                                      
                                         if (!focusNode.hasFocus) {
                                           FocusScope.of(context)
                                               .requestFocus(focusNode);
@@ -271,79 +271,86 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                   ),
                 ),
               ),
-              Container(
-                // padding: EdgeInsets.only(
-                //     bottom: MediaQuery.of(context).viewInsets.bottom),
-                color:
-                    Theme.of(context).bottomNavigationBarTheme.backgroundColor,
-
-                child: Container(
-                  margin: EdgeInsets.all(16),
+              BlocBuilder<LoadCommentCubit, LoadCommentState>(
+                  builder: (context, stateLoadCom) {
+                return Container(
+                  // padding: EdgeInsets.only(
+                  //     bottom: MediaQuery.of(context).viewInsets.bottom),
                   color: Theme.of(context)
                       .bottomNavigationBarTheme
                       .backgroundColor,
-                  child: Row(
-                    children: [
-                      BlocBuilder<LoadCommentCubit, LoadCommentState>(
-                        builder: (context, state) {
-                          return Expanded(
-                            child: TextFormField(
-                                controller: _commentController,
-                                decoration: InputDecoration(
-                                  hintText: (state is LoadCommentListState &&
-                                          state.selectedComment != null)
-                                      ? 'Réponse à ${TextUtils.capitalizeEachWord(state.selectedComment!.user.username)}'
-                                      : "Ajouter un commentaire...",
-                                  hintStyle: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium!
-                                      .copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSurfaceVariant,
-                                          overflow: TextOverflow.ellipsis),
-                                ),
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.done,
-                                textCapitalization:
-                                    TextCapitalization.sentences,
-                                focusNode: focusNode,
-                                onTapOutside: (_) =>
-                                    FocusScope.of(context).unfocus()),
-                          );
-                        },
-                      ),
-                      SizedBox(width: 8),
-                      IconButton(
-                        icon: Container(
-                            height: 48,
-                            width: 48,
-                            decoration: BoxDecoration(
-                              color: AppTheme.primaryYellow,
-                              borderRadius: BorderRadius.circular(100),
-                              border: Border.all(color: AppTheme.primaryYellow),
-                            ),
-                            child: state is PostLoadingState
-                                ? const SizedBox(
-                                    width: 10,
-                                    height: 10,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      color: AppTheme.white,
-                                    ),
-                                  )
-                                : Icon(Icons.arrow_upward)),
-                        onPressed: () {
-                          postCubit.commentPost(
-                            content: _commentController.text,
-                          );
-                          // Action du bouton
-                        },
-                      ),
-                    ],
+
+                  child: Container(
+                    margin: EdgeInsets.all(16),
+                    color: Theme.of(context)
+                        .bottomNavigationBarTheme
+                        .backgroundColor,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                              controller: _commentController,
+                              decoration: InputDecoration(
+                                hintText: (stateLoadCom
+                                            is LoadCommentListState &&
+                                        stateLoadCom.selectedComment != null)
+                                    ? 'Réponse à ${TextUtils.capitalizeEachWord(stateLoadCom.selectedComment!.user.username)}'
+                                    : "Ajouter un commentaire...",
+                                hintStyle: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurfaceVariant,
+                                        overflow: TextOverflow.ellipsis),
+                              ),
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.done,
+                              textCapitalization: TextCapitalization.sentences,
+                              focusNode: focusNode,
+                              onTapOutside: (_) =>
+                                  FocusScope.of(context).unfocus()),
+                        ),
+                        SizedBox(width: 8),
+                        IconButton(
+                          icon: Container(
+                              height: 48,
+                              width: 48,
+                              decoration: BoxDecoration(
+                                color: AppTheme.primaryYellow,
+                                borderRadius: BorderRadius.circular(100),
+                                border:
+                                    Border.all(color: AppTheme.primaryYellow),
+                              ),
+                              child: state is PostLoadingState
+                                  ? const SizedBox(
+                                      width: 10,
+                                      height: 10,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: AppTheme.white,
+                                      ),
+                                    )
+                                  : Icon(Icons.arrow_upward)),
+                          onPressed: () {
+                            (stateLoadCom is LoadCommentListState &&
+                                    stateLoadCom.selectedComment != null)
+                                ? postCubit.commentPost(
+                                    content: _commentController.text,
+                                    targetCommentId:
+                                        stateLoadCom.selectedComment!.id)
+                                : postCubit.commentPost(
+                                    content: _commentController.text,
+                                  );
+                            // Action du bouton
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ),
+                );
+              }),
             ],
           ));
     });

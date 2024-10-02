@@ -136,12 +136,13 @@ class SocialService extends ApiService {
   Future<Comment> commentPost({
     required String idPost,
     required String content,
+    String? target,
   }) async {
     return compute(
       dio.post(
         _commentPost.replaceAll(':idPost', idPost),
         options: Options(headers: withAuth()),
-        data: {'content': content},
+        data: {'content': content, if (target != null) 'target': target},
       ),
       mapper: Comment.fromJson,
     );
@@ -150,6 +151,7 @@ class SocialService extends ApiService {
   Future<PaginatedList<Comment>> getComments({
     required String idPost,
     int page = 1,
+    String? target,
   }) async {
     return compute(
       dio.get(
@@ -158,6 +160,7 @@ class SocialService extends ApiService {
         queryParameters: {
           'page': page,
           'size': 20,
+          if (target != null) 'target': target
         },
       ),
       mapper: (result) => toPaginatedList(result, Comment.fromJson),

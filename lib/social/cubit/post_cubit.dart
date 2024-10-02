@@ -114,13 +114,15 @@ class PostCubit extends ObjectCubit<Post, PostState> {
     }
   }
 
-  void commentPost({required String content}) {
+  void commentPost({required String content, String? targetCommentId}) {
     if (state is InitializingPostState) {
       final stateBefore = state;
 
       emit(const PostLoadingState());
-      socialService.commentPost(idPost: post.id, content: content).then(
-          (comment) {
+      socialService
+          .commentPost(
+              idPost: post.id, content: content, target: targetCommentId)
+          .then((comment) {
         emit(CommentPostSuccesState(comment));
         emit(stateBefore);
       }, onError: (error, trace) {
