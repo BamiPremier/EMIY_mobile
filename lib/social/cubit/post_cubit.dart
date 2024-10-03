@@ -68,13 +68,13 @@ class PostCubit extends ObjectCubit<Post, PostState> {
     if (state is InitializingPostState) {
       final stateBefore = state;
 
-      emit(const PostLoadingState());
+      emit(const SharePostLoadingState());
       socialService
           .sharePost(
         idPost: post.id,
       )
           .then((reponse) {
-        emit(SharePostPostSuccesState(reponse['shareLink']));
+        emit(SharePostSuccesState(reponse['shareLink']));
         emit(stateBefore);
       }, onError: (error, trace) {
         emit(PostErrorState(error, trace));

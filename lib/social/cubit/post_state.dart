@@ -19,10 +19,14 @@ class LikePostSuccesState extends CubitInformationState with PostState {
   LikePostSuccesState();
 }
 
-class SharePostPostSuccesState extends CubitInformationState with PostState {
+class SharePostLoadingState extends CubitLoadingState with PostState {
+  const SharePostLoadingState() : super();
+}
+
+class SharePostSuccesState extends CubitInformationState with PostState {
   final String link;
 
-  const SharePostPostSuccesState(this.link);
+  const SharePostSuccesState(this.link);
 
   @override
   List<Object?> get props => [link];

@@ -22,18 +22,24 @@ import 'package:umai/utils/themes.dart';
 class ItemComment extends StatelessWidget {
   final VoidCallback actionFocus;
   final String idPost;
+  final bool isResponse;
 
-  const ItemComment._({required this.actionFocus, required this.idPost  });
+  const ItemComment._(
+      {required this.actionFocus,
+      required this.idPost,
+      this.isResponse = false});
 
   static Widget get({
     required BuildContext context,
     required Comment comment,
     required VoidCallback actionFocus,
     required String idPost,
+    bool? isResponse = false,
   }) {
     return BlocProvider(
       create: (context) => CommentCubit(context.read(), comment),
-      child: ItemComment._(actionFocus: actionFocus, idPost: idPost),
+      child: ItemComment._(
+          actionFocus: actionFocus, idPost: idPost, isResponse: isResponse!),
     );
   }
 
@@ -44,7 +50,7 @@ class ItemComment extends StatelessWidget {
       final loadcommentCubit = context.read<LoadCommentCubit>();
       final comment = commentCubit.comment!;
       return BlocBuilder<LoadCommentCubit, LoadCommentState>(
-          builder: (context, state) {
+          builder: (context, stateL) {
         return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Card(
             shape: RoundedRectangleBorder(
@@ -59,10 +65,21 @@ class ItemComment extends StatelessWidget {
               children: [
                 ListTile(
                   contentPadding: const EdgeInsets.only(top: 8.0, left: 16.0),
-                  leading: ImageProfil(
-                    image: comment.user.image ?? '',
-                    height: 40,
-                    width: 40,
+                  leading: SizedBox(
+                    width: isResponse ? 64 : 40,
+                    child: Row(mainAxisSize: MainAxisSize.min, children: [
+                      if (isResponse)
+                        const Icon(
+                          Icons.subdirectory_arrow_right,
+                          color: Color(0xFF5F6368),
+                          size: 24,
+                        ),
+                      ImageProfil(
+                        image: comment.user.image ?? '',
+                        height: 40,
+                        width: 40,
+                      )
+                    ]),
                   ),
                   title: Text(
                     TextUtils.capitalizeEachWord(comment.user.username),
@@ -206,22 +223,36 @@ class ItemComment extends StatelessWidget {
               cubit: AutoListCubit(
                   provider: ({int page = 1}) => context
                       .read<SocialService>()
-                      .getComments(target: comment.id,idPost : idPost, page: page)),
+                      .getComments(
+                          target: comment.id, idPost: idPost, page: page)),
               itemBuilder: (context, comment) => ItemComment.get(
-                context: context,
-                comment: comment,
-                actionFocus: actionFocus,
-                idPost: idPost,
+                  context: context,
+                  comment: comment,
+                  actionFocus: actionFocus,
+                  idPost: idPost,
+                  isResponse: true),
+              loadingBuilder: (context) => Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(16),
+                child: SizedBox(
+                  height: 30,
+                  width: 30,
+                  child: CircularProgressIndicator(),
+                ),
               ),
-              errorBuilder: (context, retry) => Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text("Une erreur est survenue"),
-                  TextButton(
-                    onPressed: retry,
-                    child: const Text("Réessayer"),
-                  )
-                ],
+              errorBuilder: (context, retry) => Container(
+                alignment: Alignment.center,
+                // padding: EdgeInsets.all(16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text("Une erreur est survenue"),
+                    TextButton(
+                      onPressed: retry,
+                      child: const Text("Réessayer"),
+                    )
+                  ],
+                ),
               ),
             )
         ]);
