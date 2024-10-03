@@ -32,60 +32,13 @@ class AnimeItem extends StatelessWidget {
           final animeManipCubit = context.read<AnimeManipCubit>();
           final anime = animeManipCubit.anime!;
           return GestureDetector(
-            onTapUp: (details) {
-              if (withAction) {
-                showMenu(
-                  context: context,
-                  position: RelativeRect.fromLTRB(
-                    details.globalPosition.dx,
-                    details.globalPosition.dy,
-                    details.globalPosition.dx + 1,
-                    details.globalPosition.dy + 1,
-                  ),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0)),
-                  color: Colors.white,
-                  items: <PopupMenuEntry>[
-                    PopupMenuItem(
-                        value: 0,
-                        child: ListTile(
-                          leading: state is AnimeManipViewedLoadingState
-                              ? const SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child:
-                                      CircularProgressIndicator(strokeWidth: 2),
-                                )
-                              : Icon(Icons.check_circle_outline),
-                          title: const Text("J'ai vu"),
-                          onTap: () {
-                            animeManipCubit.addToViewed();
-                          },
-                        )),
-                    PopupMenuItem(
-                      value: 1,
-                      child: ListTile(
-                        leading: state is AnimeManipWatchlistLoadingState
-                            ? const SizedBox(
-                                width: 20,
-                                height: 20,
-                                child:
-                                    CircularProgressIndicator(strokeWidth: 2),
-                              )
-                            : const Icon(Icons.check_circle_outline),
-                        title: const Text("Ajouter à la liste"),
-                        onTap: () {
-                          animeManipCubit.addToWatchlist();
-                        },
-                      ),
-                    ),
-                  ],
-                );
-              } else {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => AnimeDetailsScreen(anime: anime)));
-              }
-            },
+            onTapUp: (details) => showContextMenu(
+              context: context,
+              position: details.globalPosition,
+              anime: anime,
+              state: state,
+              animeManipCubit: animeManipCubit,
+            ),
             child: Card(
               elevation: 0,
               shape: RoundedRectangleBorder(
@@ -174,6 +127,73 @@ class AnimeItem extends StatelessWidget {
             ),
           );
         });
+  }
+
+  void showContextMenu({
+    required BuildContext context,
+    required Offset position,
+    required Anime anime,
+    required AnimeManipState state,
+    required AnimeManipCubit animeManipCubit,
+  }) async {
+    if (withAction) {
+      return showMenu(
+        context: context,
+        position: RelativeRect.fromLTRB(
+          position.dx,
+          position.dy,
+          position.dx + 1,
+          position.dy + 1,
+        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+        color: Colors.white,
+        items: <PopupMenuEntry>[
+          PopupMenuItem(
+              value: 0,
+              child: BlocProvider.value(
+                  value: animeManipCubit,
+                  child: BlocBuilder<AnimeManipCubit, AnimeManipState>(
+                      builder: (context, state) => ListTile(
+                            leading: state is AnimeManipViewedLoadingState
+                                ? const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                        strokeWidth: 2),
+                                  )
+                                : const Icon(Icons.check_circle_outline),
+                            title: const Text("J'ai vu"),
+                            onTap: () {
+                              animeManipCubit.addToViewed();
+                            },
+                          )))),
+          PopupMenuItem(
+            value: 1,
+            child: BlocProvider.value(
+              value: animeManipCubit,
+              child: BlocBuilder<AnimeManipCubit, AnimeManipState>(
+                builder: (context, state) => ListTile(
+                  leading: state is AnimeManipWatchlistLoadingState
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Icon(Icons.check_circle_outline),
+                  title: const Text("Ajouter à la liste"),
+                  onTap: () {
+                    animeManipCubit.addToWatchlist();
+                  },
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
+    } else {
+      Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => AnimeDetailsScreen(anime: anime)));
+    }
   }
 
   void onEventReceived(BuildContext context, AnimeManipState state) async {

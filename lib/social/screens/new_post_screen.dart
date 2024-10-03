@@ -32,31 +32,23 @@ class _NewPostScreenState extends State<NewPostScreen> with CompletableMixin {
           progressIndicator: const LoadingCamera(),
           builder: (cameraState, previewSize) {
             return cameraState.when(
-              onPhotoMode: (state) => TakePhotoUI(
+              onPhotoMode: (state) => _TakePhotoUI(
                 state: state,
               ),
             );
           },
           onMediaCaptureEvent: (event) {
-            switch ((event.status, event.isPicture, event.isVideo)) {
-              case (MediaCaptureStatus.capturing, true, false):
-                break;
-              case (MediaCaptureStatus.success, true, false):
-                event.captureRequest.when(
-                  single: (single) async {
-                    var file = File(single.file?.path ?? '');
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              NewPostCompleteScreen(file: file)),
-                    );
-                  },
-                );
-                break;
-              case (MediaCaptureStatus.failure, true, false):
-                break;
-
-              default:
+            if (event.status == MediaCaptureStatus.success && event.isPicture) {
+              event.captureRequest.when(
+                single: (single) async {
+                  var file = File(single.file?.path ?? '');
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            NewPostCompleteScreen(file: file)),
+                  );
+                },
+              );
             }
           },
           saveConfig: SaveConfig.photo(),
@@ -69,10 +61,10 @@ class _NewPostScreenState extends State<NewPostScreen> with CompletableMixin {
   }
 }
 
-class TakePhotoUI extends StatefulWidget {
+class _TakePhotoUI extends StatefulWidget {
   final PhotoCameraState state;
 
-  const TakePhotoUI({
+  const _TakePhotoUI({
     Key? key,
     required this.state,
   }) : super(key: key);
@@ -81,42 +73,8 @@ class TakePhotoUI extends StatefulWidget {
   _TakePhotoUIState createState() => _TakePhotoUIState();
 }
 
-class _TakePhotoUIState extends State<TakePhotoUI> {
-  AssetEntity? lastImage;
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchLastImage();
-  }
-
-  Future<void> _fetchLastImage() async {
-    final PermissionState result = await PhotoManager.requestPermissionExtend();
-
-    if (result.isAuth) {
-      final List<AssetPathEntity> paths = await PhotoManager.getAssetPathList(
-        onlyAll: true,
-        type: RequestType.image,
-      );
-
-      if (paths.isNotEmpty) {
-        final AssetPathEntity mainAlbum = paths.first;
-
-        final List<AssetEntity> images =
-            await mainAlbum.getAssetListPaged(page: 0, size: 1);
-
-        if (images.isNotEmpty) {
-          setState(() {
-            lastImage = images.first;
-          });
-        }
-      }
-    } else {
-      PhotoManager.requestPermissionExtend();
-      _fetchLastImage();
-    }
-  }
-
+class _TakePhotoUIState extends State<_TakePhotoUI> {
+  final _galery = const _GaleryUi();
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -131,6 +89,7 @@ class _TakePhotoUIState extends State<TakePhotoUI> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
+                  padding: EdgeInsets.zero,
                   icon: const Icon(Icons.close, color: Colors.white, size: 30),
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -139,6 +98,7 @@ class _TakePhotoUIState extends State<TakePhotoUI> {
                 Row(
                   children: [
                     IconButton(
+                      padding: EdgeInsets.zero,
                       icon: Icon(
                         widget.state.when(
                           onPhotoMode: (photoState) {
@@ -176,6 +136,7 @@ class _TakePhotoUIState extends State<TakePhotoUI> {
                       },
                     ),
                     IconButton(
+                      padding: EdgeInsets.zero,
                       icon: const Icon(Icons.flip_camera_android,
                           color: Colors.white, size: 30),
                       onPressed: () {
@@ -195,51 +156,7 @@ class _TakePhotoUIState extends State<TakePhotoUI> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              InkWell(
-                child: lastImage != null
-                    ? FutureBuilder<Uint8List?>(
-                        future: lastImage!.thumbnailDataWithSize(
-                            ThumbnailSize(300, 300)), // Taille de la vignette
-                        builder: (BuildContext context,
-                            AsyncSnapshot<Uint8List?> snapshot) {
-                          if (snapshot.connectionState ==
-                                  ConnectionState.done &&
-                              snapshot.hasData) {
-                            return SizedBox(
-                              height: 40.0,
-                              width: 40.0,
-                              child: CircleAvatar(
-                                radius: 28,
-                                backgroundImage: MemoryImage(snapshot.data!),
-                              ),
-                            );
-                          } else {
-                            return CircularProgressIndicator(); // Loader si l'image n'est pas prête
-                          }
-                        },
-                      )
-                    : const SizedBox(
-                        height: 40.0,
-                        width: 40.0,
-                        child: CircleAvatar(
-                          radius: 28,
-                          child:
-                              Icon(Icons.person, size: 28, color: Colors.white),
-                        ),
-                      ),
-                onTap: () async {
-                  final ImagePicker _picker = ImagePicker();
-                  final XFile? image =
-                      await _picker.pickImage(source: ImageSource.gallery);
-                  if (image != null) {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              NewPostCompleteScreen(file: File(image.path))),
-                    );
-                  }
-                },
-              ),
+              _galery,
               Container(
                   margin: const EdgeInsets.symmetric(horizontal: 28.0),
                   decoration: BoxDecoration(
@@ -256,6 +173,7 @@ class _TakePhotoUIState extends State<TakePhotoUI> {
                   )), // GestureDetector(
 
               IconButton(
+                padding: EdgeInsets.zero,
                 icon: const Icon(
                   Icons.text_fields,
                   color: Colors.white,
@@ -265,7 +183,7 @@ class _TakePhotoUIState extends State<TakePhotoUI> {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                         builder: (context) =>
-                            NewPostCompleteScreen(file: null)),
+                            const NewPostCompleteScreen(file: null)),
                   );
                 },
               ),
@@ -273,6 +191,98 @@ class _TakePhotoUIState extends State<TakePhotoUI> {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _GaleryUi extends StatefulWidget {
+  const _GaleryUi({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  _GaleryUiState createState() => _GaleryUiState();
+}
+
+class _GaleryUiState extends State<_GaleryUi> {
+  AssetEntity? lastImage;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _fetchLastImage();
+    });
+    super.initState();
+  }
+
+  Future<void> _fetchLastImage() async {
+    final PermissionState result = await PhotoManager.requestPermissionExtend();
+
+    if (result.isAuth) {
+      final List<AssetPathEntity> paths = await PhotoManager.getAssetPathList(
+        onlyAll: true,
+        type: RequestType.image,
+      );
+
+      if (paths.isNotEmpty) {
+        final AssetPathEntity mainAlbum = paths.first;
+
+        final List<AssetEntity> images =
+            await mainAlbum.getAssetListPaged(page: 0, size: 1);
+
+        if (images.isNotEmpty) {
+          setState(() {
+            lastImage = images.first;
+          });
+        }
+      }
+    } else {}
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      child: lastImage != null
+          ? FutureBuilder<Uint8List?>(
+              future: lastImage!.thumbnailDataWithSize(
+                  const ThumbnailSize(300, 300)), // Taille de la vignette
+              builder:
+                  (BuildContext context, AsyncSnapshot<Uint8List?> snapshot) {
+                if (snapshot.connectionState == ConnectionState.done &&
+                    snapshot.hasData) {
+                  return SizedBox(
+                    height: 40.0,
+                    width: 40.0,
+                    child: CircleAvatar(
+                      radius: 28,
+                      backgroundImage: MemoryImage(snapshot.data!),
+                    ),
+                  );
+                } else {
+                  return const CircularProgressIndicator(); // Loader si l'image n'est pas prête
+                }
+              },
+            )
+          : const SizedBox(
+              height: 40.0,
+              width: 40.0,
+              child: CircleAvatar(
+                radius: 28,
+                child: Icon(Icons.person, size: 28, color: Colors.white),
+              ),
+            ),
+      onTap: () async {
+        final ImagePicker _picker = ImagePicker();
+        final XFile? image =
+            await _picker.pickImage(source: ImageSource.gallery);
+        if (image != null) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+                builder: (context) =>
+                    NewPostCompleteScreen(file: File(image.path))),
+          );
+        }
+      },
     );
   }
 }
@@ -296,6 +306,7 @@ class LoadingCamera extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
+                    padding: EdgeInsets.zero,
                     icon:
                         const Icon(Icons.close, color: Colors.white, size: 30),
                     onPressed: () {
@@ -305,11 +316,13 @@ class LoadingCamera extends StatelessWidget {
                   Row(
                     children: [
                       IconButton(
+                        padding: EdgeInsets.zero,
                         icon: const Icon(Icons.flash_auto,
                             color: Colors.white, size: 30),
                         onPressed: () {},
                       ),
                       IconButton(
+                        padding: EdgeInsets.zero,
                         icon: const Icon(Icons.flip_camera_android,
                             color: Colors.white, size: 30),
                         onPressed: () {},
@@ -348,6 +361,7 @@ class LoadingCamera extends StatelessWidget {
                   ),
                 ),
                 IconButton(
+                  padding: EdgeInsets.zero,
                   icon: const Icon(
                     Icons.text_fields,
                     color: Colors.white,

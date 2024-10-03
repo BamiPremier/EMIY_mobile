@@ -52,6 +52,7 @@ dependencies:
   sign_in_with_apple: ^6.1.2
   photo_manager: ^3.5.0
   share_plus: ^10.0.2
+  readmore: ^3.0.0
   flutter_localizations:
     sdk: flutter
 

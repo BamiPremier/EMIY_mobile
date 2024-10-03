@@ -52,6 +52,8 @@ class _AccountScreenState extends State<AccountScreen>
             centerTitle: true,
             actions: [
               IconButton(
+                  padding: EdgeInsets.zero,
+                 
                   onPressed: onActionsPressed,
                   icon: const Icon(Icons.more_vert))
             ],

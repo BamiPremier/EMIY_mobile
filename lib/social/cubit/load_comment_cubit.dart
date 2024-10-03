@@ -15,8 +15,19 @@ class LoadCommentCubit extends AutoListCubit<Comment> {
   LoadCommentCubit(
     this.socialService,
     String idPost,
+    String target,
   ) : super(provider: ({int page = 1}) async {
-          final p = await socialService.getComments(idPost: idPost, page: page);
+          print(
+            socialService,
+          );
+          print(
+            target,
+          );
+          print(
+            idPost,
+          );
+          final p = await socialService.getComments(
+              idPost: idPost, target: target, page: page);
           return p;
         });
 
@@ -44,29 +55,15 @@ class LoadCommentCubit extends AutoListCubit<Comment> {
       });
     }
   }
-
-  void selectComment(Comment comment) {
-    print(state);
-    final list = (state as LoadCommentReadyState).items;
-    print(list);
-    emit(LoadCommentListState(list, comment));
-  }
-
-  void unselectComment() {
-    print(state);
-    final list = (state as LoadCommentReadyState).items;
-    print(list);
-    emit(LoadCommentReadyState(list));
-  }
 }
 
 typedef LoadCommentState = AutoListState<Comment>;
 typedef LoadCommentReadyState = AutoListReadyState<Comment>;
 
 class LoadCommentListState extends LoadCommentReadyState {
-  final Comment? selectedComment;
-
-  const LoadCommentListState(super.items, [this.selectedComment = null]);
+  const LoadCommentListState(
+    super.items,
+  );
   @override
-  List<Object?> get props => [...super.props, selectedComment];
+  List<Object?> get props => [...super.props];
 }

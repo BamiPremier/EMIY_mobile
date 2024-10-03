@@ -13,7 +13,7 @@ class SocialService extends ApiService {
   static const String _newPost = '/posts';
   static const String _getPost = '/posts/:idPost';
   static const String _deletePost = '/posts/:idPost';
-  static const String _signalerPost = '/posts/:idPost/report';
+  static const String _reportPost = '/posts/:idPost/report';
   static const String _sharePost = '/posts/:idPost/share';
   static const String _feed = '/posts/feed';
   static const String _likePost = '/posts/:idPost/like';
@@ -50,10 +50,10 @@ class SocialService extends ApiService {
     );
   }
 
-  Future<Post> signalerPost({required String idPost, required String reason}) {
+  Future<Post> reportPost({required String idPost, required String reason}) {
     return compute(
       dio.post(
-        _signalerPost.replaceAll(':idPost', idPost),
+        _reportPost.replaceAll(':idPost', idPost),
         options: Options(headers: withAuth()),
         data: {'reason': reason},
       ),
@@ -153,6 +153,13 @@ class SocialService extends ApiService {
     int page = 1,
     String? target,
   }) async {
+    print(
+      {
+        'page': page,
+        'size': 20,
+        if (target != null && target != '') 'target': target
+      },
+    );
     return compute(
       dio.get(
         _listComments.replaceAll(':idPost', idPost),
@@ -160,7 +167,7 @@ class SocialService extends ApiService {
         queryParameters: {
           'page': page,
           'size': 20,
-          if (target != null) 'target': target
+          if (target != null && target != '') 'target': target
         },
       ),
       mapper: (result) => toPaginatedList(result, Comment.fromJson),

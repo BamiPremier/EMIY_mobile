@@ -6,28 +6,34 @@ import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
+import 'package:umai/common/utils/validators.dart';
 import 'package:umai/common/widgets/image_profil.dart';
 import 'package:umai/social/cubit/comment_cubit.dart';
 import 'package:umai/social/cubit/load_comment_cubit.dart';
 import 'package:umai/social/cubit/post_cubit.dart';
+import 'package:umai/social/cubit/y_comment_cubit.dart';
 import 'package:umai/social/model/comment.dart';
 import 'package:umai/social/model/post.dart';
 import 'package:umai/social/services/social_service.dart';
 import 'package:umai/social/widget/button_post.dart';
+import 'package:umai/social/widget/comment_input.dart';
 import 'package:umai/social/widget/item_comment.dart';
 import 'package:umai/social/widget/post_social_card_second.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/text_utils.dart';
 import 'package:umai/utils/themes.dart';
+import 'package:readmore/readmore.dart';
+import 'package:umai/utils/time_elapsed.dart';
 
 class PostDetailsScreen extends StatefulWidget {
   static Widget from({required PostCubit cubit}) {
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(value: cubit),
+        BlocProvider(create: (context) => YCommentCubit()),
         BlocProvider(
             create: (context) =>
-                LoadCommentCubit(context.read(), cubit.post.id)),
+                LoadCommentCubit(context.read(), cubit.post.id, '')),
       ],
       child: const PostDetailsScreen._(),
     );
@@ -38,7 +44,7 @@ class PostDetailsScreen extends StatefulWidget {
       providers: [
         BlocProvider(create: (context) => PostCubit(context.read(), post)),
         BlocProvider(
-            create: (context) => LoadCommentCubit(context.read(), post.id)),
+            create: (context) => LoadCommentCubit(context.read(), post.id, '')),
       ],
       child: const PostDetailsScreen._(),
     );
@@ -54,8 +60,40 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
   late final post = context.read<PostCubit>().post!;
 
   late final loadCommentCubit = context.read<LoadCommentCubit>();
-  final focusNode = FocusNode();
-  final TextEditingController _commentController = TextEditingController();
+  final _trimMode = TrimMode.Line;
+  final isCollapsed = ValueNotifier<bool>(true);
+  late final postCubit = context.read<PostCubit>();
+  late final commentPost = AutoListView.get<Comment>(
+      shrinkWrap: true,
+      autoManage: false,
+      physics: const NeverScrollableScrollPhysics(),
+      cubit: loadCommentCubit,
+      itemBuilder: (context, comment) => ItemComment.get(
+            idPost: postCubit.post.id,
+            context: context,
+            comment: comment,
+          ),
+      emptyBuilder: (context) => const Center(
+            child: Text("Aucun commentaire"),
+          ),
+      errorBuilder: (context, retry) => Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text("Une erreur est survenue"),
+              TextButton(
+                onPressed: retry,
+                child: const Text("Réessayer"),
+              )
+            ],
+          ));
+  @override
+  void dispose() {
+    loadCommentCubit.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<PostCubit, PostState>(listener: (context, state) {
@@ -63,13 +101,13 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
         loadCommentCubit.putFirst(state.comment);
       }
     }, builder: (context, state) {
-      final postCubit = context.read<PostCubit>();
       return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.white.withOpacity(.3),
             foregroundColor: Colors.white.withOpacity(.3),
             elevation: 0,
             leading: IconButton(
+              padding: EdgeInsets.zero,
               onPressed: () => Navigator.pop(context),
               icon: const Icon(
                 Icons.arrow_back,
@@ -97,12 +135,11 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                                 width: 48.0,
                               ),
                               title: Text(
-                                TextUtils.capitalizeEachWord(
-                                    post.user.username),
+                                post.user.username,
                                 style: Theme.of(context).textTheme.bodyLarge,
                               ),
                               subtitle: Text(
-                                'Il y a 10h',
+                                post.createdAt.elapsed(),
                                 style: Theme.of(context)
                                     .textTheme
                                     .labelMedium!
@@ -111,9 +148,9 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                               trailing: PopupMenuButton<String>(
                                 onSelected: (value) {
                                   if (value == 'Signaler') {
-                                    postCubit.signalerPost();
+                                    postCubit.report();
                                   } else if (value == 'Supprimer') {
-                                    postCubit.deletePost();
+                                    postCubit.delete();
                                   }
                                 },
                                 padding: EdgeInsets.zero,
@@ -144,9 +181,17 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                             const SizedBox(height: 8),
                             Container(
                               padding: const EdgeInsets.only(right: 16.0),
-                              child: Text(
+                              child: ReadMoreText(
                                 post.content,
+                                trimMode: _trimMode,
+                                trimLines: 3,
+                                trimLength: 240,
+                                isCollapsed: isCollapsed,
                                 style: Theme.of(context).textTheme.bodyMedium,
+                                colorClickableText:
+                                    Theme.of(context).primaryColor,
+                                trimCollapsedText: '...Read more',
+                                trimExpandedText: ' Less',
                               ),
                             ),
                           ],
@@ -155,7 +200,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                       post.image == null ||
                               post.image == '' ||
                               post.image!.isEmpty
-                          ? SizedBox()
+                          ? const SizedBox()
                           : Padding(
                               padding: const EdgeInsets.only(top: 8.0),
                               child: Image.network(
@@ -232,125 +277,16 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                       ButtonPost(
                           postCubit: context.read<PostCubit>(),
                           actionFocus: () {
-                            context.read<LoadCommentCubit>().unselectComment();
-                            if (!focusNode.hasFocus) {
-                              FocusScope.of(context).requestFocus(focusNode);
-                            }
+                            context.read<YCommentCubit>().unselectComment();
                           }),
-                      BlocListener<LoadCommentCubit, LoadCommentState>(
-                          listener: (context, state) {},
-                          child: AutoListView.get<Comment>(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              padding: EdgeInsets.only(
-                                  bottom:
-                                      MediaQuery.of(context).viewInsets.bottom),
-                              cubit: loadCommentCubit,
-                              itemBuilder: (context, comment) =>
-                                  ItemComment.get(
-                                      idPost: postCubit.post.id,
-                                      context: context,
-                                      comment: comment,
-                                      actionFocus: () {
-                                        if (!focusNode.hasFocus) {
-                                          FocusScope.of(context)
-                                              .requestFocus(focusNode);
-                                        }
-                                      }),
-                              errorBuilder: (context, retry) => Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const Text("Une erreur est survenue"),
-                                      TextButton(
-                                        onPressed: retry,
-                                        child: const Text("Réessayer"),
-                                      )
-                                    ],
-                                  )))
+                      commentPost
                     ],
                   ),
                 ),
               ),
-              BlocBuilder<LoadCommentCubit, LoadCommentState>(
-                  builder: (context, stateLoadCom) {
-                return Container(
-                  // padding: EdgeInsets.only(
-                  //     bottom: MediaQuery.of(context).viewInsets.bottom),
-                  color: Theme.of(context)
-                      .bottomNavigationBarTheme
-                      .backgroundColor,
-
-                  child: Container(
-                    margin: EdgeInsets.all(16),
-                    color: Theme.of(context)
-                        .bottomNavigationBarTheme
-                        .backgroundColor,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextFormField(
-                              controller: _commentController,
-                              decoration: InputDecoration(
-                                hintText: (stateLoadCom
-                                            is LoadCommentListState &&
-                                        stateLoadCom.selectedComment != null)
-                                    ? 'Réponse à ${TextUtils.capitalizeEachWord(stateLoadCom.selectedComment!.user.username)}'
-                                    : "Ajouter un commentaire...",
-                                hintStyle: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium!
-                                    .copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSurfaceVariant,
-                                        overflow: TextOverflow.ellipsis),
-                              ),
-                              keyboardType: TextInputType.text,
-                              textInputAction: TextInputAction.done,
-                              textCapitalization: TextCapitalization.sentences,
-                              focusNode: focusNode,
-                              onTapOutside: (_) =>
-                                  FocusScope.of(context).unfocus()),
-                        ),
-                        SizedBox(width: 8),
-                        IconButton(
-                          icon: Container(
-                              height: 48,
-                              width: 48,
-                              decoration: BoxDecoration(
-                                color: AppTheme.primaryYellow,
-                                borderRadius: BorderRadius.circular(100),
-                                border:
-                                    Border.all(color: AppTheme.primaryYellow),
-                              ),
-                              child: state is PostLoadingState
-                                  ? const SizedBox(
-                                      width: 10,
-                                      height: 10,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        color: AppTheme.white,
-                                      ),
-                                    )
-                                  : Icon(Icons.arrow_upward)),
-                          onPressed: () {
-                            (stateLoadCom is LoadCommentListState &&
-                                    stateLoadCom.selectedComment != null)
-                                ? postCubit.commentPost(
-                                    content: _commentController.text,
-                                    targetCommentId:
-                                        stateLoadCom.selectedComment!.id)
-                                : postCubit.commentPost(
-                                    content: _commentController.text,
-                                  );
-                            // Action du bouton
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              }),
+              CommentInput.from(
+                cubit: postCubit,
+              )
             ],
           ));
     });

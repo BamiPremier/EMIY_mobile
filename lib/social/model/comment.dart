@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:umai/common/models/user.dart';
+import 'package:umai/utils/datetime_converter.dart';
 
 part 'comment.freezed.dart';
 part 'comment.g.dart';
@@ -13,6 +14,9 @@ class Comment with _$Comment {
     @JsonKey(name: 'comment_responses_count')
     required int commentResponsesCount,
     required User user,
+    @JsonKey(name: 'created_at') 
+    @DateTimeConverter()
+    required DateTime createdAt,
   }) = _Comment;
 
   factory Comment.fromJson(Map<String, dynamic> json) =>

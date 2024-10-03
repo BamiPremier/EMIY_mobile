@@ -28,9 +28,9 @@ class ButtonPost extends StatefulWidget {
 class _ButtonPostState extends State<ButtonPost> with CompletableMixin {
   @override
   Widget build(BuildContext context) {
-    return BlocListener<PostCubit, PostState>(
+    return BlocConsumer<PostCubit, PostState>(
         listener: onEventReceived,
-        child: BlocBuilder<PostCubit, PostState>(builder: (context, state) {
+        builder: (context, state) {
           final post = widget.postCubit.post;
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -39,6 +39,7 @@ class _ButtonPostState extends State<ButtonPost> with CompletableMixin {
                 children: [
                   post.hasLiked
                       ? IconButton(
+                          padding: EdgeInsets.zero,
                           icon: const Icon(
                             Icons.favorite,
                             color: Colors.red,
@@ -48,6 +49,7 @@ class _ButtonPostState extends State<ButtonPost> with CompletableMixin {
                           },
                         )
                       : IconButton(
+                          padding: EdgeInsets.zero,
                           icon: Icon(
                             Icons.favorite_border_outlined,
                             color:
@@ -58,6 +60,7 @@ class _ButtonPostState extends State<ButtonPost> with CompletableMixin {
                           },
                         ),
                   IconButton(
+                    padding: EdgeInsets.zero,
                     icon: Icon(
                       Icons.chat_bubble_outline,
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -67,6 +70,7 @@ class _ButtonPostState extends State<ButtonPost> with CompletableMixin {
                 ],
               ),
               IconButton(
+                padding: EdgeInsets.zero,
                 icon: Icon(
                   Icons.share,
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -75,9 +79,10 @@ class _ButtonPostState extends State<ButtonPost> with CompletableMixin {
               ),
             ],
           );
-        }));
+        });
   }
 
+  bool isSharing = false;
   void onEventReceived(BuildContext context, PostState state) async {
     await waitForDialog();
 
@@ -86,7 +91,12 @@ class _ButtonPostState extends State<ButtonPost> with CompletableMixin {
         context: context,
       );
     } else if (state is SharePostSuccesState) {
-      Share.share('Suivre ce lien pour voir le post : ${state.link}');
+      if (!isSharing) {
+        isSharing = true;
+        await Share.share('Suivre ce lien pour voir le post : ${state.link}');
+
+        isSharing = false;
+      }
     } else if (state is PostErrorState) {
       showErrorToast(state.error);
     }

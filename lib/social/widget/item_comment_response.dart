@@ -18,23 +18,17 @@ import 'package:umai/social/model/comment.dart';
 import 'package:umai/social/model/post.dart';
 import 'package:umai/social/screens/post_details.dart';
 import 'package:umai/social/services/social_service.dart';
-import 'package:umai/social/widget/item_comment_response.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/text_utils.dart';
 import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
-class ItemComment extends StatefulWidget {
+class ItemCommentResponse extends StatefulWidget {
   final String idPost;
-
-  const ItemComment._({
-    required this.idPost,
-  });
-
   static Widget get({
     required BuildContext context,
-    required Comment comment,
     required String idPost,
+    required Comment comment,
   }) {
     return MultiBlocProvider(
       providers: [
@@ -44,15 +38,18 @@ class ItemComment extends StatefulWidget {
             create: (context) =>
                 LoadCommentCubit(context.read(), idPost, comment.id)),
       ],
-      child: ItemComment._(idPost: idPost),
+      child: ItemCommentResponse._(idPost: idPost),
     );
   }
 
+  const ItemCommentResponse._({
+    required this.idPost,
+  });
   @override
-  State<ItemComment> createState() => _ItemCommentState();
+  State<ItemCommentResponse> createState() => _ItemCommentResponseState();
 }
 
-class _ItemCommentState extends State<ItemComment> {
+class _ItemCommentResponseState extends State<ItemCommentResponse> {
   late final commentCubit = context.read<CommentCubit>();
   late final loadCommentCubit = context.read<LoadCommentCubit>();
   late final comment = commentCubit.comment!;
@@ -89,7 +86,6 @@ class _ItemCommentState extends State<ItemComment> {
   @override
   void dispose() {
     loadCommentCubit.close();
-
     super.dispose();
   }
 
@@ -103,15 +99,24 @@ class _ItemCommentState extends State<ItemComment> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ListTile(
-                contentPadding: const EdgeInsets.only(top: 8.0, left: 16.0),
-                leading: ImageProfil(
-                  image: comment.user.image ?? '',
-                  height: 40,
-                  width: 40,
+                contentPadding: const EdgeInsets.only(top: 8.0, left: 8.0),
+                leading: SizedBox(
+                  child: Row(mainAxisSize: MainAxisSize.min, children: [
+                    const Icon(
+                      Icons.subdirectory_arrow_right,
+                      color: Color(0xFF5F6368),
+                      size: 24,
+                    ),
+                    ImageProfil(
+                      image: comment.user.image ?? '',
+                      height: 32,
+                      width: 32,
+                    )
+                  ]),
                 ),
                 title: Text(
                   comment.user.username,
-                  style: Theme.of(context).textTheme.bodyLarge,
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 subtitle: null,
                 trailing: Row(
@@ -120,7 +125,7 @@ class _ItemCommentState extends State<ItemComment> {
                   children: [
                     Text(
                       comment.createdAt.elapsed(),
-                      style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                      style: Theme.of(context).textTheme.labelSmall!.copyWith(
                             color: AppTheme.grey,
                           ),
                     ),
@@ -130,7 +135,9 @@ class _ItemCommentState extends State<ItemComment> {
                         if (value == 'Signaler') {
                           commentCubit.signalerComment();
                         } else if (value == 'Supprimer') {
-                          loadCommentCubit.deleteComment(comment);
+                          context
+                              .read<LoadCommentCubit>()
+                              .deleteComment(comment);
                         } else if (value == 'Copier') {
                           Clipboard.setData(
                                   ClipboardData(text: comment.content))
@@ -176,7 +183,7 @@ class _ItemCommentState extends State<ItemComment> {
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: Text(
                   comment.content,
-                  style: Theme.of(context).textTheme.bodyMedium,
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
               ),
               Padding(
@@ -245,9 +252,7 @@ class _ItemCommentState extends State<ItemComment> {
               ),
             ],
           ),
-          if (state is SeeCommentResponseState) const Divider(),
           if (state is SeeCommentResponseState) responseCom,
-          if (state is SeeCommentResponseState) const Divider(),
         ]);
       });
     });

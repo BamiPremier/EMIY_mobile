@@ -167,7 +167,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     } else if (state is AuthSuccessInActiveUserState) {
       Navigator.of(context).push(
         MaterialPageRoute(
-            builder: (context) => const RegistrationUsernameScreen()),
+            builder: (context) => const RegistrationUsername ()),
       );
     } else if (state is AuthErrorState) {
       showErrorToast(state.error);

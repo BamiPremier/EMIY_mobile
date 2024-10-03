@@ -27,6 +27,9 @@ mixin _$Comment {
   @JsonKey(name: 'comment_responses_count')
   int get commentResponsesCount => throw _privateConstructorUsedError;
   User get user => throw _privateConstructorUsedError;
+  @JsonKey(name: 'created_at')
+  @DateTimeConverter()
+  DateTime get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -43,7 +46,8 @@ abstract class $CommentCopyWith<$Res> {
       String content,
       @JsonKey(name: 'has_liked') bool hasLiked,
       @JsonKey(name: 'comment_responses_count') int commentResponsesCount,
-      User user});
+      User user,
+      @JsonKey(name: 'created_at') @DateTimeConverter() DateTime createdAt});
 
   $UserCopyWith<$Res> get user;
 }
@@ -66,6 +70,7 @@ class _$CommentCopyWithImpl<$Res, $Val extends Comment>
     Object? hasLiked = null,
     Object? commentResponsesCount = null,
     Object? user = null,
+    Object? createdAt = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -88,6 +93,10 @@ class _$CommentCopyWithImpl<$Res, $Val extends Comment>
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as User,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ) as $Val);
   }
 
@@ -112,7 +121,8 @@ abstract class _$$CommentImplCopyWith<$Res> implements $CommentCopyWith<$Res> {
       String content,
       @JsonKey(name: 'has_liked') bool hasLiked,
       @JsonKey(name: 'comment_responses_count') int commentResponsesCount,
-      User user});
+      User user,
+      @JsonKey(name: 'created_at') @DateTimeConverter() DateTime createdAt});
 
   @override
   $UserCopyWith<$Res> get user;
@@ -134,6 +144,7 @@ class __$$CommentImplCopyWithImpl<$Res>
     Object? hasLiked = null,
     Object? commentResponsesCount = null,
     Object? user = null,
+    Object? createdAt = null,
   }) {
     return _then(_$CommentImpl(
       id: null == id
@@ -156,6 +167,10 @@ class __$$CommentImplCopyWithImpl<$Res>
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as User,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ));
   }
 }
@@ -169,7 +184,10 @@ class _$CommentImpl implements _Comment {
       @JsonKey(name: 'has_liked') required this.hasLiked,
       @JsonKey(name: 'comment_responses_count')
       required this.commentResponsesCount,
-      required this.user});
+      required this.user,
+      @JsonKey(name: 'created_at')
+      @DateTimeConverter()
+      required this.createdAt});
 
   factory _$CommentImpl.fromJson(Map<String, dynamic> json) =>
       _$$CommentImplFromJson(json);
@@ -186,10 +204,14 @@ class _$CommentImpl implements _Comment {
   final int commentResponsesCount;
   @override
   final User user;
+  @override
+  @JsonKey(name: 'created_at')
+  @DateTimeConverter()
+  final DateTime createdAt;
 
   @override
   String toString() {
-    return 'Comment(id: $id, content: $content, hasLiked: $hasLiked, commentResponsesCount: $commentResponsesCount, user: $user)';
+    return 'Comment(id: $id, content: $content, hasLiked: $hasLiked, commentResponsesCount: $commentResponsesCount, user: $user, createdAt: $createdAt)';
   }
 
   @override
@@ -203,13 +225,15 @@ class _$CommentImpl implements _Comment {
                 other.hasLiked == hasLiked) &&
             (identical(other.commentResponsesCount, commentResponsesCount) ||
                 other.commentResponsesCount == commentResponsesCount) &&
-            (identical(other.user, user) || other.user == user));
+            (identical(other.user, user) || other.user == user) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, content, hasLiked, commentResponsesCount, user);
+  int get hashCode => Object.hash(runtimeType, id, content, hasLiked,
+      commentResponsesCount, user, createdAt);
 
   @JsonKey(ignore: true)
   @override
@@ -232,7 +256,10 @@ abstract class _Comment implements Comment {
       @JsonKey(name: 'has_liked') required final bool hasLiked,
       @JsonKey(name: 'comment_responses_count')
       required final int commentResponsesCount,
-      required final User user}) = _$CommentImpl;
+      required final User user,
+      @JsonKey(name: 'created_at')
+      @DateTimeConverter()
+      required final DateTime createdAt}) = _$CommentImpl;
 
   factory _Comment.fromJson(Map<String, dynamic> json) = _$CommentImpl.fromJson;
 
@@ -248,6 +275,10 @@ abstract class _Comment implements Comment {
   int get commentResponsesCount;
   @override
   User get user;
+  @override
+  @JsonKey(name: 'created_at')
+  @DateTimeConverter()
+  DateTime get createdAt;
   @override
   @JsonKey(ignore: true)
   _$$CommentImplCopyWith<_$CommentImpl> get copyWith =>

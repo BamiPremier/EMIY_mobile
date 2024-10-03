@@ -23,7 +23,7 @@ class NewPostCubit extends Cubit<NewPostState> {
     emit(const NewPostUploadingState());
     socialService
         .create(
-      content: content,
+      content: content!.trim(),
       file: file,
     )
         .then((post) {

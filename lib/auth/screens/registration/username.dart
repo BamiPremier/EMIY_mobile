@@ -8,15 +8,15 @@ import 'package:umai/common/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:umai/utils/dialogs.dart';
 
-class RegistrationUsernameScreen extends StatefulWidget {
-  const RegistrationUsernameScreen({super.key});
+class RegistrationUsername extends StatefulWidget {
+  const RegistrationUsername({super.key});
 
   @override
-  State<RegistrationUsernameScreen> createState() =>
-      _RegistrationUsernameScreenState();
+  State<RegistrationUsername> createState() =>
+      _RegistrationUsernameState();
 }
 
-class _RegistrationUsernameScreenState extends State<RegistrationUsernameScreen>
+class _RegistrationUsernameState extends State<RegistrationUsername>
     with CompletableMixin {
   late final authCubit = context.read<AuthCubit>();
   final userTagNode = FocusNode();
@@ -151,7 +151,7 @@ class _RegistrationUsernameScreenState extends State<RegistrationUsernameScreen>
     } else if (state is CompleteUserSuccessUserState) {
       Navigator.of(context).push(
         MaterialPageRoute(
-            builder: (context) => const GenresSelectionScreen()),
+            builder: (context) => const RegistrationGenresSelection()),
       );
     } else if (state is AuthErrorState) {
       showErrorToast(state.error);

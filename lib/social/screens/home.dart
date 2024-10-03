@@ -30,55 +30,92 @@ class _SocialHomeScreenState extends State<SocialHomeScreen> {
 
           BlocBuilder<NewPostCubit, NewPostState>(
             builder: (context, state) {
-              if (state is NewPostUploadingState) {
-                return Container(
-                  padding: const EdgeInsets.all(8.0),
-                  height: 32,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: AppTheme.primaryYellow,
-                  ),
-                  child: Text(
-                    'Publication en cours...',
-                    style: Theme.of(context).textTheme.labelMedium,
-                  ),
-                );
-              } else if (state is NewPostUploadedState) {
-                return Container(
-                    padding: const EdgeInsets.all(8.0),
-                    height: 40,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: AppTheme.primaryYellow,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Ton Social est publié!',
-                          style: Theme.of(context).textTheme.labelMedium,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            var newPostCubit = state as NewPostUploadedState;
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => PostDetailsScreen.get(
-                                      context: context,
-                                      post: newPostCubit.post!)),
-                            );
-                          },
-                          child: Text(
-                            'Voir',
-                            style: Theme.of(context).textTheme.labelLarge,
+              return AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                height: (state is NewPostUploadingState ||
+                        state is NewPostUploadedState)
+                    ? 40.0
+                    : 0.0, // Animation de hauteur
+                width: double.infinity,
+                curve: Curves.easeInOut,
+
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 1000),
+                  transitionBuilder:
+                      (Widget child, Animation<double> animation) {
+                    final slideAnimation = Tween<Offset>(
+                      begin: const Offset(0, 1),
+                      end: Offset.zero,
+                    ).animate(animation);
+                    return SlideTransition(
+                      position: slideAnimation,
+                      child: FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      ),
+                    );
+                  },
+                  child: state is NewPostUploadingState
+                      ? Container(
+                          key: const ValueKey<int>(1),
+                          padding: const EdgeInsets.all(8.0),
+                          height: 40,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: AppTheme.primaryYellow,
                           ),
-                        ),
-                      ],
-                    ));
-              } else {
-                return const SizedBox.shrink();
-              }
+                          child: Text(
+                            'Publication en cours...',
+                            style: Theme.of(context).textTheme.labelMedium,
+                          ),
+                        )
+                      : state is NewPostUploadedState
+                          ? Container(
+                              key: const ValueKey<int>(2),
+                              padding: const EdgeInsets.all(8.0),
+                              height: 40,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: AppTheme.primaryYellow,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Ton Social est publié!',
+                                    style:
+                                        Theme.of(context).textTheme.labelMedium,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      var newPostCubit =
+                                          state as NewPostUploadedState;
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              PostDetailsScreen.get(
+                                            context: context,
+                                            post: newPostCubit.post!,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: Text(
+                                      'Voir',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelLarge,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : const SizedBox
+                              .shrink(), // Si aucun état correspondant, on cache l'élément
+                ),
+              );
             },
           ),
           Expanded(

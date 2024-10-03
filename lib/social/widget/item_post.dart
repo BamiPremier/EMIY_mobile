@@ -13,17 +13,26 @@ import 'package:umai/social/widget/button_post.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/text_utils.dart';
 import 'package:umai/utils/themes.dart';
+import 'package:readmore/readmore.dart';
+import 'package:umai/utils/time_elapsed.dart';
 
-class PostItem extends StatelessWidget {
+class PostItem extends StatefulWidget {
   static Widget get({required BuildContext context, required Post post}) {
     return BlocProvider(
       create: (context) => PostCubit(context.read(), post),
-      child: const PostItem._(),
+      child: PostItem._(),
     );
   }
 
-  const PostItem._();
+  PostItem._();
 
+  @override
+  _PostItemState createState() => _PostItemState();
+}
+
+class _PostItemState extends State<PostItem> {
+  final isCollapsed = ValueNotifier<bool>(true);
+  final _trimMode = TrimMode.Line;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PostCubit, PostState>(builder: (context, state) {
@@ -53,11 +62,11 @@ class PostItem extends StatelessWidget {
                       leading: ImageProfil(
                           image: post.user.image ?? '', height: 48, width: 48),
                       title: Text(
-                        TextUtils.capitalizeEachWord(post.user.username),
+                        post.user.username,
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                       subtitle: Text(
-                        'Il y a 10h',
+                        post.createdAt.elapsed(),
                         style: Theme.of(context)
                             .textTheme
                             .labelMedium!
@@ -66,14 +75,14 @@ class PostItem extends StatelessWidget {
                       trailing: PopupMenuButton<String>(
                         onSelected: (value) {
                           if (value == 'Signaler') {
-                            postCubit.signalerPost();
+                            postCubit.report();
                           } else if (value == 'Supprimer') {
-                            postCubit.deletePost();
+                            postCubit.delete();
                           }
                         },
                         padding: EdgeInsets.zero,
                         itemBuilder: (BuildContext context) {
-                          List<String> options = ['Signaler'];
+                          List<String> options = ['report'];
                           if (post.user.id ==
                               context.read<UserCubit>().user.id) {
                             options.add('Supprimer');
@@ -99,9 +108,15 @@ class PostItem extends StatelessWidget {
                     const SizedBox(height: 8),
                     Container(
                       padding: const EdgeInsets.only(right: 16.0),
-                      child: Text(
+                      child: ReadMoreText(
                         post.content,
+                        trimMode: _trimMode,
+                        trimLines: 3,
+                        isCollapsed: isCollapsed,
                         style: Theme.of(context).textTheme.bodyMedium,
+                        colorClickableText: Theme.of(context).primaryColor,
+                        trimCollapsedText: '...Read more',
+                        trimExpandedText: ' Less',
                       ),
                     ),
                   ],
@@ -133,12 +148,13 @@ class PostItem extends StatelessWidget {
                           if (loadingProgress == null) {
                             return child;
                           }
-                          return SizedBox(
+                          return Container(
                             height: 368,
                             width: double.infinity,
+                            color:
+                                Theme.of(context).colorScheme.tertiaryContainer,
                             child: Center(
                               child: CircularProgressIndicator(
-                                color: Theme.of(context).colorScheme.tertiary,
                                 value: loadingProgress.expectedTotalBytes !=
                                         null
                                     ? loadingProgress.cumulativeBytesLoaded /

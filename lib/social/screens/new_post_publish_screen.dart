@@ -19,7 +19,8 @@ class NewPostCompleteScreen extends StatefulWidget {
   State<NewPostCompleteScreen> createState() => _NewPostCompleteScreenState();
 }
 
-class _NewPostCompleteScreenState extends State<NewPostCompleteScreen> with CompletableMixin {
+class _NewPostCompleteScreenState extends State<NewPostCompleteScreen>
+    with CompletableMixin {
   late final socialCubit = context.read<NewPostCubit>();
 
   final TextEditingController _contentController = TextEditingController();
@@ -67,6 +68,8 @@ class _NewPostCompleteScreenState extends State<NewPostCompleteScreen> with Comp
                           maxLines: 4,
                           maxLength: 360,
                           maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                          onTapOutside: (event) =>
+                              FocusScope.of(context).unfocus(),
                           onEditingComplete: FocusScope.of(context).unfocus,
                           validator: (value) => Validators.empty(value)),
                     ],
@@ -131,11 +134,13 @@ class _NewPostCompleteScreenState extends State<NewPostCompleteScreen> with Comp
             children: [
               UmaiButton.primary(
                 onPressed: () {
-                  socialCubit.create(
-                    content: _contentController.text,
-                    file: widget.file,
-                  );
-                  Navigator.of(context).popUntil((r) => r.isFirst);
+                  if (Validators.empty(_contentController.text) == null) {
+                    socialCubit.create(
+                      content: _contentController.text,
+                      file: widget.file,
+                    );
+                    Navigator.of(context).popUntil((r) => r.isFirst);
+                  }
                 },
                 text: "Publier",
               ),

@@ -64,6 +64,7 @@ class _AnimeDetailsScreenState extends State<AnimeDetailsScreen>
                       child: Row(
                         children: [
                           IconButton(
+                            padding: EdgeInsets.zero,
                             icon: const Icon(
                               Icons.arrow_back,
                               color: AppTheme.white,
@@ -74,6 +75,7 @@ class _AnimeDetailsScreenState extends State<AnimeDetailsScreen>
                           ),
                           const Spacer(),
                           IconButton(
+                              padding: EdgeInsets.zero,
                               onPressed: () => actionsOptions(),
                               color: AppTheme.white,
                               icon: const Icon(Icons.more_vert))

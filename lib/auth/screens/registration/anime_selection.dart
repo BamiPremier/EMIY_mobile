@@ -8,21 +8,21 @@ import 'package:umai/auth/screens/registration/people.dart';
 import 'package:umai/auth/services/auth_service.dart';
 import 'package:umai/common/widgets/buttons.dart';
 
-class RegistrationAnimeSelectionScreen extends StatefulWidget {
+class RegistrationAnimeSelection extends StatefulWidget {
   final List<String> listGenre;
 
-  const RegistrationAnimeSelectionScreen({
+  const RegistrationAnimeSelection({
     super.key,
     required this.listGenre,
   });
 
   @override
-  State<RegistrationAnimeSelectionScreen> createState() =>
-      _RegistrationAnimeSelectionScreenState();
+  State<RegistrationAnimeSelection> createState() =>
+      _RegistrationAnimeSelectionState();
 }
 
-class _RegistrationAnimeSelectionScreenState
-    extends State<RegistrationAnimeSelectionScreen> {
+class _RegistrationAnimeSelectionState
+    extends State<RegistrationAnimeSelection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,7 +79,7 @@ class _RegistrationAnimeSelectionScreenState
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                        builder: (context) => const RegistrationFollowScreen()),
+                        builder: (context) => const RegistrationPeople()),
                   );
                 },
                 text: "Continuer",

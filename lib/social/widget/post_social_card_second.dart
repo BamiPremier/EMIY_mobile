@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:umai/social/model/post.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/themes.dart';
+import 'package:umai/utils/time_elapsed.dart';
 
 class PostSocialCardSecond extends StatelessWidget {
   final Post post;
@@ -50,7 +51,7 @@ class PostSocialCardSecond extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   subtitle: Text(
-                    'Il y a 10h',
+                    post.createdAt.elapsed(),
                     style: Theme.of(context)
                         .textTheme
                         .labelMedium!
@@ -159,16 +160,19 @@ class PostSocialCardSecond extends StatelessWidget {
               Row(
                 children: [
                   IconButton(
+                    padding: EdgeInsets.zero,
                     icon: const Icon(Icons.favorite_border),
                     onPressed: () {},
                   ),
                   IconButton(
+                    padding: EdgeInsets.zero,
                     icon: const Icon(Icons.chat_bubble_outline),
                     onPressed: () {},
                   ),
                 ],
               ),
               IconButton(
+                padding: EdgeInsets.zero,
                 icon: const Icon(Icons.share),
                 onPressed: () {},
               ),

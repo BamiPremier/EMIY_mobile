@@ -13,6 +13,9 @@ _$PostImpl _$$PostImplFromJson(Map<String, dynamic> json) => _$PostImpl(
       hasLiked: json['has_liked'] as bool? ?? false,
       commentsCount: (json['comments_count'] as num?)?.toInt() ?? 0,
       user: User.fromJson(json['user'] as Map<String, dynamic>),
+      reported: json['reported'] as bool? ?? false,
+      createdAt: const DateTimeConverter()
+          .fromJson((json['created_at'] as num).toInt()),
     );
 
 Map<String, dynamic> _$$PostImplToJson(_$PostImpl instance) =>
@@ -23,4 +26,6 @@ Map<String, dynamic> _$$PostImplToJson(_$PostImpl instance) =>
       'has_liked': instance.hasLiked,
       'comments_count': instance.commentsCount,
       'user': instance.user,
+      'reported': instance.reported,
+      'created_at': const DateTimeConverter().toJson(instance.createdAt),
     };

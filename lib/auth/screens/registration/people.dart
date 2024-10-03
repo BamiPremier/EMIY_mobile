@@ -8,15 +8,15 @@ import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/common/widgets/item_user.dart';
 import 'package:umai/common/screens/home.dart';
 
-class RegistrationFollowScreen extends StatefulWidget {
-  const RegistrationFollowScreen({super.key});
+class RegistrationPeople extends StatefulWidget {
+  const RegistrationPeople({super.key});
 
   @override
-  State<RegistrationFollowScreen> createState() =>
-      _RegistrationFollowScreenState();
+  State<RegistrationPeople> createState() =>
+      _RegistrationPeopleState();
 }
 
-class _RegistrationFollowScreenState extends State<RegistrationFollowScreen> {
+class _RegistrationPeopleState extends State<RegistrationPeople> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

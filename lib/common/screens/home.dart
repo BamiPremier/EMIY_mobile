@@ -19,63 +19,58 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit, int>(
-      builder: (context, index) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(pages[index]['title'] as String),
-            centerTitle: true,
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.account_circle, color: Colors.red, size: 40),
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const AccountScreen()));
-                },
-              ),
-            ],
-          ),
-          body: pages[index]['page'] as Widget,
-          bottomNavigationBar: BottomNavigationBar(
-            onTap: context.read<HomeCubit>().set,
-            items: <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: _buildIconWithDecoration(
-                    icon: Icons.location_on,
-                    selected: index == 0
-                ),
-                label: pages[0]['title'] as String,
-              ),
-              BottomNavigationBarItem(
-                icon: _buildIconWithDecoration(
-                    icon: Icons.commute,
-                    selected: index == 1),
-                label: pages[1]['title'] as String,
-              ),
-              BottomNavigationBarItem(
-                icon: _buildIconWithDecoration(
-                    icon: Icons.bookmark_outline_rounded,
-                    selected: index == 2),
-                label: pages[2]['title'] as String,
-              ),
-              BottomNavigationBarItem(
-                icon: _buildIconWithDecoration(
-                    icon: Icons.add_circle_outline_rounded,
-                    selected: index == 3),
-                label: pages[3]['title'] as String,
-              ),
-              BottomNavigationBarItem(
-                icon: _buildIconWithDecoration(
-                    icon: Icons.notifications, selected: index == 4),
-                label: pages[4]['title'] as String,
-              ),
-            ],
-            currentIndex: index,
-            selectedItemColor: Colors.amber,
-          ),
-        );
-      }
-    );
+    return BlocBuilder<HomeCubit, int>(builder: (context, index) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text(pages[index]['title'] as String),
+          centerTitle: true,
+          actions: [
+            IconButton(
+              padding: EdgeInsets.zero,
+              icon:
+                  const Icon(Icons.account_circle, color: Colors.red, size: 40),
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const AccountScreen()));
+              },
+            ),
+          ],
+        ),
+        body: pages[index]['page'] as Widget,
+        bottomNavigationBar: BottomNavigationBar(
+          onTap: context.read<HomeCubit>().set,
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: _buildIconWithDecoration(
+                  icon: Icons.location_on, selected: index == 0),
+              label: pages[0]['title'] as String,
+            ),
+            BottomNavigationBarItem(
+              icon: _buildIconWithDecoration(
+                  icon: Icons.commute, selected: index == 1),
+              label: pages[1]['title'] as String,
+            ),
+            BottomNavigationBarItem(
+              icon: _buildIconWithDecoration(
+                  icon: Icons.bookmark_outline_rounded, selected: index == 2),
+              label: pages[2]['title'] as String,
+            ),
+            BottomNavigationBarItem(
+              icon: _buildIconWithDecoration(
+                  icon: Icons.add_circle_outline_rounded, selected: index == 3),
+              label: pages[3]['title'] as String,
+            ),
+            BottomNavigationBarItem(
+              icon: _buildIconWithDecoration(
+                  icon: Icons.notifications, selected: index == 4),
+              label: pages[4]['title'] as String,
+            ),
+          ],
+          currentIndex: index,
+          selectedItemColor: Colors.amber,
+        ),
+      );
+    });
   }
 
   Widget _buildIconWithDecoration({required icon, required bool selected}) {
