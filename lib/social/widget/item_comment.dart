@@ -56,36 +56,7 @@ class _ItemCommentState extends State<ItemComment> {
   late final commentCubit = context.read<CommentCubit>();
   late final loadCommentCubit = context.read<LoadCommentCubit>();
   late final comment = commentCubit.comment!;
-  late final responseCom = AutoListView.get<Comment>(
-    shrinkWrap: true,
-    physics: const NeverScrollableScrollPhysics(),
-    cubit: loadCommentCubit,
-    itemBuilder: (context, comment) => ItemCommentResponse.get(
-        context: context, comment: comment, idPost: widget.idPost),
-    loadingBuilder: (context) => Container(
-      alignment: Alignment.center,
-      padding: const EdgeInsets.all(16),
-      child: const SizedBox(
-        height: 30,
-        width: 30,
-        child: CircularProgressIndicator(),
-      ),
-    ),
-    errorBuilder: (context, retry) => Container(
-      alignment: Alignment.center,
-      // padding: EdgeInsets.all(16),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Text("Une erreur est survenue"),
-          TextButton(
-            onPressed: retry,
-            child: const Text("Réessayer"),
-          )
-        ],
-      ),
-    ),
-  );
+  
   @override
   void dispose() {
     loadCommentCubit.close();
@@ -246,7 +217,36 @@ class _ItemCommentState extends State<ItemComment> {
             ],
           ),
           if (state is SeeCommentResponseState) const Divider(),
-          if (state is SeeCommentResponseState) responseCom,
+          if (state is SeeCommentResponseState)  AutoListView.get<Comment>(
+    shrinkWrap: true,
+    physics: const NeverScrollableScrollPhysics(),
+    cubit: loadCommentCubit,
+    itemBuilder: (context, comment) => ItemCommentResponse.get(
+        context: context, comment: comment, idPost: widget.idPost),
+    loadingBuilder: (context) => Container(
+      alignment: Alignment.center,
+      padding: const EdgeInsets.all(16),
+      child: const SizedBox(
+        height: 30,
+        width: 30,
+        child: CircularProgressIndicator(),
+      ),
+    ),
+    errorBuilder: (context, retry) => Container(
+      alignment: Alignment.center,
+      // padding: EdgeInsets.all(16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text("Une erreur est survenue"),
+          TextButton(
+            onPressed: retry,
+            child: const Text("Réessayer"),
+          )
+        ],
+      ),
+    ),
+  ),
           if (state is SeeCommentResponseState) const Divider(),
         ]);
       });
