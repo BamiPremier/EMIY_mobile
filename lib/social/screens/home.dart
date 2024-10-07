@@ -19,7 +19,8 @@ class SocialHomeScreen extends StatefulWidget {
   State<SocialHomeScreen> createState() => _SocialHomeScreenState();
 }
 
-class _SocialHomeScreenState extends State<SocialHomeScreen> {
+class _SocialHomeScreenState extends State<SocialHomeScreen>
+    with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,13 +58,13 @@ class _SocialHomeScreenState extends State<SocialHomeScreen> {
                   },
                   child: state is NewPostUploadingState
                       ? Container(
-                          key: const ValueKey<int>(1),
                           padding: const EdgeInsets.all(8.0),
                           height: 40,
                           width: double.infinity,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: AppTheme.primaryYellow,
                           ),
+                          alignment: Alignment.centerLeft,
                           child: Text(
                             'Publication en cours...',
                             style: Theme.of(context).textTheme.labelMedium,
@@ -71,11 +72,10 @@ class _SocialHomeScreenState extends State<SocialHomeScreen> {
                         )
                       : state is NewPostUploadedState
                           ? Container(
-                              key: const ValueKey<int>(2),
                               padding: const EdgeInsets.all(8.0),
                               height: 40,
                               width: double.infinity,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 color: AppTheme.primaryYellow,
                               ),
                               child: Row(
@@ -89,15 +89,13 @@ class _SocialHomeScreenState extends State<SocialHomeScreen> {
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      var newPostCubit =
-                                          state as NewPostUploadedState;
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              PostDetailsScreen.get(
+                                              PostDetailsScreen.fromNew(
                                             context: context,
-                                            post: newPostCubit.post!,
+                                            post: state.post,
                                           ),
                                         ),
                                       );

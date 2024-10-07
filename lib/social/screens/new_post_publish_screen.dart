@@ -9,6 +9,7 @@ import 'package:umai/common/utils/validators.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/social/cubit/new_post_cubit.dart';
 import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/dialogs.dart';
 
 class NewPostCompleteScreen extends StatefulWidget {
   const NewPostCompleteScreen({super.key, required this.file});
@@ -107,7 +108,7 @@ class _NewPostCompleteScreenState extends State<NewPostCompleteScreen>
                           ),
                         ),
                         const SizedBox(width: 16.0),
-                        Container(
+                        SizedBox(
                             width: 232,
                             child: Text(widget.file!.path,
                                 maxLines: 4,
@@ -125,27 +126,27 @@ class _NewPostCompleteScreenState extends State<NewPostCompleteScreen>
           ),
         ),
       ),
-      bottomNavigationBar: Container(
-        color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
-        child: SafeArea(
-          minimum: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              UmaiButton.primary(
-                onPressed: () {
-                  if (Validators.empty(_contentController.text) == null) {
-                    socialCubit.create(
-                      content: _contentController.text,
-                      file: widget.file,
-                    );
-                    Navigator.of(context).popUntil((r) => r.isFirst);
-                  }
-                },
-                text: "Publier",
-              ),
-            ],
-          ),
+      bottomNavigationBar: SafeArea(
+        minimum: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            UmaiButton.primary(
+              onPressed: () {
+                if (Validators.empty(_contentController.text) == null ||
+                    widget.file != null) {
+                  socialCubit.create(
+                    content: _contentController.text,
+                    file: widget.file,
+                  );
+                  Navigator.of(context).popUntil((r) => r.isFirst);
+                } else {
+                  showErrorToast("Veuillez ajouter une image ou un texte");
+                }
+              },
+              text: "Publier",
+            ),
+          ],
         ),
       ),
     );

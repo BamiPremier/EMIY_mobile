@@ -1,17 +1,11 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:potatoes/libs.dart';
-import 'package:umai/auth/bloc/auth_cubit.dart';
-import 'package:umai/common/bloc/person_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
-import 'package:umai/common/widgets/image_profil.dart';
+import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/social/cubit/post_cubit.dart';
 import 'package:umai/social/model/post.dart';
 import 'package:umai/social/screens/post_details.dart';
 import 'package:umai/social/widget/button_post.dart';
-import 'package:umai/utils/assets.dart';
-import 'package:umai/utils/text_utils.dart';
 import 'package:umai/utils/themes.dart';
 import 'package:readmore/readmore.dart';
 import 'package:umai/utils/time_elapsed.dart';
@@ -59,8 +53,8 @@ class _PostItemState extends State<PostItem> {
                   children: [
                     ListTile(
                       contentPadding: EdgeInsets.zero,
-                      leading: ImageProfil(
-                          image: post.user.image ?? '', height: 48, width: 48),
+                      leading: ProfilePicture(
+                          image: post.user.image, height: 48, width: 48),
                       title: Text(
                         post.user.username,
                         style: Theme.of(context).textTheme.bodyLarge,
@@ -106,19 +100,23 @@ class _PostItemState extends State<PostItem> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Container(
-                      padding: const EdgeInsets.only(right: 16.0),
-                      child: ReadMoreText(
-                        post.content,
-                        trimMode: _trimMode,
-                        trimLines: 3,
-                        isCollapsed: isCollapsed,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                        colorClickableText: Theme.of(context).primaryColor,
-                        trimCollapsedText: '...Read more',
-                        trimExpandedText: ' Less',
-                      ),
-                    ),
+                    Padding(
+                        padding: const EdgeInsets.only(right: 16.0),
+                        child: AnimatedSize(
+                          duration: const Duration(milliseconds: 300),
+                          alignment: Alignment.topCenter,
+                          curve: Curves.easeInOut,
+                          child: ReadMoreText(
+                            post.content,
+                            trimMode: _trimMode,
+                            trimLines: 3,
+                            isCollapsed: isCollapsed,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                            colorClickableText: Theme.of(context).primaryColor,
+                            trimCollapsedText: '...Lire plus',
+                            trimExpandedText: ' Moins',
+                          ),
+                        )),
                   ],
                 ),
               ),

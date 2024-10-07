@@ -2,8 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/models/anime.dart';
-import 'package:umai/animes/screens/anime.dart';
-import 'package:umai/animes/services/anime_service.dart';
+import 'package:umai/animes/screens/anime.dart'; 
 import 'package:umai/common/bloc/anime_manip_cubit.dart';
 import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/themes.dart';
@@ -198,8 +197,10 @@ class AnimeItem extends StatelessWidget {
 
   void onEventReceived(BuildContext context, AnimeManipState state) async {
     if (state is WatchListAddSuccesState) {
+      Navigator.of(context).pop();
       showSuccessToast("Anime ajouté à votre watchlist");
     } else if (state is AnimeViewedAddSuccesState) {
+      Navigator.of(context).pop();
       showSuccessToast("Anime ajouté à votre liste de vue");
     } else if (state is AnimeManipErrorState) {
       showErrorToast(state.error);

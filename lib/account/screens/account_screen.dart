@@ -1,6 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:potatoes/common/widgets/loaders.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/account/screens/edit_profile_screen.dart';
@@ -13,8 +11,7 @@ import 'package:umai/auth/screens/onboarding_screen.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/widgets/action_widget.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
-import 'package:umai/common/widgets/image_profil.dart';
-import 'package:umai/utils/assets.dart';
+import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/utils/dialogs.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -53,7 +50,6 @@ class _AccountScreenState extends State<AccountScreen>
             actions: [
               IconButton(
                   padding: EdgeInsets.zero,
-                 
                   onPressed: onActionsPressed,
                   icon: const Icon(Icons.more_vert))
             ],
@@ -67,10 +63,8 @@ class _AccountScreenState extends State<AccountScreen>
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ImageProfil(
-                        image: userCubit.user.image ?? '',
-                        height: 80,
-                        width: 80),
+                    ProfilePicture(
+                        image: userCubit.user.image, height: 80, width: 80),
                     const SizedBox(width: 16.0),
                     Expanded(
                       child: Column(
@@ -116,21 +110,25 @@ class _AccountScreenState extends State<AccountScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        const Icon(Icons.account_box),
+                        const Icon(Icons.people_outline),
                         const SizedBox(width: 16),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              '${userCubit.user.followersCount}',
-                              style: Theme.of(context).textTheme.labelLarge,
-                            ),
-                            Text(
-                              "m'ont ajouté",
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                          ],
+                        SizedBox(
+                          width: 76,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                '${userCubit.user.followersCount}',
+                                style: Theme.of(context).textTheme.labelLarge,
+                              ),
+                              Text(
+                                "M'ont ajouté",
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                            ],
+                          ),
                         ),
                         const SizedBox(width: 16),
                         Column(
@@ -164,21 +162,23 @@ class _AccountScreenState extends State<AccountScreen>
                   children: [
                     Row(
                       children: [
-                        const Icon(Icons.account_box),
+                        const Icon(Icons.people_outline),
                         const SizedBox(width: 16),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              '${userCubit.user.animesViewedCount}',
-                              style: Theme.of(context).textTheme.labelLarge,
-                            ),
-                            Text(
-                              "vus",
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                          ],
-                        ),
+                        SizedBox(
+                            width: 76,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  '${userCubit.user.animesViewedCount}',
+                                  style: Theme.of(context).textTheme.labelLarge,
+                                ),
+                                Text(
+                                  "Vus",
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                              ],
+                            )),
                         const SizedBox(width: 24),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.center,

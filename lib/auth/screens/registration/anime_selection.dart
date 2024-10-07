@@ -69,7 +69,6 @@ class _RegistrationAnimeSelectionState
         ],
       ),
       bottomNavigationBar: Container(
-        color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
         child: SafeArea(
           minimum: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
           child: Column(

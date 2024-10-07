@@ -1,32 +1,15 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
-import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
-import 'package:potatoes/potatoes.dart';
-import 'package:umai/auth/bloc/auth_cubit.dart';
-import 'package:umai/common/bloc/person_cubit.dart';
-import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/utils/validators.dart';
-import 'package:umai/common/widgets/image_profil.dart';
-import 'package:umai/social/cubit/comment_cubit.dart';
-import 'package:umai/social/cubit/load_comment_cubit.dart';
 import 'package:umai/social/cubit/post_cubit.dart';
 import 'package:umai/social/cubit/y_comment_cubit.dart';
-import 'package:umai/social/model/comment.dart';
-import 'package:umai/social/model/post.dart';
-import 'package:umai/social/screens/post_details.dart';
-import 'package:umai/social/services/social_service.dart';
-import 'package:umai/utils/assets.dart';
-import 'package:umai/utils/text_utils.dart';
 import 'package:umai/utils/themes.dart';
 
 class CommentInput extends StatefulWidget {
   static Widget from({required PostCubit cubit}) {
     return MultiBlocProvider(providers: [
       BlocProvider.value(value: cubit),
-    ], child: CommentInput._());
+    ], child: const CommentInput._());
   }
 
   const CommentInput._();
@@ -59,15 +42,10 @@ class _CommentInputState extends State<CommentInput> {
             builder: (context, state) => Container(
                   // padding: EdgeInsets.only(
                   //     bottom: MediaQuery.of(context).viewInsets.bottom),
-                  color: Theme.of(context)
-                      .bottomNavigationBarTheme
-                      .backgroundColor,
+                  color: Theme.of(context).colorScheme.surface,
 
                   child: Container(
-                    margin: EdgeInsets.all(16),
-                    color: Theme.of(context)
-                        .bottomNavigationBarTheme
-                        .backgroundColor,
+                    margin: const EdgeInsets.all(16),
                     child: Row(
                       children: [
                         Expanded(
@@ -97,7 +75,7 @@ class _CommentInputState extends State<CommentInput> {
                               onTapOutside: (_) =>
                                   FocusScope.of(context).unfocus()),
                         ),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         IconButton(
                           padding: EdgeInsets.zero,
                           icon: CircleAvatar(
@@ -112,7 +90,7 @@ class _CommentInputState extends State<CommentInput> {
                                         color: AppTheme.white,
                                       ),
                                     )
-                                  : Icon(Icons.arrow_upward)),
+                                  : const Icon(Icons.arrow_upward)),
                           onPressed: () {
                             if (Validators.empty(_commentController.text) ==
                                 null) {

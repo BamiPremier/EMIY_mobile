@@ -12,8 +12,7 @@ class RegistrationPeople extends StatefulWidget {
   const RegistrationPeople({super.key});
 
   @override
-  State<RegistrationPeople> createState() =>
-      _RegistrationPeopleState();
+  State<RegistrationPeople> createState() => _RegistrationPeopleState();
 }
 
 class _RegistrationPeopleState extends State<RegistrationPeople> {
@@ -50,24 +49,21 @@ class _RegistrationPeopleState extends State<RegistrationPeople> {
                       )))
         ]),
       ),
-      bottomNavigationBar: Container(
-        color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
-        child: SafeArea(
-          minimum: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              UmaiButton.primary(
-                onPressed: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (context) => const HomeScreen()),
-                      (route) => false);
-                },
-                text: "Continuer",
-              ),
-            ],
-          ),
+      bottomNavigationBar: SafeArea(
+        minimum: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            UmaiButton.primary(
+              onPressed: () {
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                        builder: (context) => const HomeScreen()),
+                    (route) => false);
+              },
+              text: "Continuer",
+            ),
+          ],
         ),
       ),
     );

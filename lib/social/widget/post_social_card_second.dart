@@ -92,7 +92,7 @@ class PostSocialCardSecond extends StatelessWidget {
             ),
           ),
           post.image == null || post.image == '' || post.image!.isEmpty
-              ? SizedBox()
+              ? const SizedBox()
               : Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Image.network(

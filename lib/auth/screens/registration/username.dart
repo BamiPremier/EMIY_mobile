@@ -12,8 +12,7 @@ class RegistrationUsername extends StatefulWidget {
   const RegistrationUsername({super.key});
 
   @override
-  State<RegistrationUsername> createState() =>
-      _RegistrationUsernameState();
+  State<RegistrationUsername> createState() => _RegistrationUsernameState();
 }
 
 class _RegistrationUsernameState extends State<RegistrationUsername>
@@ -62,7 +61,8 @@ class _RegistrationUsernameState extends State<RegistrationUsername>
                             TextFormField(
                               controller: authIdleState.userNameController,
                               decoration: const InputDecoration(
-                                helperText: "Il sera visible lors de tes différentes intéractions",
+                                helperText:
+                                    "Il sera visible lors de tes différentes intéractions",
                                 hintText: "Ton nom d'utilisateur",
                               ),
                               keyboardType: TextInputType.text,
@@ -76,38 +76,38 @@ class _RegistrationUsernameState extends State<RegistrationUsername>
                             ),
                             const SizedBox(height: 10),
                             TextFormField(
-                                controller: authIdleState.userTagController,
-                                decoration: const InputDecoration(
-                                  helperText: "Pour que tes amis te retrouvent facilement",
+                              controller: authIdleState.userTagController,
+                              decoration: const InputDecoration(
+                                  helperText:
+                                      "Pour que tes amis te retrouvent facilement",
                                   hintText: "Ton identifiant unique",
-                                  prefixIcon: Icon(Icons.alternate_email)
-                                ),
-                                keyboardType: TextInputType.text,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.allow(
-                                      RegExp(r'[a-z0-9\-_.]')),
-                                  LengthLimitingTextInputFormatter(30),
-                                ],
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'L\'identifiant ne peut pas être vide';
-                                  }
+                                  prefixIcon: Icon(Icons.alternate_email)),
+                              keyboardType: TextInputType.text,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'[a-z0-9\-_.]')),
+                                LengthLimitingTextInputFormatter(30),
+                              ],
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'L\'identifiant ne peut pas être vide';
+                                }
 
-                                  final RegExp userTagRegex =
-                                      RegExp(r'^[a-z0-9\-_.]{3,30}$');
+                                final RegExp userTagRegex =
+                                    RegExp(r'^[a-z0-9\-_.]{3,30}$');
 
-                                  if (!userTagRegex.hasMatch(value)) {
-                                    return 'L\'identifiant doit contenir entre 3 et 30 caractères alphanumériques, tirets, points ou underscores';
-                                  }
+                                if (!userTagRegex.hasMatch(value)) {
+                                  return 'L\'identifiant doit contenir entre 3 et 30 caractères alphanumériques, tirets, points ou underscores';
+                                }
 
-                                  return null;
-                                },
-                                textCapitalization: TextCapitalization.none,
-                                onChanged: (value) {},
-                                textInputAction: TextInputAction.done,
-                                onEditingComplete: () => FocusScope.of(context)
-                                    .requestFocus(userTagNode),
-                                ),
+                                return null;
+                              },
+                              textCapitalization: TextCapitalization.none,
+                              onChanged: (value) {},
+                              textInputAction: TextInputAction.done,
+                              onEditingComplete: () => FocusScope.of(context)
+                                  .requestFocus(userTagNode),
+                            ),
                           ],
                         ),
                       ),
@@ -116,27 +116,24 @@ class _RegistrationUsernameState extends State<RegistrationUsername>
                 ),
               ),
             ),
-            bottomNavigationBar: Container(
-              color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
-              child: SafeArea(
-                minimum: const EdgeInsets.symmetric(
-                    horizontal: 32.0, vertical: 16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    UmaiButton.primary(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          authCubit.completeUserName(
-                            username: authIdleState.userNameController.text,
-                            userTag: authIdleState.userTagController.text,
-                          );
-                        }
-                      },
-                      text: "Continuer",
-                    ),
-                  ],
-                ),
+            bottomNavigationBar: SafeArea(
+              minimum: const EdgeInsets.symmetric(
+                  horizontal: 32.0, vertical: 16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  UmaiButton.primary(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        authCubit.completeUserName(
+                          username: authIdleState.userNameController.text,
+                          userTag: authIdleState.userTagController.text,
+                        );
+                      }
+                    },
+                    text: "Continuer",
+                  ),
+                ],
               ),
             ),
           );

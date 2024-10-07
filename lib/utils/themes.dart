@@ -8,6 +8,8 @@ abstract class AppTheme {
   static const Color primaryGreen = Color.fromARGB(255, 77, 122, 77);
   static const Color primaryBlack = Color(0xFF090909);
   static const Color primaryRed = Color(0xFFE30613);
+  static const Color tertiaryContainer = Color(0xFFFFDAD5);
+
   static const Color mainText = primaryBlack;
   static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);
@@ -98,6 +100,8 @@ abstract class AppTheme {
       primary: primaryYellow,
       secondary: primaryYellow,
       tertiary: primaryRed,
+      tertiaryContainer: tertiaryContainer,
+      
       brightness: brightness,
     );
   }
@@ -111,7 +115,6 @@ abstract class AppTheme {
       useMaterial3: true,
       colorScheme: colorScheme.copyWith(surface: white),
       primaryColor: primaryYellow,
-      
       disabledColor: disabledGrey,
       appBarTheme: theme.appBarTheme.copyWith(
         elevation: 0,
@@ -124,7 +127,7 @@ abstract class AppTheme {
             statusBarIconBrightness: Brightness.dark),
       ),
       bottomNavigationBarTheme: theme.bottomNavigationBarTheme.copyWith(
-        backgroundColor: white,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         selectedItemColor: black,
         unselectedItemColor: Colors.grey,
         type: BottomNavigationBarType.fixed,

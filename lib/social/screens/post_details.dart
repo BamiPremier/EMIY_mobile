@@ -1,26 +1,16 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
-import 'package:potatoes/potatoes.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
-import 'package:umai/common/utils/validators.dart';
-import 'package:umai/common/widgets/image_profil.dart';
-import 'package:umai/social/cubit/comment_cubit.dart';
+import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/social/cubit/load_comment_cubit.dart';
 import 'package:umai/social/cubit/post_cubit.dart';
 import 'package:umai/social/cubit/y_comment_cubit.dart';
 import 'package:umai/social/model/comment.dart';
 import 'package:umai/social/model/post.dart';
-import 'package:umai/social/services/social_service.dart';
 import 'package:umai/social/widget/button_post.dart';
 import 'package:umai/social/widget/comment_input.dart';
 import 'package:umai/social/widget/item_comment.dart';
-import 'package:umai/social/widget/post_social_card_second.dart';
-import 'package:umai/utils/assets.dart';
-import 'package:umai/utils/text_utils.dart';
 import 'package:umai/utils/themes.dart';
 import 'package:readmore/readmore.dart';
 import 'package:umai/utils/time_elapsed.dart';
@@ -34,6 +24,18 @@ class PostDetailsScreen extends StatefulWidget {
         BlocProvider(
             create: (context) =>
                 LoadCommentCubit(context.read(), cubit.post.id, '')),
+      ],
+      child: const PostDetailsScreen._(),
+    );
+  }
+
+  static Widget fromNew({required BuildContext context, required Post post}) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => YCommentCubit()),
+        BlocProvider(create: (context) => PostCubit(context.read(), post)),
+        BlocProvider(
+            create: (context) => LoadCommentCubit(context.read(), post.id, '')),
       ],
       child: const PostDetailsScreen._(),
     );
@@ -63,31 +65,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
   final _trimMode = TrimMode.Line;
   final isCollapsed = ValueNotifier<bool>(true);
   late final postCubit = context.read<PostCubit>();
-  late final commentPost = AutoListView.get<Comment>(
-      shrinkWrap: true,
-      autoManage: false,
-      physics: const NeverScrollableScrollPhysics(),
-      cubit: loadCommentCubit,
-      itemBuilder: (context, comment) => ItemComment.get(
-            idPost: postCubit.post.id,
-            context: context,
-            comment: comment,
-          ),
-      emptyBuilder: (context) => const Center(
-            child: Text("Aucun commentaire"),
-          ),
-      errorBuilder: (context, retry) => Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text("Une erreur est survenue"),
-              TextButton(
-                onPressed: retry,
-                child: const Text("Réessayer"),
-              )
-            ],
-          ));
+
   @override
   void dispose() {
     loadCommentCubit.close();
@@ -129,8 +107,8 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                           children: [
                             ListTile(
                               contentPadding: EdgeInsets.zero,
-                              leading: ImageProfil(
-                                image: post.user.image ?? '',
+                              leading: ProfilePicture(
+                                image: post.user.image,
                                 height: 48.0,
                                 width: 48.0,
                               ),
@@ -179,19 +157,24 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                               ),
                             ),
                             const SizedBox(height: 8),
-                            Container(
+                            Padding(
                               padding: const EdgeInsets.only(right: 16.0),
-                              child: ReadMoreText(
-                                post.content,
-                                trimMode: _trimMode,
-                                trimLines: 3,
-                                trimLength: 240,
-                                isCollapsed: isCollapsed,
-                                style: Theme.of(context).textTheme.bodyMedium,
-                                colorClickableText:
-                                    Theme.of(context).primaryColor,
-                                trimCollapsedText: '...Read more',
-                                trimExpandedText: ' Less',
+                              child: AnimatedSize(
+                                duration: const Duration(milliseconds: 300),
+                                alignment: Alignment.topCenter,
+                                curve: Curves.easeInOut,
+                                child: ReadMoreText(
+                                  post.content,
+                                  trimMode: _trimMode,
+                                  trimLines: 3,
+                                  trimLength: 240,
+                                  isCollapsed: isCollapsed,
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  colorClickableText:
+                                      Theme.of(context).primaryColor,
+                                  trimCollapsedText: '...Lire plus',
+                                  trimExpandedText: ' Moins',
+                                ),
                               ),
                             ),
                           ],
@@ -279,7 +262,34 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                           actionFocus: () {
                             context.read<YCommentCubit>().unselectComment();
                           }),
-                      commentPost
+                      BlocBuilder<LoadCommentCubit, LoadCommentState>(
+                          builder: (ctx, state) => AutoListView.get<Comment>(
+                              shrinkWrap: true,
+                              autoManage: false,
+                              physics: const NeverScrollableScrollPhysics(),
+                              cubit: loadCommentCubit,
+                              itemBuilder: (context, comment) =>
+                                  ItemComment.get(
+                                    idPost: postCubit.post.id,
+                                    context: context,
+                                    comment: comment,
+                                  ),
+                              emptyBuilder: (context) => const Center(
+                                    child: Text("Aucun commentaire"),
+                                  ),
+                              errorBuilder: (context, retry) => Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Text("Une erreur est survenue"),
+                                      TextButton(
+                                        onPressed: retry,
+                                        child: const Text("Réessayer"),
+                                      )
+                                    ],
+                                  )))
                     ],
                   ),
                 ),

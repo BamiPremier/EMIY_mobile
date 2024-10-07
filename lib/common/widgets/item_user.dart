@@ -24,7 +24,7 @@ class UserItem extends StatelessWidget {
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
           leading: CachedNetworkImage(
-            imageUrl: followCubit.user!.imageFull ?? '',
+            imageUrl: followCubit.user.imageFull ?? '',
             imageBuilder: (context, imageProvider) => CircleAvatar(
               radius: 28,
               backgroundImage: imageProvider,
@@ -39,16 +39,16 @@ class UserItem extends StatelessWidget {
             ),
           ),
           title: Text(
-            followCubit.user!.username,
+            followCubit.user.username,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
           subtitle: Text(
-            '${followCubit.user!.animesViewedCount} animes • ${followCubit.user!.followingCount} suivent',
+            '${followCubit.user.animesViewedCount} animes • ${followCubit.user.followingCount} suivent',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
-          trailing: !followCubit.user!.followed
+          trailing: !followCubit.user.followed
               ? ElevatedButton(
                   onPressed: () => followCubit.followUser(),
                   style: FilledButton.styleFrom(

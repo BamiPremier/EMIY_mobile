@@ -2,14 +2,12 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:camerawesome/camerawesome_plugin.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter/material.dart'; 
 import 'package:image_picker/image_picker.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/social/cubit/new_post_cubit.dart';
 import 'package:umai/social/screens/new_post_publish_screen.dart';
-import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/themes.dart';
 import 'package:photo_manager/photo_manager.dart';
 

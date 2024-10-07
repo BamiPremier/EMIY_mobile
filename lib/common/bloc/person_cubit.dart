@@ -1,5 +1,4 @@
-import 'package:potatoes/libs.dart';
-import 'package:umai/auth/services/auth_service.dart';
+import 'package:potatoes/libs.dart'; 
 import 'package:umai/common/models/user.dart';
 
 import 'package:potatoes/potatoes.dart';

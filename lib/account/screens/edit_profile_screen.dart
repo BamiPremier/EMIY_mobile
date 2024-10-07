@@ -1,15 +1,13 @@
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/services.dart'; 
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/account/screens/param/edit_profile_picture_screen.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/utils/validators.dart';
 import 'package:umai/common/widgets/buttons.dart';
-import 'package:umai/common/widgets/image_profil.dart';
-import 'package:umai/utils/assets.dart';
+import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/utils/dialogs.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -65,8 +63,8 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                               MaterialPageRoute(
                                   builder: (context) =>
                                       const EditProfilePictureScreen())),
-                          child: ImageProfil(
-                            image: userCubit.user.imageFull ?? '',
+                          child: ProfilePicture(
+                            image: userCubit.user.imageFull  ,
                             height: 56,
                             width: 56,
                           ),
@@ -125,7 +123,6 @@ class _EditProfileScreenState extends State<EditProfileScreen>
           ),
         ),
         bottomNavigationBar: Container(
-          color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
           child: SafeArea(
             minimum:
                 const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),

@@ -17,7 +17,6 @@ class EditProfilePictureScreen extends StatelessWidget {
       data: AppTheme.fullBlackTheme(context),
       child: Scaffold(
         appBar: AppBar(
-          
           title: const Text('Photo de profil'),
           centerTitle: true,
           actions: [
@@ -90,7 +89,7 @@ class EditProfilePictureScreen extends StatelessWidget {
 
       Navigator.of(context).push(
         MaterialPageRoute(
-            builder: (context) => ChangePictureScreen(image: image!)),
+            builder: (context) => ChangePictureScreen(image: image)),
       );
     });
   }

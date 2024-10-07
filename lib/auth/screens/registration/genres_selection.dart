@@ -74,20 +74,17 @@ class _RegistrationGenresSelectionState
       bottomNavigationBar: BlocProvider.value(
         value: genresCubit,
         child: BlocBuilder<GenresListCubit, GenreState>(builder: (context, _) {
-          return Container(
-            color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
-            child: SafeArea(
-              minimum:
-                  const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  UmaiButton.primary(
-                    onPressed: nextButtonAction,
-                    text: "Continuer",
-                  ),
-                ],
-              ),
+          return SafeArea(
+            minimum:
+                const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                UmaiButton.primary(
+                  onPressed: nextButtonAction,
+                  text: "Continuer",
+                ),
+              ],
             ),
           );
         }),

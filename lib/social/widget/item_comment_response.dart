@@ -1,25 +1,14 @@
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
+import 'package:flutter/services.dart'; 
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
-import 'package:potatoes/libs.dart';
-import 'package:potatoes/potatoes.dart';
-import 'package:umai/auth/bloc/auth_cubit.dart';
-import 'package:umai/common/bloc/person_cubit.dart';
+import 'package:potatoes/libs.dart'; 
 import 'package:umai/common/bloc/user_cubit.dart';
-import 'package:umai/common/widgets/image_profil.dart';
+import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/social/cubit/comment_cubit.dart';
-import 'package:umai/social/cubit/load_comment_cubit.dart';
-import 'package:umai/social/cubit/post_cubit.dart';
+import 'package:umai/social/cubit/load_comment_cubit.dart'; 
 import 'package:umai/social/cubit/y_comment_cubit.dart';
-import 'package:umai/social/model/comment.dart';
-import 'package:umai/social/model/post.dart';
-import 'package:umai/social/screens/post_details.dart';
-import 'package:umai/social/services/social_service.dart';
-import 'package:umai/utils/assets.dart';
-import 'package:umai/utils/text_utils.dart';
+import 'package:umai/social/model/comment.dart'; 
 import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
@@ -34,9 +23,9 @@ class ItemCommentResponse extends StatefulWidget {
       providers: [
         BlocProvider(
             create: (context) => CommentCubit(context.read(), comment)),
-        BlocProvider(
-            create: (context) =>
-                LoadCommentCubit(context.read(), idPost, comment.id)),
+        // BlocProvider(
+        //     create: (context) =>
+        //         LoadCommentCubit(context.read(), idPost, comment.id)),
       ],
       child: ItemCommentResponse._(idPost: idPost),
     );
@@ -51,12 +40,13 @@ class ItemCommentResponse extends StatefulWidget {
 
 class _ItemCommentResponseState extends State<ItemCommentResponse> {
   late final commentCubit = context.read<CommentCubit>();
-  late final loadCommentCubit = context.read<LoadCommentCubit>();
+  late final loadCommentCubit =
+      LoadCommentCubit(context.read(), widget.idPost, comment.id);
   late final comment = commentCubit.comment!;
 
   @override
   void dispose() {
-    loadCommentCubit.close();
+    // loadCommentCubit.close();
     super.dispose();
   }
 
@@ -78,8 +68,8 @@ class _ItemCommentResponseState extends State<ItemCommentResponse> {
                       color: Color(0xFF5F6368),
                       size: 24,
                     ),
-                    ImageProfil(
-                      image: comment.user.image ?? '',
+                    ProfilePicture(
+                      image: comment.user.image,
                       height: 32,
                       width: 32,
                     )
@@ -216,7 +206,7 @@ class _ItemCommentResponseState extends State<ItemCommentResponse> {
                         ),
                         child: Text((state is SeeCommentResponseState)
                             ? 'voir moins'
-                            : 'voir ${comment.commentResponsesCount} réponses'),
+                            : 'voir ${comment.commentResponsesCount} réponse${comment.commentResponsesCount > 1 ? 's' : ''}'),
                       ),
                   ],
                 ),

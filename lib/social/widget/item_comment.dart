@@ -1,26 +1,15 @@
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
+import 'package:flutter/services.dart'; 
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
-import 'package:potatoes/libs.dart';
-import 'package:potatoes/potatoes.dart';
-import 'package:umai/auth/bloc/auth_cubit.dart';
-import 'package:umai/common/bloc/person_cubit.dart';
+import 'package:potatoes/libs.dart'; 
 import 'package:umai/common/bloc/user_cubit.dart';
-import 'package:umai/common/widgets/image_profil.dart';
+import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/social/cubit/comment_cubit.dart';
-import 'package:umai/social/cubit/load_comment_cubit.dart';
-import 'package:umai/social/cubit/post_cubit.dart';
+import 'package:umai/social/cubit/load_comment_cubit.dart'; 
 import 'package:umai/social/cubit/y_comment_cubit.dart';
-import 'package:umai/social/model/comment.dart';
-import 'package:umai/social/model/post.dart';
-import 'package:umai/social/screens/post_details.dart';
-import 'package:umai/social/services/social_service.dart';
+import 'package:umai/social/model/comment.dart'; 
 import 'package:umai/social/widget/item_comment_response.dart';
-import 'package:umai/utils/assets.dart';
-import 'package:umai/utils/text_utils.dart';
 import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
@@ -40,9 +29,9 @@ class ItemComment extends StatefulWidget {
       providers: [
         BlocProvider(
             create: (context) => CommentCubit(context.read(), comment)),
-        BlocProvider(
-            create: (context) =>
-                LoadCommentCubit(context.read(), idPost, comment.id)),
+        // BlocProvider(
+        //     create: (context) =>
+        //         LoadCommentCubit(context.read(), idPost, comment.id)),
       ],
       child: ItemComment._(idPost: idPost),
     );
@@ -54,12 +43,13 @@ class ItemComment extends StatefulWidget {
 
 class _ItemCommentState extends State<ItemComment> {
   late final commentCubit = context.read<CommentCubit>();
-  late final loadCommentCubit = context.read<LoadCommentCubit>();
+  late final loadCommentCubit =
+      LoadCommentCubit(context.read(), widget.idPost, comment.id);
   late final comment = commentCubit.comment!;
-  
+
   @override
   void dispose() {
-    loadCommentCubit.close();
+    // loadCommentCubit.close();
 
     super.dispose();
   }
@@ -75,8 +65,8 @@ class _ItemCommentState extends State<ItemComment> {
             children: [
               ListTile(
                 contentPadding: const EdgeInsets.only(top: 8.0, left: 16.0),
-                leading: ImageProfil(
-                  image: comment.user.image ?? '',
+                leading: ProfilePicture(
+                  image: comment.user.image,
                   height: 40,
                   width: 40,
                 ),
@@ -209,7 +199,7 @@ class _ItemCommentState extends State<ItemComment> {
                         ),
                         child: Text((state is SeeCommentResponseState)
                             ? 'voir moins'
-                            : 'voir ${comment.commentResponsesCount} réponses'),
+                            : 'voir ${comment.commentResponsesCount} réponse${comment.commentResponsesCount > 1 ? 's' : ''}'),
                       ),
                   ],
                 ),
@@ -217,36 +207,37 @@ class _ItemCommentState extends State<ItemComment> {
             ],
           ),
           if (state is SeeCommentResponseState) const Divider(),
-          if (state is SeeCommentResponseState)  AutoListView.get<Comment>(
-    shrinkWrap: true,
-    physics: const NeverScrollableScrollPhysics(),
-    cubit: loadCommentCubit,
-    itemBuilder: (context, comment) => ItemCommentResponse.get(
-        context: context, comment: comment, idPost: widget.idPost),
-    loadingBuilder: (context) => Container(
-      alignment: Alignment.center,
-      padding: const EdgeInsets.all(16),
-      child: const SizedBox(
-        height: 30,
-        width: 30,
-        child: CircularProgressIndicator(),
-      ),
-    ),
-    errorBuilder: (context, retry) => Container(
-      alignment: Alignment.center,
-      // padding: EdgeInsets.all(16),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Text("Une erreur est survenue"),
-          TextButton(
-            onPressed: retry,
-            child: const Text("Réessayer"),
-          )
-        ],
-      ),
-    ),
-  ),
+          if (state is SeeCommentResponseState)
+            AutoListView.get<Comment>(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              cubit: loadCommentCubit,
+              itemBuilder: (context, comment) => ItemCommentResponse.get(
+                  context: context, comment: comment, idPost: widget.idPost),
+              loadingBuilder: (context) => Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(16),
+                child: const SizedBox(
+                  height: 30,
+                  width: 30,
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+              errorBuilder: (context, retry) => Container(
+                alignment: Alignment.center,
+                // padding: EdgeInsets.all(16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text("Une erreur est survenue"),
+                    TextButton(
+                      onPressed: retry,
+                      child: const Text("Réessayer"),
+                    )
+                  ],
+                ),
+              ),
+            ),
           if (state is SeeCommentResponseState) const Divider(),
         ]);
       });

@@ -69,7 +69,7 @@ class SocialService extends ApiService {
     );
   }
 
-  Future<Post> deletePost({required String idPost}) {
+  Future deletePost({required String idPost}) {
     return compute(
       dio.delete(
         _deletePost.replaceAll(':idPost', idPost),
