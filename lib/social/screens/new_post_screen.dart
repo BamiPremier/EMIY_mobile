@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:camerawesome/camerawesome_plugin.dart';
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
@@ -207,34 +207,32 @@ class _GaleryUiState extends State<_GaleryUi> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _fetchLastImage();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      
+      await _fetchLastImage();
     });
     super.initState();
   }
 
+
   Future<void> _fetchLastImage() async {
-    final PermissionState result = await PhotoManager.requestPermissionExtend();
+    final List<AssetPathEntity> paths = await PhotoManager.getAssetPathList(
+      onlyAll: true,
+      type: RequestType.image,
+    );
 
-    if (result.isAuth) {
-      final List<AssetPathEntity> paths = await PhotoManager.getAssetPathList(
-        onlyAll: true,
-        type: RequestType.image,
-      );
+    if (paths.isNotEmpty) {
+      final AssetPathEntity mainAlbum = paths.first;
 
-      if (paths.isNotEmpty) {
-        final AssetPathEntity mainAlbum = paths.first;
+      final List<AssetEntity> images =
+          await mainAlbum.getAssetListPaged(page: 0, size: 1);
 
-        final List<AssetEntity> images =
-            await mainAlbum.getAssetListPaged(page: 0, size: 1);
-
-        if (images.isNotEmpty) {
-          setState(() {
-            lastImage = images.first;
-          });
-        }
+      if (images.isNotEmpty) {
+        setState(() {
+          lastImage = images.first;
+        });
       }
-    } else {}
+    }
   }
 
   @override
