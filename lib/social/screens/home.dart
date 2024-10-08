@@ -30,7 +30,7 @@ class _SocialHomeScreenState extends State<SocialHomeScreen>
     final PermissionState value = await PhotoManager.requestPermissionExtend();
     if (value == PermissionState.denied) {
       print('Permission refusée');
-      requestPermission();
+    await  requestPermission();
       return;
     } else {
       print('Permission acceptée');
