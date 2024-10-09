@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:photo_manager/photo_manager.dart';
 import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
@@ -19,28 +17,6 @@ class SocialHomeScreen extends StatefulWidget {
 
 class _SocialHomeScreenState extends State<SocialHomeScreen>
     with TickerProviderStateMixin {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  Future<bool> requestPermission() async {
-    final status = await Permission.camera.request();
-    if (status.isGranted) {
-      final PermissionState photoManagerStatus =
-          await PhotoManager.requestPermissionExtend();
-      if (photoManagerStatus == PermissionState.denied) {
-        print('Permission refusée');
-        return false;
-      } else {
-        print('Permission acceptée');
-        return true;
-      }
-    } else {
-      print('Permission photos refusée');
-      return false;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,40 +26,27 @@ class _SocialHomeScreenState extends State<SocialHomeScreen>
         children: [
           const NewPostBanner(),
           Expanded(
-              child: AutoListView.get<Post>(
-                  padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom),
-                  cubit: AutoListCubit(
-                      provider: context.read<SocialService>().getFeed),
-                  itemBuilder: (context, post) =>
-                      PostItem.get(context: context, post: post),
-                  errorBuilder: (context, retry) => Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Text("An error occured"),
-                          TextButton(
-                            onPressed: retry,
-                            child: const Text("Retry"),
-                          )
-                        ],
-                      ))),
+            child: AutoListView.get<Post>(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+              cubit: AutoListCubit(
+                provider: context.read<SocialService>().getFeed),
+              itemBuilder: (context, post) =>
+                PostItem.get(context: context, post: post),
+              errorBuilder: (context, retry) => Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text("An error occured"),
+                  TextButton(
+                    onPressed: retry,
+                    child: const Text("Retry"),
+                  )
+                ],
+              ))),
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          bool hasPermission = await requestPermission();
-          if (hasPermission) {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const NewPostScreen()),
-            );
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                  content: Text(
-                      "Vous devez accorder la permission d'accès aux photos pour continuer.")),
-            );
-          }
-        },
+        onPressed: () => NewPostScreen.show(context: context),
         child: const Icon(Icons.add),
       ),
     );

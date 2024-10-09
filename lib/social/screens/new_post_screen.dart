@@ -1,18 +1,50 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:camerawesome/camerawesome_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:photo_manager/photo_manager.dart';
+import 'package:photo_manager_image_provider/photo_manager_image_provider.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/social/cubit/new_post_cubit.dart';
 import 'package:umai/social/screens/new_post_publish_screen.dart';
 import 'package:umai/utils/themes.dart';
-import 'package:photo_manager/photo_manager.dart';
 
 class NewPostScreen extends StatefulWidget {
-  const NewPostScreen({super.key});
+  static Future<bool> _requestPermissions() async {
+    final status = await Permission.camera.request();
+    switch (status) {
+      case PermissionStatus.denied:
+      case PermissionStatus.permanentlyDenied:
+      case PermissionStatus.restricted:
+        return false;
+      default:
+        // photo manager permission is not mandatory
+        await PhotoManager.requestPermissionExtend();
+        return true;
+    }
+  }
+
+  static Future<void> show({required BuildContext context}) async {
+    bool hasPermission = await _requestPermissions();
+    if (hasPermission) {
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => const NewPostScreen._()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            "Vous devez accorder la permission d'accès à la caméra pour continuer."
+          )
+        ),
+      );
+    }
+  }
+
+  const NewPostScreen._();
 
   @override
   State<NewPostScreen> createState() => _NewPostScreenState();
@@ -27,7 +59,7 @@ class _NewPostScreenState extends State<NewPostScreen> with CompletableMixin {
       data: AppTheme.fullBlackTheme(context),
       child: Scaffold(
         body: CameraAwesomeBuilder.custom(
-          progressIndicator: const LoadingCamera(),
+          progressIndicator: const _LoadingCamera(),
           builder: (cameraState, previewSize) {
             return cameraState.when(
               onPhotoMode: (state) => _TakePhotoUI(
@@ -72,7 +104,8 @@ class _TakePhotoUI extends StatefulWidget {
 }
 
 class _TakePhotoUIState extends State<_TakePhotoUI> {
-  final _galery = const _GaleryUi();
+  final _gallery = const _GalleryUi();
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -154,7 +187,7 @@ class _TakePhotoUIState extends State<_TakePhotoUI> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _galery,
+              _gallery,
               Container(
                   margin: const EdgeInsets.symmetric(horizontal: 28.0),
                   decoration: BoxDecoration(
@@ -193,98 +226,76 @@ class _TakePhotoUIState extends State<_TakePhotoUI> {
   }
 }
 
-class _GaleryUi extends StatefulWidget {
-  const _GaleryUi({
-    Key? key,
-  }) : super(key: key);
+class _GalleryUi extends StatefulWidget {
+  const _GalleryUi() : super();
 
   @override
-  _GaleryUiState createState() => _GaleryUiState();
+  _GalleryUiState createState() => _GalleryUiState();
 }
 
-class _GaleryUiState extends State<_GaleryUi> {
-  AssetEntity? lastImage;
+class _GalleryUiState extends State<_GalleryUi> {
+  ImageProvider? lastImage;
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      
-      await _fetchLastImage();
-    });
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _fetchLastImage();
+    });
   }
 
-
   Future<void> _fetchLastImage() async {
-    final List<AssetPathEntity> paths = await PhotoManager.getAssetPathList(
-      onlyAll: true,
-      type: RequestType.image,
-    );
+    try {
+      final paths = await PhotoManager.getAssetPathList(type: RequestType.image);
 
-    if (paths.isNotEmpty) {
-      final AssetPathEntity mainAlbum = paths.first;
+      if (paths.isNotEmpty) {
+        final AssetPathEntity mainAlbum = paths.first;
+        final images = await mainAlbum.getAssetListPaged(page: 0, size: 1);
 
-      final List<AssetEntity> images =
-          await mainAlbum.getAssetListPaged(page: 0, size: 1);
-
-      if (images.isNotEmpty) {
-        setState(() {
-          lastImage = images.first;
-        });
+        if (images.isNotEmpty) {
+          setState(() {
+            lastImage = AssetEntityImageProvider(images.first);
+          });
+        }
       }
-    }
+    } catch (ignored) {/**/}
   }
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      child: lastImage != null
-          ? FutureBuilder<Uint8List?>(
-              future: lastImage!.thumbnailDataWithSize(
-                  const ThumbnailSize(300, 300)), // Taille de la vignette
-              builder:
-                  (BuildContext context, AsyncSnapshot<Uint8List?> snapshot) {
-                if (snapshot.connectionState == ConnectionState.done &&
-                    snapshot.hasData) {
-                  return SizedBox(
-                    height: 40.0,
-                    width: 40.0,
-                    child: CircleAvatar(
-                      radius: 28,
-                      backgroundImage: MemoryImage(snapshot.data!),
-                    ),
-                  );
-                } else {
-                  return const CircularProgressIndicator(); // Loader si l'image n'est pas prête
-                }
-              },
-            )
-          : const SizedBox(
-              height: 40.0,
-              width: 40.0,
-              child: CircleAvatar(
-                radius: 28,
-                child: Icon(Icons.person, size: 28, color: Colors.white),
-              ),
-            ),
+    return GestureDetector(
       onTap: () async {
-        final ImagePicker _picker = ImagePicker();
-        final XFile? image =
-            await _picker.pickImage(source: ImageSource.gallery);
+        final ImagePicker picker = ImagePicker();
+        final XFile? image = await picker.pickImage(source: ImageSource.gallery);
         if (image != null) {
           Navigator.of(context).push(
             MaterialPageRoute(
-                builder: (context) =>
-                    NewPostCompleteScreen(file: File(image.path))),
+              builder: (context) =>
+                NewPostCompleteScreen(file: File(image.path))),
           );
         }
       },
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(width: 1, color: AppTheme.white),
+          shape: BoxShape.circle,
+        ),
+        child: CircleAvatar(
+          backgroundColor: Theme.of(context).disabledColor,
+          foregroundImage: lastImage,
+          radius: 20.0,
+          child: Icon(
+            Icons.image_outlined,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+        ),
+      ),
     );
   }
 }
 
-class LoadingCamera extends StatelessWidget {
-  const LoadingCamera({super.key});
+class _LoadingCamera extends StatelessWidget {
+  const _LoadingCamera();
 
   @override
   Widget build(BuildContext context) {
@@ -336,14 +347,7 @@ class LoadingCamera extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(
-                  height: 40.0,
-                  width: 40.0,
-                  child: CircleAvatar(
-                    radius: 28,
-                    child: Icon(Icons.person, size: 28, color: Colors.white),
-                  ),
-                ),
+                const _GalleryUi(),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 28.0),
                   decoration: BoxDecoration(

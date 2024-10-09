@@ -45,18 +45,19 @@ dependencies:
   google_fonts: ^6.1.0
   google_sign_in: ^6.1.5
   image_picker: ^1.0.4
+  intl: ^0.19.0
   json_annotation: ^4.9.0
   path_provider: ^2.1.2
+  permission_handler: ^11.3.1
+  photo_manager: ^3.5.0
+  photo_manager_image_provider: ^2.2.0
   potatoes: ^3.0.2
   potatoes_secured_preferences: ^1.0.0
-  sign_in_with_apple: ^6.1.2
-  photo_manager: ^3.5.0
-  share_plus: ^10.0.2
   readmore: ^3.0.0
-  permission_handler: ^11.3.1
+  share_plus: ^10.0.2
+  sign_in_with_apple: ^6.1.2
   flutter_localizations:
     sdk: flutter
-  intl: ^0.19.0
 
 dev_dependencies:
   flutter_test:
