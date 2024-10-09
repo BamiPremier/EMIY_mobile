@@ -10,15 +10,22 @@ class ProfilePicture extends StatelessWidget {
 
   const ProfilePicture({
     super.key,
-    this.image = '',
+    required this.image,
     this.height = 80,
     this.width = 80,
   });
 
   @override
   Widget build(BuildContext context) {
+    final defaultImage = SvgPicture.asset(
+      Assets.defaultAvatar,
+      height: height,
+      width: width,
+    );
+
+    if (image == null) return defaultImage;
     return CachedNetworkImage(
-      imageUrl: image ?? '',
+      imageUrl: image!,
       height: height,
       width: width,
       fit: BoxFit.cover,
@@ -26,16 +33,8 @@ class ProfilePicture extends StatelessWidget {
         radius: height / 2,
         backgroundImage: imageProvider,
       ),
-      placeholder: (context, url) => SvgPicture.asset(
-        Assets.defaultAvatar,
-        height: height,
-        width: width,
-      ),
-      errorWidget: (context, url, error) => SvgPicture.asset(
-        Assets.defaultAvatar,
-        height: height,
-        width: width,
-      ),
+      placeholder: (context, url) => defaultImage,
+      errorWidget: (context, url, error) => defaultImage,
     );
   }
 }
