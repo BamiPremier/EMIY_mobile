@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
@@ -20,20 +21,24 @@ class _SocialHomeScreenState extends State<SocialHomeScreen>
     with TickerProviderStateMixin {
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await requestPermission();
-    });
     super.initState();
   }
 
-  Future<void> requestPermission() async {
-    final PermissionState value = await PhotoManager.requestPermissionExtend();
-    if (value == PermissionState.denied) {
-      print('Permission refusée');
-    await  requestPermission();
-      return;
+  Future<bool> requestPermission() async {
+    final status = await Permission.camera.request();
+    if (status.isGranted) {
+      final PermissionState photoManagerStatus =
+          await PhotoManager.requestPermissionExtend();
+      if (photoManagerStatus == PermissionState.denied) {
+        print('Permission refusée');
+        return false;
+      } else {
+        print('Permission acceptée');
+        return true;
+      }
     } else {
-      print('Permission acceptée');
+      print('Permission photos refusée');
+      return false;
     }
   }
 
@@ -65,8 +70,20 @@ class _SocialHomeScreenState extends State<SocialHomeScreen>
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const NewPostScreen())),
+        onPressed: () async {
+          bool hasPermission = await requestPermission();
+          if (hasPermission) {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const NewPostScreen()),
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                  content: Text(
+                      "Vous devez accorder la permission d'accès aux photos pour continuer.")),
+            );
+          }
+        },
         child: const Icon(Icons.add),
       ),
     );
