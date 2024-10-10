@@ -22,6 +22,7 @@ class HomeScreen extends StatelessWidget {
     return BlocBuilder<HomeCubit, int>(builder: (context, index) {
       return Scaffold(
         appBar: AppBar(
+          forceMaterialTransparency: true,
           title: Text(pages[index]['title'] as String),
           centerTitle: true,
           actions: [
@@ -39,6 +40,7 @@ class HomeScreen extends StatelessWidget {
         body: pages[index]['page'] as Widget,
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Theme.of(context).colorScheme.surface,
+          useLegacyColorScheme: false,
           onTap: context.read<HomeCubit>().set,
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(

@@ -36,10 +36,8 @@ class NewPostScreen extends StatefulWidget {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text(
-            "Vous devez accorder la permission d'accès à la caméra pour continuer."
-          )
-        ),
+            content: Text(
+                "Vous devez accorder la permission d'accès à la caméra pour continuer.")),
       );
     }
   }
@@ -121,7 +119,7 @@ class _TakePhotoUIState extends State<_TakePhotoUI> {
               children: [
                 IconButton(
                   padding: EdgeInsets.zero,
-                  icon: const Icon(Icons.close, color: Colors.white, size: 30),
+                  icon: const Icon(Icons.close, color: Colors.white, size: 24),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -148,7 +146,7 @@ class _TakePhotoUIState extends State<_TakePhotoUI> {
                           onPreparingCamera: (_) => Icons.flash_off,
                         ),
                         color: Colors.white,
-                        size: 30,
+                        size: 24,
                       ),
                       onPressed: () {
                         widget.state.when(
@@ -169,7 +167,7 @@ class _TakePhotoUIState extends State<_TakePhotoUI> {
                     IconButton(
                       padding: EdgeInsets.zero,
                       icon: const Icon(Icons.flip_camera_android,
-                          color: Colors.white, size: 30),
+                          color: Colors.white, size: 24),
                       onPressed: () {
                         widget.state.switchCameraSensor();
                       },
@@ -190,10 +188,13 @@ class _TakePhotoUIState extends State<_TakePhotoUI> {
               _gallery,
               Container(
                   margin: const EdgeInsets.symmetric(horizontal: 28.0),
-                  decoration: BoxDecoration(
+                  height: 80,
+                  width: 80,
+                  decoration: const BoxDecoration(
                     color: AppTheme.white,
-                    borderRadius: BorderRadius.circular(90),
+                    shape: BoxShape.circle,
                   ),
+                  padding: EdgeInsets.zero,
                   child: IconButton(
                     padding: EdgeInsets.zero,
                     icon: const Icon(Icons.circle,
@@ -201,14 +202,13 @@ class _TakePhotoUIState extends State<_TakePhotoUI> {
                     onPressed: () {
                       widget.state.takePhoto();
                     },
-                  )), // GestureDetector(
-
+                  )),
               IconButton(
                 padding: EdgeInsets.zero,
                 icon: const Icon(
                   Icons.text_fields,
-                  color: Colors.white,
-                  size: 30,
+                  color: AppTheme.white,
+                  size: 24,
                 ),
                 onPressed: () {
                   Navigator.of(context).push(
@@ -246,7 +246,8 @@ class _GalleryUiState extends State<_GalleryUi> {
 
   Future<void> _fetchLastImage() async {
     try {
-      final paths = await PhotoManager.getAssetPathList(type: RequestType.image);
+      final paths =
+          await PhotoManager.getAssetPathList(type: RequestType.image);
 
       if (paths.isNotEmpty) {
         final AssetPathEntity mainAlbum = paths.first;
@@ -266,12 +267,13 @@ class _GalleryUiState extends State<_GalleryUi> {
     return GestureDetector(
       onTap: () async {
         final ImagePicker picker = ImagePicker();
-        final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+        final XFile? image =
+            await picker.pickImage(source: ImageSource.gallery);
         if (image != null) {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) =>
-                NewPostCompleteScreen(file: File(image.path))),
+                builder: (context) =>
+                    NewPostCompleteScreen(file: File(image.path))),
           );
         }
       },

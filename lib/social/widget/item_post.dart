@@ -76,7 +76,7 @@ class _PostItemState extends State<PostItem> {
                         },
                         padding: EdgeInsets.zero,
                         itemBuilder: (BuildContext context) {
-                          List<String> options = ['report'];
+                          List<String> options = ['Signaler'];
                           if (post.user.id ==
                               context.read<UserCubit>().user.id) {
                             options.add('Supprimer');
@@ -85,15 +85,17 @@ class _PostItemState extends State<PostItem> {
                             return PopupMenuItem<String>(
                               padding: const EdgeInsets.only(
                                   right: 48.0, left: 16.0),
-                              textStyle: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge!
-                                  .copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSurface),
                               value: choice,
-                              child: Text(choice),
+                              child: Text(
+                                choice,
+                                style: Theme.of(context)
+                                    .popupMenuTheme
+                                    .textStyle!
+                                    .copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurface),
+                              ),
                             );
                           }).toList();
                         },
@@ -113,8 +115,8 @@ class _PostItemState extends State<PostItem> {
                             isCollapsed: isCollapsed,
                             style: Theme.of(context).textTheme.bodyMedium,
                             colorClickableText: Theme.of(context).primaryColor,
-                            trimCollapsedText: '...Lire plus',
-                            trimExpandedText: ' Moins',
+                            trimCollapsedText: 'Lire plus',
+                            trimExpandedText: ' moins',
                           ),
                         )),
                   ],
@@ -159,6 +161,8 @@ class _PostItemState extends State<PostItem> {
                                         (loadingProgress.expectedTotalBytes ??
                                             1)
                                     : null,
+                                color: Theme.of(context).colorScheme.tertiary,
+                               
                               ),
                             ),
                           );

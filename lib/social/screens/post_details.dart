@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
@@ -81,9 +82,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
     }, builder: (context, state) {
       return Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.white.withOpacity(.3),
-            foregroundColor: Colors.white.withOpacity(.3),
-            elevation: 0,
+            backgroundColor: Colors.transparent,
             leading: IconButton(
               padding: EdgeInsets.zero,
               onPressed: () => Navigator.pop(context),
@@ -172,8 +171,8 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                                   style: Theme.of(context).textTheme.bodyMedium,
                                   colorClickableText:
                                       Theme.of(context).primaryColor,
-                                  trimCollapsedText: '...Lire plus',
-                                  trimExpandedText: ' Moins',
+                                  trimCollapsedText: 'Lire plus',
+                                  trimExpandedText: ' moins',
                                 ),
                               ),
                             ),
@@ -211,14 +210,14 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                                   if (loadingProgress == null) {
                                     return child;
                                   }
-                                  return SizedBox(
+                                  return Container(
                                     height: 368,
                                     width: double.infinity,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .tertiaryContainer,
                                     child: Center(
                                       child: CircularProgressIndicator(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .tertiary,
                                         value: loadingProgress
                                                     .expectedTotalBytes !=
                                                 null
@@ -228,6 +227,9 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                                                         .expectedTotalBytes ??
                                                     1)
                                             : null,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .tertiary,
                                       ),
                                     ),
                                   );
