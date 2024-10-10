@@ -20,7 +20,7 @@ class CommentCubit extends ObjectCubit<Comment, CommentState> {
     return null;
   }
 
-  Comment? get comment {
+  Comment get comment {
     final comment = getObject(state) ?? object;
 
     if (comment != null) return comment;
@@ -46,6 +46,7 @@ class CommentCubit extends ObjectCubit<Comment, CommentState> {
   void likeComment() {
     final stateBefore = state;
     var newComment = comment!.copyWith(hasLiked: !comment!.hasLiked);
+    print(newComment.toJson());
     update(newComment);
     socialService
         .likeComment(

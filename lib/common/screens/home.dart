@@ -39,7 +39,7 @@ class HomeScreen extends StatelessWidget {
         ),
         body: pages[index]['page'] as Widget,
         bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Theme.of(context).colorScheme.surface,
+          backgroundColor: AppTheme.white,
           useLegacyColorScheme: false,
           onTap: context.read<HomeCubit>().set,
           items: <BottomNavigationBarItem>[

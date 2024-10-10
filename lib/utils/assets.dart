@@ -12,4 +12,5 @@ abstract class Assets {
   static const String iconTransparent = '${_logoDir}icon_transparent.png';
 
   static const String fontsFamilyARCO = 'ARCO';
+  static const String fontsFamilyARCOTypo = 'ARCO Typo';
 }

@@ -15,6 +15,7 @@ abstract class AppTheme {
   static const Color black = Color(0xFF000000);
   static const Color secondaryLight = Color(0xFF745B0B);
   static const Color tertiary = Color(0xFF904A42);
+  static const Color onTertiaryContainer = Color(0xFF3B0906);
   static const Color errorRed = Color(0xFFFF0000);
   static const Color disabledGrey = Color(0xFFDDDEE1);
   static const Color disabledGreySurface = Color(0xFFF5F5F5);
@@ -23,16 +24,17 @@ abstract class AppTheme {
 
   static TextTheme _textTheme(BuildContext context) {
     final baseTextTheme = Theme.of(context).textTheme;
-    final robotoTextTheme = GoogleFonts.robotoTextTheme(baseTextTheme);
     final arco =
         Theme.of(context).textTheme.apply(fontFamily: Assets.fontsFamilyARCO);
-
-    return robotoTextTheme.copyWith(
-      displayLarge: robotoTextTheme.displayLarge?.copyWith(
+    final arcoTypo = Theme.of(context)
+        .textTheme
+        .apply(fontFamily: Assets.fontsFamilyARCOTypo);
+    return arcoTypo.copyWith(
+      displayLarge: arcoTypo.displayLarge?.copyWith(
         color: mainText,
         fontSize: 57.0,
       ),
-      displayMedium: robotoTextTheme.displayMedium?.copyWith(
+      displayMedium: arcoTypo.displayMedium?.copyWith(
         color: mainText,
         fontSize: 45.0,
       ),
@@ -41,15 +43,15 @@ abstract class AppTheme {
         fontSize: 36.0,
         fontWeight: FontWeight.bold,
       ),
-      headlineLarge: robotoTextTheme.headlineLarge?.copyWith(
+      headlineLarge: arcoTypo.headlineLarge?.copyWith(
         color: mainText,
         fontSize: 32.0,
       ),
-      headlineMedium: robotoTextTheme.headlineMedium?.copyWith(
+      headlineMedium: arcoTypo.headlineMedium?.copyWith(
         color: mainText,
         fontSize: 28.0,
       ),
-      headlineSmall: robotoTextTheme.headlineSmall?.copyWith(
+      headlineSmall: arcoTypo.headlineSmall?.copyWith(
         color: mainText,
         fontSize: 24.0,
       ),
@@ -58,23 +60,23 @@ abstract class AppTheme {
         fontSize: 20.0,
         fontWeight: FontWeight.bold,
       ),
-      titleMedium: robotoTextTheme.titleMedium?.copyWith(
+      titleMedium: arcoTypo.titleMedium?.copyWith(
         color: mainText,
         fontSize: 16.0,
       ),
-      titleSmall: robotoTextTheme.titleSmall?.copyWith(
+      titleSmall: arcoTypo.titleSmall?.copyWith(
         color: mainText,
         fontSize: 14.0,
       ),
-      bodyLarge: arco.bodyLarge?.copyWith(
+      bodyLarge: arcoTypo.bodyLarge?.copyWith(
         color: mainText,
         fontSize: 16.0,
       ),
-      bodyMedium: arco.bodyMedium?.copyWith(
+      bodyMedium: arcoTypo.bodyMedium?.copyWith(
         color: mainText,
         fontSize: 14.0,
       ),
-      bodySmall: arco.bodySmall?.copyWith(
+      bodySmall: arcoTypo.bodySmall?.copyWith(
         color: mainText,
         fontSize: 12.0,
       ),
@@ -83,11 +85,11 @@ abstract class AppTheme {
         fontSize: 14.0,
         fontWeight: FontWeight.bold,
       ),
-      labelMedium: robotoTextTheme.labelMedium?.copyWith(
+      labelMedium: arcoTypo.labelMedium?.copyWith(
         color: mainText,
         fontSize: 12.0,
       ),
-      labelSmall: robotoTextTheme.labelSmall?.copyWith(
+      labelSmall: arcoTypo.labelSmall?.copyWith(
         color: mainText,
         fontSize: 11.0,
       ),
@@ -101,7 +103,6 @@ abstract class AppTheme {
       secondary: primaryYellow,
       tertiary: primaryRed,
       tertiaryContainer: tertiaryContainer,
-      
       brightness: brightness,
     );
   }
@@ -113,7 +114,10 @@ abstract class AppTheme {
 
     return ThemeData(
       useMaterial3: true,
-      colorScheme: colorScheme.copyWith(surface: white),
+      colorScheme: colorScheme.copyWith(
+          surface: white,
+          tertiary: tertiary,
+          onTertiaryContainer: onTertiaryContainer),
       primaryColor: primaryYellow,
       disabledColor: disabledGrey,
       appBarTheme: theme.appBarTheme.copyWith(

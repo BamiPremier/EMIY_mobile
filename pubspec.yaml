@@ -94,5 +94,7 @@ flutter:
   fonts:
     - family: ARCO
       fonts:
-        - asset: assets/fonts/ARCO.ttf
-        - asset: assets/fonts/ARCO for OSX.otf
+        - asset: assets/fonts/ARCO.otf
+    - family: ARCO Typo
+      fonts:
+        - asset: assets/fonts/ARCO Typograhy.ttf

@@ -81,26 +81,23 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
       }
     }, builder: (context, state) {
       return Scaffold(
+          extendBodyBehindAppBar: true,
           appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            leading: IconButton(
-              padding: EdgeInsets.zero,
-              onPressed: () => Navigator.pop(context),
-              icon: const Icon(
-                Icons.arrow_back,
-                color: AppTheme.black,
-              ),
-            ),
+            backgroundColor: Colors.white.withOpacity(0.6),
           ),
           body: Column(
             children: [
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        margin: const EdgeInsets.only(left: 16.0, right: 0.0),
+                      SizedBox(
+                          height: kToolbarHeight +
+                              MediaQuery.of(context).viewPadding.top),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16.0, right: 0.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -266,6 +263,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                           }),
                       BlocBuilder<LoadCommentCubit, LoadCommentState>(
                           builder: (ctx, state) => AutoListView.get<Comment>(
+                              padding: EdgeInsets.zero,
                               shrinkWrap: true,
                               autoManage: false,
                               physics: const NeverScrollableScrollPhysics(),
@@ -304,3 +302,6 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
     });
   }
 }
+
+ 
+ 

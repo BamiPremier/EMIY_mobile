@@ -162,7 +162,9 @@ class _PostItemState extends State<PostItem> {
                                             1)
                                     : null,
                                 color: Theme.of(context).colorScheme.tertiary,
-                               
+                                backgroundColor: Theme.of(context)
+                                    .colorScheme
+                                    .onTertiaryContainer,
                               ),
                             ),
                           );

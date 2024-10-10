@@ -1,14 +1,13 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; 
+import 'package:flutter/services.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
-import 'package:potatoes/libs.dart'; 
+import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/social/cubit/comment_cubit.dart';
-import 'package:umai/social/cubit/load_comment_cubit.dart'; 
+import 'package:umai/social/cubit/load_comment_cubit.dart';
 import 'package:umai/social/cubit/y_comment_cubit.dart';
-import 'package:umai/social/model/comment.dart'; 
+import 'package:umai/social/model/comment.dart';
 import 'package:umai/social/widget/item_comment_response.dart';
 import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
@@ -25,14 +24,8 @@ class ItemComment extends StatefulWidget {
     required Comment comment,
     required String idPost,
   }) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-            create: (context) => CommentCubit(context.read(), comment)),
-        // BlocProvider(
-        //     create: (context) =>
-        //         LoadCommentCubit(context.read(), idPost, comment.id)),
-      ],
+    return BlocProvider(
+      create: (context) => CommentCubit(context.read(), comment),
       child: ItemComment._(idPost: idPost),
     );
   }
@@ -146,7 +139,7 @@ class _ItemCommentState extends State<ItemComment> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(children: [
-                      comment.hasLiked
+                      commentCubit.comment.hasLiked
                           ? TextButton(
                               onPressed: () => commentCubit.unLikeComment(),
                               style: TextButton.styleFrom(
@@ -209,6 +202,7 @@ class _ItemCommentState extends State<ItemComment> {
           if (state is SeeCommentResponseState) const Divider(),
           if (state is SeeCommentResponseState)
             AutoListView.get<Comment>(
+              padding: EdgeInsets.zero,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               cubit: loadCommentCubit,
