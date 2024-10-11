@@ -58,13 +58,7 @@ class EditProfilePictureScreen extends StatelessWidget {
                 // height: 375,
                 width: double.infinity,
                 fit: BoxFit.cover,
-                // imageBuilder: (context, imageProvider) => Container(
-                //   margin: const EdgeInsets.only(right: 16),
-                //   child: CircleAvatar(
-                //     radius: 40,
-                //     backgroundImage: imageProvider,
-                //   ),
-                // ),
+
                 placeholder: (context, url) => SvgPicture.asset(
                   Assets.defaultAvatar,
                   height: 48.0,

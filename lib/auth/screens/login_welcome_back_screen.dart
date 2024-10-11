@@ -27,8 +27,8 @@ class _LoginWelcomeBackScreenState extends State<LoginWelcomeBackScreen> {
       child: Scaffold(
         body: SafeArea(
           minimum: const EdgeInsets.only(bottom: 32.0),
-          child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 48),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 48),
             child: Column(
               children: [
                 Expanded(

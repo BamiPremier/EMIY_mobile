@@ -68,8 +68,7 @@ class _RegistrationAnimeSelectionState
           )
         ],
       ),
-      bottomNavigationBar: Container(
-        child: SafeArea(
+      bottomNavigationBar:   SafeArea(
           minimum: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -86,7 +85,7 @@ class _RegistrationAnimeSelectionState
             ],
           ),
         ),
-      ),
+      
     );
   }
 }

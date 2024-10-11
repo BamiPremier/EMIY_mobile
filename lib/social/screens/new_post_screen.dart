@@ -112,7 +112,7 @@ class _TakePhotoUIState extends State<_TakePhotoUI> {
           top: 16,
           left: 0,
           right: 0,
-          child: Container(
+          child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -309,7 +309,7 @@ class _LoadingCamera extends StatelessWidget {
             top: 16,
             left: 0,
             right: 0,
-            child: Container(
+            child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

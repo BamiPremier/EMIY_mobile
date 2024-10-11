@@ -49,8 +49,8 @@ class _NewPostCompleteScreenState extends State<NewPostCompleteScreen>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Container(
-                  margin: const EdgeInsets.only(top: 16),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,

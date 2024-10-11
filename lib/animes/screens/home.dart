@@ -19,8 +19,8 @@ class _AnimeHomeScreenState extends State<AnimeHomeScreen> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-            margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 2),
+        Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 2),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

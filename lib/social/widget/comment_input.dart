@@ -44,8 +44,8 @@ class _CommentInputState extends State<CommentInput> {
                   //     bottom: MediaQuery.of(context).viewInsets.bottom),
                   color: Theme.of(context).colorScheme.surface,
 
-                  child: Container(
-                    margin: const EdgeInsets.all(16),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
                     child: Row(
                       children: [
                         Expanded(

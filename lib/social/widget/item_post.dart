@@ -46,8 +46,8 @@ class _PostItemState extends State<PostItem> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                margin: const EdgeInsets.only(left: 16.0, right: 0.0),
+             Padding(
+                padding: const EdgeInsets.only(left: 16.0, right: 0.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -88,9 +88,9 @@ class _PostItemState extends State<PostItem> {
                               value: choice,
                               child: Text(
                                 choice,
-                                style: Theme.of(context)
-                                    .popupMenuTheme
-                                    .textStyle!
+                                style:  Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
                                     .copyWith(
                                         color: Theme.of(context)
                                             .colorScheme

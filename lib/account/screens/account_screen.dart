@@ -94,10 +94,10 @@ class _AccountScreenState extends State<AccountScreen>
                   ],
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                ).add(const EdgeInsets.only(bottom: 12)),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                  ).add(const EdgeInsets.only(bottom: 12)),
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
@@ -146,17 +146,19 @@ class _AccountScreenState extends State<AccountScreen>
                         ),
                       ],
                     ),
-                    Container(
-                        margin: const EdgeInsets.only(right: 8),
-                        child: const Icon(Icons.arrow_forward_ios, size: 16)),
+                    const Padding(
+                      padding: EdgeInsets.only(right: 8),
+                      child: Icon(Icons.arrow_forward_ios, size: 16),
+                    ),
                   ],
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 8,
+                  left: 16,
+                  right: 16,
                 ),
-                margin: const EdgeInsets.only(top: 8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -195,9 +197,10 @@ class _AccountScreenState extends State<AccountScreen>
                         ),
                       ],
                     ),
-                    Container(
-                        margin: const EdgeInsets.only(right: 8),
-                        child: const Icon(Icons.arrow_forward_ios, size: 16)),
+                    const Padding(
+                      padding: EdgeInsets.only(right: 8),
+                      child: Icon(Icons.arrow_forward_ios, size: 16),
+                    ),
                   ],
                 ),
               ),

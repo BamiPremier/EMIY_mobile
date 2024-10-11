@@ -59,8 +59,8 @@ class _AnimeDetailsScreenState extends State<AnimeDetailsScreen>
                   top: 0,
                   left: 0,
                   right: 0,
-                  child: Container(
-                      margin: const EdgeInsets.only(top: 24),
+                  child: Padding(
+                      padding: const EdgeInsets.only(top: 24),
                       child: Row(
                         children: [
                           IconButton(

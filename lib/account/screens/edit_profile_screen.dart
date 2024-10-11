@@ -1,6 +1,5 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; 
+import 'package:flutter/services.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/account/screens/param/edit_profile_picture_screen.dart';
@@ -48,9 +47,10 @@ class _EditProfileScreenState extends State<EditProfileScreen>
           minimum: const EdgeInsets.only(bottom: 48),
           child: Form(
             key: formKey,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              margin: const EdgeInsets.only(top: 16),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16).add(
+                const EdgeInsets.only(top: 16),
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -64,7 +64,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                                   builder: (context) =>
                                       const EditProfilePictureScreen())),
                           child: ProfilePicture(
-                            image: userCubit.user.imageFull  ,
+                            image: userCubit.user.imageFull,
                             height: 56,
                             width: 56,
                           ),
@@ -81,8 +81,8 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                           ),
                         )
                       ]),
-                  Container(
-                    margin: const EdgeInsets.only(top: 16),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16),
                     child: Column(
                       children: [
                         TextFormField(
@@ -122,8 +122,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
             ),
           ),
         ),
-        bottomNavigationBar: Container(
-          child: SafeArea(
+        bottomNavigationBar:  SafeArea(
             minimum:
                 const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
             child: Column(
@@ -136,7 +135,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
               ],
             ),
           ),
-        ),
+        
       ),
     );
   }
