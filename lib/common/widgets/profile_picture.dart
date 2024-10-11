@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:potatoes/libs.dart';
+import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/utils/assets.dart';
 
 class ProfilePicture extends StatelessWidget {
@@ -35,6 +37,29 @@ class ProfilePicture extends StatelessWidget {
       ),
       placeholder: (context, url) => defaultImage,
       errorWidget: (context, url, error) => defaultImage,
+    );
+  }
+}
+
+class UserProfilePicture extends StatelessWidget {
+  final double height;
+  final double width;
+
+  const UserProfilePicture({
+    super.key,
+    this.height = 40.0,
+    this.width = 40.0,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<UserCubit, UserState>(
+      buildWhen: (_, state) => state is UserLoggedState,
+      builder: (_, __) => ProfilePicture(
+        image: context.read<UserCubit>().user.image,
+        height: height,
+        width: width,
+      ),
     );
   }
 }

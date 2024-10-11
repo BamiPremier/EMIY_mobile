@@ -3,7 +3,6 @@ import 'package:potatoes/libs.dart';
 import 'package:umai/account/screens/account_screen.dart';
 import 'package:umai/animes/screens/home.dart';
 import 'package:umai/common/bloc/home_cubit.dart';
-import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/social/screens/home.dart';
 import 'package:umai/utils/themes.dart';
@@ -38,11 +37,7 @@ class HomeScreen extends StatelessWidget {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => const AccountScreen()));
               },
-              child: ProfilePicture(
-                image: context.read<UserCubit>().user.image,
-                height: 40.0,
-                width: 40.0,
-              ),
+              child: const UserProfilePicture(),
             ),
             const SizedBox(width: 16.0)
           ],

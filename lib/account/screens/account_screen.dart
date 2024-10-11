@@ -63,8 +63,7 @@ class _AccountScreenState extends State<AccountScreen>
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ProfilePicture(
-                        image: userCubit.user.image, height: 80, width: 80),
+                    const UserProfilePicture(height: 80, width: 80),
                     const SizedBox(width: 16.0),
                     Expanded(
                       child: Column(
