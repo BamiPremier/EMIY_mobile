@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:umai/utils/assets.dart';
 
 abstract class AppTheme {
@@ -124,14 +123,14 @@ abstract class AppTheme {
         elevation: 0,
         scrolledUnderElevation: 0,
         surfaceTintColor: Colors.transparent,
-        systemOverlayStyle: SystemUiOverlayStyle(
-            systemNavigationBarColor: colorScheme.surface,
-            systemNavigationBarDividerColor: colorScheme.surface,
+        systemOverlayStyle: const SystemUiOverlayStyle(
+            systemNavigationBarColor: white,
+            systemNavigationBarDividerColor: white,
             statusBarColor: Colors.transparent,
             statusBarIconBrightness: Brightness.dark),
       ),
       bottomNavigationBarTheme: theme.bottomNavigationBarTheme.copyWith(
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: colorScheme.surface,
         selectedItemColor: black,
         unselectedItemColor: Colors.grey,
         type: BottomNavigationBarType.fixed,
