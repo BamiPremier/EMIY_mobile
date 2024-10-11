@@ -4,21 +4,17 @@ import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
-import 'package:umai/social/cubit/comment_cubit.dart';
-import 'package:umai/social/cubit/load_comment_cubit.dart';
-import 'package:umai/social/cubit/y_comment_cubit.dart';
+import 'package:umai/social/bloc/comment_cubit.dart';
+import 'package:umai/social/bloc/load_comment_cubit.dart';
+import 'package:umai/social/bloc/post_cubit.dart';
+import 'package:umai/social/bloc/action_comment_cubit.dart';
 import 'package:umai/social/model/comment.dart';
+import 'package:umai/social/widget/action_comment.dart';
 import 'package:umai/social/widget/item_comment_response.dart';
 import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
 class ItemComment extends StatefulWidget {
-  final String idPost;
-
-  const ItemComment._({
-    required this.idPost,
-  });
-
   static Widget get({
     required BuildContext context,
     required Comment comment,
@@ -26,7 +22,7 @@ class ItemComment extends StatefulWidget {
   }) {
     return BlocProvider(
       create: (context) => CommentCubit(context.read(), comment),
-      child: ItemComment._(idPost: idPost),
+      child: ItemComment(),
     );
   }
 
@@ -36,8 +32,9 @@ class ItemComment extends StatefulWidget {
 
 class _ItemCommentState extends State<ItemComment> {
   late final commentCubit = context.read<CommentCubit>();
+  late final postCubit = context.read<PostCubit>();
   late final loadCommentCubit =
-      LoadCommentCubit(context.read(), widget.idPost, comment.id);
+      LoadCommentCubit(context.read(), postCubit.post.id, comment.id);
   late final comment = commentCubit.comment!;
 
   @override
@@ -133,70 +130,7 @@ class _ItemCommentState extends State<ItemComment> {
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(right: 16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(children: [
-                      commentCubit.comment.hasLiked
-                          ? TextButton(
-                              onPressed: () => commentCubit.unLikeComment(),
-                              style: TextButton.styleFrom(
-                                padding: EdgeInsets.zero,
-                                textStyle: Theme.of(context)
-                                    .textTheme
-                                    .labelSmall!
-                                    .copyWith(
-                                      color: AppTheme.primaryRed,
-                                    ),
-                              ),
-                              child: Text(
-                                'J\'aime',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .labelSmall!
-                                    .copyWith(
-                                      color: AppTheme.primaryRed,
-                                    ),
-                              ),
-                            )
-                          : TextButton(
-                              onPressed: () => commentCubit.likeComment(),
-                              style: TextButton.styleFrom(
-                                padding: EdgeInsets.zero,
-                              ),
-                              child: Text('J\'aime',
-                                  style:
-                                      Theme.of(context).textTheme.labelSmall!),
-                            ),
-                      TextButton(
-                        onPressed: () {
-                          context.read<YCommentCubit>().selectComment(comment);
-                        },
-                        style: TextButton.styleFrom(
-                          padding: EdgeInsets.zero,
-                          textStyle: Theme.of(context).textTheme.labelSmall,
-                        ),
-                        child: const Text('répondre'),
-                      )
-                    ]),
-                    if (comment.commentResponsesCount != 0)
-                      TextButton(
-                        onPressed: () {
-                          commentCubit.seeResponse();
-                        },
-                        style: TextButton.styleFrom(
-                          padding: EdgeInsets.zero,
-                          textStyle: Theme.of(context).textTheme.labelSmall,
-                        ),
-                        child: Text((state is SeeCommentResponseState)
-                            ? 'voir moins'
-                            : 'voir ${comment.commentResponsesCount} réponse${comment.commentResponsesCount > 1 ? 's' : ''}'),
-                      ),
-                  ],
-                ),
-              ),
+              ActionComment()
             ],
           ),
           if (state is SeeCommentResponseState) const Divider(),
@@ -207,16 +141,18 @@ class _ItemCommentState extends State<ItemComment> {
               physics: const NeverScrollableScrollPhysics(),
               cubit: loadCommentCubit,
               itemBuilder: (context, comment) => ItemCommentResponse.get(
-                  context: context, comment: comment, idPost: widget.idPost),
+                  context: context,
+                  comment: comment,
+                  idPost: postCubit.post.id),
               loadingBuilder: (context) => Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(16),
-                child: const SizedBox(
-                  height: 30,
-                  width: 30,
-                  child: CircularProgressIndicator(),
-                ),
-              ),
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.all(16),
+                  child: LinearProgressIndicator(
+                    color: Theme.of(context).colorScheme.tertiary,
+                    backgroundColor:
+                        Theme.of(context).colorScheme.tertiaryContainer,
+                    borderRadius: BorderRadius.circular(30),
+                  )),
               errorBuilder: (context, retry) => Container(
                 alignment: Alignment.center,
                 // padding: EdgeInsets.all(16),

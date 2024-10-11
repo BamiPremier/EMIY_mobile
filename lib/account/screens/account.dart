@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/common/widgets/loaders.dart';
 import 'package:potatoes/libs.dart';
-import 'package:umai/account/screens/edit_profile_screen.dart';
+import 'package:umai/account/screens/edit_profile.dart';
+import 'package:umai/account/screens/followers.dart';
+import 'package:umai/account/screens/followings.dart';
 import 'package:umai/account/screens/param/settings_screen.dart';
 import 'package:umai/account/screens/section/activities.dart';
 import 'package:umai/account/screens/section/animes.dart';
@@ -31,6 +33,7 @@ class _AccountScreenState extends State<AccountScreen>
   }
 
   late final userCubit = context.read<UserCubit>();
+  late final user = userCubit.user;
 
   @override
   void dispose() {
@@ -45,7 +48,7 @@ class _AccountScreenState extends State<AccountScreen>
       child: BlocBuilder<UserCubit, UserState>(
         builder: (context, state) => Scaffold(
           appBar: AppBar(
-            title: Text(userCubit.user.username),
+            title: Text(user.username),
             centerTitle: true,
             actions: [
               IconButton(
@@ -70,33 +73,44 @@ class _AccountScreenState extends State<AccountScreen>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '@${userCubit.user.usertag}',
+                            '@${user.usertag}',
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           const SizedBox(height: 4),
-                          Text(
-                            // TODO
-                            userCubit.user.biography ?? '',
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall!
-                                .copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .surfaceTint),
-                          ),
+                          (user.biography != null && user.biography!.isNotEmpty)
+                              ? Text(
+                                  user.biography!,
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
+                                      .copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .surfaceTint),
+                                )
+                              : Text(
+                                  'Pas de bio',
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
+                                      .copyWith(
+                                          color:
+                                              Theme.of(context).disabledColor),
+                                ),
                         ],
                       ),
                     )
                   ],
                 ),
               ),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                  ).add(const EdgeInsets.only(bottom: 12)),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                ).add(const EdgeInsets.only(bottom: 12)),
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
@@ -113,35 +127,47 @@ class _AccountScreenState extends State<AccountScreen>
                       children: [
                         const Icon(Icons.people_outline),
                         const SizedBox(width: 16),
-                        SizedBox(
-                          width: 76,
+                        InkWell(
+                          onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const FollowersScreen())),
+                          child: SizedBox(
+                            width: 76,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  '${user.followersCount}',
+                                  style: Theme.of(context).textTheme.labelLarge,
+                                ),
+                                Text(
+                                  "M'ont ajouté",
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        InkWell(
+                          onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const FollowingsScreen())),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                '${userCubit.user.followersCount}',
+                                '${user.followingCount}',
                                 style: Theme.of(context).textTheme.labelLarge,
                               ),
                               Text(
-                                "M'ont ajouté",
+                                "ajoutés",
                                 style: Theme.of(context).textTheme.bodySmall,
                               ),
                             ],
                           ),
-                        ),
-                        const SizedBox(width: 16),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              '${userCubit.user.followingCount}',
-                              style: Theme.of(context).textTheme.labelLarge,
-                            ),
-                            Text(
-                              "ajoutés",
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                          ],
                         ),
                       ],
                     ),
@@ -171,7 +197,7 @@ class _AccountScreenState extends State<AccountScreen>
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
-                                  '${userCubit.user.animesViewedCount}',
+                                  '${user.animesViewedCount}',
                                   style: Theme.of(context).textTheme.labelLarge,
                                 ),
                                 Text(
@@ -185,7 +211,7 @@ class _AccountScreenState extends State<AccountScreen>
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              '${userCubit.user.watchlistCount}',
+                              '${user.watchlistCount}',
                               style: Theme.of(context).textTheme.labelLarge,
                             ),
                             Text(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
-import 'package:umai/account/screens/account_screen.dart';
+import 'package:umai/account/screens/account.dart';
 import 'package:umai/animes/screens/home.dart';
 import 'package:umai/common/bloc/home_cubit.dart';
 import 'package:umai/common/widgets/profile_picture.dart';

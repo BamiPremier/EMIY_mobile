@@ -15,6 +15,15 @@ class PersonLoadingState extends CubitLoadingState with PersonState {
   const PersonLoadingState() : super();
 }
 
+class BlockPersonState extends CubitSuccessState with PersonState {
+  final User user;
+
+  const BlockPersonState(this.user);
+
+  @override
+  List<Object?> get props => [user];
+}
+
 class PersonErrorState extends CubitErrorState with PersonState {
   PersonErrorState(super.error, [super.trace]);
 }

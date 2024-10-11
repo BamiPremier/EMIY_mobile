@@ -122,20 +122,18 @@ class _EditProfileScreenState extends State<EditProfileScreen>
             ),
           ),
         ),
-        bottomNavigationBar:  SafeArea(
-            minimum:
-                const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                UmaiButton.primary(
-                  onPressed: onSaveTap,
-                  text: "Enregistrer",
-                ),
-              ],
-            ),
+        bottomNavigationBar: SafeArea(
+          minimum: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              UmaiButton.primary(
+                onPressed: onSaveTap,
+                text: "Enregistrer",
+              ),
+            ],
           ),
-        
+        ),
       ),
     );
   }
@@ -154,7 +152,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
     if (state is UserUpdatingState) {
       loadingDialogCompleter = showLoadingBarrier(context: context);
     } else if (state is UserUpdatedState) {
-      showSuccessToast("Modifications enregistrées");
+      showSuccessToast(content: "Modifications enregistrées", context: context);
     } else if (state is UserErrorState) {
       showErrorToast(state.error);
     }

@@ -7,7 +7,7 @@ import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/common/utils/validators.dart';
 import 'package:umai/common/widgets/buttons.dart';
-import 'package:umai/social/cubit/new_post_cubit.dart';
+import 'package:umai/social/bloc/new_post_cubit.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/dialogs.dart';
 

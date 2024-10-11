@@ -57,6 +57,7 @@ class SocialService extends ApiService {
         options: Options(headers: withAuth()),
         data: {'reason': reason},
       ),
+      mapper: Post.fromJson,
     );
   }
 
@@ -153,13 +154,6 @@ class SocialService extends ApiService {
     int page = 1,
     String? target,
   }) async {
-    print(
-      {
-        'page': page,
-        'size': 20,
-        if (target != null && target != '') 'target': target
-      },
-    );
     return compute(
       dio.get(
         _listComments.replaceAll(':idPost', idPost),

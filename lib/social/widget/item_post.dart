@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
-import 'package:umai/social/cubit/post_cubit.dart';
+import 'package:umai/social/bloc/post_cubit.dart';
 import 'package:umai/social/model/post.dart';
 import 'package:umai/social/screens/post_details.dart';
+import 'package:umai/social/widget/action_post.dart';
 import 'package:umai/social/widget/button_post.dart';
 import 'package:umai/utils/themes.dart';
 import 'package:readmore/readmore.dart';
@@ -46,52 +47,12 @@ class _PostItemState extends State<PostItem> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-             Padding(
+              Padding(
                 padding: const EdgeInsets.only(left: 16.0, right: 0.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: ProfilePicture(
-                          image: post.user.image, height: 48, width: 48),
-                      title: Text(
-                        post.user.username,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                      subtitle: Text(
-                        post.createdAt.elapsed(),
-                        style: Theme.of(context)
-                            .textTheme
-                            .labelMedium!
-                            .copyWith(color: AppTheme.grey),
-                      ),
-                      trailing: PopupMenuButton<String>(
-                        onSelected: (value) {
-                          if (value == 'Signaler') {
-                            postCubit.report();
-                          } else if (value == 'Supprimer') {
-                            postCubit.delete();
-                          }
-                        },
-                        padding: EdgeInsets.zero,
-                        itemBuilder: (BuildContext context) {
-                          List<String> options = ['Signaler'];
-                          if (post.user.id ==
-                              context.read<UserCubit>().user.id) {
-                            options.add('Supprimer');
-                          }
-                          return options.map((String choice) {
-                            return PopupMenuItem<String>(
-                              padding: const EdgeInsets.only(
-                                  right: 48.0, left: 16.0),
-                              value: choice,
-                              child: Text(choice),
-                            );
-                          }).toList();
-                        },
-                      ),
-                    ),
+                    PostAction.get(context: context),
                     const SizedBox(height: 8),
                     Padding(
                         padding: const EdgeInsets.only(right: 16.0),
@@ -184,7 +145,7 @@ class _PostItemState extends State<PostItem> {
                         },
                       ),
                     ),
-              ButtonPost(postCubit: context.read<PostCubit>())
+              ButtonPost()
             ],
           ),
         ),

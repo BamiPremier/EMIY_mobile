@@ -1,4 +1,4 @@
-import 'package:potatoes/libs.dart'; 
+import 'package:potatoes/libs.dart';
 import 'package:umai/common/models/user.dart';
 
 import 'package:potatoes/potatoes.dart';
@@ -54,6 +54,21 @@ class PersonCubit extends ObjectCubit<User, PersonState> {
       emit(const PersonLoadingState());
       userService.unFollow(user: user!.id).then((follower) {
         update(follower);
+      }, onError: (error, trace) {
+        emit(PersonErrorState(error, trace));
+        emit(stateBefore);
+      });
+    }
+  }
+
+  void blockUser() {
+    if (state is InitializingPersonState) {
+      final stateBefore = state;
+
+      emit(const PersonLoadingState());
+      userService.blockUser(user: user!.id).then((user) {
+        emit(BlockPersonState(user));
+        update(user);
       }, onError: (error, trace) {
         emit(PersonErrorState(error, trace));
         emit(stateBefore);

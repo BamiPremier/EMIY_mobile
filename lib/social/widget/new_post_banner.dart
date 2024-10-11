@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
-import 'package:umai/social/cubit/new_post_cubit.dart';
+import 'package:umai/social/bloc/new_post_cubit.dart';
 import 'package:umai/social/screens/post_details.dart';
 import 'package:umai/utils/themes.dart';
 

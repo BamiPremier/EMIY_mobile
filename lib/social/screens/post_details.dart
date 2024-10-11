@@ -4,11 +4,12 @@ import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
-import 'package:umai/social/cubit/load_comment_cubit.dart';
-import 'package:umai/social/cubit/post_cubit.dart';
-import 'package:umai/social/cubit/y_comment_cubit.dart';
+import 'package:umai/social/bloc/load_comment_cubit.dart';
+import 'package:umai/social/bloc/post_cubit.dart';
+import 'package:umai/social/bloc/action_comment_cubit.dart';
 import 'package:umai/social/model/comment.dart';
 import 'package:umai/social/model/post.dart';
+import 'package:umai/social/widget/action_post.dart';
 import 'package:umai/social/widget/button_post.dart';
 import 'package:umai/social/widget/comment_input.dart';
 import 'package:umai/social/widget/item_comment.dart';
@@ -21,7 +22,8 @@ class PostDetailsScreen extends StatefulWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(value: cubit),
-        BlocProvider(create: (context) => YCommentCubit()),
+        BlocProvider(
+            create: (context) => ActionCommentCubit(context.read<PostCubit>())),
         BlocProvider(
             create: (context) =>
                 LoadCommentCubit(context.read(), cubit.post.id, '')),
@@ -33,19 +35,9 @@ class PostDetailsScreen extends StatefulWidget {
   static Widget fromNew({required BuildContext context, required Post post}) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => YCommentCubit()),
         BlocProvider(create: (context) => PostCubit(context.read(), post)),
         BlocProvider(
-            create: (context) => LoadCommentCubit(context.read(), post.id, '')),
-      ],
-      child: const PostDetailsScreen._(),
-    );
-  }
-
-  static Widget get({required BuildContext context, required Post post}) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => PostCubit(context.read(), post)),
+            create: (context) => ActionCommentCubit(context.read<PostCubit>())),
         BlocProvider(
             create: (context) => LoadCommentCubit(context.read(), post.id, '')),
       ],
@@ -60,13 +52,12 @@ class PostDetailsScreen extends StatefulWidget {
 }
 
 class _PostDetailsScreenState extends State<PostDetailsScreen> {
-  late final post = context.read<PostCubit>().post!;
-
   late final loadCommentCubit = context.read<LoadCommentCubit>();
   final _trimMode = TrimMode.Line;
   final isCollapsed = ValueNotifier<bool>(true);
   late final postCubit = context.read<PostCubit>();
 
+  late final post = postCubit.post;
   @override
   void dispose() {
     loadCommentCubit.close();
@@ -101,50 +92,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            ListTile(
-                              contentPadding: EdgeInsets.zero,
-                              leading: ProfilePicture(
-                                image: post.user.image,
-                                height: 48.0,
-                                width: 48.0,
-                              ),
-                              title: Text(
-                                post.user.username,
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                              subtitle: Text(
-                                post.createdAt.elapsed(),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .labelMedium!
-                                    .copyWith(color: AppTheme.grey),
-                              ),
-                              trailing: PopupMenuButton<String>(
-                                onSelected: (value) {
-                                  if (value == 'Signaler') {
-                                    postCubit.report();
-                                  } else if (value == 'Supprimer') {
-                                    postCubit.delete();
-                                  }
-                                },
-                                padding: EdgeInsets.zero,
-                                itemBuilder: (BuildContext context) {
-                                  List<String> options = ['Signaler'];
-                                  if (post.user.id ==
-                                      context.read<UserCubit>().user.id) {
-                                    options.add('Supprimer');
-                                  }
-                                  return options.map((String choice) {
-                                    return PopupMenuItem<String>(
-                                      padding: const EdgeInsets.only(
-                                          right: 48.0, left: 16.0),
-                                      value: choice,
-                                      child: Text(choice),
-                                    );
-                                  }).toList();
-                                },
-                              ),
-                            ),
+                            PostAction.get(context: context),
                             const SizedBox(height: 8),
                             Padding(
                               padding: const EdgeInsets.only(right: 16.0),
@@ -249,52 +197,51 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                                 },
                               ),
                             ),
-                      ButtonPost(
-                          postCubit: context.read<PostCubit>(),
-                          actionFocus: () {
-                            context.read<YCommentCubit>().unselectComment();
-                          }),
-                      BlocBuilder<LoadCommentCubit, LoadCommentState>(
-                          builder: (ctx, state) => AutoListView.get<Comment>(
-                              padding: EdgeInsets.zero,
-                              shrinkWrap: true,
-                              autoManage: false,
-                              physics: const NeverScrollableScrollPhysics(),
-                              cubit: loadCommentCubit,
-                              itemBuilder: (context, comment) =>
-                                  ItemComment.get(
-                                    idPost: postCubit.post.id,
-                                    context: context,
-                                    comment: comment,
-                                  ),
-                              emptyBuilder: (context) => const Center(
-                                    child: Text("Aucun commentaire"),
-                                  ),
-                              errorBuilder: (context, retry) => Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const Text("Une erreur est survenue"),
-                                      TextButton(
-                                        onPressed: retry,
-                                        child: const Text("Réessayer"),
-                                      )
-                                    ],
-                                  )))
+                      ButtonPost(),
+                      Divider(),
+                      AutoListView.get<Comment>(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          autoManage: false,
+                          physics: const NeverScrollableScrollPhysics(),
+                          cubit: loadCommentCubit,
+                          itemBuilder: (context, comment) => ItemComment.get(
+                                idPost: postCubit.post.id,
+                                context: context,
+                                comment: comment,
+                              ),
+                          emptyBuilder: (context) => const Center(
+                                child: Text("Aucun commentaire"),
+                              ),
+                          loadingBuilder: (context) => Container(
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.all(16),
+                              child: LinearProgressIndicator(
+                                color: Theme.of(context).colorScheme.tertiary,
+                                backgroundColor: Theme.of(context)
+                                    .colorScheme
+                                    .tertiaryContainer,
+                                borderRadius: BorderRadius.circular(30),
+                              )),
+                          errorBuilder: (context, retry) => Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Text("Une erreur est survenue"),
+                                  TextButton(
+                                    onPressed: retry,
+                                    child: const Text("Réessayer"),
+                                  )
+                                ],
+                              ))
                     ],
                   ),
                 ),
               ),
-              CommentInput.from(
-                cubit: postCubit,
-              )
+              CommentInput()
             ],
           ));
     });
   }
 }
-
- 
- 

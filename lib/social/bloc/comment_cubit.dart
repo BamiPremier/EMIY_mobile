@@ -34,13 +34,13 @@ class CommentCubit extends ObjectCubit<Comment, CommentState> {
   }
 
   void seeResponse() {
-    print(state);
+    
     if (state is SeeCommentResponseState) {
       emit(UnSeeCommentResponseState());
     } else {
       emit(SeeCommentResponseState());
     }
-    print(state);
+    
   }
 
   void likeComment() {

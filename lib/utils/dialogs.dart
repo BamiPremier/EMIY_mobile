@@ -1,5 +1,5 @@
 import 'dart:async';
- 
+
 import 'package:flutter/material.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -61,16 +61,13 @@ String _translateError(dynamic error) {
 }
 
 void showSuccessToast(
-  String content,
-) {
-  Fluttertoast.showToast(
-      msg: content,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.TOP,
-      timeInSecForIosWeb: 6,
-      textColor: Colors.white,
-      backgroundColor: AppTheme.primaryGreen,
-      fontSize: 16.0);
+    {required String content, required BuildContext context}) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+        margin: EdgeInsets.symmetric(horizontal: 32)
+            .add(EdgeInsets.only(bottom: 12)),
+        content: Center(child: Text(content))),
+  );
 }
 
 void showErrorToast(

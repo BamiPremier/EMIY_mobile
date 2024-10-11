@@ -1,6 +1,7 @@
 import 'package:potatoes/libs.dart';
 
 import 'package:potatoes/potatoes.dart';
+import 'package:umai/common/models/user.dart';
 import 'package:umai/social/model/comment.dart';
 import 'package:umai/social/model/post.dart';
 import 'package:umai/social/services/social_service.dart';
@@ -30,6 +31,11 @@ class PostCubit extends ObjectCubit<Post, PostState> {
   @override
   void update(Post object) {
     emit(InitializingPostState(object));
+  }
+
+  void updateUserInfoPost(User user) {
+    var newPost = post.copyWith(user: user);
+    emit(InitializingPostState(newPost));
   }
 
   void likePost() {
@@ -83,16 +89,18 @@ class PostCubit extends ObjectCubit<Post, PostState> {
     }
   }
 
-  void report() {
+  void report({required String reason}) {
     if (state is InitializingPostState) {
       final stateBefore = state;
-
+      emit(const SendRepportLoadingState());
       socialService
           .reportPost(
         idPost: post.id,
-        reason: 'reason',
+        reason: reason,
       )
-          .then((updatePost) {}, onError: (error, trace) {
+          .then((updatePost) {
+        emit(SuccessSendRepportPostState(post));
+      }, onError: (error, trace) {
         emit(PostErrorState(error, trace));
         emit(stateBefore);
       });

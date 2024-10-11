@@ -57,6 +57,17 @@ class UserService extends ApiService {
         ),
         mapper: User.fromJson);
   }
+  Future<User> blockUser({required user}) async {
+    return compute(
+        dio.delete(
+          _unfollow,
+          data: {
+            'idFollowing': user,
+          },
+          options: Options(headers: withAuth()),
+        ),
+        mapper: User.fromJson);
+  }
 
   Future<User> updateUser({
     String? username,

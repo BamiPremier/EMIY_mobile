@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/utils/validators.dart';
-import 'package:umai/social/cubit/post_cubit.dart';
-import 'package:umai/social/cubit/y_comment_cubit.dart';
+import 'package:umai/social/bloc/post_cubit.dart';
+import 'package:umai/social/bloc/action_comment_cubit.dart';
+import 'package:umai/social/model/comment.dart';
 import 'package:umai/utils/themes.dart';
 
 class CommentInput extends StatefulWidget {
-  static Widget from({required PostCubit cubit}) {
-    return MultiBlocProvider(providers: [
-      BlocProvider.value(value: cubit),
-    ], child: const CommentInput._());
-  }
-
-  const CommentInput._();
+  const CommentInput({super.key});
 
   @override
   State<CommentInput> createState() => _CommentInputState();
@@ -24,12 +19,17 @@ class _CommentInputState extends State<CommentInput> {
 
   final focusNode = FocusNode();
   @override
+  void dispose() {
+    _commentController.dispose();
+    focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocConsumer<YCommentCubit, YCommentState>(
+    return BlocConsumer<ActionCommentCubit, Comment?>(
         listener: (context, ystate) {
-          if (ystate is YCommentSelectedState) {
-            FocusScope.of(context).requestFocus(focusNode);
-          }
+          FocusScope.of(context).requestFocus(focusNode);
         },
         builder: (context, ystate) => BlocConsumer<PostCubit, PostState>(
             listener: (context, state) {
@@ -54,9 +54,8 @@ class _CommentInputState extends State<CommentInput> {
                                   state is PostLoadingState ? true : false,
                               controller: _commentController,
                               decoration: InputDecoration(
-                                hintText: (ystate is YCommentSelectedState &&
-                                        ystate.selectedComment != null)
-                                    ? 'Réponse à ${ystate.selectedComment!.user.username}'
+                                hintText: (ystate != null)
+                                    ? 'Réponse à ${ystate!.user.username}'
                                     : "Ajouter un commentaire...",
                                 hintStyle: Theme.of(context)
                                     .textTheme
@@ -94,13 +93,9 @@ class _CommentInputState extends State<CommentInput> {
                           onPressed: () {
                             if (Validators.empty(_commentController.text) ==
                                 null) {
-                              postCubit.commentPost(
-                                  content: _commentController.text,
-                                  targetCommentId:
-                                      (ystate is YCommentSelectedState &&
-                                              ystate.selectedComment != null)
-                                          ? ystate.selectedComment!.id
-                                          : null);
+                              context.read<ActionCommentCubit>().commentPost(
+                                    content: _commentController.text,
+                                  );
                             }
 
                             // Action du bouton

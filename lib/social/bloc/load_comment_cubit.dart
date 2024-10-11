@@ -13,15 +13,7 @@ class LoadCommentCubit extends AutoListCubit<Comment> {
     String idPost,
     String target,
   ) : super(provider: ({int page = 1}) async {
-          print(
-            socialService,
-          );
-          print(
-            target,
-          );
-          print(
-            idPost,
-          );
+        
           final p = await socialService.getComments(
               idPost: idPost, target: target, page: page);
           return p;
@@ -38,7 +30,7 @@ class LoadCommentCubit extends AutoListCubit<Comment> {
   }
 
   void deleteComment(Comment comment) {
-    print(state);
+    
     if (state is LoadCommentReadyState) {
       final list = (state as LoadCommentReadyState).items;
 

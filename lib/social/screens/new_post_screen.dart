@@ -8,7 +8,7 @@ import 'package:photo_manager/photo_manager.dart';
 import 'package:photo_manager_image_provider/photo_manager_image_provider.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
-import 'package:umai/social/cubit/new_post_cubit.dart';
+import 'package:umai/social/bloc/new_post_cubit.dart';
 import 'package:umai/social/screens/new_post_publish_screen.dart';
 import 'package:umai/utils/themes.dart';
 

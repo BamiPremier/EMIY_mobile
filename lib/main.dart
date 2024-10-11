@@ -18,7 +18,7 @@ import 'package:umai/common/services/api_service.dart';
 import 'package:umai/common/services/preferences_service.dart';
 import 'package:umai/common/services/user_service.dart';
 import 'package:umai/firebase_options.dart';
-import 'package:umai/social/cubit/new_post_cubit.dart';
+import 'package:umai/social/bloc/new_post_cubit.dart';
 import 'package:umai/social/services/social_service.dart';
 import 'package:umai/utils/themes.dart';
 

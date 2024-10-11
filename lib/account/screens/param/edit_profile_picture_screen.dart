@@ -49,28 +49,31 @@ class EditProfilePictureScreen extends StatelessWidget {
             )
           ],
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CachedNetworkImage(
-                imageUrl: context.read<UserCubit>().user.imageFull ?? '',
-                // height: 375,
-                width: double.infinity,
-                fit: BoxFit.cover,
+        body: BlocBuilder<UserCubit, UserState>(
+          buildWhen: (_, state) => state is UserLoggedState,
+          builder: (_, __) => Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CachedNetworkImage(
+                  imageUrl: context.read<UserCubit>().user.imageFull ?? '',
+                  // height: 375,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
 
-                placeholder: (context, url) => SvgPicture.asset(
-                  Assets.defaultAvatar,
-                  height: 48.0,
-                  width: 48.0,
+                  placeholder: (context, url) => Container(
+                    height: 368,
+                    width: double.infinity,
+                    color: Theme.of(context).colorScheme.tertiaryContainer,
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    height: 368,
+                    width: double.infinity,
+                    color: Theme.of(context).colorScheme.tertiaryContainer,
+                  ),
                 ),
-                errorWidget: (context, url, error) => SvgPicture.asset(
-                  Assets.defaultAvatar,
-                  height: 48.0,
-                  width: 48.0,
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

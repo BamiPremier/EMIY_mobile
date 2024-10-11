@@ -51,7 +51,7 @@ class UserItem extends StatelessWidget {
           trailing: !followCubit.user.followed
               ? ElevatedButton(
                   onPressed: () => followCubit.followUser(),
-                  style: FilledButton.styleFrom(
+                  style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.primary,
                     textStyle: Theme.of(context).textTheme.labelLarge!.copyWith(
                           color: AppTheme.mainText,
@@ -69,7 +69,9 @@ class UserItem extends StatelessWidget {
                                 color: AppTheme.white,
                               ),
                             )
-                          : const Icon(Icons.add),
+                          : const Icon(
+                              Icons.add,
+                            ),
                       const SizedBox(width: 8),
                       Text(
                         'Suivre',
@@ -82,7 +84,7 @@ class UserItem extends StatelessWidget {
                 )
               : ElevatedButton(
                   onPressed: () => followCubit.unFollowUser(),
-                  style: FilledButton.styleFrom(
+                  style: ElevatedButton.styleFrom(
                     backgroundColor:
                         Theme.of(context).colorScheme.tertiaryContainer,
                     textStyle: Theme.of(context).textTheme.labelLarge!.copyWith(
