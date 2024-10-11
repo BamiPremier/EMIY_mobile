@@ -86,16 +86,7 @@ class _PostItemState extends State<PostItem> {
                               padding: const EdgeInsets.only(
                                   right: 48.0, left: 16.0),
                               value: choice,
-                              child: Text(
-                                choice,
-                                style:  Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge!
-                                    .copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSurface),
-                              ),
+                              child: Text(choice),
                             );
                           }).toList();
                         },

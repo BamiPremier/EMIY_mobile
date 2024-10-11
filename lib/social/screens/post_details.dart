@@ -138,13 +138,6 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                                     return PopupMenuItem<String>(
                                       padding: const EdgeInsets.only(
                                           right: 48.0, left: 16.0),
-                                      textStyle: Theme.of(context)
-                                          .textTheme
-                                          .bodyLarge!
-                                          .copyWith(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .onSurface),
                                       value: choice,
                                       child: Text(choice),
                                     );

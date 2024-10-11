@@ -35,7 +35,10 @@ class ProfilePicture extends StatelessWidget {
         radius: height / 2,
         backgroundImage: imageProvider,
       ),
-      placeholder: (context, url) => defaultImage,
+      placeholder: (context, url) => CircleAvatar(
+        radius: height / 2,
+        backgroundColor: Theme.of(context).disabledColor,
+      ),
       errorWidget: (context, url, error) => defaultImage,
     );
   }
