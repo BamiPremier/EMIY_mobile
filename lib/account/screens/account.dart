@@ -266,7 +266,7 @@ class _AccountScreenState extends State<AccountScreen>
         (route) => false,
       );
     } else if (state is UserErrorState) {
-      showErrorToast(state.error);
+      showErrorToast(content: state.error, context: context);
     }
   }
 

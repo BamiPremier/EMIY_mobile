@@ -1,4 +1,3 @@
-
 import 'package:flutter/gestures.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:potatoes/libs.dart';
@@ -105,9 +104,8 @@ class _OnboardingScreenState extends State<OnboardingScreen>
           );
       }
     } catch (e) {
-      return showErrorToast(
-        e.toString(),
-      );
+      showErrorToast(content: e.toString(), context: context);
+      
     }
   }
 
@@ -166,11 +164,10 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       );
     } else if (state is AuthSuccessInActiveUserState) {
       Navigator.of(context).push(
-        MaterialPageRoute(
-            builder: (context) => const RegistrationUsername ()),
+        MaterialPageRoute(builder: (context) => const RegistrationUsername()),
       );
     } else if (state is AuthErrorState) {
-      showErrorToast(state.error);
+      showErrorToast(content: state.error, context: context);
     }
   }
 }

@@ -75,7 +75,7 @@ class _ChangePictureScreenState extends State<ChangePictureScreen>
     } else if (state is UserUpdatedState) {
       Navigator.of(context).pop();
     } else if (state is UserErrorState) {
-      showErrorToast(state.error);
+      showErrorToast(content: state.error, context: context);
     }
   }
 }

@@ -117,8 +117,8 @@ class _RegistrationUsernameState extends State<RegistrationUsername>
               ),
             ),
             bottomNavigationBar: SafeArea(
-              minimum: const EdgeInsets.symmetric(
-                  horizontal: 32.0, vertical: 16.0),
+              minimum:
+                  const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -151,7 +151,7 @@ class _RegistrationUsernameState extends State<RegistrationUsername>
             builder: (context) => const RegistrationGenresSelection()),
       );
     } else if (state is AuthErrorState) {
-      showErrorToast(state.error);
+      showErrorToast(content: state.error, context: context);
     }
   }
 }

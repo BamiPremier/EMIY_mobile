@@ -154,7 +154,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
     } else if (state is UserUpdatedState) {
       showSuccessToast(content: "Modifications enregistrées", context: context);
     } else if (state is UserErrorState) {
-      showErrorToast(state.error);
+      showErrorToast(content: state.error, context: context);
     }
   }
 }

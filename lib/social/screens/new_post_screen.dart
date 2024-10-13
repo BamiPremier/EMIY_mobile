@@ -10,6 +10,7 @@ import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/social/bloc/new_post_cubit.dart';
 import 'package:umai/social/screens/new_post_publish_screen.dart';
+import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/themes.dart';
 
 class NewPostScreen extends StatefulWidget {
@@ -34,11 +35,10 @@ class NewPostScreen extends StatefulWidget {
         MaterialPageRoute(builder: (context) => const NewPostScreen._()),
       );
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text(
-                "Vous devez accorder la permission d'accès à la caméra pour continuer.")),
-      );
+      showErrorToast(
+          content:
+              "Vous devez accorder la permission d'accès à la caméra pour continuer.",
+          context: context);
     }
   }
 
@@ -80,7 +80,15 @@ class _NewPostScreenState extends State<NewPostScreen> with CompletableMixin {
             }
           },
           saveConfig: SaveConfig.photo(),
+          previewPadding: EdgeInsets.zero,
+          previewAlignment: Alignment.center,
+       
+          theme: AwesomeTheme(
+            bottomActionsBackgroundColor: Colors.transparent,
+          ),
+          previewFit: CameraPreviewFit.cover,
           sensorConfig: SensorConfig.single(
+            sensor: Sensor.position(SensorPosition.back),
             aspectRatio: CameraAspectRatios.ratio_1_1,
           ),
         ),

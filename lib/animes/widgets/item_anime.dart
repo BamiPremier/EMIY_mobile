@@ -205,7 +205,7 @@ class AnimeItem extends StatelessWidget {
       showSuccessToast(
           content: "Anime ajouté à votre liste de vue", context: context);
     } else if (state is AnimeManipErrorState) {
-      showErrorToast(state.error);
+      showErrorToast(content: state.error, context: context);
     }
   }
 }

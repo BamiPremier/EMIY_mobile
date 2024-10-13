@@ -45,11 +45,7 @@ class _SocialHomeScreenState extends State<SocialHomeScreen>
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text(
-                  "Vous devez accorder la permission d'accès à la caméra pour continuer.")),
-        ) /* NewPostScreen.show(context: context) */,
+        onPressed: () => NewPostScreen.show(context: context),
         child: const Icon(Icons.add),
       ),
     );

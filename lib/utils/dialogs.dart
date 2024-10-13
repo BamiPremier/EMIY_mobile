@@ -70,15 +70,12 @@ void showSuccessToast(
   );
 }
 
-void showErrorToast(
-  String content,
-) {
-  Fluttertoast.showToast(
-      msg: content,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.TOP,
-      timeInSecForIosWeb: 6,
-      textColor: Colors.white,
-      backgroundColor: AppTheme.errorRed,
-      fontSize: 16.0);
+void showErrorToast({required String content, required BuildContext context}) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+        backgroundColor: AppTheme.errorRed,
+        margin: EdgeInsets.symmetric(horizontal: 32)
+            .add(EdgeInsets.only(bottom: 12)),
+        content: Center(child: Text(content, style: TextStyle(color: Colors.white),))),
+  );
 }

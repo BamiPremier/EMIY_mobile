@@ -141,7 +141,9 @@ class _NewPostCompleteScreenState extends State<NewPostCompleteScreen>
                   );
                   Navigator.of(context).popUntil((r) => r.isFirst);
                 } else {
-                  showErrorToast("Veuillez ajouter une image ou un texte");
+                  showErrorToast(
+                      content: "Veuillez ajouter une image ou un texte",
+                      context: context);
                 }
               },
               text: "Publier",

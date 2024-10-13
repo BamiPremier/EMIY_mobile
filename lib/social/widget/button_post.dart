@@ -93,7 +93,7 @@ class _ButtonPostState extends State<ButtonPost> with CompletableMixin {
         isSharing = false;
       }
     } else if (state is PostErrorState) {
-      showErrorToast(state.error);
+      showErrorToast(content: state.error, context: context);
     }
   }
 }
