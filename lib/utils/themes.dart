@@ -185,6 +185,15 @@ abstract class AppTheme {
           maximumSize: const Size.fromHeight(40.0),
         ),
       ),
+      radioTheme: RadioThemeData(
+        fillColor:
+            WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+          if (states.contains(WidgetState.selected)) {
+            return colorScheme.surfaceTint;
+          }
+          return Theme.of(context).colorScheme.onSurface;
+        }),
+      ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           elevation: 0,

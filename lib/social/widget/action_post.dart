@@ -154,9 +154,6 @@ Future reportPost({required BuildContext context}) {
                                               'Haine / Discrimination'),
                                           value: 'Haine / Discrimination',
                                           groupValue: selectedReason,
-                                          activeColor: Theme.of(context)
-                                              .colorScheme
-                                              .surfaceTint,
                                           onChanged: (value) {
                                             setState(() {
                                               selectedReason = value;
@@ -169,9 +166,6 @@ Future reportPost({required BuildContext context}) {
                                           title: const Text('Contenu sexuel'),
                                           value: 'Contenu sexuel',
                                           groupValue: selectedReason,
-                                          activeColor: Theme.of(context)
-                                              .colorScheme
-                                              .surfaceTint,
                                           onChanged: (value) {
                                             setState(() {
                                               selectedReason = value;
@@ -184,9 +178,6 @@ Future reportPost({required BuildContext context}) {
                                           title: const Text('Harcèlement'),
                                           value: 'Harcèlement',
                                           groupValue: selectedReason,
-                                          activeColor: Theme.of(context)
-                                              .colorScheme
-                                              .surfaceTint,
                                           onChanged: (value) {
                                             setState(() {
                                               selectedReason = value;
@@ -201,9 +192,6 @@ Future reportPost({required BuildContext context}) {
                                           value:
                                               'Divulgation d\'informations privées',
                                           groupValue: selectedReason,
-                                          activeColor: Theme.of(context)
-                                              .colorScheme
-                                              .surfaceTint,
                                           onChanged: (value) {
                                             setState(() {
                                               selectedReason = value;
@@ -216,9 +204,6 @@ Future reportPost({required BuildContext context}) {
                                           title: const Text('Autre'),
                                           value: 'Autre',
                                           groupValue: selectedReason,
-                                          activeColor: Theme.of(context)
-                                              .colorScheme
-                                              .surfaceTint,
                                           onChanged: (value) {
                                             setState(() {
                                               selectedReason = value;

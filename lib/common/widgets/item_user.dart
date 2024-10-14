@@ -5,6 +5,7 @@ import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/person_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/models/user.dart';
+import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/utils/themes.dart';
 
 class UserItem extends StatelessWidget {
@@ -31,20 +32,10 @@ class UserItem extends StatelessWidget {
         return ListTile(
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
-          leading: CachedNetworkImage(
-            imageUrl: followCubit.user.imageFull ?? '',
-            imageBuilder: (context, imageProvider) => CircleAvatar(
-              radius: 28,
-              backgroundImage: imageProvider,
-            ),
-            placeholder: (context, url) => const CircleAvatar(
-              radius: 28,
-              child: CircularProgressIndicator(strokeWidth: 2),
-            ),
-            errorWidget: (context, url, error) => const CircleAvatar(
-              radius: 28,
-              child: Icon(Icons.person, size: 28, color: Colors.white),
-            ),
+          leading: ProfilePicture(
+            image: followCubit.user.imageFull ?? '',
+            height: 48,
+            width: 48,
           ),
           title: Text(
             followCubit.user.username,
