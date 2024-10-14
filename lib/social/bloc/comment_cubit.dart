@@ -46,7 +46,7 @@ class CommentCubit extends ObjectCubit<Comment, CommentState> {
   void likeComment() {
     final stateBefore = state;
     var newComment = comment!.copyWith(hasLiked: !comment!.hasLiked);
-    print(newComment.toJson());
+   
     update(newComment);
     socialService
         .likeComment(

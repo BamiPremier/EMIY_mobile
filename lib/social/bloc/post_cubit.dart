@@ -99,6 +99,7 @@ class PostCubit extends ObjectCubit<Post, PostState> {
         reason: reason,
       )
           .then((updatePost) {
+            print(updatePost);
         emit(SuccessSendRepportPostState(post));
       }, onError: (error, trace) {
         emit(PostErrorState(error, trace));

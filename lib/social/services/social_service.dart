@@ -50,14 +50,13 @@ class SocialService extends ApiService {
     );
   }
 
-  Future<Post> reportPost({required String idPost, required String reason}) {
+  Future reportPost({required String idPost, required String reason}) {
     return compute(
       dio.post(
         _reportPost.replaceAll(':idPost', idPost),
         options: Options(headers: withAuth()),
         data: {'reason': reason},
       ),
-      mapper: Post.fromJson,
     );
   }
 

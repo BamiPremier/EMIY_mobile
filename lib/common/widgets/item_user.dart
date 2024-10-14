@@ -21,13 +21,10 @@ class UserItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<PersonCubit, PersonState>(
       listener: (context, state) {
-        print('========state=======${state}');
-        if (state is InitializingPersonState) {
-          print('========state=======${state}');
-          final userCubit = context.read<UserCubit>();
+         if (state is InitializingPersonState) {
+           final userCubit = context.read<UserCubit>();
           userCubit.refreshData();
-          print('========reset=======${userCubit.state}');
-        }
+          }
       },
       builder: (context, state) {
         final followCubit = context.read<PersonCubit>();

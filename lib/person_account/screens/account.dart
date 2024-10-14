@@ -350,9 +350,7 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
   void onEventReceived(BuildContext context, PersonState state) async {
     await waitForDialog();
     if (state is InitializingPersonState) {
-      print('-----------------------actals');
-      // context.read<UserCubit>().reset();
-      // context.read<PostCubit>().updateUserInfoPost(state.user);
+    
     }
   }
 
