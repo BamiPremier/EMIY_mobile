@@ -4,6 +4,7 @@ import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
+import 'package:umai/person_account/screens/account.dart';
 import 'package:umai/social/bloc/comment_cubit.dart';
 import 'package:umai/social/bloc/load_comment_cubit.dart';
 import 'package:umai/social/bloc/post_cubit.dart';
@@ -55,10 +56,15 @@ class _ItemCommentState extends State<ItemComment> {
             children: [
               ListTile(
                 contentPadding: const EdgeInsets.only(top: 8.0, left: 16.0),
-                leading: ProfilePicture(
-                  image: comment.user.image,
-                  height: 40,
-                  width: 40,
+                leading: InkWell(
+                  child: ProfilePicture(
+                    image: comment.user.image,
+                    height: 40,
+                    width: 40,
+                  ),
+                  onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => PersonAccountScreen.get(
+                          context: context, user: comment.user))),
                 ),
                 title: Text(
                   comment.user.username,
@@ -154,7 +160,7 @@ class _ItemCommentState extends State<ItemComment> {
                     borderRadius: BorderRadius.circular(30),
                   )),
               errorBuilder: (context, retry) => Align(
-                alignment: Alignment.center, 
+                alignment: Alignment.center,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [

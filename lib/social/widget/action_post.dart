@@ -255,42 +255,74 @@ Future blockUser({required BuildContext context}) {
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        Text('BLOQUER ?',
+                        Text('BLOQUER ${personCubit.user.username} ?',
+                            textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.titleLarge!),
-                        Expanded(
-                            child: (state is PersonLoadingState)
-                                ? const Center(
-                                    child: CircularProgressIndicator(),
-                                  )
-                                : (state is BlockPersonState)
-                                    ? const Center(
-                                        child: Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 24.0),
-                                            child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: <Widget>[
-                                                  Text(
-                                                    'Tu as bloqué Hari Randoll. Pour annuler cette décision, rends-toi dans les paramètres de ton compte.',
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                ])))
-                                    : const Center(
-                                        child: Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 24.0),
-                                            child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: <Widget>[
-                                                  Text(
-                                                    'Tu ne verras plus les contenus de cette personne dans tes fils d’actualité. Hari Randoll ne pourra plus interagir avec ton contenu non plus. Veux-tu vraiment continuer?',
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                ])))),
+                        (state is PersonLoadingState)
+                            ? const Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : (state is BlockPersonState)
+                                ? Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 24.0)
+                                            .add(
+                                      EdgeInsets.only(bottom: 56.0, top: 24.0),
+                                    ),
+                                    child: RichText(
+                                        textAlign: TextAlign.center,
+                                        text: TextSpan(
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium,
+                                          children: <TextSpan>[
+                                            const TextSpan(
+                                                text: 'Tu as bloqué '),
+                                            TextSpan(
+                                              text: 'Hari Randoll',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium!
+                                                  .copyWith(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                            ),
+                                            const TextSpan(
+                                                text:
+                                                    '. Pour annuler cette décision, rends-toi dans les paramètres de ton compte.'),
+                                          ],
+                                        )))
+                                : Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 24.0)
+                                            .add(
+                                      EdgeInsets.only(bottom: 56.0, top: 4.0),
+                                    ),
+                                    child: RichText(
+                                      textAlign: TextAlign.center,
+                                      text: TextSpan(
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium,
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                              text:
+                                                  'Tu ne verras plus les contenus de cette personne dans tes fils d\'actualité. '),
+                                          TextSpan(
+                                            text: personCubit.user.username,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium!
+                                                .copyWith(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                          ),
+                                          TextSpan(
+                                              text:
+                                                  ' ne pourra plus interagir avec ton contenu non plus. Veux-tu vraiment continuer?'),
+                                        ],
+                                      ),
+                                    )),
                         UmaiButton.primary(
                           onPressed: state is InitializingPersonState
                               ? () {

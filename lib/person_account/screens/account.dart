@@ -12,10 +12,8 @@ import 'package:umai/common/models/user.dart';
 import 'package:umai/common/widgets/action_widget.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
-import 'package:umai/social/bloc/post_cubit.dart';
-import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/themes.dart';
-
+ 
 class PersonAccountScreen extends StatefulWidget {
   const PersonAccountScreen({super.key});
 

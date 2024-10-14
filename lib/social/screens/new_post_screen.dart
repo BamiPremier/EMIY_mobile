@@ -80,13 +80,9 @@ class _NewPostScreenState extends State<NewPostScreen> with CompletableMixin {
             }
           },
           saveConfig: SaveConfig.photo(),
-          previewPadding: EdgeInsets.zero,
           previewAlignment: Alignment.center,
-       
-          theme: AwesomeTheme(
-            bottomActionsBackgroundColor: Colors.transparent,
-          ),
-          previewFit: CameraPreviewFit.cover,
+          previewFit: CameraPreviewFit.contain,
+          
           sensorConfig: SensorConfig.single(
             sensor: Sensor.position(SensorPosition.back),
             aspectRatio: CameraAspectRatios.ratio_1_1,
@@ -101,9 +97,9 @@ class _TakePhotoUI extends StatefulWidget {
   final PhotoCameraState state;
 
   const _TakePhotoUI({
-    Key? key,
+    super.key,
     required this.state,
-  }) : super(key: key);
+  });
 
   @override
   _TakePhotoUIState createState() => _TakePhotoUIState();

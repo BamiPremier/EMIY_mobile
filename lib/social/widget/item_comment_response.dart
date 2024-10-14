@@ -4,6 +4,7 @@ import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
+import 'package:umai/person_account/screens/account.dart';
 import 'package:umai/social/bloc/comment_cubit.dart';
 import 'package:umai/social/bloc/load_comment_cubit.dart';
 import 'package:umai/social/bloc/action_comment_cubit.dart';
@@ -68,11 +69,16 @@ class _ItemCommentResponseState extends State<ItemCommentResponse> {
                       color: Color(0xFF5F6368),
                       size: 24,
                     ),
-                    ProfilePicture(
-                      image: comment.user.image,
-                      height: 32,
-                      width: 32,
-                    )
+                    InkWell(
+                        child: ProfilePicture(
+                          image: comment.user.image,
+                          height: 32,
+                          width: 32,
+                        ),
+                        onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => PersonAccountScreen.get(
+                                    context: context, user: comment.user))))
                   ]),
                 ),
                 title: Text(
