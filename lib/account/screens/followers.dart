@@ -10,28 +10,28 @@ import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/common/widgets/item_user.dart';
 import 'package:umai/common/screens/home.dart';
 
-class FollowersScreen extends StatefulWidget {
-  const FollowersScreen({super.key});
+class FollowingsScreen extends StatefulWidget {
+  const FollowingsScreen({super.key});
 
   @override
-  State<FollowersScreen> createState() => _FollowersScreenState();
+  State<FollowingsScreen> createState() => _FollowingsScreenState();
 }
 
-class _FollowersScreenState extends State<FollowersScreen> {
+class _FollowingsScreenState extends State<FollowingsScreen> {
   late final userCubit = context.read<UserCubit>();
-  late final followersCount = userCubit.user.followersCount;
+  late final followingCount = userCubit.user.followingCount;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:
-          AppBar(title: Text("Ajoutés ($followersCount)"), centerTitle: true),
+          AppBar(title: Text("Ajoutés ($followingCount)"), centerTitle: true),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: AutoListView.get<User>(
           padding:
               EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          cubit:
-              AutoListCubit(provider: context.read<UserService>().getUserFollowers),
+          cubit: AutoListCubit(
+              provider: context.read<UserService>().getUserFollowing),
           itemBuilder: (context, user) =>
               UserItem.get(context: context, user: user),
           errorBuilder: (context, retry) => Column(
