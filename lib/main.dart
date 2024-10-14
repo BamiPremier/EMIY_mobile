@@ -122,6 +122,7 @@ class MyApp extends StatelessWidget {
             return BlocBuilder<UserCubit, UserState>(
               buildWhen: (previous, _) => previous is InitializingUserState,
               builder: (context, state) {
+              
                 if (state is InitializingUserState) return const SizedBox();
                 if (state is UserNotLoggedState)
                   return const OnboardingScreen();

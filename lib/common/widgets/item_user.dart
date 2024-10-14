@@ -21,10 +21,10 @@ class UserItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<PersonCubit, PersonState>(
       listener: (context, state) {
-         if (state is InitializingPersonState) {
-           final userCubit = context.read<UserCubit>();
+        if (state is InitializingPersonState) {
+          final userCubit = context.read<UserCubit>();
           userCubit.refreshData();
-          }
+        }
       },
       builder: (context, state) {
         final followCubit = context.read<PersonCubit>();
@@ -64,6 +64,8 @@ class UserItem extends StatelessWidget {
                     textStyle: Theme.of(context).textTheme.labelLarge!.copyWith(
                           color: AppTheme.mainText,
                         ),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -82,7 +84,7 @@ class UserItem extends StatelessWidget {
                             ),
                       const SizedBox(width: 8),
                       Text(
-                        'Suivre',
+                        'Ajouter',
                         style: Theme.of(context).textTheme.labelLarge!.copyWith(
                               color: AppTheme.mainText,
                             ),
@@ -99,6 +101,8 @@ class UserItem extends StatelessWidget {
                           color:
                               Theme.of(context).colorScheme.onTertiaryContainer,
                         ),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -115,7 +119,7 @@ class UserItem extends StatelessWidget {
                           : const Icon(Icons.check),
                       const SizedBox(width: 8),
                       Text(
-                        'Suivi(e)',
+                        'Ajouté(e)',
                         style: Theme.of(context).textTheme.labelLarge!.copyWith(
                             color: Theme.of(context)
                                 .colorScheme
