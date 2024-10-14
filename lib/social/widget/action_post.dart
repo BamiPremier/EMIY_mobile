@@ -125,7 +125,7 @@ Future reportPost({required BuildContext context}) {
                                   ? Center(
                                       child: Padding(
                                           padding: const EdgeInsets.symmetric(
-                                              horizontal: 24.0),
+                                              horizontal: 16.0),
                                           child: Column(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
@@ -135,10 +135,14 @@ Future reportPost({required BuildContext context}) {
                                                   'Merci d’avoir signalé ce contenu. Nous allons prendre les mesures nécessaires en cas de contenu inapproprié avéré.',
                                                   textAlign: TextAlign.center,
                                                 ),
-                                                Checkbox(
-                                                    value: true,
-                                                    onChanged: (value) =>
-                                                        print('valeur')),
+                                                const SizedBox(height: 40.0),
+                                                Icon(
+                                                  Icons.check_box_outlined,
+                                                  size: 40.0,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onSurfaceVariant,
+                                                ),
                                               ])))
                                   : Column(
                                       children: [
@@ -150,6 +154,9 @@ Future reportPost({required BuildContext context}) {
                                               'Haine / Discrimination'),
                                           value: 'Haine / Discrimination',
                                           groupValue: selectedReason,
+                                          activeColor: Theme.of(context)
+                                              .colorScheme
+                                              .surfaceTint,
                                           onChanged: (value) {
                                             setState(() {
                                               selectedReason = value;
@@ -162,6 +169,9 @@ Future reportPost({required BuildContext context}) {
                                           title: const Text('Contenu sexuel'),
                                           value: 'Contenu sexuel',
                                           groupValue: selectedReason,
+                                          activeColor: Theme.of(context)
+                                              .colorScheme
+                                              .surfaceTint,
                                           onChanged: (value) {
                                             setState(() {
                                               selectedReason = value;
@@ -174,6 +184,9 @@ Future reportPost({required BuildContext context}) {
                                           title: const Text('Harcèlement'),
                                           value: 'Harcèlement',
                                           groupValue: selectedReason,
+                                          activeColor: Theme.of(context)
+                                              .colorScheme
+                                              .surfaceTint,
                                           onChanged: (value) {
                                             setState(() {
                                               selectedReason = value;
@@ -188,6 +201,9 @@ Future reportPost({required BuildContext context}) {
                                           value:
                                               'Divulgation d\'informations privées',
                                           groupValue: selectedReason,
+                                          activeColor: Theme.of(context)
+                                              .colorScheme
+                                              .surfaceTint,
                                           onChanged: (value) {
                                             setState(() {
                                               selectedReason = value;
@@ -200,6 +216,9 @@ Future reportPost({required BuildContext context}) {
                                           title: const Text('Autre'),
                                           value: 'Autre',
                                           groupValue: selectedReason,
+                                          activeColor: Theme.of(context)
+                                              .colorScheme
+                                              .surfaceTint,
                                           onChanged: (value) {
                                             setState(() {
                                               selectedReason = value;
@@ -218,7 +237,9 @@ Future reportPost({required BuildContext context}) {
                                   postCubit.report(reason: selectedReason!);
                                 }
                               : null,
-                          text: "Signaler",
+                          text: state is SuccessSendRepportPostState
+                              ? "Fermer"
+                              : "Signaler",
                         ),
                       ],
                     ),
@@ -264,9 +285,9 @@ Future blockUser({required BuildContext context}) {
                               )
                             : (state is BlockPersonState)
                                 ? Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 24.0)
-                                            .add(
+                                    padding: const EdgeInsets.symmetric(
+                                            horizontal: 16.0)
+                                        .add(
                                       EdgeInsets.only(bottom: 56.0, top: 24.0),
                                     ),
                                     child: RichText(
@@ -293,9 +314,9 @@ Future blockUser({required BuildContext context}) {
                                           ],
                                         )))
                                 : Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 24.0)
-                                            .add(
+                                    padding: const EdgeInsets.symmetric(
+                                            horizontal: 16.0)
+                                        .add(
                                       EdgeInsets.only(bottom: 56.0, top: 4.0),
                                     ),
                                     child: RichText(
@@ -305,7 +326,7 @@ Future blockUser({required BuildContext context}) {
                                             .textTheme
                                             .bodyMedium,
                                         children: <TextSpan>[
-                                          TextSpan(
+                                          const TextSpan(
                                               text:
                                                   'Tu ne verras plus les contenus de cette personne dans tes fils d\'actualité. '),
                                           TextSpan(
@@ -317,7 +338,7 @@ Future blockUser({required BuildContext context}) {
                                                     fontWeight:
                                                         FontWeight.bold),
                                           ),
-                                          TextSpan(
+                                          const TextSpan(
                                               text:
                                                   ' ne pourra plus interagir avec ton contenu non plus. Veux-tu vraiment continuer?'),
                                         ],
