@@ -10,39 +10,45 @@ import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/common/widgets/item_user.dart';
 import 'package:umai/common/screens/home.dart';
 
-class FollowingsScreen extends StatefulWidget {
-  const FollowingsScreen({super.key});
+class FollowersScreen extends StatefulWidget {
+  const FollowersScreen({super.key});
 
   @override
-  State<FollowingsScreen> createState() => _FollowingsScreenState();
+  State<FollowersScreen> createState() => _FollowersScreenState();
 }
 
-class _FollowingsScreenState extends State<FollowingsScreen> {
+class _FollowersScreenState extends State<FollowersScreen> {
   late final userCubit = context.read<UserCubit>();
-  late final followingCount = userCubit.user.followingCount;
+  late final followersCount = userCubit.user.followersCount;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          AppBar(title: Text("Ajoutés ($followingCount)"), centerTitle: true),
+      appBar: AppBar(
+        title: Text("M'ont ajouté ($followersCount)"),
+        centerTitle: true,
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: AutoListView.get<User>(
           padding:
               EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           cubit: AutoListCubit(
-              provider: context.read<UserService>().getUserFollowing),
+              provider: context.read<UserService>().getUserFollowers),
           itemBuilder: (context, user) =>
               UserItem.get(context: context, user: user),
-          errorBuilder: (context, retry) => Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text("An error occured"),
-              TextButton(
-                onPressed: retry,
-                child: const Text("Retry"),
-              )
-            ],
+          errorBuilder: (context, retry) => Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Text("An error occured"),
+                TextButton(
+                  onPressed: retry,
+                  child: const Text("Retry"),
+                )
+              ],
+            ),
           ),
         ),
       ),

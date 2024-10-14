@@ -26,16 +26,20 @@ class HomeScreen extends StatelessWidget {
           forceMaterialTransparency: true,
           title: Text(pages[index]['title'] as String),
           centerTitle: true,
-          systemOverlayStyle: Theme.of(context).appBarTheme.systemOverlayStyle
-            ?.copyWith(
-            systemNavigationBarColor: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
-            systemNavigationBarDividerColor: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
-          ),
+          systemOverlayStyle: Theme.of(context)
+              .appBarTheme
+              .systemOverlayStyle
+              ?.copyWith(
+                systemNavigationBarColor:
+                    Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+                systemNavigationBarDividerColor:
+                    Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+              ),
           actions: [
             GestureDetector(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const AccountScreen()));
+                    builder: (context) => const AccountScreen()));
               },
               child: const UserProfilePicture(),
             ),
@@ -45,6 +49,7 @@ class HomeScreen extends StatelessWidget {
         body: pages[index]['page'] as Widget,
         bottomNavigationBar: BottomNavigationBar(
           onTap: context.read<HomeCubit>().set,
+          useLegacyColorScheme: false,
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: _buildIconWithDecoration(
@@ -68,7 +73,7 @@ class HomeScreen extends StatelessWidget {
             ),
             BottomNavigationBarItem(
               icon: _buildIconWithDecoration(
-                  icon: Icons.notifications, selected: index == 4),
+                  icon: Icons.notifications_outlined, selected: index == 4),
               label: pages[4]['title'] as String,
             ),
           ],
