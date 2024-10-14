@@ -113,6 +113,7 @@ class UserCubit extends ObjectCubit<User, UserState> {
 
   @override
   void update(User object) {
+    
     // TODO: implement update
   }
 }

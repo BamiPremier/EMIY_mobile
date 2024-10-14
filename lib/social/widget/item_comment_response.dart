@@ -167,9 +167,8 @@ class _ItemCommentResponseState extends State<ItemCommentResponse> {
                   child: CircularProgressIndicator(),
                 ),
               ),
-              errorBuilder: (context, retry) => Container(
+              errorBuilder: (context, retry) => Align(
                 alignment: Alignment.center,
-                // padding: EdgeInsets.all(16),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [

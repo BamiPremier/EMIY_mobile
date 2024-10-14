@@ -153,9 +153,8 @@ class _ItemCommentState extends State<ItemComment> {
                         Theme.of(context).colorScheme.tertiaryContainer,
                     borderRadius: BorderRadius.circular(30),
                   )),
-              errorBuilder: (context, retry) => Container(
-                alignment: Alignment.center,
-                // padding: EdgeInsets.all(16),
+              errorBuilder: (context, retry) => Align(
+                alignment: Alignment.center, 
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
