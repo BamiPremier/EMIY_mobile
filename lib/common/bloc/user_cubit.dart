@@ -48,6 +48,10 @@ class UserCubit extends ObjectCubit<User, UserState> {
     _getInitialState();
   }
 
+  void refreshData() {
+    _getInitialState(true);
+  }
+
   User get user {
     final user = getObject(state) ?? object;
 
@@ -113,7 +117,6 @@ class UserCubit extends ObjectCubit<User, UserState> {
 
   @override
   void update(User object) {
-    
     // TODO: implement update
   }
 }

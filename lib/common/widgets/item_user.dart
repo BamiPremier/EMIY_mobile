@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/person_cubit.dart';
+import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/models/user.dart';
 import 'package:umai/utils/themes.dart';
 
@@ -17,7 +19,16 @@ class UserItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PersonCubit, PersonState>(
+    return BlocConsumer<PersonCubit, PersonState>(
+      listener: (context, state) {
+        print('========state=======${state}');
+        if (state is InitializingPersonState) {
+          print('========state=======${state}');
+          final userCubit = context.read<UserCubit>();
+          userCubit.refreshData();
+          print('========reset=======${userCubit.state}');
+        }
+      },
       builder: (context, state) {
         final followCubit = context.read<PersonCubit>();
         return ListTile(
