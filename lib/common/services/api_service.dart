@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:dio_cache_interceptor_hive_store/dio_cache_interceptor_hive_store.dart';
 import 'package:path_provider/path_provider.dart';
@@ -32,7 +34,9 @@ class ApiService extends potatoes.ApiService {
     assert(mapper == null || messageMapper == null);
     try {
       Response response = await request;
-
+      if (response.data.toString().isEmpty) {
+        return response.data;
+      }
       if (response.data != null) {
         return defaultExtractResult(
             response.data, mapperKey, mapper, messageMapper);

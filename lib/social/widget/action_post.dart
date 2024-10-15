@@ -221,7 +221,9 @@ Future reportPost({required BuildContext context}) {
                               ? () {
                                   postCubit.report(reason: selectedReason!);
                                 }
-                              : null,
+                              : (state is SuccessSendRepportPostState)
+                                  ? () => Navigator.of(context).pop()
+                                  : null,
                           text: state is SuccessSendRepportPostState
                               ? "Fermer"
                               : "Signaler",
