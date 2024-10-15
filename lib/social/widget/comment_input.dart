@@ -39,11 +39,8 @@ class _CommentInputState extends State<CommentInput> {
                 });
               }
             },
-            builder: (context, state) => Container(
-                  // padding: EdgeInsets.only(
-                  //     bottom: MediaQuery.of(context).viewInsets.bottom),
+            builder: (context, state) => ColoredBox(
                   color: Theme.of(context).colorScheme.surface,
-
                   child: Padding(
                     padding: const EdgeInsets.all(16),
                     child: Row(

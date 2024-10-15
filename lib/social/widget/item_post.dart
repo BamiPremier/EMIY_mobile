@@ -42,7 +42,7 @@ class _PostItemState extends State<PostItem> {
                 builder: (context) => PostDetailsScreen.from(cubit: postCubit)),
           );
         },
-        child: Container(
+        child: ColoredBox(
           color: Colors.white,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
