@@ -273,56 +273,48 @@ class _AccountScreenState extends State<AccountScreen>
   void onActionsPressed() => showAppBottomSheet(
       context: context,
       horizontalPadding: 0,
-      maxHeight: 280,
-      isScrollControlled: true,
-      builder: (_) => Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16.0,
-          ).add(const EdgeInsets.only(top: 24.0)),
-          child: Column(
+      maxHeight: 250,
+      builder: (innerContext) => Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16.0,
+        ).add(const EdgeInsets.only(top: 24.0)),
+        child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ActionWidget(
                 title: 'Partager...',
                 icon: Icons.share,
-                onTap: () => print(''),
+                onTap: () {
+                  Navigator.of(innerContext).pop();
+                },
               ),
-              const SizedBox(
-                height: 16,
-              ),
+              const SizedBox(height: 16),
               ActionWidget(
                 title: 'Éditer mon profil',
                 icon: Icons.edit_outlined,
                 onTap: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(innerContext).pop();
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => const EditProfileScreen()));
                 },
               ),
-              const SizedBox(
-                height: 16,
-              ),
+              const SizedBox(height: 16),
               ActionWidget(
                 title: 'Paramètres',
                 icon: Icons.settings,
                 onTap: () {
-                  Navigator.of(context).pop();
-
+                  Navigator.of(innerContext).pop();
                   Navigator.of(context).push(
                     MaterialPageRoute(
                         builder: (context) => const SettingsScreen()),
                   );
                 },
               ),
-              const SizedBox(
-                height: 16,
-              ),
+              const SizedBox(height: 16),
               ActionWidget(
                 title: 'Déconnexion',
                 icon: Icons.logout,
-                onTap: () {
-                  userCubit.signOut();
-                },
+                onTap: userCubit.signOut,
               ),
             ],
           )));

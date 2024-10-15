@@ -355,8 +355,7 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
   void onActionsPressed() => showAppBottomSheet(
       context: context,
       horizontalPadding: 0,
-      maxHeight: 280,
-      isScrollControlled: true,
+      maxHeight: 100,
       builder: (_) => Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 16.0,

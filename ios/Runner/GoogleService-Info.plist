@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>887208119857-5fv0csi5q630qh2ajgkdl60ni9sscfhf.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.887208119857-5fv0csi5q630qh2ajgkdl60ni9sscfhf</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>887208119857-66iahahhjh9ocg9h3n2q5ljuinb40fh2.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAWqU_alZEhupVzzN95FIHlqFnkurBloAI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>887208119857</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>caelis.studio.umai</string>
+	<key>PROJECT_ID</key>
+	<string>umai-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>umai-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:887208119857:ios:dfcdefa9fcd7713b134f10</string>
+</dict>
+</plist>

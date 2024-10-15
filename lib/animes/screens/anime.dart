@@ -392,7 +392,6 @@ class _AnimeDetailsScreenState extends State<AnimeDetailsScreen>
       context: context,
       horizontalPadding: 0,
       maxHeight: 100,
-      isScrollControlled: true,
       builder: (_) => Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 16.0,

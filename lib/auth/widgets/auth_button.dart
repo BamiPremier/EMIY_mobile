@@ -20,7 +20,6 @@ extension AuthProviderExtension on AuthProvider {
     switch (this) {
       case AuthProvider.apple:
         return "Se connecter avec Apple";
-
       case AuthProvider.google:
         return "Se connecter avec Google";
     }

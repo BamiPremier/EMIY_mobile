@@ -11,7 +11,7 @@ class AuthIdleState extends CubitSuccessState with AuthState {
   final TextEditingController userTagController;
   @override
   List<Object?> get props =>
-      [userNameController, userTagController, identityHashCode(this)];
+      [userNameController, userTagController];
 }
 
 class AuthLoadingState extends CubitLoadingState with AuthState {
@@ -30,11 +30,6 @@ class AuthSuccessInActiveUserState extends CubitInformationState
 class CompleteUserSuccessUserState extends CubitInformationState
     with AuthState {
   const CompleteUserSuccessUserState();
-}
-
-class AuthMissingSupplierInformation extends CubitInformationState
-    with AuthState {
-  const AuthMissingSupplierInformation();
 }
 
 class AuthErrorState extends CubitErrorState with AuthState {

@@ -22,6 +22,22 @@
           }
         },
         {
+          "client_id": "887208119857-re539f42o9vajfg5cdcdoi3q9vh64o8d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "caelis.studio.umai",
+            "certificate_hash": "c166d7bc19b41842b6c92d507a15807438544f2c"
+          }
+        },
+        {
+          "client_id": "887208119857-slnq4a5brftongovcf7sf4i0fqntcrih.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "caelis.studio.umai",
+            "certificate_hash": "276dcfe5c8140d06d4ff8b81420a5e6e2ee5de41"
+          }
+        },
+        {
           "client_id": "887208119857-f31hg004emqi3d3ms5ugv3mtmn902ghr.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -37,6 +53,13 @@
             {
               "client_id": "887208119857-f31hg004emqi3d3ms5ugv3mtmn902ghr.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "887208119857-5fv0csi5q630qh2ajgkdl60ni9sscfhf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "caelis.studio.umai"
+              }
             }
           ]
         }
