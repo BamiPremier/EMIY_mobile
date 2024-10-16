@@ -6,19 +6,20 @@ import 'package:umai/social/screens/post_details.dart';
 import 'package:umai/social/widget/action_post.dart';
 import 'package:umai/social/widget/button_post.dart';
 import 'package:readmore/readmore.dart';
+import 'package:umai/social/widget/post_image.dart';
 
 class PostItem extends StatefulWidget {
   static Widget get({required BuildContext context, required Post post}) {
     return BlocProvider(
       create: (context) => PostCubit(context.read(), post),
-      child: PostItem._(),
+      child: const PostItem._(),
     );
   }
 
-  PostItem._();
+  const PostItem._();
 
   @override
-  _PostItemState createState() => _PostItemState();
+  State<PostItem> createState() => _PostItemState();
 }
 
 class _PostItemState extends State<PostItem> {
@@ -70,78 +71,9 @@ class _PostItemState extends State<PostItem> {
                   ],
                 ),
               ),
-              post.image == null || post.image == '' || post.image!.isEmpty
-                  ? const SizedBox()
-                  : Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Image.network(
-                        post.image ?? '',
-                        height: 368,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                        frameBuilder: (BuildContext context, Widget child,
-                            int? frame, bool wasSynchronouslyLoaded) {
-                          if (wasSynchronouslyLoaded) {
-                            return child;
-                          }
-                          return AnimatedOpacity(
-                            opacity: frame == null ? 0 : 1,
-                            duration: const Duration(seconds: 1),
-                            curve: Curves.easeOut,
-                            child: child,
-                          );
-                        },
-                        loadingBuilder: (BuildContext context, Widget child,
-                            ImageChunkEvent? loadingProgress) {
-                          if (loadingProgress == null) {
-                            return child;
-                          }
-                          return Container(
-                            height: 368,
-                            width: double.infinity,
-                            color:
-                                Theme.of(context).colorScheme.tertiaryContainer,
-                            child: Center(
-                              child: CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes !=
-                                        null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                        (loadingProgress.expectedTotalBytes ??
-                                            1)
-                                    : null,
-                                color: Theme.of(context).colorScheme.tertiary,
-                                backgroundColor: Theme.of(context)
-                                    .colorScheme
-                                    .onTertiaryContainer,
-                              ),
-                            ),
-                          );
-                        },
-                        errorBuilder: (BuildContext context, Object error,
-                            StackTrace? stackTrace) {
-                          return Container(
-                            height: 368,
-                            width: double.infinity,
-                            color: Colors.grey[300],
-                            child: const Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.error,
-                                      color: Colors.red, size: 48),
-                                  SizedBox(height: 16),
-                                  Text(
-                                    "Erreur de chargement de l'image",
-                                    style: TextStyle(color: Colors.red),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-              ButtonPost()
+              if (post.image?.isNotEmpty ?? false)
+                PostImage(url: post.image!),
+              const ButtonPost()
             ],
           ),
         ),
