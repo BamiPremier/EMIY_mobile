@@ -36,7 +36,10 @@ class _PostItemState extends State<PostItem> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => PostDetailsScreen.from(cubit: postCubit)),
+                builder: (context) => PostDetailsScreen.from(
+                      context: context,
+                      post: post,
+                    )),
           );
         },
         child: ColoredBox(
@@ -49,7 +52,7 @@ class _PostItemState extends State<PostItem> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    PostAction.get(context: context),
+                    PostAction.get(context: context, user : post.user),
                     const SizedBox(height: 8),
                     Padding(
                         padding: const EdgeInsets.only(right: 16.0),
@@ -71,8 +74,7 @@ class _PostItemState extends State<PostItem> {
                   ],
                 ),
               ),
-              if (post.image?.isNotEmpty ?? false)
-                PostImage(url: post.image!),
+              if (post.image?.isNotEmpty ?? false) PostImage(url: post.image!),
               const ButtonPost()
             ],
           ),

@@ -4,7 +4,7 @@ import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
-import 'package:umai/person_account/screens/account.dart';
+import 'package:umai/account/screens/person_account.dart';
 import 'package:umai/social/bloc/comment_cubit.dart';
 import 'package:umai/social/bloc/load_comment_cubit.dart';
 import 'package:umai/social/bloc/post_cubit.dart';
@@ -33,8 +33,12 @@ class ItemComment extends StatefulWidget {
 class _ItemCommentState extends State<ItemComment> {
   late final commentCubit = context.read<CommentCubit>();
   late final postCubit = context.read<PostCubit>();
-  late final loadCommentCubit =
-      LoadCommentCubit(context.read(), postCubit.post.id, comment.id);
+  late final loadCommentCubit = LoadCommentCubit(
+    context.read(),
+    postCubit.post.id,
+    comment.id,
+    context.read(),
+  );
   late final comment = commentCubit.comment;
 
   @override
@@ -65,10 +69,16 @@ class _ItemCommentState extends State<ItemComment> {
                       builder: (context) => PersonAccountScreen.get(
                           context: context, user: comment.user))),
                 ),
-                title: Text(
-                  comment.user.username,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
+                title: InkWell(
+                    child: Text(
+                      comment.user.username,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => PersonAccountScreen.get(
+                            context: context, user: comment.user)))),
                 subtitle: null,
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,

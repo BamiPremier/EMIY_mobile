@@ -2,20 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/person_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
+import 'package:umai/common/models/user.dart';
+import 'package:umai/common/services/person_cubit_manager.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
-import 'package:umai/person_account/screens/account.dart';
-import 'package:umai/social/bloc/post_cubit.dart';
+import 'package:umai/account/screens/person_account.dart';
+import 'package:umai/social/bloc/post_cubit.dart'; 
 import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
 class PostAction extends StatefulWidget {
   static Widget get({
     required BuildContext context,
+    required User user,
   }) {
-    return BlocProvider(
-      create: (context) =>
-          PersonCubit(context.read(), context.read<PostCubit>().post.user),
+    return BlocProvider.value(
+      value:  context.read<PersonCubitManager>().get(user),
       child: const PostAction._(),
     );
   }
@@ -248,9 +250,7 @@ Future blockUser({required BuildContext context}) {
       builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
-            return BlocProvider.value(
-              value: personCubit,
-              child: BlocBuilder<PersonCubit, PersonState>(
+            return   BlocBuilder<PersonCubit, PersonState>(
                 builder: (context, state) => Container(
                   height: 280,
                   padding: const EdgeInsets.symmetric(horizontal: 16.0)
@@ -351,7 +351,7 @@ Future blockUser({required BuildContext context}) {
                     ),
                   ),
                 ),
-              ),
+           
             );
           },
         );

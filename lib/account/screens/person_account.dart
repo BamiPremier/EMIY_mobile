@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/common/widgets/loaders.dart';
 import 'package:potatoes/libs.dart';
-import 'package:umai/person_account/screens/section/activities.dart';
-import 'package:umai/person_account/screens/section/animes.dart';
-import 'package:umai/person_account/screens/section/posts.dart';
-import 'package:umai/person_account/screens/section/watchlist.dart';
+import 'package:umai/account/screens/follow.dart';
+import 'package:umai/account/screens/section/activities.dart';
+import 'package:umai/account/screens/section/animes.dart';
+import 'package:umai/account/screens/section/posts.dart';
+import 'package:umai/account/screens/section/watchlist.dart';
+import 'package:umai/common/bloc/follow_cubit.dart';
+import 'package:umai/common/services/person_cubit_manager.dart';
 import 'package:umai/common/bloc/person_cubit.dart';
 import 'package:umai/common/models/user.dart';
+import 'package:umai/common/services/user_service.dart';
 import 'package:umai/common/widgets/action_widget.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/utils/themes.dart';
- 
+
 class PersonAccountScreen extends StatefulWidget {
   const PersonAccountScreen({super.key});
 
@@ -19,8 +23,8 @@ class PersonAccountScreen extends StatefulWidget {
     required BuildContext context,
     required User user,
   }) {
-    return BlocProvider(
-      create: (context) => PersonCubit(context.read(), user),
+    return BlocProvider.value(
+      value: context.read<PersonCubitManager>().get(user),
       child: const PersonAccountScreen(),
     );
   }
@@ -44,12 +48,21 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
     super.dispose();
   }
 
+  late final personCubit = context.read<PersonCubit>();
+
+  late final followersCubit = FollowCubit(
+      context.read<UserService>().getUserFollowers(userId: personCubit.user.id),
+      context.read());
+
+  late final followingCubit = FollowCubit(
+      context.read<UserService>().getUserFollowing(userId: personCubit.user.id),
+      context.read());
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<PersonCubit, PersonState>(
         listener: onEventReceived,
         builder: (context, state) {
-          final personCubit = context.read<PersonCubit>();
           final user = personCubit.user;
           return Scaffold(
               appBar: AppBar(
@@ -137,11 +150,11 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                               children: [
                                 state is PersonLoadingState
                                     ? const SizedBox(
-                                        width: 20,
-                                        height: 20,
+                                        width: 16,
+                                        height: 16,
                                         child: CircularProgressIndicator(
                                           strokeWidth: 2,
-                                          color: AppTheme.white,
+                                          color: AppTheme.black,
                                         ),
                                       )
                                     : const Icon(
@@ -181,11 +194,11 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                               children: [
                                 state is PersonLoadingState
                                     ? const SizedBox(
-                                        width: 20,
-                                        height: 20,
+                                        width: 16,
+                                        height: 16,
                                         child: CircularProgressIndicator(
                                           strokeWidth: 2,
-                                          color: AppTheme.white,
+                                          color: AppTheme.black,
                                         ),
                                       )
                                     : const Icon(Icons.check),
@@ -224,37 +237,58 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                           children: [
                             const Icon(Icons.people_outline),
                             const SizedBox(width: 16),
-                            SizedBox(
-                              width: 76,
+                            InkWell(
+                              onTap: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) => FollowScreen.get(
+                                          context: context,
+                                          title:
+                                              "M'ont ajouté (${user.followersCount})",
+                                          followCubit: followersCubit))),
+                              child: SizedBox(
+                                width: 76,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      '${user.followersCount}',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelLarge,
+                                    ),
+                                    Text(
+                                      "M'ont ajouté",
+                                      style:
+                                          Theme.of(context).textTheme.bodySmall,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            InkWell(
+                              onTap: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) => FollowScreen.get(
+                                          context: context,
+                                          title:
+                                              "Ajoutés (${user.followingCount})",
+                                          followCubit: followingCubit))),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    '${user.followersCount}',
+                                    '${user.followingCount}',
                                     style:
                                         Theme.of(context).textTheme.labelLarge,
                                   ),
                                   Text(
-                                    "M'ont ajouté",
+                                    "ajoutés",
                                     style:
                                         Theme.of(context).textTheme.bodySmall,
                                   ),
                                 ],
                               ),
-                            ),
-                            const SizedBox(width: 16),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  '${user.followingCount}',
-                                  style: Theme.of(context).textTheme.labelLarge,
-                                ),
-                                Text(
-                                  "ajoutés",
-                                  style: Theme.of(context).textTheme.bodySmall,
-                                ),
-                              ],
                             ),
                           ],
                         ),
@@ -345,9 +379,7 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
 
   void onEventReceived(BuildContext context, PersonState state) async {
     await waitForDialog();
-    if (state is InitializingPersonState) {
-    
-    }
+    if (state is InitializingPersonState) {}
   }
 
   void onActionsPressed() => showAppBottomSheet(
@@ -364,7 +396,7 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
               ActionWidget(
                 title: 'Partager...',
                 icon: Icons.share,
-                onTap: () =>Navigator.pop(context),
+                onTap: () => Navigator.pop(context),
               ),
               const SizedBox(
                 height: 16,

@@ -4,7 +4,7 @@ import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
-import 'package:umai/person_account/screens/account.dart';
+import 'package:umai/account/screens/person_account.dart';
 import 'package:umai/social/bloc/comment_cubit.dart';
 import 'package:umai/social/bloc/load_comment_cubit.dart';
 import 'package:umai/social/model/comment.dart';
@@ -23,9 +23,6 @@ class ItemCommentResponse extends StatefulWidget {
       providers: [
         BlocProvider(
             create: (context) => CommentCubit(context.read(), comment)),
-        // BlocProvider(
-        //     create: (context) =>
-        //         LoadCommentCubit(context.read(), idPost, comment.id)),
       ],
       child: ItemCommentResponse._(idPost: idPost),
     );
@@ -40,8 +37,12 @@ class ItemCommentResponse extends StatefulWidget {
 
 class _ItemCommentResponseState extends State<ItemCommentResponse> {
   late final commentCubit = context.read<CommentCubit>();
-  late final loadCommentCubit =
-      LoadCommentCubit(context.read(), widget.idPost, comment.id);
+  late final loadCommentCubit = LoadCommentCubit(
+    context.read(),
+    widget.idPost,
+    comment.id,
+    context.read(),
+  );
   late final comment = commentCubit.comment;
 
   @override

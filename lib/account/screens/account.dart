@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:potatoes/common/widgets/loaders.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/account/screens/edit_profile.dart';
-import 'package:umai/account/screens/followings.dart';
-import 'package:umai/account/screens/followers.dart';
+import 'package:umai/account/screens/follow.dart';
 import 'package:umai/account/screens/param/settings_screen.dart';
 import 'package:umai/account/screens/section/activities.dart';
 import 'package:umai/account/screens/section/animes.dart';
 import 'package:umai/account/screens/section/posts.dart';
 import 'package:umai/account/screens/section/watchlist.dart';
 import 'package:umai/auth/screens/onboarding_screen.dart';
+import 'package:umai/common/bloc/follow_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
+import 'package:umai/common/services/user_service.dart';
 import 'package:umai/common/widgets/action_widget.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/common/widgets/buttons.dart';
@@ -35,6 +36,12 @@ class _AccountScreenState extends State<AccountScreen>
 
   late final userCubit = context.read<UserCubit>();
   late final user = userCubit.user;
+
+  late final followersCubit = FollowCubit(
+      context.read<UserService>().getUserFollowers(), context.read());
+
+  late final followingCubit = FollowCubit(
+      context.read<UserService>().getUserFollowing(), context.read());
 
   @override
   void dispose() {
@@ -129,10 +136,12 @@ class _AccountScreenState extends State<AccountScreen>
                         const Icon(Icons.people_outline),
                         const SizedBox(width: 16),
                         InkWell(
-                          onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const FollowersScreen())),
+                          onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => FollowScreen.get(
+                                  context: context,
+                                  title:
+                                      "M'ont ajouté (${userCubit.user.followersCount})",
+                                  followCubit: followersCubit))),
                           child: SizedBox(
                             width: 76,
                             child: Column(
@@ -152,10 +161,12 @@ class _AccountScreenState extends State<AccountScreen>
                         ),
                         const SizedBox(width: 16),
                         InkWell(
-                          onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const FollowingsScreen())),
+                          onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => FollowScreen.get(
+                                  context: context,
+                                  title:
+                                      "Ajoutés (${userCubit.user.followingCount})",
+                                  followCubit: followingCubit))),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
