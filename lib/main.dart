@@ -19,6 +19,7 @@ import 'package:umai/common/services/preferences_service.dart';
 import 'package:umai/common/services/user_service.dart';
 import 'package:umai/firebase_options.dart';
 import 'package:umai/social/bloc/new_post_cubit.dart';
+import 'package:umai/social/services/post_cubit_manager.dart';
 import 'package:umai/social/services/social_service.dart';
 import 'package:umai/utils/themes.dart';
 
@@ -79,6 +80,7 @@ class MyApp extends StatelessWidget {
         RepositoryProvider(create: (_) => UserService(dio)),
         RepositoryProvider(create: (_) => SocialService(dio)),
         RepositoryProvider(create: (_) => AnimeService(dio)),
+        RepositoryProvider(create: (context) => PostCubitManager(context.read())),
       ],
       child: MultiBlocProvider(
         providers: [

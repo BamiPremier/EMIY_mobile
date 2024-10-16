@@ -12,7 +12,7 @@ class ButtonPost extends StatefulWidget {
   });
 
   @override
-  _ButtonPostState createState() => _ButtonPostState();
+  State<ButtonPost> createState() => _ButtonPostState();
 }
 
 class _ButtonPostState extends State<ButtonPost> with CompletableMixin {
@@ -20,15 +20,17 @@ class _ButtonPostState extends State<ButtonPost> with CompletableMixin {
 
   @override
   Widget build(BuildContext context) {
-    final post = postCubit.post;
-    return BlocListener<PostCubit, PostState>(
+    return BlocConsumer<PostCubit, PostState>(
       listener: onEventReceived,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              post.hasLiked
+      buildWhen: (_, state) => state is InitializingPostState,
+      builder: (context, state) {
+        final post = postCubit.post;
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                post.hasLiked
                   ? IconButton(
                       padding: EdgeInsets.zero,
                       icon: const Icon(
@@ -49,28 +51,29 @@ class _ButtonPostState extends State<ButtonPost> with CompletableMixin {
                         postCubit.likePost();
                       },
                     ),
-              IconButton(
-                padding: EdgeInsets.zero,
-                icon: Icon(
-                  Icons.chat_bubble_outline,
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                IconButton(
+                  padding: EdgeInsets.zero,
+                  icon: Icon(
+                    Icons.chat_bubble_outline,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                  onPressed: () {
+                    context.read<ActionCommentCubit>().set(null);
+                  },
                 ),
-                onPressed: () {
-                  context.read<ActionCommentCubit>().set(null);
-                },
-              ),
-            ],
-          ),
-          IconButton(
-            padding: EdgeInsets.zero,
-            icon: Icon(
-              Icons.share,
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ],
             ),
-            onPressed: () => postCubit.sharePost(),
-          ),
-        ],
-      ),
+            IconButton(
+              padding: EdgeInsets.zero,
+              icon: Icon(
+                Icons.share,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+              onPressed: () => postCubit.sharePost(),
+            ),
+          ],
+        );
+      },
     );
   }
 

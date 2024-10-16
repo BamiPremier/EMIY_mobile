@@ -1,10 +1,9 @@
 import 'package:potatoes/libs.dart';
-
 import 'package:potatoes/potatoes.dart';
-import 'package:umai/common/models/user.dart';
 import 'package:umai/social/model/comment.dart';
 import 'package:umai/social/model/post.dart';
 import 'package:umai/social/services/social_service.dart';
+
 part 'post_state.dart';
 
 class PostCubit extends ObjectCubit<Post, PostState> {
@@ -35,11 +34,6 @@ class PostCubit extends ObjectCubit<Post, PostState> {
 
   reset() {
     update(post);
-  }
-
-  void updateUserInfoPost(User user) {
-    var newPost = post.copyWith(user: user);
-    emit(InitializingPostState(newPost));
   }
 
   void likePost() {

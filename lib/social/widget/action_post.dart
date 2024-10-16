@@ -22,7 +22,7 @@ class PostAction extends StatefulWidget {
 
   const PostAction._();
   @override
-  _PostActionState createState() => _PostActionState();
+  State<PostAction> createState() => _PostActionState();
 }
 
 class _PostActionState extends State<PostAction> {

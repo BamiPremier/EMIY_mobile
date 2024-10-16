@@ -6,6 +6,7 @@ import 'package:umai/social/bloc/post_cubit.dart';
 import 'package:umai/social/bloc/action_comment_cubit.dart';
 import 'package:umai/social/model/comment.dart';
 import 'package:umai/social/model/post.dart';
+import 'package:umai/social/services/post_cubit_manager.dart';
 import 'package:umai/social/widget/action_post.dart';
 import 'package:umai/social/widget/button_post.dart';
 import 'package:umai/social/widget/comment_input.dart';
@@ -30,7 +31,7 @@ class PostDetailsScreen extends StatefulWidget {
   static Widget fromNew({required BuildContext context, required Post post}) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => PostCubit(context.read(), post)),
+        BlocProvider.value(value: context.read<PostCubitManager>().get(post)),
         BlocProvider(
             create: (context) => ActionCommentCubit(context.read<PostCubit>())),
         BlocProvider(
