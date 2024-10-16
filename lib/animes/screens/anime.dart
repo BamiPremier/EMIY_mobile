@@ -42,7 +42,7 @@ class _AnimeDetailsScreenState extends State<AnimeDetailsScreen>
           Stack(
             children: [
               CachedNetworkImage(
-                imageUrl: widget.anime.coverImage.extraLarge,
+                imageUrl: widget.anime.coverImage.extraLarge??'',
                 height: 250,
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -150,8 +150,9 @@ class _AnimeDetailsScreenState extends State<AnimeDetailsScreen>
                     const SizedBox(width: 8),
                     Chip(
                         side: BorderSide.none,
-                        backgroundColor:
-                            Theme.of(context).colorScheme.surfaceVariant,
+                        backgroundColor: Theme.of(context)
+                            .colorScheme
+                            .surfaceContainerHighest,
                         padding: const EdgeInsets.symmetric(
                             vertical: 2, horizontal: 8),
                         label: Text(

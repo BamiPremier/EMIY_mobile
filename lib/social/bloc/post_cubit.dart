@@ -33,6 +33,10 @@ class PostCubit extends ObjectCubit<Post, PostState> {
     emit(InitializingPostState(object));
   }
 
+  reset() {
+    update(post);
+  }
+
   void updateUserInfoPost(User user) {
     var newPost = post.copyWith(user: user);
     emit(InitializingPostState(newPost));

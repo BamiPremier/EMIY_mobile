@@ -15,10 +15,10 @@ class PersonLoadingState extends CubitLoadingState with PersonState {
   const PersonLoadingState() : super();
 }
 
-class BlockPersonState extends CubitSuccessState with PersonState {
+class SuccessBlockPersonState extends CubitSuccessState with PersonState {
   final User user;
 
-  const BlockPersonState(this.user);
+  const SuccessBlockPersonState(this.user);
 
   @override
   List<Object?> get props => [user];

@@ -5,9 +5,7 @@ import 'package:umai/person_account/screens/section/activities.dart';
 import 'package:umai/person_account/screens/section/animes.dart';
 import 'package:umai/person_account/screens/section/posts.dart';
 import 'package:umai/person_account/screens/section/watchlist.dart';
-import 'package:umai/auth/screens/onboarding_screen.dart';
 import 'package:umai/common/bloc/person_cubit.dart';
-import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/models/user.dart';
 import 'package:umai/common/widgets/action_widget.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
@@ -366,7 +364,7 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
               ActionWidget(
                 title: 'Partager...',
                 icon: Icons.share,
-                onTap: () => print(''),
+                onTap: () =>Navigator.pop(context),
               ),
               const SizedBox(
                 height: 16,

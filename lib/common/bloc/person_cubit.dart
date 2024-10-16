@@ -38,7 +38,7 @@ class PersonCubit extends ObjectCubit<User, PersonState> {
       final stateBefore = state;
 
       emit(const PersonLoadingState());
-      userService.follow(user: user!.id).then((follower) {
+      userService.follow(user: user.id).then((follower) {
         update(follower);
       }, onError: (error, trace) {
         emit(PersonErrorState(error, trace));
@@ -52,7 +52,7 @@ class PersonCubit extends ObjectCubit<User, PersonState> {
       final stateBefore = state;
 
       emit(const PersonLoadingState());
-      userService.unFollow(user: user!.id).then((follower) {
+      userService.unFollow(user: user.id).then((follower) {
         update(follower);
       }, onError: (error, trace) {
         emit(PersonErrorState(error, trace));
@@ -61,14 +61,18 @@ class PersonCubit extends ObjectCubit<User, PersonState> {
     }
   }
 
+  reset() {
+    update(user);
+  }
+
   void blockUser() {
     if (state is InitializingPersonState) {
       final stateBefore = state;
 
       emit(const PersonLoadingState());
-      userService.blockUser(user: user!.id).then((user) {
-        emit(BlockPersonState(user));
-        update(user);
+      userService.blockUser(user: user.id).then((_) {
+        emit(SuccessBlockPersonState(user));
+        // update(user);
       }, onError: (error, trace) {
         emit(PersonErrorState(error, trace));
         emit(stateBefore);

@@ -484,9 +484,9 @@ AnimeCoverImage _$AnimeCoverImageFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$AnimeCoverImage {
-  String get extraLarge => throw _privateConstructorUsedError;
-  String get large => throw _privateConstructorUsedError;
-  String get medium => throw _privateConstructorUsedError;
+  String? get extraLarge => throw _privateConstructorUsedError;
+  String? get large => throw _privateConstructorUsedError;
+  String? get medium => throw _privateConstructorUsedError;
   String? get color => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -501,7 +501,7 @@ abstract class $AnimeCoverImageCopyWith<$Res> {
           AnimeCoverImage value, $Res Function(AnimeCoverImage) then) =
       _$AnimeCoverImageCopyWithImpl<$Res, AnimeCoverImage>;
   @useResult
-  $Res call({String extraLarge, String large, String medium, String? color});
+  $Res call({String? extraLarge, String? large, String? medium, String? color});
 }
 
 /// @nodoc
@@ -517,24 +517,24 @@ class _$AnimeCoverImageCopyWithImpl<$Res, $Val extends AnimeCoverImage>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? extraLarge = null,
-    Object? large = null,
-    Object? medium = null,
+    Object? extraLarge = freezed,
+    Object? large = freezed,
+    Object? medium = freezed,
     Object? color = freezed,
   }) {
     return _then(_value.copyWith(
-      extraLarge: null == extraLarge
+      extraLarge: freezed == extraLarge
           ? _value.extraLarge
           : extraLarge // ignore: cast_nullable_to_non_nullable
-              as String,
-      large: null == large
+              as String?,
+      large: freezed == large
           ? _value.large
           : large // ignore: cast_nullable_to_non_nullable
-              as String,
-      medium: null == medium
+              as String?,
+      medium: freezed == medium
           ? _value.medium
           : medium // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       color: freezed == color
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
@@ -551,7 +551,7 @@ abstract class _$$AnimeCoverImageImplCopyWith<$Res>
       __$$AnimeCoverImageImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String extraLarge, String large, String medium, String? color});
+  $Res call({String? extraLarge, String? large, String? medium, String? color});
 }
 
 /// @nodoc
@@ -565,24 +565,24 @@ class __$$AnimeCoverImageImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? extraLarge = null,
-    Object? large = null,
-    Object? medium = null,
+    Object? extraLarge = freezed,
+    Object? large = freezed,
+    Object? medium = freezed,
     Object? color = freezed,
   }) {
     return _then(_$AnimeCoverImageImpl(
-      extraLarge: null == extraLarge
+      extraLarge: freezed == extraLarge
           ? _value.extraLarge
           : extraLarge // ignore: cast_nullable_to_non_nullable
-              as String,
-      large: null == large
+              as String?,
+      large: freezed == large
           ? _value.large
           : large // ignore: cast_nullable_to_non_nullable
-              as String,
-      medium: null == medium
+              as String?,
+      medium: freezed == medium
           ? _value.medium
           : medium // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       color: freezed == color
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
@@ -595,20 +595,17 @@ class __$$AnimeCoverImageImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$AnimeCoverImageImpl implements _AnimeCoverImage {
   const _$AnimeCoverImageImpl(
-      {required this.extraLarge,
-      required this.large,
-      required this.medium,
-      this.color});
+      {this.extraLarge, this.large, this.medium, this.color});
 
   factory _$AnimeCoverImageImpl.fromJson(Map<String, dynamic> json) =>
       _$$AnimeCoverImageImplFromJson(json);
 
   @override
-  final String extraLarge;
+  final String? extraLarge;
   @override
-  final String large;
+  final String? large;
   @override
-  final String medium;
+  final String? medium;
   @override
   final String? color;
 
@@ -651,20 +648,20 @@ class _$AnimeCoverImageImpl implements _AnimeCoverImage {
 
 abstract class _AnimeCoverImage implements AnimeCoverImage {
   const factory _AnimeCoverImage(
-      {required final String extraLarge,
-      required final String large,
-      required final String medium,
+      {final String? extraLarge,
+      final String? large,
+      final String? medium,
       final String? color}) = _$AnimeCoverImageImpl;
 
   factory _AnimeCoverImage.fromJson(Map<String, dynamic> json) =
       _$AnimeCoverImageImpl.fromJson;
 
   @override
-  String get extraLarge;
+  String? get extraLarge;
   @override
-  String get large;
+  String? get large;
   @override
-  String get medium;
+  String? get medium;
   @override
   String? get color;
   @override

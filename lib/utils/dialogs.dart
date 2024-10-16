@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:umai/utils/themes.dart';
 
 Future<void> showError(BuildContext context, [dynamic error]) {
@@ -53,6 +52,7 @@ String _translateError(dynamic error) {
   //     return error.dio?.message ?? defaultMessage;
   //   }
   // }
+
   if (error.isUnauthenticatedError) return unauthenticatedMessage;
   if (error.isNoInternetConnectionError) return noInternetMessage;
   if (error.trace != null) return defaultMessage;
@@ -64,18 +64,22 @@ void showSuccessToast(
     {required String content, required BuildContext context}) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-        margin: EdgeInsets.symmetric(horizontal: 32)
-            .add(EdgeInsets.only(bottom: 12)),
+        margin: const EdgeInsets.symmetric(horizontal: 32)
+            .add(const EdgeInsets.only(bottom: 12)),
         content: Center(child: Text(content))),
   );
 }
 
-void showErrorToast({required String content, required BuildContext context}) {
+void showErrorToast({required dynamic content, required BuildContext context}) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
         backgroundColor: AppTheme.errorRed,
-        margin: EdgeInsets.symmetric(horizontal: 32)
-            .add(EdgeInsets.only(bottom: 12)),
-        content: Center(child: Text(content, style: TextStyle(color: Colors.white),))),
+        margin: const EdgeInsets.symmetric(horizontal: 32)
+            .add(const EdgeInsets.only(bottom: 12)),
+        content: Center(
+            child: Text(
+          _translateError(content),
+          style: const TextStyle(color: Colors.white),
+        ))),
   );
 }

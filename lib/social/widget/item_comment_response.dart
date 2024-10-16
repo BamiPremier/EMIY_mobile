@@ -7,7 +7,6 @@ import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/person_account/screens/account.dart';
 import 'package:umai/social/bloc/comment_cubit.dart';
 import 'package:umai/social/bloc/load_comment_cubit.dart';
-import 'package:umai/social/bloc/action_comment_cubit.dart';
 import 'package:umai/social/model/comment.dart';
 import 'package:umai/social/widget/action_comment_response.dart';
 import 'package:umai/utils/themes.dart';
@@ -43,7 +42,7 @@ class _ItemCommentResponseState extends State<ItemCommentResponse> {
   late final commentCubit = context.read<CommentCubit>();
   late final loadCommentCubit =
       LoadCommentCubit(context.read(), widget.idPost, comment.id);
-  late final comment = commentCubit.comment!;
+  late final comment = commentCubit.comment;
 
   @override
   void dispose() {

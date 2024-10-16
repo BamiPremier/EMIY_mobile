@@ -2,11 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:umai/utils/themes.dart';
 
-enum _ButtonStyle {
-  primary,
-  black,
-  white
-}
+enum _ButtonStyle { primary, black, white }
 
 class UmaiButton extends StatelessWidget {
   final _ButtonStyle _hierarchy;

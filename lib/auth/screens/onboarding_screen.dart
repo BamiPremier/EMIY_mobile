@@ -43,15 +43,13 @@ class _OnboardingScreenState extends State<OnboardingScreen>
               children: [
                 if (Platform.isIOS)
                   AuthButton.apple(
-                    onPressed: () =>
-                        acceptTerm(then: authCubit.appleSignIn),
+                    onPressed: () => acceptTerm(then: authCubit.appleSignIn),
                     backgroundColor: AppTheme.white,
                     textColor: AppTheme.primaryBlack,
                   ),
                 const SizedBox(height: 24.0),
                 AuthButton.google(
-                  onPressed: () =>
-                      acceptTerm(then: authCubit.googleSignIn),
+                  onPressed: () => acceptTerm(then: authCubit.googleSignIn),
                   backgroundColor: AppTheme.primaryBlack,
                   textColor: AppTheme.white,
                 ),
@@ -68,44 +66,44 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       horizontalPadding: 16.0,
       maxHeight: 240,
       builder: (_) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 24.0),
-          Text(
-            'Connexion & inscription',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          const SizedBox(
-            height: 16.0,
-          ),
-          Text.rich(TextSpan(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const TextSpan(
-                  text:
-                      'En cliquant sur Continuer, tu confirmes avoir pris connaissance et accepté notre '),
-              TextSpan(
-                  text: 'politique de confidentialité',
-                  recognizer: TapGestureRecognizer()..onTap = () {},
-                  style: const TextStyle(
-                      decoration: TextDecoration.underline)),
-              const TextSpan(text: ' et nos '),
-              TextSpan(
-                  text: 'termes d\'usage',
-                  recognizer: TapGestureRecognizer()..onTap = () {},
-                  style: const TextStyle(
-                      decoration: TextDecoration.underline)),
-              const TextSpan(text: '.'),
+              const SizedBox(height: 24.0),
+              Text(
+                'Connexion & inscription',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(
+                height: 16.0,
+              ),
+              Text.rich(TextSpan(
+                children: [
+                  const TextSpan(
+                      text:
+                          'En cliquant sur Continuer, tu confirmes avoir pris connaissance et accepté notre '),
+                  TextSpan(
+                      text: 'politique de confidentialité',
+                      recognizer: TapGestureRecognizer()..onTap = () {},
+                      style: const TextStyle(
+                          decoration: TextDecoration.underline)),
+                  const TextSpan(text: ' et nos '),
+                  TextSpan(
+                      text: 'termes d\'usage',
+                      recognizer: TapGestureRecognizer()..onTap = () {},
+                      style: const TextStyle(
+                          decoration: TextDecoration.underline)),
+                  const TextSpan(text: '.'),
+                ],
+                style: Theme.of(context).textTheme.bodySmall,
+              )),
+              const Spacer(),
+              UmaiButton.primary(
+                onPressed: then,
+                text: "Continuer",
+              ),
+              const SizedBox(height: 8.0)
             ],
-            style: Theme.of(context).textTheme.bodySmall,
-          )),
-          const Spacer(),
-          UmaiButton.primary(
-            onPressed: then,
-            text: "Continuer",
-          ),
-          const SizedBox(height: 8.0)
-        ],
-      ));
+          ));
 
   void onEventReceived(BuildContext context, AuthState state) async {
     await waitForDialog();

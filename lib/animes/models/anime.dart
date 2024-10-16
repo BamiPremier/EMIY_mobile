@@ -37,9 +37,9 @@ class AnimeTitle with _$AnimeTitle {
 @freezed
 class AnimeCoverImage with _$AnimeCoverImage {
   const factory AnimeCoverImage({
-    required String extraLarge,
-    required String large,
-    required String medium,
+      String? extraLarge,
+      String? large,
+      String? medium,
     String? color,
   }) = _AnimeCoverImage;
 

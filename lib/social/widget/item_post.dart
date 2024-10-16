@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
-import 'package:umai/common/bloc/user_cubit.dart';
-import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/social/bloc/post_cubit.dart';
 import 'package:umai/social/model/post.dart';
 import 'package:umai/social/screens/post_details.dart';
 import 'package:umai/social/widget/action_post.dart';
 import 'package:umai/social/widget/button_post.dart';
-import 'package:umai/utils/themes.dart';
 import 'package:readmore/readmore.dart';
-import 'package:umai/utils/time_elapsed.dart';
 
 class PostItem extends StatefulWidget {
   static Widget get({required BuildContext context, required Post post}) {
@@ -32,7 +28,7 @@ class _PostItemState extends State<PostItem> {
   Widget build(BuildContext context) {
     return BlocBuilder<PostCubit, PostState>(builder: (context, state) {
       final postCubit = context.read<PostCubit>();
-      final post = postCubit.post!;
+      final post = postCubit.post;
 
       return InkWell(
         onTap: () {

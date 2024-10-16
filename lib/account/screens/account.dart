@@ -13,6 +13,7 @@ import 'package:umai/auth/screens/onboarding_screen.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/widgets/action_widget.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
+import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/utils/dialogs.dart';
 
@@ -275,10 +276,10 @@ class _AccountScreenState extends State<AccountScreen>
       horizontalPadding: 0,
       maxHeight: 250,
       builder: (innerContext) => Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 16.0,
-        ).add(const EdgeInsets.only(top: 24.0)),
-        child: Column(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16.0,
+          ).add(const EdgeInsets.only(top: 24.0)),
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ActionWidget(
@@ -314,8 +315,53 @@ class _AccountScreenState extends State<AccountScreen>
               ActionWidget(
                 title: 'Déconnexion',
                 icon: Icons.logout,
-                onTap: userCubit.signOut,
+                onTap: () async {
+                  Navigator.pop(innerContext);
+                  await disconnect(context: context);
+                },
               ),
             ],
           )));
+
+  Future disconnect({required BuildContext context}) {
+    return showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
+      ),
+      builder: (BuildContext context) {
+        return Container(
+            height: 244,
+            padding: const EdgeInsets.symmetric(horizontal: 16.0)
+                .add(const EdgeInsets.only(top: 24.0)),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text('Déconnexion',
+                      textAlign: TextAlign.start,
+                      style: Theme.of(context).textTheme.titleLarge!),
+                  const SizedBox(
+                    height: 32,
+                  ),
+                  Text('Veux-tu vraiment te déconnecter de cet appareil?',
+                      style: Theme.of(context).textTheme.bodyMedium!),
+                  const SizedBox(
+                    height: 32,
+                  ),
+                  UmaiButton.primary(
+                    onPressed: userCubit.signOut,
+                    text: "Se Déconnecter",
+                  ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  UmaiButton.white(
+                    onPressed: () => Navigator.pop(context),
+                    text: 'Annuler',
+                  )
+                ]));
+      },
+    );
+  }
 }

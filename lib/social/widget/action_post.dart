@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/person_cubit.dart';
@@ -8,11 +6,7 @@ import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/person_account/screens/account.dart';
 import 'package:umai/social/bloc/post_cubit.dart';
-import 'package:umai/social/model/post.dart';
-import 'package:umai/social/screens/post_details.dart';
-import 'package:umai/social/widget/button_post.dart';
 import 'package:umai/utils/themes.dart';
-import 'package:readmore/readmore.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
 class PostAction extends StatefulWidget {
@@ -22,11 +16,11 @@ class PostAction extends StatefulWidget {
     return BlocProvider(
       create: (context) =>
           PersonCubit(context.read(), context.read<PostCubit>().post.user),
-      child: PostAction._(),
+      child: const PostAction._(),
     );
   }
 
-  PostAction._();
+  const PostAction._();
   @override
   _PostActionState createState() => _PostActionState();
 }
@@ -34,7 +28,7 @@ class PostAction extends StatefulWidget {
 class _PostActionState extends State<PostAction> {
   late final postCubit = context.read<PostCubit>();
 
-  late final post = postCubit.post!;
+  late final post = postCubit.post;
 
   @override
   Widget build(BuildContext context) {
@@ -222,7 +216,10 @@ Future reportPost({required BuildContext context}) {
                                   postCubit.report(reason: selectedReason!);
                                 }
                               : (state is SuccessSendRepportPostState)
-                                  ? () => Navigator.of(context).pop()
+                                  ? () {
+                                      Navigator.of(context).pop();
+                                      postCubit.reset();
+                                    }
                                   : null,
                           text: state is SuccessSendRepportPostState
                               ? "Fermer"
@@ -256,8 +253,8 @@ Future blockUser({required BuildContext context}) {
               child: BlocBuilder<PersonCubit, PersonState>(
                 builder: (context, state) => Container(
                   height: 280,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0, vertical: 24.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0)
+                      .add(const EdgeInsets.only(top: 24.0)),
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -266,78 +263,89 @@ Future blockUser({required BuildContext context}) {
                         Text('BLOQUER ${personCubit.user.username} ?',
                             textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.titleLarge!),
-                        (state is PersonLoadingState)
-                            ? const Center(
-                                child: CircularProgressIndicator(),
-                              )
-                            : (state is BlockPersonState)
-                                ? Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                            horizontal: 16.0)
-                                        .add(
-                                      EdgeInsets.only(bottom: 56.0, top: 24.0),
-                                    ),
-                                    child: RichText(
-                                        textAlign: TextAlign.center,
-                                        text: TextSpan(
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium,
-                                          children: <TextSpan>[
-                                            const TextSpan(
-                                                text: 'Tu as bloqué '),
-                                            TextSpan(
-                                              text: 'Hari Randoll',
+                        Expanded(
+                            child: (state is PersonLoadingState)
+                                ? const Center(
+                                    child: CircularProgressIndicator(),
+                                  )
+                                : (state is SuccessBlockPersonState)
+                                    ? Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                                horizontal: 16.0)
+                                            .add(
+                                          const EdgeInsets.only(
+                                              bottom: 56.0, top: 24.0),
+                                        ),
+                                        child: RichText(
+                                            textAlign: TextAlign.center,
+                                            text: TextSpan(
                                               style: Theme.of(context)
                                                   .textTheme
-                                                  .bodyMedium!
-                                                  .copyWith(
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                            ),
-                                            const TextSpan(
-                                                text:
-                                                    '. Pour annuler cette décision, rends-toi dans les paramètres de ton compte.'),
-                                          ],
-                                        )))
-                                : Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                            horizontal: 16.0)
-                                        .add(
-                                      EdgeInsets.only(bottom: 56.0, top: 4.0),
-                                    ),
-                                    child: RichText(
-                                      textAlign: TextAlign.center,
-                                      text: TextSpan(
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium,
-                                        children: <TextSpan>[
-                                          const TextSpan(
-                                              text:
-                                                  'Tu ne verras plus les contenus de cette personne dans tes fils d\'actualité. '),
-                                          TextSpan(
-                                            text: personCubit.user.username,
+                                                  .bodyMedium,
+                                              children: <TextSpan>[
+                                                const TextSpan(
+                                                    text: 'Tu as bloqué '),
+                                                TextSpan(
+                                                  text: 'Hari Randoll',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyMedium!
+                                                      .copyWith(
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                ),
+                                                const TextSpan(
+                                                    text:
+                                                        '. Pour annuler cette décision, rends-toi dans les paramètres de ton compte.'),
+                                              ],
+                                            )))
+                                    : Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                                horizontal: 16.0)
+                                            .add(
+                                          const EdgeInsets.only(
+                                              bottom: 56.0, top: 4.0),
+                                        ),
+                                        child: RichText(
+                                          textAlign: TextAlign.center,
+                                          text: TextSpan(
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .bodyMedium!
-                                                .copyWith(
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                                .bodyMedium,
+                                            children: <TextSpan>[
+                                              const TextSpan(
+                                                  text:
+                                                      'Tu ne verras plus les contenus de cette personne dans tes fils d\'actualité. '),
+                                              TextSpan(
+                                                text: personCubit.user.username,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium!
+                                                    .copyWith(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                              ),
+                                              const TextSpan(
+                                                  text:
+                                                      ' ne pourra plus interagir avec ton contenu non plus. Veux-tu vraiment continuer?'),
+                                            ],
                                           ),
-                                          const TextSpan(
-                                              text:
-                                                  ' ne pourra plus interagir avec ton contenu non plus. Veux-tu vraiment continuer?'),
-                                        ],
-                                      ),
-                                    )),
+                                        ),
+                                      )),
                         UmaiButton.primary(
                           onPressed: state is InitializingPersonState
                               ? () {
                                   personCubit.blockUser();
                                 }
-                              : null,
-                          text: "Bloquer",
+                              : (state is SuccessBlockPersonState)
+                                  ? () {
+                                      Navigator.of(context).pop();
+                                      personCubit.reset();
+                                    }
+                                  : null,
+                          text: state is InitializingPersonState
+                              ? "Bloquer"
+                              : "Fermer",
                         ),
                       ],
                     ),

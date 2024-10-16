@@ -52,7 +52,7 @@ class _CommentInputState extends State<CommentInput> {
                               controller: _commentController,
                               decoration: InputDecoration(
                                 hintText: (ystate != null)
-                                    ? 'Réponse à ${ystate!.user.username}'
+                                    ? 'Réponse à ${ystate.user.username}'
                                     : "Ajouter un commentaire...",
                                 hintStyle: Theme.of(context)
                                     .textTheme

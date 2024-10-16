@@ -1,9 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/material.dart'; 
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
-import 'package:potatoes/libs.dart';
-import 'package:umai/common/bloc/user_cubit.dart';
-import 'package:umai/common/widgets/profile_picture.dart';
+import 'package:potatoes/libs.dart'; 
 import 'package:umai/social/bloc/load_comment_cubit.dart';
 import 'package:umai/social/bloc/post_cubit.dart';
 import 'package:umai/social/bloc/action_comment_cubit.dart';
@@ -12,10 +9,8 @@ import 'package:umai/social/model/post.dart';
 import 'package:umai/social/widget/action_post.dart';
 import 'package:umai/social/widget/button_post.dart';
 import 'package:umai/social/widget/comment_input.dart';
-import 'package:umai/social/widget/item_comment.dart';
-import 'package:umai/utils/themes.dart';
-import 'package:readmore/readmore.dart';
-import 'package:umai/utils/time_elapsed.dart';
+import 'package:umai/social/widget/item_comment.dart'; 
+import 'package:readmore/readmore.dart'; 
 
 class PostDetailsScreen extends StatefulWidget {
   static Widget from({required PostCubit cubit}) {

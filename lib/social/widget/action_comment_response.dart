@@ -1,16 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
-import 'package:potatoes/libs.dart';
-import 'package:umai/common/bloc/user_cubit.dart';
-import 'package:umai/common/widgets/profile_picture.dart';
-import 'package:umai/social/bloc/comment_cubit.dart';
-import 'package:umai/social/bloc/load_comment_cubit.dart';
+import 'package:flutter/material.dart'; 
+import 'package:potatoes/libs.dart'; 
+import 'package:umai/social/bloc/comment_cubit.dart'; 
 import 'package:umai/social/bloc/action_comment_cubit.dart';
-import 'package:umai/social/bloc/post_cubit.dart';
-import 'package:umai/social/model/comment.dart';
-import 'package:umai/utils/themes.dart';
-import 'package:umai/utils/time_elapsed.dart';
+import 'package:umai/social/bloc/post_cubit.dart'; 
+import 'package:umai/utils/themes.dart'; 
 
 class ActionCommentResponse extends StatefulWidget {
   @override
@@ -20,7 +13,7 @@ class ActionCommentResponse extends StatefulWidget {
 class _ActionCommentResponseState extends State<ActionCommentResponse> {
   late final commentCubit = context.read<CommentCubit>();
   late final postCubit = context.read<PostCubit>(); 
-  late final comment = commentCubit.comment!;
+  late final comment = commentCubit.comment;
 
   @override
   void dispose() {

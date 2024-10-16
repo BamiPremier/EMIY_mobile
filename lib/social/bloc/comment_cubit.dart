@@ -45,12 +45,12 @@ class CommentCubit extends ObjectCubit<Comment, CommentState> {
 
   void likeComment() {
     final stateBefore = state;
-    var newComment = comment!.copyWith(hasLiked: !comment!.hasLiked);
+    var newComment = comment.copyWith(hasLiked: !comment.hasLiked);
    
     update(newComment);
     socialService
         .likeComment(
-      commentId: comment!.id,
+      commentId: comment.id,
     )
         .then((updatecomment) {}, onError: (error, trace) {
       emit(CommentErrorState(error, trace));
@@ -60,11 +60,11 @@ class CommentCubit extends ObjectCubit<Comment, CommentState> {
 
   void unLikeComment() {
     final stateBefore = state;
-    var newComment = comment!.copyWith(hasLiked: !comment!.hasLiked);
+    var newComment = comment.copyWith(hasLiked: !comment.hasLiked);
     update(newComment);
     socialService
         .unLikeComment(
-      commentId: comment!.id,
+      commentId: comment.id,
     )
         .then((updatecomment) {}, onError: (error, trace) {
       emit(CommentErrorState(error, trace));
@@ -74,11 +74,11 @@ class CommentCubit extends ObjectCubit<Comment, CommentState> {
 
   void signalerComment() {
     final stateBefore = state;
-    var newComment = comment!.copyWith(hasLiked: !comment!.hasLiked);
+    var newComment = comment.copyWith(hasLiked: !comment.hasLiked);
     update(newComment);
     socialService
         .signalerComment(
-      commentId: comment!.id,
+      commentId: comment.id,
       reason: 'reason',
     )
         .then((updatecomment) {}, onError: (error, trace) {

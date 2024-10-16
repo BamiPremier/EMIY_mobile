@@ -47,7 +47,7 @@ class AnimeItem extends StatelessWidget {
                 children: [
                   // Image at the top of the card
                   CachedNetworkImage(
-                    imageUrl: anime.coverImage.extraLarge,
+                    imageUrl: anime.coverImage.extraLarge ?? '',
                     height: 368,
                     width: double.infinity,
                     fit: BoxFit.cover,

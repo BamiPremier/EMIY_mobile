@@ -45,9 +45,9 @@ Map<String, dynamic> _$$AnimeTitleImplToJson(_$AnimeTitleImpl instance) =>
 _$AnimeCoverImageImpl _$$AnimeCoverImageImplFromJson(
         Map<String, dynamic> json) =>
     _$AnimeCoverImageImpl(
-      extraLarge: json['extraLarge'] as String,
-      large: json['large'] as String,
-      medium: json['medium'] as String,
+      extraLarge: json['extraLarge'] as String?,
+      large: json['large'] as String?,
+      medium: json['medium'] as String?,
       color: json['color'] as String?,
     );
 

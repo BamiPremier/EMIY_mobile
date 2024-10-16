@@ -1,6 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:flutter/material.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/person_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
@@ -63,11 +62,11 @@ class UserItem extends StatelessWidget {
                     children: [
                       state is PersonLoadingState
                           ? const SizedBox(
-                              width: 20,
-                              height: 20,
+                              width: 16,
+                              height: 16,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
-                                color: AppTheme.white,
+                                color: AppTheme.black,
                               ),
                             )
                           : const Icon(
@@ -100,11 +99,11 @@ class UserItem extends StatelessWidget {
                     children: [
                       state is PersonLoadingState
                           ? const SizedBox(
-                              width: 20,
-                              height: 20,
+                              width: 16,
+                              height: 16,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
-                                color: AppTheme.white,
+                                color: AppTheme.black,
                               ),
                             )
                           : const Icon(Icons.check),
