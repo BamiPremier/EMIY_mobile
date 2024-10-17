@@ -94,9 +94,6 @@ flutter:
     - family: ARCO
       fonts:
         - asset: assets/fonts/ARCO.ttf
-    - family: ARCO Typo
-      fonts:
-        - asset: assets/fonts/ARCO Typograhy.ttf
     - family: Plus Jakarta Sans
       fonts:
         - asset: assets/fonts/Plus_Jakarta_Sans/PlusJakartaSans-VariableFont_wght.ttf
