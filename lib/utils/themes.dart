@@ -22,18 +22,16 @@ abstract class AppTheme {
   static const Color disabledText = Color(0xFF75788B);
 
   static TextTheme _textTheme(BuildContext context) {
-    final baseTextTheme = Theme.of(context).textTheme;
-    final arco =
-        Theme.of(context).textTheme.apply(fontFamily: Assets.fontsFamilyARCO);
-    final arcoTypo = Theme.of(context)
-        .textTheme
-        .apply(fontFamily: Assets.fontsFamilyARCOTypo);
-    return arcoTypo.copyWith(
-      displayLarge: arcoTypo.displayLarge?.copyWith(
+    final arco = Theme.of(context)
+        .textTheme.apply(fontFamily: Assets.fontsFamilyARCO);
+    final jakarta = Theme.of(context)
+        .textTheme.apply(fontFamily: Assets.fontsPlusJakartaSans);
+    return jakarta.copyWith(
+      displayLarge: jakarta.displayLarge?.copyWith(
         color: mainText,
         fontSize: 57.0,
       ),
-      displayMedium: arcoTypo.displayMedium?.copyWith(
+      displayMedium: jakarta.displayMedium?.copyWith(
         color: mainText,
         fontSize: 45.0,
       ),
@@ -42,15 +40,15 @@ abstract class AppTheme {
         fontSize: 36.0,
         fontWeight: FontWeight.bold,
       ),
-      headlineLarge: arcoTypo.headlineLarge?.copyWith(
+      headlineLarge: jakarta.headlineLarge?.copyWith(
         color: mainText,
         fontSize: 32.0,
       ),
-      headlineMedium: arcoTypo.headlineMedium?.copyWith(
+      headlineMedium: jakarta.headlineMedium?.copyWith(
         color: mainText,
         fontSize: 28.0,
       ),
-      headlineSmall: arcoTypo.headlineSmall?.copyWith(
+      headlineSmall: jakarta.headlineSmall?.copyWith(
         color: mainText,
         fontSize: 24.0,
       ),
@@ -59,23 +57,24 @@ abstract class AppTheme {
         fontSize: 20.0,
         fontWeight: FontWeight.bold,
       ),
-      titleMedium: arcoTypo.titleMedium?.copyWith(
+      titleMedium: jakarta.titleMedium?.copyWith(
         color: mainText,
         fontSize: 16.0,
       ),
-      titleSmall: arcoTypo.titleSmall?.copyWith(
+      titleSmall: jakarta.titleSmall?.copyWith(
         color: mainText,
         fontSize: 14.0,
       ),
-      bodyLarge: arcoTypo.bodyLarge?.copyWith(
+      bodyLarge: jakarta.bodyLarge?.copyWith(
         color: mainText,
         fontSize: 16.0,
+        fontWeight: FontWeight.bold
       ),
-      bodyMedium: arcoTypo.bodyMedium?.copyWith(
+      bodyMedium: jakarta.bodyMedium?.copyWith(
         color: mainText,
         fontSize: 14.0,
       ),
-      bodySmall: arcoTypo.bodySmall?.copyWith(
+      bodySmall: jakarta.bodySmall?.copyWith(
         color: mainText,
         fontSize: 12.0,
       ),
@@ -84,11 +83,11 @@ abstract class AppTheme {
         fontSize: 14.0,
         fontWeight: FontWeight.bold,
       ),
-      labelMedium: arcoTypo.labelMedium?.copyWith(
+      labelMedium: jakarta.labelMedium?.copyWith(
         color: mainText,
         fontSize: 12.0,
       ),
-      labelSmall: arcoTypo.labelSmall?.copyWith(
+      labelSmall: jakarta.labelSmall?.copyWith(
         color: mainText,
         fontSize: 11.0,
       ),
@@ -107,9 +106,9 @@ abstract class AppTheme {
   }
 
   static ThemeData _baseTheme(BuildContext context) {
-    final theme = Theme.of(context);
     final colorScheme = _colorScheme();
     final textTheme = _textTheme(context);
+    final theme = Theme.of(context).copyWith(textTheme: textTheme);
 
     return ThemeData(
       useMaterial3: true,
@@ -277,8 +276,8 @@ abstract class AppTheme {
       listTileTheme:
           theme.listTileTheme.copyWith(titleTextStyle: textTheme.titleSmall),
       popupMenuTheme: theme.popupMenuTheme.copyWith(
-          labelTextStyle: WidgetStatePropertyAll(textTheme.bodyLarge),
-          textStyle: textTheme.bodyLarge),
+          labelTextStyle: WidgetStatePropertyAll(textTheme.titleMedium),
+          textStyle: textTheme.titleMedium),
       switchTheme: theme.switchTheme.copyWith(
         thumbColor: WidgetStateProperty.resolveWith((states) =>
             states.contains(WidgetState.selected) ? primaryYellow : null),

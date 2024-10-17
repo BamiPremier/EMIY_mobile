@@ -60,8 +60,10 @@ String _translateError(dynamic error) {
   return error.message ?? defaultMessage;
 }
 
-void showSuccessToast(
-    {required String content, required BuildContext context}) {
+void showSuccessToast({
+  required BuildContext context,
+  required String content,
+}) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
         margin: const EdgeInsets.symmetric(horizontal: 32)

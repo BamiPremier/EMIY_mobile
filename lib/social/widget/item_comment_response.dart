@@ -9,6 +9,7 @@ import 'package:umai/social/bloc/comment_cubit.dart';
 import 'package:umai/social/bloc/load_comment_cubit.dart';
 import 'package:umai/social/model/comment.dart';
 import 'package:umai/social/widget/action_comment_response.dart';
+import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
@@ -106,14 +107,13 @@ class _ItemCommentResponseState extends State<ItemCommentResponse> {
                               .read<LoadCommentCubit>()
                               .deleteComment(comment);
                         } else if (value == 'Copier') {
-                          Clipboard.setData(
-                                  ClipboardData(text: comment.content))
-                              .then((_) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text(
-                                      'Commentaire copié dans le presse-papiers')),
-                            );
+                          Clipboard
+                            .setData(ClipboardData(text: comment.content))
+                            .then((_) {
+                              showSuccessToast(
+                                context: context,
+                                content: 'Commentaire copié dans le presse-papiers'
+                              );
                           });
                         }
                       },

@@ -1,9 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/social/model/post.dart';
 import 'package:umai/social/widget/post_image.dart';
-import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
@@ -27,23 +25,10 @@ class PostSocialCardSecond extends StatelessWidget {
             children: [
               ListTile(
                 contentPadding: EdgeInsets.zero,
-                leading: CachedNetworkImage(
-                  imageUrl: post.user.image ?? '',
-                  fit: BoxFit.cover,
-                  imageBuilder: (context, imageProvider) => CircleAvatar(
-                    radius: 28,
-                    backgroundImage: imageProvider,
-                  ),
-                  placeholder: (context, url) => SvgPicture.asset(
-                    Assets.defaultAvatar,
-                    height: 48.0,
-                    width: 48.0,
-                  ),
-                  errorWidget: (context, url, error) => SvgPicture.asset(
-                    Assets.defaultAvatar,
-                    height: 48.0,
-                    width: 48.0,
-                  ),
+                leading: ProfilePicture(
+                  image: post.user.image,
+                  height: 48.0,
+                  width: 48.0,
                 ),
                 title: Text(
                   post.user.username,
@@ -57,9 +42,6 @@ class PostSocialCardSecond extends StatelessWidget {
                       .copyWith(color: AppTheme.grey),
                 ),
                 trailing: PopupMenuButton<String>(
-                  onSelected: (value) {
-                    // Gérer les options de chaque commentaire
-                  },
                   padding: EdgeInsets.zero,
                   itemBuilder: (BuildContext context) {
                     return ['Signaler', 'Supprimer'].map((String choice) {
