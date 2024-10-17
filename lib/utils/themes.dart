@@ -170,6 +170,7 @@ abstract class AppTheme {
             states.contains(WidgetState.selected) ? primaryYellow : null),
       ),
       dividerColor: theme.colorScheme.onSurfaceVariant,
+      dividerTheme: theme.dividerTheme.copyWith(thickness: 0.5),
       dialogTheme: DialogTheme(contentTextStyle: textTheme.bodyLarge),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(

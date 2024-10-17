@@ -284,55 +284,53 @@ class _AccountScreenState extends State<AccountScreen>
 
   void onActionsPressed() => showAppBottomSheet(
       context: context,
-      horizontalPadding: 0,
-      maxHeight: 250,
       builder: (innerContext) => Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16.0,
-          ).add(const EdgeInsets.only(top: 24.0)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ActionWidget(
-                title: 'Partager...',
-                icon: Icons.share,
-                onTap: () {
-                  Navigator.of(innerContext).pop();
-                },
-              ),
-              const SizedBox(height: 16),
-              ActionWidget(
-                title: 'Éditer mon profil',
-                icon: Icons.edit_outlined,
-                onTap: () {
-                  Navigator.of(innerContext).pop();
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const EditProfileScreen()));
-                },
-              ),
-              const SizedBox(height: 16),
-              ActionWidget(
-                title: 'Paramètres',
-                icon: Icons.settings,
-                onTap: () {
-                  Navigator.of(innerContext).pop();
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (context) => const SettingsScreen()),
-                  );
-                },
-              ),
-              const SizedBox(height: 16),
-              ActionWidget(
-                title: 'Déconnexion',
-                icon: Icons.logout,
-                onTap: () async {
-                  Navigator.pop(innerContext);
-                  await disconnect(context: context);
-                },
-              ),
-            ],
-          )));
+        padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ActionWidget(
+              title: 'Partager...',
+              icon: Icons.share,
+              onTap: () {
+                Navigator.of(innerContext).pop();
+              },
+            ),
+            const SizedBox(height: 16),
+            ActionWidget(
+              title: 'Éditer mon profil',
+              icon: Icons.edit_outlined,
+              onTap: () {
+                Navigator.of(innerContext).pop();
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const EditProfileScreen()));
+              },
+            ),
+            const SizedBox(height: 16),
+            ActionWidget(
+              title: 'Paramètres',
+              icon: Icons.settings,
+              onTap: () {
+                Navigator.of(innerContext).pop();
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (context) => const SettingsScreen()),
+                );
+              },
+            ),
+            const SizedBox(height: 16),
+            ActionWidget(
+              title: 'Déconnexion',
+              icon: Icons.logout,
+              onTap: () async {
+                Navigator.pop(innerContext);
+                await disconnect(context: context);
+              },
+            ),
+          ],
+        ),
+      ));
 
   Future disconnect({required BuildContext context}) {
     return showModalBottomSheet(

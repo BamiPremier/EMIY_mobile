@@ -384,23 +384,18 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
 
   void onActionsPressed() => showAppBottomSheet(
       context: context,
-      horizontalPadding: 0,
-      maxHeight: 100,
       builder: (_) => Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16.0,
-          ).add(const EdgeInsets.only(top: 24.0)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ActionWidget(
-                title: 'Partager...',
-                icon: Icons.share,
-                onTap: () => Navigator.pop(context),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-            ],
-          )));
+        padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ActionWidget(
+              title: 'Partager...',
+              icon: Icons.share,
+              onTap: () => Navigator.pop(context),
+            ),
+          ],
+        ),
+      ));
 }

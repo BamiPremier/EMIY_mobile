@@ -63,7 +63,6 @@ class _OnboardingScreenState extends State<OnboardingScreen>
 
   void acceptTerm({required VoidCallback then}) => showAppBottomSheet(
       context: context,
-      horizontalPadding: 16.0,
       maxHeight: 240,
       builder: (_) => Column(
             crossAxisAlignment: CrossAxisAlignment.start,

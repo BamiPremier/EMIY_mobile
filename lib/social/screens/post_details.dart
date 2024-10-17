@@ -157,8 +157,8 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                                               .colorScheme
                                               .onTertiaryContainer,
                                           size: 48),
-                                      SizedBox(height: 16),
-                                      Text(
+                                      const SizedBox(height: 16),
+                                      const Text(
                                         "Erreur de chargement de l'image",
                                         style: TextStyle(color: Colors.red),
                                       ),
@@ -169,8 +169,8 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                             },
                           ),
                         ),
-                      ButtonPost(),
-                      Divider(),
+                      const ButtonPost(),
+                      const Divider(),
                       AutoListView.get<Comment>(
                           padding: EdgeInsets.zero,
                           shrinkWrap: true,
@@ -211,7 +211,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                   ),
                 ),
               ),
-              CommentInput()
+              const CommentInput()
             ],
           ));
     });
