@@ -21,7 +21,8 @@ class PostDetailsScreen extends StatefulWidget {
         BlocProvider(
             create: (context) => ActionCommentCubit(context.read<PostCubit>())),
         BlocProvider(
-            create: (context) => LoadCommentCubit(context.read(), post.id, '',context.read())),
+            create: (context) =>
+                LoadCommentCubit(context.read(), post.id, '', context.read())),
       ],
       child: const PostDetailsScreen._(),
     );
@@ -74,7 +75,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            PostAction.get(context: context, user : post.user),
+                            PostAction.get(context: context, user: post.user),
                             const SizedBox(height: 8),
                             Padding(
                               padding: const EdgeInsets.only(right: 16.0),
@@ -186,6 +187,16 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                                 child: Text("Aucun commentaire"),
                               ),
                           loadingBuilder: (context) => Container(
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.all(16),
+                              child: LinearProgressIndicator(
+                                color: Theme.of(context).colorScheme.tertiary,
+                                backgroundColor: Theme.of(context)
+                                    .colorScheme
+                                    .tertiaryContainer,
+                                borderRadius: BorderRadius.circular(30),
+                              )),
+                          loadingMoreBuilder: (context) => Container(
                               alignment: Alignment.center,
                               padding: const EdgeInsets.all(16),
                               child: LinearProgressIndicator(

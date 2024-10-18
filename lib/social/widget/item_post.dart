@@ -71,6 +71,8 @@ class _PostItemState extends State<PostItem> {
                             trimExpandedText: ' moins',
                           ),
                         )),
+                    const SizedBox(height: 8),
+
                   ],
                 ),
               ),

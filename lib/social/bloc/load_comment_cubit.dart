@@ -22,12 +22,10 @@ class LoadCommentCubit extends AutoListCubit<Comment> {
   void onChange(Change<AutoListState<Comment>> change) {
     super.onChange(change);
     if (change.nextState is AutoListReadyState<Comment>) {
-      (change.nextState as AutoListReadyState<Comment>)
-          .items
-          .items
-          .forEach((comment) {
+      for (var comment
+          in (change.nextState as AutoListReadyState<Comment>).items.items) {
         personCubitManager.add(comment.user);
-      });
+      }
     }
   }
 

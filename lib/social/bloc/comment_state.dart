@@ -45,3 +45,17 @@ class SelectCommentState extends CubitLoadingState with CommentState {
   @override
   List<Object?> get props => [comment];
 }
+
+class SendCommentRepportLoadingState extends CubitLoadingState with CommentState {
+  const SendCommentRepportLoadingState() : super();
+}
+
+class SuccessSendCommentRepportState extends CubitSuccessState
+    with CommentState {
+  final Comment comment;
+
+  const SuccessSendCommentRepportState(this.comment);
+
+  @override
+  List<Object?> get props => [comment];
+}

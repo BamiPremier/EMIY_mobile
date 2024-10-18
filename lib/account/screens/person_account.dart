@@ -201,7 +201,10 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                                           color: AppTheme.black,
                                         ),
                                       )
-                                    : const Icon(Icons.check),
+                                    : Icon(Icons.check,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onTertiaryContainer),
                                 const SizedBox(width: 8),
                                 Text(
                                   'ajouté(e)',
@@ -385,17 +388,17 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
   void onActionsPressed() => showAppBottomSheet(
       context: context,
       builder: (_) => Padding(
-        padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ActionWidget(
-              title: 'Partager...',
-              icon: Icons.share,
-              onTap: () => Navigator.pop(context),
+            padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ActionWidget(
+                  title: 'Partager...',
+                  icon: Icons.share,
+                  onTap: () => Navigator.pop(context),
+                ),
+              ],
             ),
-          ],
-        ),
-      ));
+          ));
 }

@@ -9,6 +9,7 @@ import 'package:umai/social/bloc/comment_cubit.dart';
 import 'package:umai/social/bloc/load_comment_cubit.dart';
 import 'package:umai/social/model/comment.dart';
 import 'package:umai/social/widget/action_comment_response.dart';
+import 'package:umai/social/widget/item_comment.dart';
 import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
@@ -101,19 +102,19 @@ class _ItemCommentResponseState extends State<ItemCommentResponse> {
                     PopupMenuButton<String>(
                       onSelected: (value) {
                         if (value == 'Signaler') {
-                          commentCubit.signalerComment();
+                          reportComment(context: context);
                         } else if (value == 'Supprimer') {
                           context
                               .read<LoadCommentCubit>()
                               .deleteComment(comment);
                         } else if (value == 'Copier') {
-                          Clipboard
-                            .setData(ClipboardData(text: comment.content))
-                            .then((_) {
-                              showSuccessToast(
+                          Clipboard.setData(
+                                  ClipboardData(text: comment.content))
+                              .then((_) {
+                            showSuccessToast(
                                 context: context,
-                                content: 'Commentaire copié dans le presse-papiers'
-                              );
+                                content:
+                                    'Commentaire copié dans le presse-papiers');
                           });
                         }
                       },
@@ -165,14 +166,23 @@ class _ItemCommentResponseState extends State<ItemCommentResponse> {
               itemBuilder: (context, comment) => ItemCommentResponse.get(
                   context: context, comment: comment, idPost: widget.idPost),
               loadingBuilder: (context) => Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(16),
-                child: const SizedBox(
-                  height: 30,
-                  width: 30,
-                  child: CircularProgressIndicator(),
-                ),
-              ),
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.all(16),
+                  child: LinearProgressIndicator(
+                    color: Theme.of(context).colorScheme.tertiary,
+                    backgroundColor:
+                        Theme.of(context).colorScheme.tertiaryContainer,
+                    borderRadius: BorderRadius.circular(30),
+                  )),
+              loadingMoreBuilder: (context) => Container(
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.all(16),
+                  child: LinearProgressIndicator(
+                    color: Theme.of(context).colorScheme.tertiary,
+                    backgroundColor:
+                        Theme.of(context).colorScheme.tertiaryContainer,
+                    borderRadius: BorderRadius.circular(30),
+                  )),
               errorBuilder: (context, retry) => Align(
                 alignment: Alignment.center,
                 child: Column(

@@ -4,6 +4,8 @@ import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/account/screens/person_account.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
+import 'package:umai/common/widgets/bottom_sheet.dart';
+import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/social/bloc/comment_cubit.dart';
 import 'package:umai/social/bloc/load_comment_cubit.dart';
@@ -97,18 +99,18 @@ class _ItemCommentState extends State<ItemComment> {
                     PopupMenuButton<String>(
                       onSelected: (value) {
                         if (value == 'Signaler') {
-                          commentCubit.signalerComment();
+                          reportComment(context: context);
                         } else if (value == 'Supprimer') {
                           loadCommentCubit.deleteComment(comment);
                         } else if (value == 'Copier') {
-                          Clipboard
-                            .setData(ClipboardData(text: comment.content))
-                            .then((_) {
-                              showSuccessToast(
+                          Clipboard.setData(
+                                  ClipboardData(text: comment.content))
+                              .then((_) {
+                            showSuccessToast(
                                 context: context,
-                                content: 'Commentaire copié dans le presse-papiers'
-                              );
-                            });
+                                content:
+                                    'Commentaire copié dans le presse-papiers');
+                          });
                         }
                       },
                       padding: EdgeInsets.zero,
@@ -170,6 +172,15 @@ class _ItemCommentState extends State<ItemComment> {
                         Theme.of(context).colorScheme.tertiaryContainer,
                     borderRadius: BorderRadius.circular(30),
                   )),
+              loadingMoreBuilder: (context) => Container(
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.all(16),
+                  child: LinearProgressIndicator(
+                    color: Theme.of(context).colorScheme.tertiary,
+                    backgroundColor:
+                        Theme.of(context).colorScheme.tertiaryContainer,
+                    borderRadius: BorderRadius.circular(30),
+                  )),
               errorBuilder: (context, retry) => Align(
                 alignment: Alignment.center,
                 child: Column(
@@ -189,4 +200,153 @@ class _ItemCommentState extends State<ItemComment> {
       });
     });
   }
+}
+
+Future reportComment({required BuildContext context}) {
+  late final commentCubit = context.read<CommentCubit>();
+  String? selectedReason;
+
+  return showAppBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return BlocProvider.value(
+              value: commentCubit,
+              child: BlocBuilder<CommentCubit, CommentState>(
+                builder: (context, state) => Container(
+                  height: 444,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 24.0),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Text('Signaler ce contenu ?',
+                            style: Theme.of(context).textTheme.titleLarge!),
+                        Expanded(
+                          child: (state is SendCommentRepportLoadingState)
+                              ? const Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : (state is SuccessSendCommentRepportState)
+                                  ? Center(
+                                      child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 16.0),
+                                          child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: <Widget>[
+                                                const Text(
+                                                  'Merci d’avoir signalé ce contenu. Nous allons prendre les mesures nécessaires en cas de contenu inapproprié avéré.',
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                                const SizedBox(height: 40.0),
+                                                Icon(
+                                                  Icons.check_box_outlined,
+                                                  size: 40.0,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onSurfaceVariant,
+                                                ),
+                                              ])))
+                                  : Column(
+                                      children: [
+                                        const SizedBox(
+                                          height: 24.0,
+                                        ),
+                                        RadioListTile<String>(
+                                          title: const Text(
+                                              'Haine / Discrimination'),
+                                          value: 'Haine / Discrimination',
+                                          groupValue: selectedReason,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              selectedReason = value;
+                                            });
+                                          },
+                                          controlAffinity:
+                                              ListTileControlAffinity.trailing,
+                                        ),
+                                        RadioListTile<String>(
+                                          title: const Text('Contenu sexuel'),
+                                          value: 'Contenu sexuel',
+                                          groupValue: selectedReason,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              selectedReason = value;
+                                            });
+                                          },
+                                          controlAffinity:
+                                              ListTileControlAffinity.trailing,
+                                        ),
+                                        RadioListTile<String>(
+                                          title: const Text('Harcèlement'),
+                                          value: 'Harcèlement',
+                                          groupValue: selectedReason,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              selectedReason = value;
+                                            });
+                                          },
+                                          controlAffinity:
+                                              ListTileControlAffinity.trailing,
+                                        ),
+                                        RadioListTile<String>(
+                                          title: const Text(
+                                              'Divulgation d\'informations privées'),
+                                          value:
+                                              'Divulgation d\'informations privées',
+                                          groupValue: selectedReason,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              selectedReason = value;
+                                            });
+                                          },
+                                          controlAffinity:
+                                              ListTileControlAffinity.trailing,
+                                        ),
+                                        RadioListTile<String>(
+                                          title: const Text('Autre'),
+                                          value: 'Autre',
+                                          groupValue: selectedReason,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              selectedReason = value;
+                                            });
+                                          },
+                                          controlAffinity:
+                                              ListTileControlAffinity.trailing,
+                                        ),
+                                      ],
+                                    ),
+                        ),
+                        UmaiButton.primary(
+                          onPressed: selectedReason != null &&
+                                  state is InitializingCommentState
+                              ? () {
+                                  commentCubit.report(reason: selectedReason!);
+                                }
+                              : (state is SuccessSendCommentRepportState)
+                                  ? () {
+                                      Navigator.of(context).pop();
+                                      commentCubit.reset();
+                                    }
+                                  : null,
+                          text: state is SuccessSendCommentRepportState
+                              ? "Fermer"
+                              : "Signaler",
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      });
 }

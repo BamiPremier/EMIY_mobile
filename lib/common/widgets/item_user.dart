@@ -32,11 +32,10 @@ class UserItem extends StatelessWidget {
               height: 48.0,
               width: 48.0,
             ),
-            title: Text(
-              followCubit.user.username,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
+            title: Text(followCubit.user.username,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodyLarge),
             subtitle: Text(
               '${followCubit.user.animesViewedCount} animes • ${followCubit.user.followingCount} suivent',
               maxLines: 1,
@@ -69,7 +68,7 @@ class UserItem extends StatelessWidget {
                             : const Icon(
                                 Icons.add,
                               ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: 2),
                         Text(
                           'Ajouter',
                           style:
@@ -106,8 +105,11 @@ class UserItem extends StatelessWidget {
                                   color: AppTheme.black,
                                 ),
                               )
-                            : const Icon(Icons.check),
-                        const SizedBox(width: 8),
+                            : Icon(Icons.check,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onTertiaryContainer),
+                        const SizedBox(width: 2),
                         Text(
                           'Ajouté(e)',
                           style: Theme.of(context)

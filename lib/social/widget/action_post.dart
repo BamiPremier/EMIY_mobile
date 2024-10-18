@@ -7,8 +7,9 @@ import 'package:umai/common/services/person_cubit_manager.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/account/screens/person_account.dart';
-import 'package:umai/social/bloc/post_cubit.dart'; 
+import 'package:umai/social/bloc/post_cubit.dart';
 import 'package:umai/utils/themes.dart';
+import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
 class PostAction extends StatefulWidget {
@@ -17,7 +18,7 @@ class PostAction extends StatefulWidget {
     required User user,
   }) {
     return BlocProvider.value(
-      value:  context.read<PersonCubitManager>().get(user),
+      value: context.read<PersonCubitManager>().get(user),
       child: const PostAction._(),
     );
   }
@@ -46,9 +47,12 @@ class _PostActionState extends State<PostAction> {
               builder: (context) =>
                   PersonAccountScreen.get(context: context, user: post.user))),
         ),
-        title: Text(
-          post.user.username,
-          style: Theme.of(context).textTheme.bodyLarge,
+        title: InkWell(
+          child: Text(post.user.username,
+              style: Theme.of(context).textTheme.bodyLarge),
+          onTap: () => Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) =>
+                  PersonAccountScreen.get(context: context, user: post.user))),
         ),
         subtitle: Text(
           post.createdAt.elapsed(),
@@ -89,12 +93,8 @@ Future reportPost({required BuildContext context}) {
   late final postCubit = context.read<PostCubit>();
   String? selectedReason;
 
-  return showModalBottomSheet(
+  return showAppBottomSheet(
       context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
-      ),
       builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
@@ -241,16 +241,14 @@ Future reportPost({required BuildContext context}) {
 Future blockUser({required BuildContext context}) {
   late final personCubit = context.read<PersonCubit>();
 
-  return showModalBottomSheet(
+  return showAppBottomSheet(
       context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
-      ),
       builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
-            return   BlocBuilder<PersonCubit, PersonState>(
+            return BlocProvider.value(
+              value: personCubit,
+              child: BlocBuilder<PersonCubit, PersonState>(
                 builder: (context, state) => Container(
                   height: 280,
                   padding: const EdgeInsets.symmetric(horizontal: 16.0)
@@ -351,7 +349,7 @@ Future blockUser({required BuildContext context}) {
                     ),
                   ),
                 ),
-           
+              ),
             );
           },
         );

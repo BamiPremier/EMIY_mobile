@@ -152,7 +152,8 @@ class _EditProfileScreenState extends State<EditProfileScreen>
     if (state is UserUpdatingState) {
       loadingDialogCompleter = showLoadingBarrier(context: context);
     } else if (state is UserUpdatedState) {
-      showSuccessToast(content: "Modifications enregistrées", context: context);
+      userCubit.refreshData();
+      Navigator.of(context).pop();
     } else if (state is UserErrorState) {
       showErrorToast(content: state.error, context: context);
     }
