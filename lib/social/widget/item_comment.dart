@@ -223,9 +223,12 @@ Future reportComment({required BuildContext context}) {
                       Text('Signaler ce contenu ?',
                           style: Theme.of(context).textTheme.titleLarge!),
                       (state is SendCommentRepportLoadingState)
-                          ? const Center(
-                              child: CircularProgressIndicator(),
-                            )
+                          ? Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 118.0, bottom: 130),
+                              child: const Center(
+                                child: CircularProgressIndicator(),
+                              ))
                           : (state is SuccessSendCommentRepportState)
                               ? Center(
                                   child: Padding(

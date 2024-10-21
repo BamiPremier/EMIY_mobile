@@ -146,7 +146,7 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                state is PersonLoadingState
+                                state is PersonLoadingBlockState
                                     ? const SizedBox(
                                         width: 16,
                                         height: 16,

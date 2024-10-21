@@ -42,115 +42,126 @@ class UserItem extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             trailing: personCubit.user.hasBlocked
-                ? FilledButton(
-                    onPressed: () => personCubit.unBlockUser(),
-                    style: FilledButton.styleFrom(
-                      backgroundColor: AppTheme.mainText,
-                      foregroundColor: AppTheme.white,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 6, horizontal: 12),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        state is PersonLoadingState
-                            ? const SizedBox(
-                                width: 16,
-                                height: 16,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: AppTheme.white,
-                                ),
-                              )
-                            : const Icon(
-                                Icons.block_flipped,
-                              ),
-                        const SizedBox(width: 4),
-                        Text(
-                          'Débloquer',
-                          style:
-                              Theme.of(context).textTheme.labelLarge!.copyWith(
+                ? SizedBox(
+                    width: 141,
+                    child: FilledButton(
+                      onPressed: () => personCubit.unBlockUser(),
+                      style: FilledButton.styleFrom(
+                        backgroundColor: AppTheme.mainText,
+                        foregroundColor: AppTheme.white,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 6, horizontal: 12),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          state is PersonLoadingState
+                              ? const SizedBox(
+                                  width: 16,
+                                  height: 16,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
                                     color: AppTheme.white,
                                   ),
-                        ),
-                      ],
-                    ),
-                  )
+                                )
+                              : const Icon(
+                                  Icons.block_flipped,
+                                ),
+                          const SizedBox(width: 4),
+                          Text(
+                            'Débloquer',
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelLarge!
+                                .copyWith(
+                                  color: AppTheme.white,
+                                ),
+                          ),
+                        ],
+                      ),
+                    ))
                 : !personCubit.user.followed
-                    ? FilledButton(
-                        onPressed: () => personCubit.followUser(),
-                        style: FilledButton.styleFrom(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.primary,
-                          textStyle: Theme.of(context).textTheme.labelLarge,
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 6, horizontal: 12),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            state is PersonLoadingState
-                                ? const SizedBox(
-                                    width: 16,
-                                    height: 16,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      color: AppTheme.black,
+                    ? SizedBox(
+                        width: 113,
+                        child: FilledButton(
+                          onPressed: () => personCubit.followUser(),
+                          style: FilledButton.styleFrom(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primary,
+                            textStyle: Theme.of(context).textTheme.labelLarge,
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 6, horizontal: 12),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              state is PersonLoadingState
+                                  ? const SizedBox(
+                                      width: 16,
+                                      height: 16,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: AppTheme.black,
+                                      ),
+                                    )
+                                  : const Icon(
+                                      Icons.add,
                                     ),
-                                  )
-                                : const Icon(
-                                    Icons.add,
-                                  ),
-                            const SizedBox(width: 4),
-                            Text(
-                              'Ajouter',
-                              style: Theme.of(context).textTheme.labelLarge!,
-                            ),
-                          ],
-                        ),
-                      )
-                    : FilledButton(
-                        onPressed: () => personCubit.unFollowUser(),
-                        style: FilledButton.styleFrom(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.tertiaryContainer,
-                          textStyle:
-                              Theme.of(context).textTheme.labelLarge!.copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onTertiaryContainer,
-                                  ),
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 6, horizontal: 12),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            state is PersonLoadingState
-                                ? const SizedBox(
-                                    width: 16,
-                                    height: 16,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      color: AppTheme.black,
-                                    ),
-                                  )
-                                : Icon(Icons.check,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onTertiaryContainer),
-                            const SizedBox(width: 4),
-                            Text(
-                              'Ajouté(e)',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelLarge!
-                                  .copyWith(
+                              const SizedBox(width: 4),
+                              Text(
+                                'Ajouter',
+                                style: Theme.of(context).textTheme.labelLarge!,
+                              ),
+                            ],
+                          ),
+                        ))
+                    : SizedBox(
+                        width: 121,
+                        child: FilledButton(
+                          onPressed: () => personCubit.unFollowUser(),
+                          style: FilledButton.styleFrom(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.tertiaryContainer,
+                            textStyle: Theme.of(context)
+                                .textTheme
+                                .labelLarge!
+                                .copyWith(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onTertiaryContainer,
+                                ),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 6, horizontal: 12),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              state is PersonLoadingState
+                                  ? const SizedBox(
+                                      width: 16,
+                                      height: 16,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: AppTheme.black,
+                                      ),
+                                    )
+                                  : Icon(Icons.check,
                                       color: Theme.of(context)
                                           .colorScheme
                                           .onTertiaryContainer),
-                            ),
-                          ],
+                              const SizedBox(width: 4),
+                              Text(
+                                'Ajouté(e)',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onTertiaryContainer),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
           ),

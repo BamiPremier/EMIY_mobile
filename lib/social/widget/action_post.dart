@@ -110,9 +110,12 @@ Future reportPost({required BuildContext context}) {
                       Text('Signaler ce contenu ?',
                           style: Theme.of(context).textTheme.titleLarge!),
                       (state is SendRepportLoadingState)
-                          ? const Center(
-                              child: CircularProgressIndicator(),
-                            )
+                          ? Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 118.0, bottom: 130),
+                              child: const Center(
+                                child: CircularProgressIndicator(),
+                              ))
                           : (state is SuccessSendRepportPostState)
                               ? Center(
                                   child: Padding(
@@ -250,10 +253,12 @@ Future blockUser({required BuildContext context}) {
                   Text('BLOQUER ${personCubit.user.username} ?',
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.titleLarge!),
-                  (state is PersonLoadingState)
-                      ? const Center(
-                          child: CircularProgressIndicator(),
-                        )
+                  (state is PersonLoadingBlockState)
+                      ? Padding(
+                          padding: const EdgeInsets.only(top: 60.0),
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ))
                       : (state is SuccessBlockPersonState)
                           ? Padding(
                               padding:

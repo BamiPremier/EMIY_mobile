@@ -11,6 +11,10 @@ class InitializingPersonState extends CubitSuccessState with PersonState {
   List<Object?> get props => [user];
 }
 
+class PersonLoadingBlockState extends CubitLoadingState with PersonState {
+  const PersonLoadingBlockState() : super();
+}
+
 class PersonLoadingState extends CubitLoadingState with PersonState {
   const PersonLoadingState() : super();
 }

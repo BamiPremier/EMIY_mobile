@@ -231,6 +231,7 @@ abstract class AppTheme {
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
           backgroundColor: primaryYellow,
+          foregroundColor: mainText,
           padding: const EdgeInsets.symmetric(horizontal: 56.0, vertical: 8.0),
           shape: RoundedRectangleBorder(
               side: BorderSide.none,
