@@ -25,12 +25,15 @@ class _BlockedUserScreenState extends State<BlockedUserScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: BlocBuilder<UserCubit, UserState>(builder: (context, state) {
-          return blockedUserCubit.state is AutoListReadyState
-              ? Text(
-                  "Bloqués(${(blockedUserCubit.state as AutoListReadyState).items.items.length})")
-              : const Text("Bloqués");
-        }),
+        title: BlocProvider.value(
+            value: blockedUserCubit,
+            child: BlocBuilder<BlockedUserCubit, AutoListState>(
+                builder: (context, state) {
+              return state is AutoListReadyState
+                  ? Text(
+                      "Bloqués(${(blockedUserCubit.state as AutoListReadyState).items.items.length})")
+                  : const Text("Bloqués");
+            })),
         centerTitle: true,
       ),
       body: Padding(
