@@ -39,20 +39,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 },
               ),
               ListTile(
-                title: Text(
+              title: Text(
                   'Confidentialité',
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                subtitle: Text(
-                  'Voir la politique de confidentialité',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                trailing: const Icon(Icons.arrow_right),
-                onTap: () {},
-              ),
-              ListTile(
-                title: Text(
-                  'Bloqués',
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 subtitle: Text(
@@ -64,6 +52,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => const BlockedUserScreen()));
                 },
+              ),
+              ListTile(
+                title: Text(
+                  'Confidentialité',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                subtitle: Text(
+                  'Voir la politique de confidentialité',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                trailing: const Icon(Icons.arrow_right),
+                onTap: () {},
               ),
               ListTile(
                 title: Text(

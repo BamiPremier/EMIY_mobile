@@ -23,41 +23,40 @@ class _BlockedUserScreenState extends State<BlockedUserScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserCubit, UserState>(builder: (context, state) {
-      late final user = userCubit.user;
-      return Scaffold(
-        appBar: AppBar(
-          title: blockedUserCubit.state is AutoListReadyState
+    return Scaffold(
+      appBar: AppBar(
+        title: BlocBuilder<UserCubit, UserState>(builder: (context, state) {
+          return blockedUserCubit.state is AutoListReadyState
               ? Text(
                   "Bloqués(${(blockedUserCubit.state as AutoListReadyState).items.items.length})")
-              : const Text("Bloqués"),
-          centerTitle: true,
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: AutoListView.get<User>(
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
-            cubit: blockedUserCubit,
-            itemBuilder: (context, user) =>
-                UserItem.get(context: context, user: user),
-            errorBuilder: (context, retry) => Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text("An error occured"),
-                  TextButton(
-                    onPressed: retry,
-                    child: const Text("Retry"),
-                  )
-                ],
-              ),
+              : const Text("Bloqués");
+        }),
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: AutoListView.get<User>(
+          padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          cubit: blockedUserCubit,
+          itemBuilder: (context, user) =>
+              UserItem.get(context: context, user: user),
+          errorBuilder: (context, retry) => Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Text("An error occured"),
+                TextButton(
+                  onPressed: retry,
+                  child: const Text("Retry"),
+                )
+              ],
             ),
           ),
         ),
-      );
-    });
+      ),
+    );
   }
 }

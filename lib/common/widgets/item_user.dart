@@ -55,7 +55,7 @@ class UserItem extends StatelessWidget {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          state is PersonLoadingState
+                          state is PersonLoadingBlockState
                               ? const SizedBox(
                                   width: 16,
                                   height: 16,
@@ -82,7 +82,7 @@ class UserItem extends StatelessWidget {
                     ))
                 : !personCubit.user.followed
                     ? SizedBox(
-                        width: 113,
+                        width: 134,
                         child: FilledButton(
                           onPressed: () => personCubit.followUser(),
                           style: FilledButton.styleFrom(
@@ -116,7 +116,7 @@ class UserItem extends StatelessWidget {
                           ),
                         ))
                     : SizedBox(
-                        width: 121,
+                        width: 134,
                         child: FilledButton(
                           onPressed: () => personCubit.unFollowUser(),
                           style: FilledButton.styleFrom(
