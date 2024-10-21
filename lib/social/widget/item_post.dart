@@ -31,7 +31,7 @@ class _PostItemState extends State<PostItem> {
   Widget build(BuildContext context) {
     return BlocBuilder<PostCubit, PostState>(builder: (context, state) {
       final post = postCubit.post;
-      return InkWell(
+      return GestureDetector(
         onTap: () {
           Navigator.push(
             context,
@@ -52,7 +52,7 @@ class _PostItemState extends State<PostItem> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    PostAction.get(context: context, user : post.user),
+                    PostAction.get(context: context, user: post.user),
                     const SizedBox(height: 8),
                     Padding(
                         padding: const EdgeInsets.only(right: 16.0),
@@ -72,7 +72,6 @@ class _PostItemState extends State<PostItem> {
                           ),
                         )),
                     const SizedBox(height: 8),
-
                   ],
                 ),
               ),

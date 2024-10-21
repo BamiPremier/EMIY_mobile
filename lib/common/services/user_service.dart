@@ -70,7 +70,7 @@ class UserService extends ApiService {
         mapper: (result) => toPaginatedList(result, User.fromJson));
   }
 
-  blockUser({required user}) async {
+   Future<User> blockUser({required user}) async {
     return compute(
       dio.post(
         _block.replaceAll(':userId', user),
@@ -78,7 +78,7 @@ class UserService extends ApiService {
           'reason': null,
         },
         options: Options(headers: withAuth()),
-      ),
+      ),     mapper: User.fromJson
     );
   }
 

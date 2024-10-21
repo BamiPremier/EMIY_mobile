@@ -61,6 +61,7 @@ class _NewPostScreenState extends State<NewPostScreen> with CompletableMixin {
       child: Scaffold(
         body: CameraAwesomeBuilder.custom(
           progressIndicator: const _LoadingCamera(),
+          previewPadding: EdgeInsets.zero,
           builder: (cameraState, previewSize) {
             return cameraState.when(
               onPhotoMode: (state) => _TakePhotoUI(
@@ -112,14 +113,15 @@ class _TakePhotoUIState extends State<_TakePhotoUI> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return SafeArea(
+        child: Stack(
       children: [
         Positioned(
           top: 16,
           left: 0,
           right: 0,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
             child: Row(
               children: [
                 IconButton(
@@ -224,7 +226,7 @@ class _TakePhotoUIState extends State<_TakePhotoUI> {
           ),
         ),
       ],
-    );
+    ));
   }
 }
 

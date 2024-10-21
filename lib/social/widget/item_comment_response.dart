@@ -71,7 +71,7 @@ class _ItemCommentResponseState extends State<ItemCommentResponse> {
                       color: Color(0xFF5F6368),
                       size: 24,
                     ),
-                    InkWell(
+                    GestureDetector(
                         child: ProfilePicture(
                           image: comment.user.image,
                           height: 32,

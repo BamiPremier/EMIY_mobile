@@ -6,16 +6,15 @@ class ActionWidget extends StatelessWidget {
   final IconData icon;
   final VoidCallback onTap;
 
-  const ActionWidget({
-    super.key,
-    required this.title,
-    required this.icon,
-    required this.onTap
-  });
+  const ActionWidget(
+      {super.key,
+      required this.title,
+      required this.icon,
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: onTap,
       child: Row(
         children: [

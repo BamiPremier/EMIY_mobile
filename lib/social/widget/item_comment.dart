@@ -64,7 +64,7 @@ class _ItemCommentState extends State<ItemComment> {
             children: [
               ListTile(
                 contentPadding: const EdgeInsets.only(top: 8.0, left: 16.0),
-                leading: InkWell(
+                leading: GestureDetector(
                   child: ProfilePicture(
                     image: comment.user.image,
                     height: 40,
@@ -74,7 +74,7 @@ class _ItemCommentState extends State<ItemComment> {
                       builder: (context) => PersonAccountScreen.get(
                           context: context, user: comment.user))),
                 ),
-                title: InkWell(
+                title: GestureDetector(
                     child: Text(
                       comment.user.username,
                       style: Theme.of(context).textTheme.bodyLarge,

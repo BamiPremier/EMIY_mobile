@@ -42,7 +42,7 @@ class _AnimeDetailsScreenState extends State<AnimeDetailsScreen>
           Stack(
             children: [
               CachedNetworkImage(
-                imageUrl: widget.anime.coverImage.extraLarge??'',
+                imageUrl: widget.anime.coverImage.extraLarge ?? '',
                 height: 250,
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -291,7 +291,7 @@ class _AnimeDetailsScreenState extends State<AnimeDetailsScreen>
                               childAspectRatio: .65),
                       itemCount: 50,
                       shrinkWrap: true,
-                      itemBuilder: (context, index) => InkWell(
+                      itemBuilder: (context, index) => GestureDetector(
                         // onTap: () => Navigator.of(context).push(
                         //   MaterialPageRoute(
                         //       builder: (context) => const AnimeInfoScreen(anime: anime,)),
@@ -392,18 +392,18 @@ class _AnimeDetailsScreenState extends State<AnimeDetailsScreen>
   void actionsOptions() => showAppBottomSheet(
       context: context,
       builder: (_) => Padding(
-        padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(height: 24.0),
-            ActionWidget(
-              title: 'Partager...',
-              icon: Icons.share,
-              onTap: () => print(''),
+            padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(height: 24.0),
+                ActionWidget(
+                  title: 'Partager...',
+                  icon: Icons.share,
+                  onTap: () => print(''),
+                ),
+              ],
             ),
-          ],
-        ),
-      ));
+          ));
 }

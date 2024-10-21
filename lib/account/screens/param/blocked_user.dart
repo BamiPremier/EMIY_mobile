@@ -5,8 +5,6 @@ import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/blocked_user_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/models/user.dart';
-import 'package:umai/common/services/user_service.dart';
-import 'package:umai/common/widgets/blocked_item_user.dart';
 import 'package:umai/common/widgets/item_user.dart';
 
 class BlockedUserScreen extends StatefulWidget {
@@ -42,7 +40,7 @@ class _BlockedUserScreenState extends State<BlockedUserScreen> {
                 bottom: MediaQuery.of(context).viewInsets.bottom),
             cubit: blockedUserCubit,
             itemBuilder: (context, user) =>
-                BlockedUserItem.get(context: context, user: user),
+                UserItem.get(context: context, user: user),
             errorBuilder: (context, retry) => Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,

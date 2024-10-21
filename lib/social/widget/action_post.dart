@@ -37,7 +37,7 @@ class _PostActionState extends State<PostAction> {
   Widget build(BuildContext context) {
     return ListTile(
         contentPadding: EdgeInsets.zero,
-        leading: InkWell(
+        leading: GestureDetector(
           child: ProfilePicture(
             image: post.user.image,
             height: 48.0,
@@ -47,7 +47,7 @@ class _PostActionState extends State<PostAction> {
               builder: (context) =>
                   PersonAccountScreen.get(context: context, user: post.user))),
         ),
-        title: InkWell(
+        title: GestureDetector(
           child: Text(post.user.username,
               style: Theme.of(context).textTheme.bodyLarge),
           onTap: () => Navigator.of(context).push(MaterialPageRoute(

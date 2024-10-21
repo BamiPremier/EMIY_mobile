@@ -138,7 +138,7 @@ class _AccountScreenState extends State<AccountScreen>
                           children: [
                             const Icon(Icons.people_outline),
                             const SizedBox(width: 16),
-                            InkWell(
+                            GestureDetector(
                               onTap: () => Navigator.of(context).push(
                                   MaterialPageRoute(
                                       builder: (context) => FollowScreen.get(
@@ -167,7 +167,7 @@ class _AccountScreenState extends State<AccountScreen>
                               ),
                             ),
                             const SizedBox(width: 16),
-                            InkWell(
+                            GestureDetector(
                               onTap: () => Navigator.of(context).push(
                                   MaterialPageRoute(
                                       builder: (context) => FollowScreen.get(
