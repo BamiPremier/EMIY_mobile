@@ -29,7 +29,7 @@ class _BlockedUserScreenState extends State<BlockedUserScreen> {
             value: blockedUserCubit,
             child: BlocBuilder<BlockedUserCubit, AutoListState>(
                 builder: (context, state) {
-              return state is AutoListReadyState
+              return blockedUserCubit.state is AutoListReadyState
                   ? Text(
                       "Bloqués(${(blockedUserCubit.state as AutoListReadyState).items.items.length})")
                   : const Text("Bloqués");
