@@ -198,7 +198,7 @@ class _TakePhotoUIState extends State<_TakePhotoUI> {
                 child: Container(
                   decoration: BoxDecoration(
                       border: Border.all(color: AppTheme.white, width: 4.0),
-                      color: AppTheme.grey.withOpacity(0.5),
+                      color: AppTheme.disabledText.withOpacity(0.5),
                       shape: BoxShape.circle),
                   height: 80.0,
                   width: 80.0,
@@ -354,7 +354,7 @@ class _LoadingCamera extends StatelessWidget {
                   Container(
                     decoration: BoxDecoration(
                         border: Border.all(color: AppTheme.white, width: 4.0),
-                        color: AppTheme.grey.withOpacity(0.5),
+                        color: AppTheme.disabledText.withOpacity(0.5),
                         shape: BoxShape.circle),
                     height: 80.0,
                     width: 80.0,

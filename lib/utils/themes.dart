@@ -4,22 +4,16 @@ import 'package:umai/utils/assets.dart';
 
 abstract class AppTheme {
   static const Color primaryYellow = Color(0xFFFFCC33);
-  static const Color primaryGreen = Color.fromARGB(255, 77, 122, 77);
   static const Color primaryBlack = Color(0xFF090909);
   static const Color primaryRed = Color(0xFFE30613);
   static const Color tertiaryContainer = Color(0xFFFFDAD5);
+  static const Color white = Colors.white;
+  static const Color black = Colors.black;
+  static const Color lightGrey = Color(0xFFF5F5F5);
+  static const Color disabledText = Color(0xFF9F9F9F);
+  static const Color errorRed = Color(0xFFFF0717);
 
-  static const Color mainText = primaryBlack;
-  static const Color white = Color(0xFFFFFFFF);
-  static const Color black = Color(0xFF000000);
-  static const Color secondaryLight = Color(0xFF745B0B);
-  static const Color tertiary = Color(0xFF904A42);
-  static const Color onTertiaryContainer = Color(0xFF3B0906);
-  static const Color errorRed = Color(0xFFFF0000);
-  static const Color disabledGrey = Color(0xFFDDDEE1);
-  static const Color disabledGreySurface = Color(0xFFF5F5F5);
-  static const Color grey = Color(0xFF9F9F9F);
-  static const Color disabledText = Color(0xFF75788B);
+  static const Color mainText = Colors.black;
 
   static TextTheme _textTheme(BuildContext context) {
     final arco =
@@ -99,6 +93,8 @@ abstract class AppTheme {
       secondary: primaryYellow,
       tertiary: primaryRed,
       tertiaryContainer: tertiaryContainer,
+      error: errorRed,
+      errorContainer: errorRed,
       brightness: brightness,
     );
   }
@@ -110,12 +106,8 @@ abstract class AppTheme {
 
     return ThemeData(
       useMaterial3: true,
-      colorScheme: colorScheme.copyWith(
-          surface: white,
-          tertiary: tertiary,
-          onTertiaryContainer: onTertiaryContainer),
+      colorScheme: colorScheme.copyWith(surface: white),
       primaryColor: primaryYellow,
-      disabledColor: disabledGrey,
       appBarTheme: theme.appBarTheme.copyWith(
         elevation: 0,
         scrolledUnderElevation: 0,
@@ -201,7 +193,6 @@ abstract class AppTheme {
       ),
       tabBarTheme: TabBarTheme(
         labelColor: mainText,
-        unselectedLabelColor: disabledText,
         indicatorColor: primaryYellow,
         labelStyle: textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
         unselectedLabelStyle: textTheme.titleSmall,
@@ -309,17 +300,17 @@ abstract class AppTheme {
     return baseTheme.copyWith(
         brightness: Brightness.dark,
         appBarTheme: baseTheme.appBarTheme.copyWith(
-            backgroundColor: colorScheme.surface,
+            backgroundColor: black,
             foregroundColor: colorScheme.onSurface,
             iconTheme: baseTheme.appBarTheme.iconTheme
                 ?.copyWith(color: colorScheme.onSurface),
             titleTextStyle: baseTheme.appBarTheme.titleTextStyle
                 ?.copyWith(color: colorScheme.onSurface),
-            systemOverlayStyle: SystemUiOverlayStyle(
-                systemNavigationBarColor: colorScheme.surface,
-                systemNavigationBarDividerColor: colorScheme.surface,
+            systemOverlayStyle: const SystemUiOverlayStyle(
+                systemNavigationBarColor: black,
+                systemNavigationBarDividerColor: black,
                 statusBarColor: Colors.transparent,
                 statusBarIconBrightness: Brightness.light)),
-        scaffoldBackgroundColor: mainText);
+        scaffoldBackgroundColor: black);
   }
 }

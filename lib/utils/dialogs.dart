@@ -31,7 +31,7 @@ void showSuccessToast({
 void showErrorToast({required dynamic content, required BuildContext context}) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-        backgroundColor: AppTheme.errorRed,
+        backgroundColor: Theme.of(context).colorScheme.error,
         margin: const EdgeInsets.symmetric(horizontal: 32)
             .add(const EdgeInsets.only(bottom: 12)),
         content: Center(

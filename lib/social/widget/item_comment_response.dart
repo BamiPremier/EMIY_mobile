@@ -95,7 +95,7 @@ class _ItemCommentResponseState extends State<ItemCommentResponse> {
                     Text(
                       comment.createdAt.elapsed(),
                       style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                            color: AppTheme.grey,
+                            color: AppTheme.disabledText,
                           ),
                     ),
                     const SizedBox(width: 8),

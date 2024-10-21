@@ -92,7 +92,7 @@ class _ItemCommentState extends State<ItemComment> {
                     Text(
                       comment.createdAt.elapsed(),
                       style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                            color: AppTheme.grey,
+                            color: AppTheme.disabledText,
                           ),
                     ),
                     const SizedBox(width: 8),

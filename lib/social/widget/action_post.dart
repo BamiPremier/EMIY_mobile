@@ -59,7 +59,7 @@ class _PostActionState extends State<PostAction> {
           style: Theme.of(context)
               .textTheme
               .labelMedium!
-              .copyWith(color: AppTheme.grey),
+              .copyWith(color: AppTheme.disabledText),
         ),
         trailing: PopupMenuButton<String>(
           onSelected: (value) {
