@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:umai/account/screens/param/blocked_user.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -48,6 +49,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 trailing: const Icon(Icons.arrow_right),
                 onTap: () {},
+              ),
+              ListTile(
+                title: Text(
+                  'Bloqués',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                subtitle: Text(
+                  'Utilisateurs bloqués',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                trailing: const Icon(Icons.arrow_right),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const BlockedUserScreen()));
+                },
               ),
               ListTile(
                 title: Text(

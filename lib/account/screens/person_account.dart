@@ -14,7 +14,10 @@ import 'package:umai/common/services/user_service.dart';
 import 'package:umai/common/widgets/action_widget.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
+import 'package:umai/social/widget/action_post.dart';
 import 'package:umai/utils/themes.dart';
+
+import '../../social/widget/action_post.dart';
 
 class PersonAccountScreen extends StatefulWidget {
   const PersonAccountScreen({super.key});
@@ -132,9 +135,9 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                       horizontal: 16,
                     ).add(const EdgeInsets.only(top: 32, bottom: 28)),
                     child: !user.followed
-                        ? ElevatedButton(
+                        ? FilledButton(
                             onPressed: () => personCubit.followUser(),
-                            style: ElevatedButton.styleFrom(
+                            style: FilledButton.styleFrom(
                               backgroundColor:
                                   Theme.of(context).colorScheme.primary,
                               textStyle: Theme.of(context)
@@ -159,6 +162,7 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                                       )
                                     : const Icon(
                                         Icons.add,
+                                        color: AppTheme.black,
                                       ),
                                 const SizedBox(width: 8),
                                 Text(
@@ -173,9 +177,9 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                               ],
                             ),
                           )
-                        : ElevatedButton(
+                        : FilledButton(
                             onPressed: () => personCubit.unFollowUser(),
-                            style: ElevatedButton.styleFrom(
+                            style: FilledButton.styleFrom(
                               backgroundColor: Theme.of(context)
                                   .colorScheme
                                   .tertiaryContainer,
@@ -397,6 +401,11 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                   title: 'Partager...',
                   icon: Icons.share,
                   onTap: () => Navigator.pop(context),
+                ),
+                ActionWidget(
+                  title: 'Bloquer',
+                  icon: Icons.share,
+                  onTap: () => blockUser(context: context),
                 ),
               ],
             ),

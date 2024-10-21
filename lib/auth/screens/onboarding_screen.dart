@@ -63,17 +63,18 @@ class _OnboardingScreenState extends State<OnboardingScreen>
 
   void acceptTerm({required VoidCallback then}) => showAppBottomSheet(
       context: context,
-      maxHeight: 240,
-      builder: (_) => Column(
+      builder: (_) => Padding(
+          padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              const SizedBox(height: 24.0),
               Text(
                 'Connexion & inscription',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(
-                height: 16.0,
+                height: 40.0,
               ),
               Text.rich(TextSpan(
                 children: [
@@ -93,16 +94,15 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                           decoration: TextDecoration.underline)),
                   const TextSpan(text: '.'),
                 ],
-                style: Theme.of(context).textTheme.bodySmall,
+                style: Theme.of(context).textTheme.bodyMedium,
               )),
-              const Spacer(),
+              const SizedBox(height: 40.0),
               UmaiButton.primary(
                 onPressed: then,
                 text: "Continuer",
               ),
-              const SizedBox(height: 8.0)
             ],
-          ));
+          )));
 
   void onEventReceived(BuildContext context, AuthState state) async {
     await waitForDialog();

@@ -22,28 +22,28 @@ class UserItem extends StatelessWidget {
     return BlocConsumer<PersonCubit, PersonState>(
       listener: (context, state) {},
       builder: (context, state) {
-        final followCubit = context.read<PersonCubit>();
+        final personCubit = context.read<PersonCubit>();
         return InkWell(
           child: ListTile(
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
             leading: ProfilePicture(
-              image: followCubit.user.imageFull ?? '',
+              image: personCubit.user.imageFull ?? '',
               height: 48.0,
               width: 48.0,
             ),
-            title: Text(followCubit.user.username,
+            title: Text(personCubit.user.username,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.bodyLarge),
             subtitle: Text(
-              '${followCubit.user.animesViewedCount} animes • ${followCubit.user.followingCount} suivent',
+              '${personCubit.user.animesViewedCount} animes • ${personCubit.user.followingCount} suivent',
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-            trailing: !followCubit.user.followed
+            trailing: !personCubit.user.followed
                 ? ElevatedButton(
-                    onPressed: () => followCubit.followUser(),
+                    onPressed: () => personCubit.followUser(),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context).colorScheme.primary,
                       textStyle:
@@ -68,7 +68,7 @@ class UserItem extends StatelessWidget {
                             : const Icon(
                                 Icons.add,
                               ),
-                        const SizedBox(width: 2),
+                        const SizedBox(width: 4),
                         Text(
                           'Ajouter',
                           style:
@@ -80,7 +80,7 @@ class UserItem extends StatelessWidget {
                     ),
                   )
                 : ElevatedButton(
-                    onPressed: () => followCubit.unFollowUser(),
+                    onPressed: () => personCubit.unFollowUser(),
                     style: ElevatedButton.styleFrom(
                       backgroundColor:
                           Theme.of(context).colorScheme.tertiaryContainer,
@@ -109,7 +109,7 @@ class UserItem extends StatelessWidget {
                                 color: Theme.of(context)
                                     .colorScheme
                                     .onTertiaryContainer),
-                        const SizedBox(width: 2),
+                        const SizedBox(width: 4),
                         Text(
                           'Ajouté(e)',
                           style: Theme.of(context)
@@ -126,7 +126,7 @@ class UserItem extends StatelessWidget {
           ),
           onTap: () => Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => PersonAccountScreen.get(
-                  context: context, user: followCubit.user))),
+                  context: context, user: personCubit.user))),
         );
       },
     );

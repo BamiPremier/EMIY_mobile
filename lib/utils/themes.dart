@@ -18,14 +18,15 @@ abstract class AppTheme {
   static const Color errorRed = Color(0xFFFF0000);
   static const Color disabledGrey = Color(0xFFDDDEE1);
   static const Color disabledGreySurface = Color(0xFFF5F5F5);
-  static const Color grey = Color(0xFFD9D9D9);
+  static const Color grey = Color(0xFF9F9F9F);
   static const Color disabledText = Color(0xFF75788B);
 
   static TextTheme _textTheme(BuildContext context) {
-    final arco = Theme.of(context)
-        .textTheme.apply(fontFamily: Assets.fontsFamilyARCO);
+    final arco =
+        Theme.of(context).textTheme.apply(fontFamily: Assets.fontsFamilyARCO);
     final jakarta = Theme.of(context)
-        .textTheme.apply(fontFamily: Assets.fontsPlusJakartaSans);
+        .textTheme
+        .apply(fontFamily: Assets.fontsPlusJakartaSans);
     return jakarta.copyWith(
       displayLarge: jakarta.displayLarge?.copyWith(
         color: mainText,
@@ -66,10 +67,7 @@ abstract class AppTheme {
         fontSize: 14.0,
       ),
       bodyLarge: jakarta.bodyLarge?.copyWith(
-        color: mainText,
-        fontSize: 16.0,
-        fontWeight: FontWeight.bold
-      ),
+          color: mainText, fontSize: 16.0, fontWeight: FontWeight.bold),
       bodyMedium: jakarta.bodyMedium?.copyWith(
         color: mainText,
         fontSize: 14.0,
@@ -322,6 +320,6 @@ abstract class AppTheme {
                 systemNavigationBarDividerColor: colorScheme.surface,
                 statusBarColor: Colors.transparent,
                 statusBarIconBrightness: Brightness.light)),
-        scaffoldBackgroundColor: colorScheme.surface);
+        scaffoldBackgroundColor: mainText);
   }
 }

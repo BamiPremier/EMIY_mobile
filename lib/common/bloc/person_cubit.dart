@@ -33,6 +33,19 @@ class PersonCubit extends ObjectCubit<User, PersonState> {
     emit(InitializingPersonState(object));
   }
 
+  void unBlockUser() {
+    if (state is InitializingPersonState) {
+      final stateBefore = state;
+
+      emit(const PersonLoadingState());
+      userService.unBlockUser(user: user.id).then((follower) {
+        update(follower);
+      }, onError: (error, trace) {
+        emit(PersonErrorState(error, trace));
+        emit(stateBefore);
+      });
+    }
+  }
   void followUser() {
     if (state is InitializingPersonState) {
       final stateBefore = state;

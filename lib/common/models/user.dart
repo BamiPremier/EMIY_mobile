@@ -7,10 +7,8 @@ part 'user.g.dart';
 class User with _$User {
   const factory User({
     required String id,
-    @Default('')
-    String username,
-    @Default('')
-    String usertag,
+    @Default('') String username,
+    @Default('') String usertag,
     String? image,
     @JsonKey(name: 'image_full') String? imageFull,
     String? biography,
@@ -22,6 +20,7 @@ class User with _$User {
     @JsonKey(name: 'watchlist_count') @Default(0) int watchlistCount,
     @Default(false) bool followed,
     @JsonKey(name: 'is_following_me') @Default(false) bool isFollowingMe,
+    @JsonKey(name: 'hasBlocked') @Default(false) bool hasBlocked,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

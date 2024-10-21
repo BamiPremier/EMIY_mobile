@@ -214,134 +214,128 @@ Future reportComment({required BuildContext context}) {
             return BlocProvider.value(
               value: commentCubit,
               child: BlocBuilder<CommentCubit, CommentState>(
-                builder: (context, state) => Container(
-                  height: 444,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0, vertical: 24.0),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Text('Signaler ce contenu ?',
-                            style: Theme.of(context).textTheme.titleLarge!),
-                        Expanded(
-                          child: (state is SendCommentRepportLoadingState)
-                              ? const Center(
-                                  child: CircularProgressIndicator(),
-                                )
-                              : (state is SuccessSendCommentRepportState)
-                                  ? Center(
-                                      child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 16.0),
-                                          child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: <Widget>[
-                                                const Text(
-                                                  'Merci d’avoir signalé ce contenu. Nous allons prendre les mesures nécessaires en cas de contenu inapproprié avéré.',
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                                const SizedBox(height: 40.0),
-                                                Icon(
-                                                  Icons.check_box_outlined,
-                                                  size: 40.0,
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .onSurfaceVariant,
-                                                ),
-                                              ])))
-                                  : Column(
-                                      children: [
-                                        const SizedBox(
-                                          height: 24.0,
-                                        ),
-                                        RadioListTile<String>(
-                                          title: const Text(
-                                              'Haine / Discrimination'),
-                                          value: 'Haine / Discrimination',
-                                          groupValue: selectedReason,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              selectedReason = value;
-                                            });
-                                          },
-                                          controlAffinity:
-                                              ListTileControlAffinity.trailing,
-                                        ),
-                                        RadioListTile<String>(
-                                          title: const Text('Contenu sexuel'),
-                                          value: 'Contenu sexuel',
-                                          groupValue: selectedReason,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              selectedReason = value;
-                                            });
-                                          },
-                                          controlAffinity:
-                                              ListTileControlAffinity.trailing,
-                                        ),
-                                        RadioListTile<String>(
-                                          title: const Text('Harcèlement'),
-                                          value: 'Harcèlement',
-                                          groupValue: selectedReason,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              selectedReason = value;
-                                            });
-                                          },
-                                          controlAffinity:
-                                              ListTileControlAffinity.trailing,
-                                        ),
-                                        RadioListTile<String>(
-                                          title: const Text(
-                                              'Divulgation d\'informations privées'),
-                                          value:
-                                              'Divulgation d\'informations privées',
-                                          groupValue: selectedReason,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              selectedReason = value;
-                                            });
-                                          },
-                                          controlAffinity:
-                                              ListTileControlAffinity.trailing,
-                                        ),
-                                        RadioListTile<String>(
-                                          title: const Text('Autre'),
-                                          value: 'Autre',
-                                          groupValue: selectedReason,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              selectedReason = value;
-                                            });
-                                          },
-                                          controlAffinity:
-                                              ListTileControlAffinity.trailing,
-                                        ),
-                                      ],
+                builder: (context, state) => Padding(
+                  padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Text('Signaler ce contenu ?',
+                          style: Theme.of(context).textTheme.titleLarge!),
+                      (state is SendCommentRepportLoadingState)
+                          ? const Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : (state is SuccessSendCommentRepportState)
+                              ? Center(
+                                  child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16.0),
+                                      child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            const Text(
+                                              'Merci d’avoir signalé ce contenu. Nous allons prendre les mesures nécessaires en cas de contenu inapproprié avéré.',
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            const SizedBox(height: 40.0),
+                                            Icon(
+                                              Icons.check_box_outlined,
+                                              size: 40.0,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurfaceVariant,
+                                            ),
+                                          ])))
+                              : Column(
+                                  children: [
+                                    RadioListTile<String>(
+                                      title:
+                                          const Text('Haine / Discrimination'),
+                                      value: 'Haine / Discrimination',
+                                      groupValue: selectedReason,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedReason = value;
+                                        });
+                                      },
+                                      controlAffinity:
+                                          ListTileControlAffinity.trailing,
                                     ),
-                        ),
-                        UmaiButton.primary(
-                          onPressed: selectedReason != null &&
-                                  state is InitializingCommentState
-                              ? () {
-                                  commentCubit.report(reason: selectedReason!);
-                                }
-                              : (state is SuccessSendCommentRepportState)
-                                  ? () {
-                                      Navigator.of(context).pop();
-                                      commentCubit.reset();
-                                    }
-                                  : null,
-                          text: state is SuccessSendCommentRepportState
-                              ? "Fermer"
-                              : "Signaler",
-                        ),
-                      ],
-                    ),
+                                    RadioListTile<String>(
+                                      title: const Text('Contenu sexuel'),
+                                      value: 'Contenu sexuel',
+                                      groupValue: selectedReason,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedReason = value;
+                                        });
+                                      },
+                                      controlAffinity:
+                                          ListTileControlAffinity.trailing,
+                                    ),
+                                    RadioListTile<String>(
+                                      title: const Text('Harcèlement'),
+                                      value: 'Harcèlement',
+                                      groupValue: selectedReason,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedReason = value;
+                                        });
+                                      },
+                                      controlAffinity:
+                                          ListTileControlAffinity.trailing,
+                                    ),
+                                    RadioListTile<String>(
+                                      title: const Text(
+                                          'Divulgation d\'informations privées'),
+                                      value:
+                                          'Divulgation d\'informations privées',
+                                      groupValue: selectedReason,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedReason = value;
+                                        });
+                                      },
+                                      controlAffinity:
+                                          ListTileControlAffinity.trailing,
+                                    ),
+                                    RadioListTile<String>(
+                                      title: const Text('Autre'),
+                                      value: 'Autre',
+                                      groupValue: selectedReason,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedReason = value;
+                                        });
+                                      },
+                                      controlAffinity:
+                                          ListTileControlAffinity.trailing,
+                                    ),
+                                  ],
+                                ),
+                      const SizedBox(
+                        height: 24,
+                      ),
+                      UmaiButton.primary(
+                        onPressed: selectedReason != null &&
+                                state is InitializingCommentState
+                            ? () {
+                                commentCubit.report(reason: selectedReason!);
+                              }
+                            : (state is SuccessSendCommentRepportState)
+                                ? () {
+                                    Navigator.of(context).pop();
+                                    commentCubit.reset();
+                                  }
+                                : null,
+                        text: state is SuccessSendCommentRepportState
+                            ? "Fermer"
+                            : "Signaler",
+                      ),
+                    ],
                   ),
                 ),
               ),

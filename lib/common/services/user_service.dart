@@ -14,7 +14,7 @@ class UserService extends ApiService {
   static const String _follow = '/users/follow';
   static const String _unfollow = '/users/unfollow';
   static const String _block = '/users/:userId/block';
-
+  static const String _blockedUsers = '/users/block';
   static const String _updateUser = '/users';
   static const String _updateProfilePicture = '/users/picture';
   static const String _userFollowers = '/users/followers';
@@ -59,6 +59,17 @@ class UserService extends ApiService {
         mapper: User.fromJson);
   }
 
+  Future<PaginatedList<User>> getBlockedUsers({int page = 1}) async {
+    return compute(
+        dio.get(_blockedUsers,
+            options: Options(headers: withAuth()),
+            queryParameters: {
+              'page': page,
+              'size': 12,
+            }),
+        mapper: (result) => toPaginatedList(result, User.fromJson));
+  }
+
   blockUser({required user}) async {
     return compute(
       dio.post(
@@ -66,6 +77,15 @@ class UserService extends ApiService {
         data: {
           'reason': null,
         },
+        options: Options(headers: withAuth()),
+      ),
+    );
+  }
+
+  unBlockUser({required user}) async {
+    return compute(
+      dio.post(
+        _block.replaceAll(':userId', user),
         options: Options(headers: withAuth()),
       ),
     );
