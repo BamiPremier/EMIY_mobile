@@ -402,9 +402,10 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                   icon: Icons.share,
                   onTap: () => Navigator.pop(context),
                 ),
+                const SizedBox(height: 16),
                 ActionWidget(
                   title: 'Bloquer',
-                  icon: Icons.share,
+                  icon: Icons.block_flipped,
                   onTap: () => blockUser(context: context),
                 ),
               ],
