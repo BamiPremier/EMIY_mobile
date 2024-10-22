@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/social/bloc/new_post_cubit.dart';
 import 'package:umai/social/screens/post_details.dart';
-import 'package:umai/social/services/post_cubit_manager.dart';
 import 'package:umai/utils/themes.dart';
 
 class NewPostBanner extends StatefulWidget {
