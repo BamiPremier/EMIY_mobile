@@ -4,11 +4,13 @@ import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
-import 'package:umai/person_account/screens/account.dart';
+import 'package:umai/account/screens/person_account.dart';
 import 'package:umai/social/bloc/comment_cubit.dart';
 import 'package:umai/social/bloc/load_comment_cubit.dart';
 import 'package:umai/social/model/comment.dart';
 import 'package:umai/social/widget/action_comment_response.dart';
+import 'package:umai/social/widget/item_comment.dart';
+import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
@@ -23,9 +25,6 @@ class ItemCommentResponse extends StatefulWidget {
       providers: [
         BlocProvider(
             create: (context) => CommentCubit(context.read(), comment)),
-        // BlocProvider(
-        //     create: (context) =>
-        //         LoadCommentCubit(context.read(), idPost, comment.id)),
       ],
       child: ItemCommentResponse._(idPost: idPost),
     );
@@ -40,8 +39,12 @@ class ItemCommentResponse extends StatefulWidget {
 
 class _ItemCommentResponseState extends State<ItemCommentResponse> {
   late final commentCubit = context.read<CommentCubit>();
-  late final loadCommentCubit =
-      LoadCommentCubit(context.read(), widget.idPost, comment.id);
+  late final loadCommentCubit = LoadCommentCubit(
+    context.read(),
+    widget.idPost,
+    comment.id,
+    context.read(),
+  );
   late final comment = commentCubit.comment;
 
   @override
@@ -68,7 +71,7 @@ class _ItemCommentResponseState extends State<ItemCommentResponse> {
                       color: Color(0xFF5F6368),
                       size: 24,
                     ),
-                    InkWell(
+                    GestureDetector(
                         child: ProfilePicture(
                           image: comment.user.image,
                           height: 32,
@@ -92,14 +95,14 @@ class _ItemCommentResponseState extends State<ItemCommentResponse> {
                     Text(
                       comment.createdAt.elapsed(),
                       style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                            color: AppTheme.grey,
+                            color: AppTheme.disabledText,
                           ),
                     ),
                     const SizedBox(width: 8),
                     PopupMenuButton<String>(
                       onSelected: (value) {
                         if (value == 'Signaler') {
-                          commentCubit.signalerComment();
+                          reportComment(context: context);
                         } else if (value == 'Supprimer') {
                           context
                               .read<LoadCommentCubit>()
@@ -108,21 +111,24 @@ class _ItemCommentResponseState extends State<ItemCommentResponse> {
                           Clipboard.setData(
                                   ClipboardData(text: comment.content))
                               .then((_) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text(
-                                      'Commentaire copié dans le presse-papiers')),
-                            );
+                            showSuccessToast(
+                                context: context,
+                                content:
+                                    'Commentaire copié dans le presse-papiers');
                           });
                         }
                       },
                       padding: EdgeInsets.zero,
                       itemBuilder: (BuildContext context) {
-                        List<String> options = ['Copier', 'Signaler'];
+                        List<String> options = [
+                          'Copier'
+                      ];
 
                         if (comment.user.id ==
                             context.read<UserCubit>().user.id) {
                           options.add('Supprimer');
+                        } else {
+                          options.add('Signaler');
                         }
                         return options.map((String choice) {
                           return PopupMenuItem<String>(
@@ -152,7 +158,7 @@ class _ItemCommentResponseState extends State<ItemCommentResponse> {
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ),
-              ActionCommentResponse()
+              const ActionCommentResponse()
             ],
           ),
           if (state is SeeCommentResponseState)
@@ -164,14 +170,23 @@ class _ItemCommentResponseState extends State<ItemCommentResponse> {
               itemBuilder: (context, comment) => ItemCommentResponse.get(
                   context: context, comment: comment, idPost: widget.idPost),
               loadingBuilder: (context) => Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(16),
-                child: const SizedBox(
-                  height: 30,
-                  width: 30,
-                  child: CircularProgressIndicator(),
-                ),
-              ),
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.all(16),
+                  child: LinearProgressIndicator(
+                    color: Theme.of(context).colorScheme.tertiary,
+                    backgroundColor:
+                        Theme.of(context).colorScheme.tertiaryContainer,
+                    borderRadius: BorderRadius.circular(30),
+                  )),
+              loadingMoreBuilder: (context) => Container(
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.all(16),
+                  child: LinearProgressIndicator(
+                    color: Theme.of(context).colorScheme.tertiary,
+                    backgroundColor:
+                        Theme.of(context).colorScheme.tertiaryContainer,
+                    borderRadius: BorderRadius.circular(30),
+                  )),
               errorBuilder: (context, retry) => Align(
                 alignment: Alignment.center,
                 child: Column(

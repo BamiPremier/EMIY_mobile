@@ -220,17 +220,16 @@ class SocialService extends ApiService {
     );
   }
 
-  Future<Comment> signalerComment({
+  Future<void> reportComment({
     required String commentId,
     required String reason,
   }) async {
     return compute(
       dio.post(
-        _signalerComment.replaceAll(':commentId', commentId),
+        _signalerComment.replaceAll(':idComment', commentId),
         options: Options(headers: withAuth()),
         data: {'reason': reason},
       ),
-      mapper: Comment.fromJson,
     );
   }
 

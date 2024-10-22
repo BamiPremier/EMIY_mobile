@@ -21,6 +21,7 @@ _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
       watchlistCount: (json['watchlist_count'] as num?)?.toInt() ?? 0,
       followed: json['followed'] as bool? ?? false,
       isFollowingMe: json['is_following_me'] as bool? ?? false,
+      hasBlocked: json['hasBlocked'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
@@ -39,4 +40,5 @@ Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
       'watchlist_count': instance.watchlistCount,
       'followed': instance.followed,
       'is_following_me': instance.isFollowingMe,
+      'hasBlocked': instance.hasBlocked,
     };

@@ -3,6 +3,7 @@ import 'package:potatoes/libs.dart';
 import 'package:umai/social/bloc/post_cubit.dart';
 import 'package:umai/social/model/post.dart';
 import 'package:umai/social/screens/post_details.dart';
+import 'package:umai/social/services/post_cubit_manager.dart';
 import 'package:umai/social/widget/action_post.dart';
 import 'package:umai/social/widget/button_post.dart';
 import 'package:readmore/readmore.dart';
@@ -10,8 +11,8 @@ import 'package:umai/social/widget/post_image.dart';
 
 class PostItem extends StatefulWidget {
   static Widget get({required BuildContext context, required Post post}) {
-    return BlocProvider(
-      create: (context) => PostCubit(context.read(), post),
+    return BlocProvider.value(
+      value: context.read<PostCubitManager>().get(post),
       child: const PostItem._(),
     );
   }
@@ -23,20 +24,22 @@ class PostItem extends StatefulWidget {
 }
 
 class _PostItemState extends State<PostItem> {
+  late final postCubit = context.read<PostCubit>();
   final isCollapsed = ValueNotifier<bool>(true);
   final _trimMode = TrimMode.Line;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PostCubit, PostState>(builder: (context, state) {
-      final postCubit = context.read<PostCubit>();
       final post = postCubit.post;
-
-      return InkWell(
+      return GestureDetector(
         onTap: () {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => PostDetailsScreen.from(cubit: postCubit)),
+                builder: (context) => PostDetailsScreen.from(
+                      context: context,
+                      post: post,
+                    )),
           );
         },
         child: ColoredBox(
@@ -49,7 +52,7 @@ class _PostItemState extends State<PostItem> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    PostAction.get(context: context),
+                    PostAction.get(context: context, user: post.user),
                     const SizedBox(height: 8),
                     Padding(
                         padding: const EdgeInsets.only(right: 16.0),
@@ -68,11 +71,11 @@ class _PostItemState extends State<PostItem> {
                             trimExpandedText: ' moins',
                           ),
                         )),
+                    const SizedBox(height: 8),
                   ],
                 ),
               ),
-              if (post.image?.isNotEmpty ?? false)
-                PostImage(url: post.image!),
+              if (post.image?.isNotEmpty ?? false) PostImage(url: post.image!),
               const ButtonPost()
             ],
           ),

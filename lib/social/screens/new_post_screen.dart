@@ -61,6 +61,7 @@ class _NewPostScreenState extends State<NewPostScreen> with CompletableMixin {
       child: Scaffold(
         body: CameraAwesomeBuilder.custom(
           progressIndicator: const _LoadingCamera(),
+          previewPadding: EdgeInsets.zero,
           builder: (cameraState, previewSize) {
             return cameraState.when(
               onPhotoMode: (state) => _TakePhotoUI(
@@ -99,7 +100,6 @@ class _TakePhotoUI extends StatefulWidget {
   final PhotoCameraState state;
 
   const _TakePhotoUI({
-    super.key,
     required this.state,
   });
 
@@ -112,14 +112,15 @@ class _TakePhotoUIState extends State<_TakePhotoUI> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return SafeArea(
+        child: Stack(
       children: [
         Positioned(
           top: 16,
           left: 0,
           right: 0,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
             child: Row(
               children: [
                 IconButton(
@@ -168,7 +169,7 @@ class _TakePhotoUIState extends State<_TakePhotoUI> {
                     );
                   },
                 ),
-                const SizedBox(width: 8.0),
+                const SizedBox(width: 32.0),
                 IconButton(
                   padding: EdgeInsets.zero,
                   icon: const Icon(Icons.flip_camera_android,
@@ -197,13 +198,9 @@ class _TakePhotoUIState extends State<_TakePhotoUI> {
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                    border: Border.all(
-                      color: AppTheme.white,
-                      width: 4.0
-                    ),
-                    color: AppTheme.grey.withOpacity(0.5),
-                    shape: BoxShape.circle
-                  ),
+                      border: Border.all(color: AppTheme.white, width: 4.0),
+                      color: AppTheme.disabledText.withOpacity(0.5),
+                      shape: BoxShape.circle),
                   height: 80.0,
                   width: 80.0,
                 ),
@@ -228,7 +225,7 @@ class _TakePhotoUIState extends State<_TakePhotoUI> {
           ),
         ),
       ],
-    );
+    ));
   }
 }
 
@@ -322,8 +319,8 @@ class _LoadingCamera extends StatelessWidget {
                   children: [
                     IconButton(
                       padding: EdgeInsets.zero,
-                      icon:
-                          const Icon(Icons.close, color: Colors.white, size: 24),
+                      icon: const Icon(Icons.close,
+                          color: Colors.white, size: 24),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
@@ -335,7 +332,7 @@ class _LoadingCamera extends StatelessWidget {
                           color: Colors.white, size: 24),
                       onPressed: () {},
                     ),
-                    const SizedBox(width: 8.0),
+                    const SizedBox(width: 32.0),
                     IconButton(
                       padding: EdgeInsets.zero,
                       icon: const Icon(Icons.flip_camera_android,
@@ -357,13 +354,9 @@ class _LoadingCamera extends StatelessWidget {
                   const SizedBox(width: 32.0),
                   Container(
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        color: AppTheme.white,
-                        width: 4.0
-                      ),
-                      color: AppTheme.grey.withOpacity(0.5),
-                      shape: BoxShape.circle
-                    ),
+                        border: Border.all(color: AppTheme.white, width: 4.0),
+                        color: AppTheme.disabledText.withOpacity(0.5),
+                        shape: BoxShape.circle),
                     height: 80.0,
                     width: 80.0,
                   ),
