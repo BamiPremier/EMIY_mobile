@@ -120,11 +120,15 @@ class _ItemCommentResponseState extends State<ItemCommentResponse> {
                       },
                       padding: EdgeInsets.zero,
                       itemBuilder: (BuildContext context) {
-                        List<String> options = ['Copier', 'Signaler'];
+                        List<String> options = [
+                          'Copier'
+                      ];
 
                         if (comment.user.id ==
                             context.read<UserCubit>().user.id) {
                           options.add('Supprimer');
+                        } else {
+                          options.add('Signaler');
                         }
                         return options.map((String choice) {
                           return PopupMenuItem<String>(
@@ -154,7 +158,7 @@ class _ItemCommentResponseState extends State<ItemCommentResponse> {
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ),
-              ActionCommentResponse()
+              const ActionCommentResponse()
             ],
           ),
           if (state is SeeCommentResponseState)

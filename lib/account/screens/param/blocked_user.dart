@@ -3,7 +3,6 @@ import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/blocked_user_cubit.dart';
-import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/models/user.dart';
 import 'package:umai/common/widgets/item_user.dart';
 
@@ -16,10 +15,8 @@ class BlockedUserScreen extends StatefulWidget {
 }
 
 class _BlockedUserScreenState extends State<BlockedUserScreen> {
-  late final userCubit = context.read<UserCubit>();
-
   late final blockedUserCubit =
-      new BlockedUserCubit(context.read(), context.read());
+      BlockedUserCubit(context.read(), context.read());
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +28,7 @@ class _BlockedUserScreenState extends State<BlockedUserScreen> {
                 builder: (context, state) {
               return blockedUserCubit.state is AutoListReadyState
                   ? Text(
-                      "Bloqués(${(blockedUserCubit.state as AutoListReadyState).items.items.length})")
+                      "Bloqués(${(blockedUserCubit.state as AutoListReadyState).items.total})")
                   : const Text("Bloqués");
             })),
         centerTitle: true,

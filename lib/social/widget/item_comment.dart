@@ -115,11 +115,13 @@ class _ItemCommentState extends State<ItemComment> {
                       },
                       padding: EdgeInsets.zero,
                       itemBuilder: (BuildContext context) {
-                        List<String> options = ['Copier', 'Signaler'];
+                        List<String> options = ['Copier'];
 
                         if (comment.user.id ==
                             context.read<UserCubit>().user.id) {
                           options.add('Supprimer');
+                        } else {
+                          options.add('Signaler');
                         }
                         return options.map((String choice) {
                           return PopupMenuItem<String>(
@@ -223,10 +225,9 @@ Future reportComment({required BuildContext context}) {
                       Text('Signaler ce contenu ?',
                           style: Theme.of(context).textTheme.titleLarge!),
                       (state is SendCommentRepportLoadingState)
-                          ? Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 118.0, bottom: 130),
-                              child: const Center(
+                          ? const Padding(
+                              padding: EdgeInsets.only(top: 118.0, bottom: 130),
+                              child: Center(
                                 child: CircularProgressIndicator(),
                               ))
                           : (state is SuccessSendCommentRepportState)

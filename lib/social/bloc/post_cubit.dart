@@ -129,7 +129,7 @@ class PostCubit extends ObjectCubit<Post, PostState> {
       socialService
           .commentPost(
               idPost: post.id,
-              content: content!.trim(),
+              content: content.trim(),
               target: targetCommentId)
           .then((comment) {
         emit(CommentPostSuccesState(comment));

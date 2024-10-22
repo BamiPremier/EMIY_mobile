@@ -1,9 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
+import 'package:flutter/material.dart'; 
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
-import 'package:umai/auth/bloc/people_follows_cubit.dart';
-import 'package:umai/auth/services/auth_service.dart'; 
+import 'package:umai/auth/bloc/people_follows_cubit.dart'; 
 import 'package:umai/common/models/user.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/common/widgets/item_user.dart';

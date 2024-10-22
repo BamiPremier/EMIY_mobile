@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/common/widgets/loaders.dart';
-import 'package:potatoes/libs.dart';
-import 'package:umai/account/screens/param/blocked_user.dart';
+import 'package:potatoes/libs.dart'; 
 import 'package:umai/account/screens/edit_profile.dart';
 import 'package:umai/account/screens/follow.dart';
 import 'package:umai/account/screens/param/settings_screen.dart';

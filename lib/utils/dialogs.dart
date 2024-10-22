@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:umai/utils/themes.dart';
+import 'package:flutter/material.dart'; 
 
 String _translateError(dynamic error) {
   const String noInternetMessage =

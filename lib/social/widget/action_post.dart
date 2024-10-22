@@ -73,10 +73,14 @@ class _PostActionState extends State<PostAction> {
           },
           padding: EdgeInsets.zero,
           itemBuilder: (BuildContext context) {
-            List<String> options = ['Signaler', 'Bloquer'];
+            List<String> options = [];
+
             if (post.user.id == context.read<UserCubit>().user.id) {
               options.add('Supprimer');
+            } else {
+              options.addAll(['Signaler', 'Bloquer']);
             }
+
             return options.map((String choice) {
               return PopupMenuItem<String>(
                 padding: const EdgeInsets.only(right: 48.0, left: 16.0),
@@ -110,10 +114,9 @@ Future reportPost({required BuildContext context}) {
                       Text('Signaler ce contenu ?',
                           style: Theme.of(context).textTheme.titleLarge!),
                       (state is SendRepportLoadingState)
-                          ? Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 118.0, bottom: 130),
-                              child: const Center(
+                          ? const Padding(
+                              padding: EdgeInsets.only(top: 118.0, bottom: 130),
+                              child: Center(
                                 child: CircularProgressIndicator(),
                               ))
                           : (state is SuccessSendRepportPostState)
@@ -254,8 +257,8 @@ Future blockUser({required BuildContext context}) {
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.titleLarge!),
                   (state is PersonLoadingBlockState)
-                      ? Padding(
-                          padding: const EdgeInsets.only(top: 60.0),
+                      ? const Padding(
+                          padding: EdgeInsets.only(top: 60.0),
                           child: Center(
                             child: CircularProgressIndicator(),
                           ))

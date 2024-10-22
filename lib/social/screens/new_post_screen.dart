@@ -100,7 +100,6 @@ class _TakePhotoUI extends StatefulWidget {
   final PhotoCameraState state;
 
   const _TakePhotoUI({
-    super.key,
     required this.state,
   });
 

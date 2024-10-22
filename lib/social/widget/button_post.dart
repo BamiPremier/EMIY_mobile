@@ -31,26 +31,26 @@ class _ButtonPostState extends State<ButtonPost> with CompletableMixin {
             Row(
               children: [
                 post.hasLiked
-                  ? IconButton(
-                      padding: EdgeInsets.zero,
-                      icon: const Icon(
-                        Icons.favorite,
-                        color: Colors.red,
+                    ? IconButton(
+                        padding: EdgeInsets.zero,
+                        icon: const Icon(
+                          Icons.favorite,
+                          color: Colors.red,
+                        ),
+                        onPressed: () {
+                          postCubit.unLikePost();
+                        },
+                      )
+                    : IconButton(
+                        padding: EdgeInsets.zero,
+                        icon: Icon(
+                          Icons.favorite_border_outlined,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                        onPressed: () {
+                          postCubit.likePost();
+                        },
                       ),
-                      onPressed: () {
-                        postCubit.unLikePost();
-                      },
-                    )
-                  : IconButton(
-                      padding: EdgeInsets.zero,
-                      icon: Icon(
-                        Icons.favorite_border_outlined,
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      ),
-                      onPressed: () {
-                        postCubit.likePost();
-                      },
-                    ),
                 IconButton(
                   padding: EdgeInsets.zero,
                   icon: Icon(
@@ -89,7 +89,7 @@ class _ButtonPostState extends State<ButtonPost> with CompletableMixin {
       if (!isSharing) {
         isSharing = true;
 
-        final result = await Share.share(
+        await Share.share(
           'Suivre ce lien pour voir le post : ${state.link}',
         );
 
