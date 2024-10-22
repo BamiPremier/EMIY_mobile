@@ -98,7 +98,8 @@ class MyApp extends StatelessWidget {
           BlocProvider(
               create: (context) => AuthCubit(context.read(), context.read())),
           BlocProvider(create: (_) => HomeCubit()),
-          BlocProvider(create: (context) => NewPostCubit(context.read()))
+          BlocProvider(
+              create: (context) => NewPostCubit(context.read(), context.read()))
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
