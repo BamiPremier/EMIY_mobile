@@ -40,6 +40,7 @@ mixin _$User {
   bool get followed => throw _privateConstructorUsedError;
   @JsonKey(name: 'is_following_me')
   bool get isFollowingMe => throw _privateConstructorUsedError;
+  bool get hasBlocked => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -65,7 +66,8 @@ abstract class $UserCopyWith<$Res> {
       @JsonKey(name: 'animes_viewed_count') int animesViewedCount,
       @JsonKey(name: 'watchlist_count') int watchlistCount,
       bool followed,
-      @JsonKey(name: 'is_following_me') bool isFollowingMe});
+      @JsonKey(name: 'is_following_me') bool isFollowingMe,
+      bool hasBlocked});
 }
 
 /// @nodoc
@@ -95,6 +97,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? watchlistCount = null,
     Object? followed = null,
     Object? isFollowingMe = null,
+    Object? hasBlocked = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -153,6 +156,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.isFollowingMe
           : isFollowingMe // ignore: cast_nullable_to_non_nullable
               as bool,
+      hasBlocked: null == hasBlocked
+          ? _value.hasBlocked
+          : hasBlocked // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -178,7 +185,8 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       @JsonKey(name: 'animes_viewed_count') int animesViewedCount,
       @JsonKey(name: 'watchlist_count') int watchlistCount,
       bool followed,
-      @JsonKey(name: 'is_following_me') bool isFollowingMe});
+      @JsonKey(name: 'is_following_me') bool isFollowingMe,
+      bool hasBlocked});
 }
 
 /// @nodoc
@@ -205,6 +213,7 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? watchlistCount = null,
     Object? followed = null,
     Object? isFollowingMe = null,
+    Object? hasBlocked = null,
   }) {
     return _then(_$UserImpl(
       id: null == id
@@ -263,6 +272,10 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.isFollowingMe
           : isFollowingMe // ignore: cast_nullable_to_non_nullable
               as bool,
+      hasBlocked: null == hasBlocked
+          ? _value.hasBlocked
+          : hasBlocked // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -284,7 +297,8 @@ class _$UserImpl implements _User {
       @JsonKey(name: 'animes_viewed_count') this.animesViewedCount = 0,
       @JsonKey(name: 'watchlist_count') this.watchlistCount = 0,
       this.followed = false,
-      @JsonKey(name: 'is_following_me') this.isFollowingMe = false});
+      @JsonKey(name: 'is_following_me') this.isFollowingMe = false,
+      this.hasBlocked = false});
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserImplFromJson(json);
@@ -326,10 +340,13 @@ class _$UserImpl implements _User {
   @override
   @JsonKey(name: 'is_following_me')
   final bool isFollowingMe;
+  @override
+  @JsonKey()
+  final bool hasBlocked;
 
   @override
   String toString() {
-    return 'User(id: $id, username: $username, usertag: $usertag, image: $image, imageFull: $imageFull, biography: $biography, type: $type, status: $status, followersCount: $followersCount, followingCount: $followingCount, animesViewedCount: $animesViewedCount, watchlistCount: $watchlistCount, followed: $followed, isFollowingMe: $isFollowingMe)';
+    return 'User(id: $id, username: $username, usertag: $usertag, image: $image, imageFull: $imageFull, biography: $biography, type: $type, status: $status, followersCount: $followersCount, followingCount: $followingCount, animesViewedCount: $animesViewedCount, watchlistCount: $watchlistCount, followed: $followed, isFollowingMe: $isFollowingMe, hasBlocked: $hasBlocked)';
   }
 
   @override
@@ -359,7 +376,9 @@ class _$UserImpl implements _User {
             (identical(other.followed, followed) ||
                 other.followed == followed) &&
             (identical(other.isFollowingMe, isFollowingMe) ||
-                other.isFollowingMe == isFollowingMe));
+                other.isFollowingMe == isFollowingMe) &&
+            (identical(other.hasBlocked, hasBlocked) ||
+                other.hasBlocked == hasBlocked));
   }
 
   @JsonKey(ignore: true)
@@ -379,7 +398,8 @@ class _$UserImpl implements _User {
       animesViewedCount,
       watchlistCount,
       followed,
-      isFollowingMe);
+      isFollowingMe,
+      hasBlocked);
 
   @JsonKey(ignore: true)
   @override
@@ -410,7 +430,8 @@ abstract class _User implements User {
       @JsonKey(name: 'animes_viewed_count') final int animesViewedCount,
       @JsonKey(name: 'watchlist_count') final int watchlistCount,
       final bool followed,
-      @JsonKey(name: 'is_following_me') final bool isFollowingMe}) = _$UserImpl;
+      @JsonKey(name: 'is_following_me') final bool isFollowingMe,
+      final bool hasBlocked}) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
@@ -448,6 +469,8 @@ abstract class _User implements User {
   @override
   @JsonKey(name: 'is_following_me')
   bool get isFollowingMe;
+  @override
+  bool get hasBlocked;
   @override
   @JsonKey(ignore: true)
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>

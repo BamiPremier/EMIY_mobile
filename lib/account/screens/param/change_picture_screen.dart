@@ -29,7 +29,7 @@ class _ChangePictureScreenState extends State<ChangePictureScreen>
         data: AppTheme.fullBlackTheme(context),
         child: Scaffold(
           appBar: AppBar(
-            title: Text(
+            title: const Text(
               'Photo de profil',
             ),
             centerTitle: true,

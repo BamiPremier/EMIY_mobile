@@ -6,6 +6,8 @@ import 'package:umai/social/bloc/post_cubit.dart';
 import 'package:umai/utils/themes.dart'; 
 
 class ActionCommentResponse extends StatefulWidget {
+  const ActionCommentResponse({super.key});
+
   @override
   State<ActionCommentResponse> createState() => _ActionCommentResponseState();
 }

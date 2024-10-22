@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
+import 'package:umai/social/bloc/post_feed_cubit.dart';
 import 'package:umai/social/model/post.dart';
 import 'package:umai/social/screens/new_post_screen.dart';
-import 'package:umai/social/services/social_service.dart';
 import 'package:umai/social/widget/item_post.dart';
 import 'package:umai/social/widget/new_post_banner.dart';
 
@@ -15,8 +14,9 @@ class SocialHomeScreen extends StatefulWidget {
   State<SocialHomeScreen> createState() => _SocialHomeScreenState();
 }
 
-class _SocialHomeScreenState extends State<SocialHomeScreen>
-    with TickerProviderStateMixin {
+class _SocialHomeScreenState extends State<SocialHomeScreen> {
+  late final postFeedCubit = PostFeedCubit(context.read(), context.read());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,8 +28,7 @@ class _SocialHomeScreenState extends State<SocialHomeScreen>
               child: AutoListView.get<Post>(
                   padding: EdgeInsets.only(
                       bottom: MediaQuery.of(context).viewInsets.bottom),
-                  cubit: AutoListCubit(
-                      provider: context.read<SocialService>().getFeed),
+                  cubit: postFeedCubit,
                   itemBuilder: (context, post) =>
                       PostItem.get(context: context, post: post),
                   errorBuilder: (context, retry) => Column(

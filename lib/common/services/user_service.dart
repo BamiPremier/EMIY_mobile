@@ -14,7 +14,7 @@ class UserService extends ApiService {
   static const String _follow = '/users/follow';
   static const String _unfollow = '/users/unfollow';
   static const String _block = '/users/:userId/block';
-
+  static const String _blockedUsers = '/users/block';
   static const String _updateUser = '/users';
   static const String _updateProfilePicture = '/users/picture';
   static const String _userFollowers = '/users/followers';
@@ -59,13 +59,33 @@ class UserService extends ApiService {
         mapper: User.fromJson);
   }
 
-  blockUser({required user}) async {
+  Future<PaginatedList<User>> getBlockedUsers({int page = 1}) async {
+    return compute(
+        dio.get(_blockedUsers,
+            options: Options(headers: withAuth()),
+            queryParameters: {
+              'page': page,
+              'size': 12,
+            }),
+        mapper: (result) => toPaginatedList(result, User.fromJson));
+  }
+
+   Future<User> blockUser({required user}) async {
     return compute(
       dio.post(
         _block.replaceAll(':userId', user),
         data: {
           'reason': null,
         },
+        options: Options(headers: withAuth()),
+      ),     mapper: User.fromJson
+    );
+  }
+
+  unBlockUser({required user}) async {
+    return compute(
+      dio.post(
+        _block.replaceAll(':userId', user),
         options: Options(headers: withAuth()),
       ),
     );
@@ -126,24 +146,28 @@ class UserService extends ApiService {
         mapper: (result) => toPaginatedList(result, Anime.fromJson));
   }
 
-  Future<PaginatedList<User>> getUserFollowers({int page = 1}) async {
+  Future<PaginatedList<User>> getUserFollowers(
+      {int page = 1, String? userId}) async {
     return compute(
         dio.get(_userFollowers,
             options: Options(headers: withAuth()),
             queryParameters: {
               'page': page,
               'size': 12,
+              if (userId != null) 'userId': userId,
             }),
         mapper: (result) => toPaginatedList(result, User.fromJson));
   }
 
-  Future<PaginatedList<User>> getUserFollowing({int page = 1}) async {
+  Future<PaginatedList<User>> getUserFollowing(
+      {int page = 1, String? userId}) async {
     return compute(
         dio.get(_userFollowing,
             options: Options(headers: withAuth()),
             queryParameters: {
               'page': page,
               'size': 12,
+              if (userId != null) 'userId': userId,
             }),
         mapper: (result) => toPaginatedList(result, User.fromJson));
   }

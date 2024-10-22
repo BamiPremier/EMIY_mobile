@@ -1,7 +1,6 @@
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/social/model/comment.dart';
-import 'package:umai/social/model/comment.dart';
 import 'package:umai/social/services/social_service.dart';
 
 part 'comment_state.dart';
@@ -34,19 +33,17 @@ class CommentCubit extends ObjectCubit<Comment, CommentState> {
   }
 
   void seeResponse() {
-    
     if (state is SeeCommentResponseState) {
       emit(UnSeeCommentResponseState());
     } else {
       emit(SeeCommentResponseState());
     }
-    
   }
 
   void likeComment() {
     final stateBefore = state;
     var newComment = comment.copyWith(hasLiked: !comment.hasLiked);
-   
+
     update(newComment);
     socialService
         .likeComment(
@@ -72,18 +69,25 @@ class CommentCubit extends ObjectCubit<Comment, CommentState> {
     });
   }
 
-  void signalerComment() {
-    final stateBefore = state;
-    var newComment = comment.copyWith(hasLiked: !comment.hasLiked);
-    update(newComment);
-    socialService
-        .signalerComment(
-      commentId: comment.id,
-      reason: 'reason',
-    )
-        .then((updatecomment) {}, onError: (error, trace) {
-      emit(CommentErrorState(error, trace));
-      emit(stateBefore);
-    });
+  reset() {
+    update(comment);
+  }
+
+  void report({required String reason}) {
+    if (state is InitializingCommentState) {
+      final stateBefore = state;
+      emit(const SendCommentRepportLoadingState());
+      socialService
+          .reportComment(
+        commentId: comment.id,
+        reason: reason,
+      )
+          .then((_) {
+        emit(SuccessSendCommentRepportState(comment));
+      }, onError: (error, trace) {
+        emit(CommentErrorState(error, trace));
+        emit(stateBefore);
+      });
+    }
   }
 }

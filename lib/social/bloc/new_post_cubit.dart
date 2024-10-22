@@ -4,14 +4,17 @@ import 'dart:io';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart' hide PreferencesService;
 import 'package:umai/social/model/post.dart';
+import 'package:umai/social/services/post_cubit_manager.dart';
 import 'package:umai/social/services/social_service.dart';
 
 part 'new_post_state.dart';
 
 class NewPostCubit extends Cubit<NewPostState> {
   final SocialService socialService;
+  final PostCubitManager cubitManager;
 
-  NewPostCubit(this.socialService) : super(const NewPostIdleState());
+  NewPostCubit(this.socialService, this.cubitManager)
+      : super(const NewPostIdleState());
 
   void create({
     String? content,
@@ -27,6 +30,7 @@ class NewPostCubit extends Cubit<NewPostState> {
       file: file,
     )
         .then((post) {
+      cubitManager.add(post);
       emit(NewPostUploadedState(post));
 
       Timer(const Duration(seconds: 5), () {
