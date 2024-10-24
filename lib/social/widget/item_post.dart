@@ -42,43 +42,31 @@ class _PostItemState extends State<PostItem> {
                     )),
           );
         },
-        child: ColoredBox(
-          color: Colors.white,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0, right: 0.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    PostAction.get(context: context, user: post.user),
-                    const SizedBox(height: 8),
-                    Padding(
-                        padding: const EdgeInsets.only(right: 16.0),
-                        child: AnimatedSize(
-                          duration: const Duration(milliseconds: 300),
-                          alignment: Alignment.topCenter,
-                          curve: Curves.easeInOut,
-                          child: ReadMoreText(
-                            post.content,
-                            trimMode: _trimMode,
-                            trimLines: 3,
-                            isCollapsed: isCollapsed,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            colorClickableText: Theme.of(context).primaryColor,
-                            trimCollapsedText: 'Lire plus',
-                            trimExpandedText: ' moins',
-                          ),
-                        )),
-                    const SizedBox(height: 8),
-                  ],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const PostAction(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: AnimatedSize(
+                duration: const Duration(milliseconds: 300),
+                alignment: Alignment.topCenter,
+                curve: Curves.easeInOut,
+                child: ReadMoreText(
+                  post.content,
+                  trimMode: _trimMode,
+                  trimLines: 3,
+                  isCollapsed: isCollapsed,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  colorClickableText: Theme.of(context).primaryColor,
+                  trimCollapsedText: 'Lire plus',
+                  trimExpandedText: ' moins',
                 ),
-              ),
-              if (post.image?.isNotEmpty ?? false) PostImage(url: post.image!),
-              const ButtonPost()
-            ],
-          ),
+              )),
+            const SizedBox(height: 8),
+            if (post.image?.isNotEmpty ?? false) PostImage(url: post.image!),
+            const ButtonPost()
+          ],
         ),
       );
     });

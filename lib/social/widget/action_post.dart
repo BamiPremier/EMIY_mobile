@@ -1,61 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
+import 'package:umai/account/screens/person_account.dart';
 import 'package:umai/common/bloc/person_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
-import 'package:umai/common/models/user.dart';
-import 'package:umai/common/services/person_cubit_manager.dart';
+import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
-import 'package:umai/account/screens/person_account.dart';
 import 'package:umai/social/bloc/post_cubit.dart';
 import 'package:umai/utils/themes.dart';
-import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
-class PostAction extends StatefulWidget {
-  static Widget get({
-    required BuildContext context,
-    required User user,
-  }) {
-    return BlocProvider.value(
-      value: context.read<PersonCubitManager>().get(user),
-      child: const PostAction._(),
-    );
-  }
-
-  const PostAction._();
-  @override
-  State<PostAction> createState() => _PostActionState();
-}
-
-class _PostActionState extends State<PostAction> {
-  late final postCubit = context.read<PostCubit>();
-
-  late final post = postCubit.post;
+class PostAction extends StatelessWidget {
+  const PostAction({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final postCubit = context.read<PostCubit>();
+    final user = postCubit.post.user;
+
     return ListTile(
-        contentPadding: EdgeInsets.zero,
+        contentPadding: const EdgeInsets.only(left: 16.0, right: 8.0),
         leading: GestureDetector(
           child: ProfilePicture(
-            image: post.user.image,
+            image: user.image,
             height: 48.0,
             width: 48.0,
           ),
           onTap: () => Navigator.of(context).push(MaterialPageRoute(
               builder: (context) =>
-                  PersonAccountScreen.get(context: context, user: post.user))),
+                  PersonAccountScreen.get(context: context, user: user))),
         ),
         title: GestureDetector(
-          child: Text(post.user.username,
+          child: Text(user.username,
               style: Theme.of(context).textTheme.bodyLarge),
           onTap: () => Navigator.of(context).push(MaterialPageRoute(
               builder: (context) =>
-                  PersonAccountScreen.get(context: context, user: post.user))),
+                  PersonAccountScreen.get(context: context, user: user))),
         ),
         subtitle: Text(
-          post.createdAt.elapsed(),
+          postCubit.post.createdAt.elapsed(),
           style: Theme.of(context)
               .textTheme
               .labelMedium!
@@ -71,11 +54,10 @@ class _PostActionState extends State<PostAction> {
               postCubit.delete();
             }
           },
-          padding: EdgeInsets.zero,
           itemBuilder: (BuildContext context) {
             List<String> options = [];
 
-            if (post.user.id == context.read<UserCubit>().user.id) {
+            if (user.id == context.read<UserCubit>().user.id) {
               options.add('Supprimer');
             } else {
               options.addAll(['Signaler', 'Bloquer']);
