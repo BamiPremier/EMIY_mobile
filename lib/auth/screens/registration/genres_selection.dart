@@ -109,3 +109,29 @@ class _RegistrationGenresSelectionState
     return null;
   }
 }
+  //  header: FilterChip(
+  //       onSelected: (v) {},
+  //       label: Text(title),
+  //       selectedColor: Theme.of(context).colorScheme.tertiaryContainer,
+  //       labelStyle: Theme.of(context)
+  //           .textTheme
+  //           .labelLarge!
+  //           .copyWith(color: Theme.of(context).colorScheme.onTertiaryContainer),
+  //       side: BorderSide(color: Theme.of(context).colorScheme.onSurfaceVariant),
+  //       showCheckmark: false,
+  //     ),
+
+  // Container(
+  //         height: 32.0,
+  //         width: 94.0,
+  //          decoration: BoxDecoration(
+  //             borderRadius: BorderRadius.circular(20),
+  //             color: Theme.of(context).colorScheme.tertiaryContainer),
+  //         padding: const EdgeInsets.symmetric(horizontal: 16.0),
+  //         margin: const EdgeInsets.only(left: 16.0, bottom: 16),
+  //         alignment: Alignment.center,
+  //         child: Text(
+  //           title,
+  //           style: Theme.of(context).textTheme.labelLarge!.copyWith(
+  //               color: Theme.of(context).colorScheme.onTertiaryContainer),
+  //         )),

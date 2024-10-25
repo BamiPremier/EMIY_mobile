@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:potatoes/libs.dart';
+import 'package:umai/common/services/cache_manager.dart';
 
 class PostImage extends StatelessWidget {
   final String url;
@@ -12,9 +14,8 @@ class PostImage extends StatelessWidget {
     final double width = MediaQuery.of(context).size.width;
     final double height = min(450, width);
 
-    // TODO: use flutter_cache_manager instead of cached_network_image
-    return Image.network(
-      url,
+    return Image(
+      image: context.read<AppCacheManager>().getImage(url),
       height: height,
       width: width,
       fit: BoxFit.cover,

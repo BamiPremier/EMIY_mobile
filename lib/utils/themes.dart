@@ -12,7 +12,14 @@ abstract class AppTheme {
   static const Color lightGrey = Color(0xFFF5F5F5);
   static const Color disabledText = Color(0xFF9F9F9F);
   static const Color errorRed = Color(0xFFFF0717);
+  static const Color green = Color(0xFF00F57A);
+  static const Color onHighGreen = Color(0xFF002914);
+  static const Color midOrange = Color(0xFFFF7A00);
+  static const Color onMidOrange = Color(0xFF331400);
 
+  static const Color tertiary = Color(0xFF904A42);
+  static const Color onTertiaryContainer = Color(0xFF3B0906);
+  static const Color midRed = Color(0xFFFF0717);
   static const Color mainText = Colors.black;
 
   static TextTheme _textTheme(BuildContext context) {
@@ -92,6 +99,7 @@ abstract class AppTheme {
       primary: primaryYellow,
       secondary: primaryYellow,
       tertiary: primaryRed,
+      onTertiaryContainer: onTertiaryContainer,
       tertiaryContainer: tertiaryContainer,
       error: errorRed,
       errorContainer: errorRed,
@@ -232,7 +240,7 @@ abstract class AppTheme {
         style: FilledButton.styleFrom(
           backgroundColor: primaryYellow,
           foregroundColor: mainText,
-          padding: const EdgeInsets.symmetric(horizontal: 56.0, vertical: 8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 32.0),
           shape: RoundedRectangleBorder(
               side: BorderSide.none,
               borderRadius: BorderRadius.circular(100.0)),

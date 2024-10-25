@@ -17,7 +17,6 @@ import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/social/widget/action_post.dart';
 import 'package:umai/utils/themes.dart';
- 
 
 class PersonAccountScreen extends StatefulWidget {
   const PersonAccountScreen({super.key});
@@ -130,7 +129,7 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                       ],
                     ),
                   ),
-                  personCubit.user == userCubit.user
+                  personCubit.user.id == userCubit.user.id
                       ? const SizedBox()
                       : Padding(
                           padding: const EdgeInsets.symmetric(
@@ -224,9 +223,9 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                                             .textTheme
                                             .labelLarge!
                                             .copyWith(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .onTertiaryContainer,
+                                              color:
+                                                  Theme.of(context)
+                                            .colorScheme.onTertiaryContainer,
                                             ),
                                       ),
                                       child: Row(
@@ -235,13 +234,15 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                                             MainAxisAlignment.center,
                                         children: [
                                           state is PersonLoadingState
-                                              ? const SizedBox(
+                                              ?   SizedBox(
                                                   width: 16,
                                                   height: 16,
                                                   child:
                                                       CircularProgressIndicator(
                                                     strokeWidth: 2,
-                                                    color: AppTheme.black,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .onTertiaryContainer,
                                                   ),
                                                 )
                                               : Icon(Icons.check,

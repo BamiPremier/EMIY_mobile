@@ -40,6 +40,7 @@ mixin _$User {
   bool get followed => throw _privateConstructorUsedError;
   @JsonKey(name: 'is_following_me')
   bool get isFollowingMe => throw _privateConstructorUsedError;
+  @JsonKey(name: 'hasBlocked')
   bool get hasBlocked => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -67,7 +68,7 @@ abstract class $UserCopyWith<$Res> {
       @JsonKey(name: 'watchlist_count') int watchlistCount,
       bool followed,
       @JsonKey(name: 'is_following_me') bool isFollowingMe,
-      bool hasBlocked});
+      @JsonKey(name: 'hasBlocked') bool hasBlocked});
 }
 
 /// @nodoc
@@ -186,7 +187,7 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       @JsonKey(name: 'watchlist_count') int watchlistCount,
       bool followed,
       @JsonKey(name: 'is_following_me') bool isFollowingMe,
-      bool hasBlocked});
+      @JsonKey(name: 'hasBlocked') bool hasBlocked});
 }
 
 /// @nodoc
@@ -298,7 +299,7 @@ class _$UserImpl implements _User {
       @JsonKey(name: 'watchlist_count') this.watchlistCount = 0,
       this.followed = false,
       @JsonKey(name: 'is_following_me') this.isFollowingMe = false,
-      this.hasBlocked = false});
+      @JsonKey(name: 'hasBlocked') this.hasBlocked = false});
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserImplFromJson(json);
@@ -341,7 +342,7 @@ class _$UserImpl implements _User {
   @JsonKey(name: 'is_following_me')
   final bool isFollowingMe;
   @override
-  @JsonKey()
+  @JsonKey(name: 'hasBlocked')
   final bool hasBlocked;
 
   @override
@@ -431,7 +432,7 @@ abstract class _User implements User {
       @JsonKey(name: 'watchlist_count') final int watchlistCount,
       final bool followed,
       @JsonKey(name: 'is_following_me') final bool isFollowingMe,
-      final bool hasBlocked}) = _$UserImpl;
+      @JsonKey(name: 'hasBlocked') final bool hasBlocked}) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
@@ -470,6 +471,7 @@ abstract class _User implements User {
   @JsonKey(name: 'is_following_me')
   bool get isFollowingMe;
   @override
+  @JsonKey(name: 'hasBlocked')
   bool get hasBlocked;
   @override
   @JsonKey(ignore: true)

@@ -114,7 +114,9 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                               alignment: Alignment.center,
                               padding: const EdgeInsets.all(16),
                               child: LinearProgressIndicator(
-                                color: Theme.of(context).colorScheme.tertiary,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onTertiaryContainer,
                                 backgroundColor: Theme.of(context)
                                     .colorScheme
                                     .tertiaryContainer,
@@ -124,7 +126,9 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                               alignment: Alignment.center,
                               padding: const EdgeInsets.all(16),
                               child: LinearProgressIndicator(
-                                color: Theme.of(context).colorScheme.tertiary,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onTertiaryContainer,
                                 backgroundColor: Theme.of(context)
                                     .colorScheme
                                     .tertiaryContainer,

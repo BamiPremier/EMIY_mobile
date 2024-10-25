@@ -16,7 +16,7 @@ import photo_manager
 import share_plus
 import shared_preferences_foundation
 import sign_in_with_apple
-import sqflite
+import sqflite_darwin
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   FileSelectorPlugin.register(with: registry.registrar(forPlugin: "FileSelectorPlugin"))

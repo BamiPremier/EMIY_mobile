@@ -120,9 +120,7 @@ class _ItemCommentResponseState extends State<ItemCommentResponse> {
                       },
                       padding: EdgeInsets.zero,
                       itemBuilder: (BuildContext context) {
-                        List<String> options = [
-                          'Copier'
-                      ];
+                        List<String> options = ['Copier'];
 
                         if (comment.user.id ==
                             context.read<UserCubit>().user.id) {
@@ -173,7 +171,7 @@ class _ItemCommentResponseState extends State<ItemCommentResponse> {
                   alignment: Alignment.center,
                   padding: const EdgeInsets.all(16),
                   child: LinearProgressIndicator(
-                    color: Theme.of(context).colorScheme.tertiary,
+                    color: Theme.of(context).colorScheme.onTertiaryContainer,
                     backgroundColor:
                         Theme.of(context).colorScheme.tertiaryContainer,
                     borderRadius: BorderRadius.circular(30),
@@ -182,7 +180,7 @@ class _ItemCommentResponseState extends State<ItemCommentResponse> {
                   alignment: Alignment.center,
                   padding: const EdgeInsets.all(16),
                   child: LinearProgressIndicator(
-                    color: Theme.of(context).colorScheme.tertiary,
+                    color: Theme.of(context).colorScheme.onTertiaryContainer,
                     backgroundColor:
                         Theme.of(context).colorScheme.tertiaryContainer,
                     borderRadius: BorderRadius.circular(30),

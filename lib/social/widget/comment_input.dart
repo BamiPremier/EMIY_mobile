@@ -40,64 +40,67 @@ class _CommentInputState extends State<CommentInput> {
               }
             },
             builder: (context, state) => SafeArea(
-              top: false,
-              minimum: const EdgeInsets.all(16.0),
-              child: Container(
-                color: Theme.of(context).colorScheme.surface,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextFormField(
-                        readOnly: state is PostLoadingState ? true : false,
-                        controller: _commentController,
-                        decoration: InputDecoration(
-                          hintText: (ystate != null)
-                            ? 'Réponse à ${ystate.user.username}'
-                            : "Ajouter un commentaire...",
-                          hintStyle: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSurfaceVariant,
-                                  overflow: TextOverflow.ellipsis),
-                        ),
-                        keyboardType: TextInputType.text,
-                        textInputAction: TextInputAction.done,
-                        textCapitalization: TextCapitalization.sentences,
-                        focusNode: focusNode,
-                        validator: Validators.empty,
-                        onTapOutside: (_) =>
-                          FocusScope.of(context).unfocus()),
-                    ),
-                    const SizedBox(width: 8),
-                    IconButton(
-                      padding: EdgeInsets.zero,
-                      icon: CircleAvatar(
-                        backgroundColor: Theme.of(context).primaryColor,
-                        radius: 24,
-                        child: state is PostLoadingState
-                          ? const SizedBox(
-                              width: 10,
-                              height: 10,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: AppTheme.white,
+                  top: false,
+                  minimum: const EdgeInsets.all(16.0),
+                  child: Container(
+                    color: Theme.of(context).colorScheme.surface,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                              style: Theme.of(context).textTheme.bodyMedium,
+                              readOnly:
+                                  state is PostLoadingState ? true : false,
+                              controller: _commentController,
+                              decoration: InputDecoration(
+                                hintText: (ystate != null)
+                                    ? 'Réponse à ${ystate.user.username}'
+                                    : "Ajouter un commentaire...",
+                                hintStyle: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurfaceVariant,
+                                        overflow: TextOverflow.ellipsis),
                               ),
-                            )
-                          : const Icon(Icons.arrow_upward)),
-                      onPressed: () {
-                        if (Validators.empty(_commentController.text) == null) {
-                          context.read<ActionCommentCubit>().commentPost(
-                            content: _commentController.text,
-                          );
-                        }
-                      },
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.done,
+                              textCapitalization: TextCapitalization.sentences,
+                              focusNode: focusNode,
+                              validator: Validators.empty,
+                              onTapOutside: (_) =>
+                                  FocusScope.of(context).unfocus()),
+                        ),
+                        const SizedBox(width: 8),
+                        IconButton(
+                          padding: EdgeInsets.zero,
+                          icon: CircleAvatar(
+                              backgroundColor: Theme.of(context).primaryColor,
+                              radius: 24,
+                              child: state is PostLoadingState
+                                  ? const SizedBox(
+                                      width: 16,
+                                      height: 16,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: AppTheme.black,
+                                      ),
+                                    )
+                                  : const Icon(Icons.arrow_upward)),
+                          onPressed: () {
+                            if (Validators.empty(_commentController.text) ==
+                                null) {
+                              context.read<ActionCommentCubit>().commentPost(
+                                    content: _commentController.text,
+                                  );
+                            }
+                          },
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-            )));
+                  ),
+                )));
   }
 }

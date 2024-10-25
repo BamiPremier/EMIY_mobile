@@ -59,6 +59,7 @@ class _RegistrationUsernameState extends State<RegistrationUsername>
                         child: Column(
                           children: [
                             TextFormField(
+                              style: Theme.of(context).textTheme.bodyMedium,
                               controller: authIdleState.userNameController,
                               decoration: const InputDecoration(
                                 helperText:
@@ -76,6 +77,7 @@ class _RegistrationUsernameState extends State<RegistrationUsername>
                             ),
                             const SizedBox(height: 10),
                             TextFormField(
+                              style: Theme.of(context).textTheme.bodyMedium,
                               controller: authIdleState.userTagController,
                               decoration: const InputDecoration(
                                   helperText:
