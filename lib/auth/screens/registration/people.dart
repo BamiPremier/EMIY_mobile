@@ -1,23 +1,22 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
-import 'package:umai/auth/bloc/people_follows_cubit.dart'; 
+import 'package:umai/auth/bloc/people_follows_cubit.dart';
 import 'package:umai/common/models/user.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/common/widgets/item_user.dart';
 import 'package:umai/common/screens/home.dart';
 
-class RegistrationPeople extends StatefulWidget {
-  const RegistrationPeople({super.key});
+class PeopleToFollowScreen extends StatefulWidget {
+  const PeopleToFollowScreen({super.key});
 
   @override
-  State<RegistrationPeople> createState() => _RegistrationPeopleState();
+  State<PeopleToFollowScreen> createState() => _PeopleToFollowScreenState();
 }
 
-class _RegistrationPeopleState extends State<RegistrationPeople> {
+class _PeopleToFollowScreenState extends State<PeopleToFollowScreen> {
   late final peopleFollowsCubit =
       PeopleFollowsCubit(context.read(), context.read());
- 
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +36,8 @@ class _RegistrationPeopleState extends State<RegistrationPeople> {
                   padding: EdgeInsets.only(
                       bottom: MediaQuery.of(context).viewInsets.bottom),
                   cubit: peopleFollowsCubit,
-                  itemBuilder: (context, user) =>
-                      UserItem.get(context: context, user: user),
+                  itemBuilder: (context, user) => UserItem.get(
+                      context: context, user: user, canNavigate: false),
                   errorBuilder: (context, retry) => Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [

@@ -2,7 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:umai/utils/themes.dart';
 
-enum _ButtonStyle { primary, black, white }
+enum _ButtonStyle { primary, secondary, black, white }
 
 class UmaiButton extends StatelessWidget {
   final _ButtonStyle _hierarchy;
@@ -18,6 +18,14 @@ class UmaiButton extends StatelessWidget {
     this.large = true,
     this.icon,
   }) : _hierarchy = _ButtonStyle.primary;
+
+  const UmaiButton.secondary({
+    super.key,
+    required this.onPressed,
+    required this.text,
+    this.large = true,
+    this.icon,
+  }) : _hierarchy = _ButtonStyle.secondary;
 
   const UmaiButton.black({
     super.key,
@@ -39,6 +47,8 @@ class UmaiButton extends StatelessWidget {
     switch (_hierarchy) {
       case _ButtonStyle.primary:
         return Theme.of(context).colorScheme.primary;
+      case _ButtonStyle.secondary:
+        return Theme.of(context).colorScheme.tertiaryContainer;
       case _ButtonStyle.black:
         return AppTheme.black;
       case _ButtonStyle.white:
@@ -50,6 +60,8 @@ class UmaiButton extends StatelessWidget {
     switch (_hierarchy) {
       case _ButtonStyle.primary:
         return AppTheme.black;
+      case _ButtonStyle.secondary:
+        return Theme.of(context).colorScheme.onTertiaryContainer;
       case _ButtonStyle.black:
         return AppTheme.white;
       case _ButtonStyle.white:

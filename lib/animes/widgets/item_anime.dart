@@ -1,11 +1,11 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/models/anime.dart';
-import 'package:umai/animes/screens/anime.dart';
+import 'package:umai/animes/screens/anime_details.dart';
+import 'package:umai/animes/services/anime_cubit_manager.dart';
 import 'package:umai/common/bloc/anime_manip_cubit.dart';
+import 'package:umai/common/services/cache_manager.dart';
 import 'package:umai/utils/dialogs.dart';
-import 'package:umai/utils/themes.dart';
 
 class AnimeItem extends StatelessWidget {
   final bool withAction;
@@ -15,8 +15,8 @@ class AnimeItem extends StatelessWidget {
     required Anime anime,
     bool withAction = false,
   }) {
-    return BlocProvider(
-      create: (context) => AnimeManipCubit(context.read(), anime),
+    return BlocProvider.value(
+      value: context.read<AnimeCubitManager>().get(anime),
       child: AnimeItem._(withAction),
     );
   }
@@ -29,7 +29,7 @@ class AnimeItem extends StatelessWidget {
         listener: onEventReceived,
         builder: (context, state) {
           final animeManipCubit = context.read<AnimeManipCubit>();
-          final anime = animeManipCubit.anime!;
+          final anime = animeManipCubit.anime;
           return GestureDetector(
             onTapUp: (details) => showContextMenu(
               context: context,
@@ -38,91 +38,31 @@ class AnimeItem extends StatelessWidget {
               state: state,
               animeManipCubit: animeManipCubit,
             ),
-            child: Card(
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(0.0)),
-              margin: const EdgeInsets.all(0),
-              child: Stack(
-                children: [
-                  // Image at the top of the card
-                  CachedNetworkImage(
-                    imageUrl: anime.coverImage.extraLarge ?? '',
-                    height: 368,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => const Center(
-                      child: SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      ),
-                    ),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
-                  ),
-                  // The voting area (counters and buttons) at the bottom
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                      decoration: BoxDecoration(
-                        color: AppTheme.black.withOpacity(.4),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          // Positive votes counter
-                          Row(
-                            children: [
-                              Text("428",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelMedium!
-                                      .copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onInverseSurface)),
-                              Icon(
-                                Icons.check,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onInverseSurface,
-                                size: 24.0,
-                              ),
-                            ],
+            child: Image(
+              image: context.read<AppCacheManager>()
+                .getImage(anime.coverImage.extraLarge ?? ''),
+              fit: BoxFit.cover,
+              frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+                if (frame != null) return child;
+                return Container(
+                  color: Theme.of(context).colorScheme.tertiaryContainer,
+                  height: 368,
+                  width: double.infinity,
+                  child: wasSynchronouslyLoaded
+                    ? child
+                    : Center(
+                        child: SizedBox(
+                          height: 16.0,
+                          width: 16.0,
+                          child: CircularProgressIndicator(
+                            color: Theme.of(context).colorScheme.onTertiaryContainer,
+                            strokeWidth: 2.0,
                           ),
-                          // Negative votes counter
-                          Row(
-                            children: [
-                              Text("59",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelMedium!
-                                      .copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onInverseSurface)),
-                              Icon(
-                                Icons.close,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onInverseSurface,
-                                size: 24.0,
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            width: 24,
-                          )
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                ],
-              ),
+                );
+              },
+              errorBuilder: (_, __, ___) => const Icon(Icons.error),
             ),
           );
         });
@@ -190,22 +130,25 @@ class AnimeItem extends StatelessWidget {
         ],
       );
     } else {
-      Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => AnimeDetailsScreen(anime: anime)));
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (_) =>
+              AnimeDetailScreen.get(context: context, anime: anime)));
     }
   }
 
   void onEventReceived(BuildContext context, AnimeManipState state) async {
-    if (state is WatchListAddSuccesState) {
-      Navigator.of(context).pop();
-      showSuccessToast(
-          content: "Anime ajouté à votre watchlist", context: context);
-    } else if (state is AnimeViewedAddSuccesState) {
-      Navigator.of(context).pop();
-      showSuccessToast(
-          content: "Anime ajouté à votre liste de vue", context: context);
-    } else if (state is AnimeManipErrorState) {
-      showErrorToast(content: state.error, context: context);
+    if (withAction) {
+      if (state is WatchListAddSuccesState) {
+        Navigator.of(context).pop();
+        showSuccessToast(
+            content: "Anime ajouté à votre watchlist", context: context);
+      } else if (state is AnimeViewedAddSuccesState) {
+        Navigator.of(context).pop();
+        showSuccessToast(
+            content: "Anime ajouté à votre liste de vue", context: context);
+      } else if (state is AnimeManipErrorState) {
+        showErrorToast(content: state.error, context: context);
+      }
     }
   }
 }

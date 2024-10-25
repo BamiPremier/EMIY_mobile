@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:potatoes/potatoes.dart' hide PreferencesService;
 import 'package:potatoes_secured_preferences/potatoes_secured_preferences.dart';
+import 'package:umai/animes/services/anime_cubit_manager.dart';
 import 'package:umai/animes/services/anime_service.dart';
 import 'package:umai/auth/bloc/auth_cubit.dart';
 import 'package:umai/auth/screens/onboarding_screen.dart'; 
@@ -15,6 +16,7 @@ import 'package:umai/common/bloc/home_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/screens/home.dart';
 import 'package:umai/common/services/api_service.dart';
+import 'package:umai/common/services/cache_manager.dart';
 import 'package:umai/common/services/person_cubit_manager.dart';
 import 'package:umai/common/services/preferences_service.dart';
 import 'package:umai/common/services/user_service.dart';
@@ -77,6 +79,7 @@ class MyApp extends StatelessWidget {
 
     return MultiRepositoryProvider(
       providers: [
+        RepositoryProvider(create: (_) => AppCacheManager()),
         RepositoryProvider(create: (_) => AuthService(dio)),
         RepositoryProvider(create: (_) => UserService(dio)),
         RepositoryProvider(create: (_) => SocialService(dio)),
@@ -86,6 +89,8 @@ class MyApp extends StatelessWidget {
         RepositoryProvider(
             create: (context) =>
                 PostCubitManager(context.read(), context.read())),
+        RepositoryProvider(
+            create: (context) => AnimeCubitManager(context.read())),
       ],
       child: MultiBlocProvider(
         providers: [

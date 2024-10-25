@@ -1,3 +1,5 @@
+ 
+
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/account/screens/person_account.dart';
@@ -6,17 +8,22 @@ import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/models/user.dart';
 import 'package:umai/common/services/person_cubit_manager.dart';
 import 'package:umai/common/widgets/btn_action_item_user.dart';
-import 'package:umai/common/widgets/profile_picture.dart'; 
+import 'package:umai/common/widgets/profile_picture.dart';
 
 class UserItem extends StatelessWidget {
-  static Widget get({required BuildContext context, required User user}) {
+  final bool canNavigate;
+
+  static Widget get(
+      {required BuildContext context,
+      required User user,
+      bool canNavigate = true}) {
     return BlocProvider.value(
       value: context.read<PersonCubitManager>().get(user),
-      child: const UserItem._(),
+      child: UserItem._(canNavigate: canNavigate),
     );
   }
 
-  const UserItem._();
+  const UserItem._({this.canNavigate = true});
 
   @override
   Widget build(BuildContext context) {
@@ -45,11 +52,11 @@ class UserItem extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
               trailing: const BtnActionItemUser()),
-          onTap: () => personCubit.user == userCubit.user
-              ? null
-              : Navigator.of(context).push(MaterialPageRoute(
+          onTap: () => canNavigate && (personCubit.user.id == userCubit.user.id)
+              ? Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => PersonAccountScreen.get(
-                      context: context, user: personCubit.user))),
+                      context: context, user: personCubit.user)))
+              : null,
         );
       },
     );

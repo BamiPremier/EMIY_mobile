@@ -31,6 +31,7 @@ class _SocialHomeScreenState extends State<SocialHomeScreen> {
                   cubit: postFeedCubit,
                   itemBuilder: (context, post) =>
                       PostItem.get(context: context, post: post),
+                  separatorBuilder: (_, __) => const Divider(height: 8),
                   errorBuilder: (context, retry) => Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [

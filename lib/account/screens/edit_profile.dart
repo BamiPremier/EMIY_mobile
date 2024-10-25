@@ -86,6 +86,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                     child: Column(
                       children: [
                         TextFormField(
+                          style: Theme.of(context).textTheme.bodyMedium,
                           controller: userNameController,
                           decoration: const InputDecoration(
                             helperText:
@@ -100,6 +101,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                         ),
                         const SizedBox(height: 32),
                         TextFormField(
+                          style: Theme.of(context).textTheme.bodyMedium,
                           controller: userBioController,
                           decoration: const InputDecoration(
                             hintText: "Ma bio...",

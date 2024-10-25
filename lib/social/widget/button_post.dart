@@ -77,7 +77,6 @@ class _ButtonPostState extends State<ButtonPost> with CompletableMixin {
     );
   }
 
-  bool isSharing = false;
   void onEventReceived(BuildContext context, PostState state) async {
     await waitForDialog();
 
@@ -86,15 +85,7 @@ class _ButtonPostState extends State<ButtonPost> with CompletableMixin {
         context: context,
       );
     } else if (state is SharePostSuccesState) {
-      if (!isSharing) {
-        isSharing = true;
-
-        await Share.share(
-          'Suivre ce lien pour voir le post : ${state.link}',
-        );
-
-        isSharing = false;
-      }
+      await Share.share(state.link);
     } else if (state is PostErrorState) {
       showErrorToast(content: state.error, context: context);
     }

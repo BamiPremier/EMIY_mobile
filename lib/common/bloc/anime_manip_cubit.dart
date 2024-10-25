@@ -19,7 +19,7 @@ class AnimeManipCubit extends ObjectCubit<Anime, AnimeManipState> {
     return null;
   }
 
-  Anime? get anime {
+  Anime get anime {
     final anime = getObject(state) ?? object;
 
     if (anime != null) return anime;
@@ -55,6 +55,36 @@ class AnimeManipCubit extends ObjectCubit<Anime, AnimeManipState> {
     emit(const AnimeManipViewedLoadingState());
     animeService.addToViewerList(anime: anime!.id).then((updateAnime) {
       emit(AnimeViewedAddSuccesState());
+      update(updateAnime);
+    }, onError: (error, trace) {
+      emit(AnimeManipErrorState(error, trace));
+      emit(stateBefore);
+    });
+  }
+
+  void removeFromViewed() {
+    final stateBefore = state;
+
+    emit(const AnimeManipViewedLoadingState());
+    animeService.removeFromViewed(anime: anime!.id).then((updateAnime) {
+      emit(AnimeViewedAddSuccesState());
+      update(updateAnime);
+    }, onError: (error, trace) {
+      emit(AnimeManipErrorState(error, trace));
+      emit(stateBefore);
+    });
+  }
+
+  void removeFromWatchlist() {
+    final stateBefore = state;
+
+    emit(const AnimeManipWatchlistLoadingState());
+    animeService
+        .removeFromWatchList(
+      anime: anime!.id,
+    )
+        .then((updateAnime) {
+      emit(WatchListAddSuccesState());
       update(updateAnime);
     }, onError: (error, trace) {
       emit(AnimeManipErrorState(error, trace));

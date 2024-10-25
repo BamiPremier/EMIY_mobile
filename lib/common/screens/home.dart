@@ -4,6 +4,7 @@ import 'package:umai/account/screens/account.dart';
 import 'package:umai/animes/screens/home.dart';
 import 'package:umai/common/bloc/home_cubit.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
+import 'package:umai/quiz/screens/home.dart';
 import 'package:umai/social/screens/home.dart';
 import 'package:umai/utils/themes.dart';
 
@@ -13,7 +14,7 @@ class HomeScreen extends StatelessWidget {
     {'title': 'Évènements', 'page': SizedBox()},
     {'title': 'Pour toi', 'page': SizedBox()},
     {'title': 'Animes', 'page': AnimeHomeScreen()},
-    {'title': 'Quiz', 'page': SizedBox()},
+    {'title': 'Quiz', 'page': QuizHomeScreen()},
   ];
 
   const HomeScreen({super.key});

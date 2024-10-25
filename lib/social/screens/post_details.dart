@@ -12,6 +12,7 @@ import 'package:umai/social/widget/button_post.dart';
 import 'package:umai/social/widget/comment_input.dart';
 import 'package:umai/social/widget/item_comment.dart';
 import 'package:readmore/readmore.dart';
+import 'package:umai/social/widget/post_image.dart';
 
 class PostDetailsScreen extends StatefulWidget {
   static Widget from({required BuildContext context, required Post post}) {
@@ -70,106 +71,29 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                       SizedBox(
                           height: kToolbarHeight +
                               MediaQuery.of(context).viewPadding.top),
+                      const PostAction(),
                       Padding(
-                        padding: const EdgeInsets.only(left: 16.0, right: 0.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            PostAction.get(context: context, user: post.user),
-                            const SizedBox(height: 8),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 16.0),
-                              child: AnimatedSize(
-                                duration: const Duration(milliseconds: 300),
-                                alignment: Alignment.topCenter,
-                                curve: Curves.easeInOut,
-                                child: ReadMoreText(
-                                  post.content,
-                                  trimMode: _trimMode,
-                                  trimLines: 3,
-                                  trimLength: 240,
-                                  isCollapsed: isCollapsed,
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                  colorClickableText:
-                                      Theme.of(context).primaryColor,
-                                  trimCollapsedText: 'Lire plus',
-                                  trimExpandedText: ' moins',
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      if (post.image?.isNotEmpty ?? false)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Image.network(
-                            post.image ?? '',
-                            height: 368,
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                            frameBuilder: (BuildContext context, Widget child,
-                                int? frame, bool wasSynchronouslyLoaded) {
-                              if (wasSynchronouslyLoaded) {
-                                return child;
-                              }
-                              return AnimatedOpacity(
-                                opacity: frame == null ? 0 : 1,
-                                duration: const Duration(seconds: 1),
-                                curve: Curves.easeOut,
-                                child: child,
-                              );
-                            },
-                            loadingBuilder: (BuildContext context, Widget child,
-                                ImageChunkEvent? progress) {
-                              return Container(
-                                alignment: Alignment.center,
-                                height: 368,
-                                width: MediaQuery.of(context).size.width,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .tertiaryContainer,
-                                child: progress == null
-                                    ? child
-                                    : CircularProgressIndicator(
-                                        value: progress.cumulativeBytesLoaded /
-                                            (progress.expectedTotalBytes ?? 1),
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onTertiaryContainer,
-                                        backgroundColor: Theme.of(context)
-                                            .colorScheme
-                                            .tertiary,
-                                      ),
-                              );
-                            },
-                            errorBuilder: (BuildContext context, Object error,
-                                StackTrace? stackTrace) {
-                              return Container(
-                                height: 368,
-                                width: double.infinity,
-                                color: Colors.grey[300],
-                                child: Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.error,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onTertiaryContainer,
-                                          size: 48),
-                                      const SizedBox(height: 16),
-                                      const Text(
-                                        "Erreur de chargement de l'image",
-                                        style: TextStyle(color: Colors.red),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: AnimatedSize(
+                          duration: const Duration(milliseconds: 300),
+                          alignment: Alignment.topCenter,
+                          curve: Curves.easeInOut,
+                          child: ReadMoreText(
+                            post.content,
+                            trimMode: _trimMode,
+                            trimLines: 3,
+                            trimLength: 240,
+                            isCollapsed: isCollapsed,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                            colorClickableText:
+                                Theme.of(context).primaryColor,
+                            trimCollapsedText: 'Lire plus',
+                            trimExpandedText: ' moins',
                           ),
                         ),
+                      ),
+                      const SizedBox(height: 8.0),
+                      if (post.image?.isNotEmpty ?? false) PostImage(url: post.image!),
                       const ButtonPost(),
                       const Divider(),
                       AutoListView.get<Comment>(
@@ -190,7 +114,9 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                               alignment: Alignment.center,
                               padding: const EdgeInsets.all(16),
                               child: LinearProgressIndicator(
-                                color: Theme.of(context).colorScheme.tertiary,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onTertiaryContainer,
                                 backgroundColor: Theme.of(context)
                                     .colorScheme
                                     .tertiaryContainer,
@@ -200,12 +126,15 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                               alignment: Alignment.center,
                               padding: const EdgeInsets.all(16),
                               child: LinearProgressIndicator(
-                                color: Theme.of(context).colorScheme.tertiary,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onTertiaryContainer,
                                 backgroundColor: Theme.of(context)
                                     .colorScheme
                                     .tertiaryContainer,
                                 borderRadius: BorderRadius.circular(30),
                               )),
+                          
                           errorBuilder: (context, retry) => Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,

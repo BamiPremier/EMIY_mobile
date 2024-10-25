@@ -41,6 +41,7 @@ class _AccountScreenState extends State<AccountScreen>
 
   late final followingCubit = FollowCubit(
       context.read<UserService>().getUserFollowing(), context.read());
+ 
 
   @override
   void dispose() {

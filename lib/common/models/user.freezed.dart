@@ -40,10 +40,15 @@ mixin _$User {
   bool get followed => throw _privateConstructorUsedError;
   @JsonKey(name: 'is_following_me')
   bool get isFollowingMe => throw _privateConstructorUsedError;
+  @JsonKey(name: 'hasBlocked')
   bool get hasBlocked => throw _privateConstructorUsedError;
 
+  /// Serializes this User to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of User
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $UserCopyWith<User> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -67,7 +72,7 @@ abstract class $UserCopyWith<$Res> {
       @JsonKey(name: 'watchlist_count') int watchlistCount,
       bool followed,
       @JsonKey(name: 'is_following_me') bool isFollowingMe,
-      bool hasBlocked});
+      @JsonKey(name: 'hasBlocked') bool hasBlocked});
 }
 
 /// @nodoc
@@ -80,6 +85,8 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of User
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -186,7 +193,7 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       @JsonKey(name: 'watchlist_count') int watchlistCount,
       bool followed,
       @JsonKey(name: 'is_following_me') bool isFollowingMe,
-      bool hasBlocked});
+      @JsonKey(name: 'hasBlocked') bool hasBlocked});
 }
 
 /// @nodoc
@@ -196,6 +203,8 @@ class __$$UserImplCopyWithImpl<$Res>
   __$$UserImplCopyWithImpl(_$UserImpl _value, $Res Function(_$UserImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of User
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -298,7 +307,7 @@ class _$UserImpl implements _User {
       @JsonKey(name: 'watchlist_count') this.watchlistCount = 0,
       this.followed = false,
       @JsonKey(name: 'is_following_me') this.isFollowingMe = false,
-      this.hasBlocked = false});
+      @JsonKey(name: 'hasBlocked') this.hasBlocked = false});
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserImplFromJson(json);
@@ -341,7 +350,7 @@ class _$UserImpl implements _User {
   @JsonKey(name: 'is_following_me')
   final bool isFollowingMe;
   @override
-  @JsonKey()
+  @JsonKey(name: 'hasBlocked')
   final bool hasBlocked;
 
   @override
@@ -381,7 +390,7 @@ class _$UserImpl implements _User {
                 other.hasBlocked == hasBlocked));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -401,7 +410,9 @@ class _$UserImpl implements _User {
       isFollowingMe,
       hasBlocked);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of User
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>
@@ -431,7 +442,7 @@ abstract class _User implements User {
       @JsonKey(name: 'watchlist_count') final int watchlistCount,
       final bool followed,
       @JsonKey(name: 'is_following_me') final bool isFollowingMe,
-      final bool hasBlocked}) = _$UserImpl;
+      @JsonKey(name: 'hasBlocked') final bool hasBlocked}) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
@@ -470,9 +481,13 @@ abstract class _User implements User {
   @JsonKey(name: 'is_following_me')
   bool get isFollowingMe;
   @override
+  @JsonKey(name: 'hasBlocked')
   bool get hasBlocked;
+
+  /// Create a copy of User
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
