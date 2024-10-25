@@ -41,8 +41,6 @@ class ItemQuiz extends StatelessWidget {
                     if (frame != null) return child;
                     return Container(
                       color: Theme.of(context).colorScheme.tertiaryContainer,
-                      height: 368,
-                      width: double.infinity,
                       child: wasSynchronouslyLoaded
                           ? child
                           : Center(

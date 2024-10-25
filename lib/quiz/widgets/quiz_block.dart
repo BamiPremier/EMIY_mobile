@@ -34,7 +34,10 @@ class QuizBlock extends StatefulWidget {
 }
 
 class _QuizBlockState extends State<QuizBlock> {
-  late final cubit = LoadQuizCubit(context.read(), widget.filter?.name ?? '',
+  late final cubit = LoadQuizCubit(
+      context.read(),
+      context.read(),
+      widget.filter?.name ?? '',
       widget.type == QuizBlockType.skinless ? 9 : null);
 
   final gridDelegate = const SliverGridDelegateWithFixedCrossAxisCount(

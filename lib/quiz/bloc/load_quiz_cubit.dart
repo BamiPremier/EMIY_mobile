@@ -4,15 +4,24 @@ import 'package:umai/animes/models/anime.dart';
 import 'package:umai/animes/services/anime_cubit_manager.dart';
 import 'package:umai/animes/services/anime_service.dart';
 import 'package:umai/quiz/models/quiz.dart';
-import 'package:umai/quiz/services/QUIZ_service.dart';
+import 'package:umai/quiz/services/quiz_service.dart';
 
 class LoadQuizCubit extends AutoListCubit<Quiz> {
   final QuizService quizService;
+  final AnimeCubitManager cubitManager;
   final String selectedFilter;
-  LoadQuizCubit(this.quizService, this.selectedFilter, [int? size])
+  LoadQuizCubit(this.quizService, this.cubitManager, this.selectedFilter,
+      [int? size])
       : super(
             provider: ({page = 1}) => quizService.getQuizsFeed(
                 page: page, size: size, selectedFilter: selectedFilter));
 
-   
+  @override
+  void onChange(Change<AutoListState<Quiz>> change) {
+    super.onChange(change);
+    // if (change.nextState is AutoListReadyState<Quiz>) {
+    //   cubitManager
+    //       .addAll((change.nextState as AutoListReadyState<Quiz>).items.items);
+    // }
+  }
 }

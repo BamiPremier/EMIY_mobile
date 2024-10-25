@@ -49,17 +49,26 @@ class _QuizInfoState extends State<QuizInfo>
           ),
         ),
         const SizedBox(height: 16),
-        Row(
-          children: [
-            SvgPicture.asset(
-              Assets.iconStar,
-            ),
-            const SizedBox(width: 8),
-            Text(
-              "Captain Tsubasa: Road to 2002",
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ],
+        GestureDetector(
+          // onTap: () => Navigator.of(context).push(MaterialPageRoute(
+          //     builder: (_) => AnimeDetailScreen.get(
+          //         context: context, anime: anime))),
+          child: Row(
+            children: [
+              SvgPicture.asset(
+                Assets.iconStar,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                "Captain Tsubasa: Road to 2002",
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              const SizedBox(width: 8),
+              SvgPicture.asset(
+                Assets.iconBookmark,
+              ),
+            ],
+          ),
         ),
         const SizedBox(height: 16),
         Row(
@@ -72,6 +81,21 @@ class _QuizInfoState extends State<QuizInfo>
             const SizedBox(width: 8),
             Text(
               "Hari randoll",
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        Row(
+          children: [
+            SvgPicture.asset(
+              Assets.iconPen,
+              height: 20,
+              width: 20,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              "4 points • 8e",
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ],

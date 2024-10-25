@@ -11,6 +11,7 @@ abstract class AppTheme {
   static const Color black = Colors.black;
   static const Color lightGrey = Color(0xFFF5F5F5);
   static const Color disabledText = Color(0xFF9F9F9F);
+  static const Color surfacegrey = Color(0xFFD9D9D9);
   static const Color errorRed = Color(0xFFFF0717);
   static const Color green = Color(0xFF00F57A);
   static const Color onHighGreen = Color(0xFF002914);
