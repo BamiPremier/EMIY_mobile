@@ -105,7 +105,8 @@ Future reportPost({required BuildContext context}) {
                               ? Center(
                                   child: Padding(
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 16.0),
+                                              horizontal: 16.0)
+                                          .copyWith(top: 80, bottom: 100),
                                       child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
@@ -124,72 +125,75 @@ Future reportPost({required BuildContext context}) {
                                                   .onSurfaceVariant,
                                             ),
                                           ])))
-                              : Column(
-                                  children: [
-                                    RadioListTile<String>(
-                                      title:
-                                          const Text('Haine / Discrimination'),
-                                      value: 'Haine / Discrimination',
-                                      groupValue: selectedReason,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          selectedReason = value;
-                                        });
-                                      },
-                                      controlAffinity:
-                                          ListTileControlAffinity.trailing,
-                                    ),
-                                    RadioListTile<String>(
-                                      title: const Text('Contenu sexuel'),
-                                      value: 'Contenu sexuel',
-                                      groupValue: selectedReason,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          selectedReason = value;
-                                        });
-                                      },
-                                      controlAffinity:
-                                          ListTileControlAffinity.trailing,
-                                    ),
-                                    RadioListTile<String>(
-                                      title: const Text('Harcèlement'),
-                                      value: 'Harcèlement',
-                                      groupValue: selectedReason,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          selectedReason = value;
-                                        });
-                                      },
-                                      controlAffinity:
-                                          ListTileControlAffinity.trailing,
-                                    ),
-                                    RadioListTile<String>(
-                                      title: const Text(
-                                          'Divulgation d\'informations privées'),
-                                      value:
-                                          'Divulgation d\'informations privées',
-                                      groupValue: selectedReason,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          selectedReason = value;
-                                        });
-                                      },
-                                      controlAffinity:
-                                          ListTileControlAffinity.trailing,
-                                    ),
-                                    RadioListTile<String>(
-                                      title: const Text('Autre'),
-                                      value: 'Autre',
-                                      groupValue: selectedReason,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          selectedReason = value;
-                                        });
-                                      },
-                                      controlAffinity:
-                                          ListTileControlAffinity.trailing,
-                                    ),
-                                  ],
+                              : Padding(
+                                  padding: const EdgeInsets.only(top: 24),
+                                  child: Column(
+                                    children: [
+                                      RadioListTile<String>(
+                                        title: const Text(
+                                            'Haine / Discrimination'),
+                                        value: 'Haine / Discrimination',
+                                        groupValue: selectedReason,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            selectedReason = value;
+                                          });
+                                        },
+                                        controlAffinity:
+                                            ListTileControlAffinity.trailing,
+                                      ),
+                                      RadioListTile<String>(
+                                        title: const Text('Contenu sexuel'),
+                                        value: 'Contenu sexuel',
+                                        groupValue: selectedReason,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            selectedReason = value;
+                                          });
+                                        },
+                                        controlAffinity:
+                                            ListTileControlAffinity.trailing,
+                                      ),
+                                      RadioListTile<String>(
+                                        title: const Text('Harcèlement'),
+                                        value: 'Harcèlement',
+                                        groupValue: selectedReason,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            selectedReason = value;
+                                          });
+                                        },
+                                        controlAffinity:
+                                            ListTileControlAffinity.trailing,
+                                      ),
+                                      RadioListTile<String>(
+                                        title: const Text(
+                                            'Divulgation d\'informations privées'),
+                                        value:
+                                            'Divulgation d\'informations privées',
+                                        groupValue: selectedReason,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            selectedReason = value;
+                                          });
+                                        },
+                                        controlAffinity:
+                                            ListTileControlAffinity.trailing,
+                                      ),
+                                      RadioListTile<String>(
+                                        title: const Text('Autre'),
+                                        value: 'Autre',
+                                        groupValue: selectedReason,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            selectedReason = value;
+                                          });
+                                        },
+                                        controlAffinity:
+                                            ListTileControlAffinity.trailing,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                       const SizedBox(
                         height: 24,

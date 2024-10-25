@@ -58,6 +58,7 @@ class _NewPostCompleteScreenState extends State<NewPostCompleteScreen>
                       const Text('contenu'),
                       const SizedBox(height: 8.0),
                       TextFormField(
+                          style: Theme.of(context).textTheme.bodyMedium,
                           controller: _contentController,
                           decoration: const InputDecoration(
                             hintText: "Quoi de neuf?",
@@ -79,48 +80,51 @@ class _NewPostCompleteScreenState extends State<NewPostCompleteScreen>
                 const SizedBox(height: 16.0),
                 const Text('média'),
                 const SizedBox(height: 8.0),
-                widget.file == null
-                    ? Row(children: [
-                        SvgPicture.asset(
-                          Assets.iconsCamera,
-                          width: 100,
-                          height: 100,
-                        ),
-                        const SizedBox(width: 16.0),
-                        Text('Prendre une photo',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall!
-                                .copyWith(
-                                    color:
-                                        Theme.of(context).colorScheme.outline))
-                      ])
-                    : Row(children: [
-                        SizedBox(
-                          width: 100,
-                          height: 100,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image(
-                              image: FileImage(widget.file!),
-                              fit: BoxFit.cover,
+                GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: widget.file == null
+                        ? Row(children: [
+                            SvgPicture.asset(
+                              Assets.iconsCamera,
+                              width: 100,
+                              height: 100,
                             ),
-                          ),
-                        ),
-                        const SizedBox(width: 16.0),
-                        SizedBox(
-                            width: 232,
-                            child: Text(widget.file!.path,
-                                maxLines: 4,
-                                overflow: TextOverflow.ellipsis,
+                            const SizedBox(width: 16.0),
+                            Text('Prendre une photo',
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodySmall!
                                     .copyWith(
                                         color: Theme.of(context)
                                             .colorScheme
-                                            .outline))),
-                      ]),
+                                            .outline))
+                          ])
+                        : Row(children: [
+                            SizedBox(
+                              width: 100,
+                              height: 100,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image(
+                                  image: FileImage(widget.file!),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 16.0),
+                            SizedBox(
+                                width: 232,
+                                child: Text(widget.file!.path,
+                                    maxLines: 4,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall!
+                                        .copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .outline))),
+                          ])),
               ],
             ),
           ),

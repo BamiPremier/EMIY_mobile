@@ -77,7 +77,7 @@ class _RegistrationAnimeSelectionState
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                        builder: (context) => const RegistrationPeople()),
+                        builder: (context) => const PeopleToFollowScreen()),
                   );
                 },
                 text: "Continuer",

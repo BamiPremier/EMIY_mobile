@@ -34,8 +34,8 @@ class _OnboardingScreenState extends State<OnboardingScreen>
         child: Scaffold(
           body: SafeArea(
             minimum: const EdgeInsets.only(
-              left: 48.0,
-              right: 48.0,
+              left: 32.0,
+              right: 32.0,
               bottom: 48.0,
             ),
             child: Column(
@@ -47,7 +47,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                     backgroundColor: AppTheme.white,
                     textColor: AppTheme.primaryBlack,
                   ),
-                const SizedBox(height: 24.0),
+                const SizedBox(height: 16.0),
                 AuthButton.google(
                   onPressed: () => acceptTerm(then: authCubit.googleSignIn),
                   backgroundColor: AppTheme.primaryBlack,
@@ -73,9 +73,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                 'Connexion & inscription',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
-              const SizedBox(
-                height: 40.0,
-              ),
+              const SizedBox(height: 16.0),
               Text.rich(TextSpan(
                 children: [
                   const TextSpan(
@@ -96,7 +94,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                 ],
                 style: Theme.of(context).textTheme.bodyMedium,
               )),
-              const SizedBox(height: 40.0),
+              const SizedBox(height: 64.0),
               UmaiButton.primary(
                 onPressed: then,
                 text: "Continuer",

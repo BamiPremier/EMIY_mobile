@@ -20,7 +20,7 @@ class AuthCubit extends Cubit<AuthState> {
   AuthCubit(this.userCubit, this.authService) : super(AuthIdleState());
 
   void googleSignIn() async {
-    if (state is !AuthIdleState) return;
+    if (state is! AuthIdleState) return;
     final stateBefore = state;
 
     try {
@@ -31,11 +31,9 @@ class AuthCubit extends Cubit<AuthState> {
       emit(const AuthLoadingState());
       final authentication = await account.authentication;
       await FirebaseAuth.instance.signInWithCredential(
-        GoogleAuthProvider.credential(
-          accessToken: authentication.accessToken,
-          idToken: authentication.idToken
-        )
-      );
+          GoogleAuthProvider.credential(
+              accessToken: authentication.accessToken,
+              idToken: authentication.idToken));
       _socialLogin();
     } catch (error, trace) {
       emit(AuthErrorState(error, trace));
@@ -45,25 +43,22 @@ class AuthCubit extends Cubit<AuthState> {
 
   void appleSignIn() async {
     if (!Platform.isIOS) return;
-    if (state is !AuthIdleState) return;
+    if (state is! AuthIdleState) return;
     final stateBefore = state;
 
     try {
-      final authentication = await SignInWithApple.getAppleIDCredential(
-        scopes: [
-          AppleIDAuthorizationScopes.email,
-          AppleIDAuthorizationScopes.fullName,
-        ]
-      );
+      final authentication =
+          await SignInWithApple.getAppleIDCredential(scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ]);
 
       if (authentication.identityToken == null) return;
       emit(const AuthLoadingState());
       await FirebaseAuth.instance.signInWithCredential(
-        OAuthProvider('apple.com').credential(
-          idToken: authentication.identityToken,
-          accessToken: authentication.authorizationCode
-        )
-      );
+          OAuthProvider('apple.com').credential(
+              idToken: authentication.identityToken,
+              accessToken: authentication.authorizationCode));
       _socialLogin();
     } catch (error, trace) {
       emit(AuthErrorState(error, trace));
@@ -100,18 +95,17 @@ class AuthCubit extends Cubit<AuthState> {
 
     emit(const AuthLoadingState());
 
-    await authService.completeUserProfile(userName: username, userTag: userTag)
-      .then((user) {
-        userCubit.preferencesService.saveUser(user)
-          .then((_) {
-            emit(const CompleteUserSuccessUserState());
-            emit(stateBefore);
-          });
-      },
-      onError: (error, trace) {
-        emit(AuthErrorState(error, trace));
+    await authService
+        .completeUserProfile(userName: username, userTag: userTag)
+        .then((user) {
+      userCubit.preferencesService.saveUser(user).then((_) {
+        emit(const CompleteUserSuccessUserState());
         emit(stateBefore);
       });
+    }, onError: (error, trace) {
+      emit(AuthErrorState(error, trace));
+      emit(stateBefore);
+    });
   }
 
   void updateUserNameAndTag(String value) {
