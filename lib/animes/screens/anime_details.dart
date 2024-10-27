@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:potatoes/libs.dart';
 import 'package:readmore/readmore.dart';
 import 'package:umai/animes/models/anime.dart';
@@ -51,6 +52,7 @@ class _AnimeDetailScreenState extends State<AnimeDetailScreen>
           slivers: [
             SliverAppBar(
               backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
+              foregroundColor: AppTheme.white,
               expandedHeight: 200,
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
@@ -87,18 +89,15 @@ class _AnimeDetailScreenState extends State<AnimeDetailScreen>
                   ],
                 ),
               ),
-              leading: BackButton(
-                  style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all(AppTheme.white),
-              )),
               actions: [
                 IconButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: () => actionsOptions(),
-                  color: AppTheme.white,
+                  onPressed: actionsOptions,
                   icon: const Icon(Icons.more_vert),
                 ),
               ],
+              systemOverlayStyle: Theme.of(context).appBarTheme
+                  .systemOverlayStyle
+                  ?.copyWith(statusBarIconBrightness: Brightness.light),
             ),
             SliverToBoxAdapter(
               child: Padding(
@@ -184,7 +183,7 @@ class _AnimeDetailScreenState extends State<AnimeDetailScreen>
                 ),
               ),
             ),
-            SliverToBoxAdapter(
+            SliverFillRemaining(
               child: DefaultTabController(
                 length: 3,
                 child: Column(
