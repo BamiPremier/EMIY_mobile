@@ -8,7 +8,6 @@ import 'package:potatoes/potatoes.dart';
 import 'package:umai/common/utils/validators.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/quiz/screens/new/editing_quiz.dart';
-import 'package:umai/quiz/screens/new/search_anime.dart';
 import 'package:umai/quiz/screens/new/search_anime_delegate.dart';
 import 'package:umai/social/bloc/new_post_cubit.dart';
 import 'package:umai/utils/assets.dart';
@@ -101,6 +100,8 @@ class _NewQuizScreenState extends State<NewQuizScreen> with CompletableMixin {
                         textInputAction: TextInputAction.next,
                         minLines: 4,
                         maxLines: 4,
+                        onTapOutside: (event) =>
+                            FocusScope.of(context).unfocus(),
                         maxLengthEnforcement:
                             MaxLengthEnforcement.truncateAfterCompositionEnds,
                         onEditingComplete: FocusScope.of(context).unfocus,

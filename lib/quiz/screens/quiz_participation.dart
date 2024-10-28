@@ -40,10 +40,8 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen> {
                         color: AppTheme.disabledText,
                       ),
                 ),
-                const SizedBox(height: 24.0),
-                Divider(
-                  color: Theme.of(context).colorScheme.outlineVariant,
-                ),
+                const SizedBox(height: 16.0),
+                const Divider(),
                 LinearProgressIndicator(
                   color: Theme.of(context).colorScheme.onTertiaryContainer,
                   backgroundColor:
@@ -51,13 +49,15 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen> {
                   borderRadius: BorderRadius.circular(30),
                 ),
                 const SizedBox(height: 32.0),
-                ListView.builder(
+                ListView.separated(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: listOptions.length,
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 12.0),
                   itemBuilder: (context, index) {
                     return listOptions.contains(listOptions[index])
-                        ? inCorrectOption(listOptions[index])
+                        ? selectedOption(listOptions[index])
                         : unSelectedOption(listOptions[index]);
                   },
                 ),
@@ -79,7 +79,6 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen> {
   Widget selectedOption(String text) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16),
-      margin: const EdgeInsets.only(top: 12.0),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primary,
         borderRadius: BorderRadius.circular(24.0),
@@ -96,7 +95,6 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen> {
   Widget unSelectedOption(String text) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16),
-      margin: const EdgeInsets.only(top: 12.0),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surfaceBright,
         borderRadius: BorderRadius.circular(24.0),
@@ -113,7 +111,6 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen> {
   Widget correctOption(String text) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16),
-      margin: const EdgeInsets.only(top: 12.0),
       decoration: BoxDecoration(
         color: AppTheme.green,
         borderRadius: BorderRadius.circular(24.0),
@@ -130,14 +127,13 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen> {
   Widget inCorrectOption(String text) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16),
-      margin: const EdgeInsets.only(top: 12.0),
       decoration: BoxDecoration(
         color: AppTheme.errorRed,
         borderRadius: BorderRadius.circular(24.0),
       ),
       child: Text(
         text,
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
       ),
     );
   }

@@ -22,7 +22,7 @@ abstract class AppTheme {
   static const Color onTertiaryContainer = Color(0xFF3B0906);
   static const Color midRed = Color(0xFFFF0717);
   static const Color mainText = Colors.black;
-
+  static const Color onPrimary = Color(0xFF090909);
   static TextTheme _textTheme(BuildContext context) {
     final arco =
         Theme.of(context).textTheme.apply(fontFamily: Assets.fontsFamilyARCO);
@@ -105,6 +105,7 @@ abstract class AppTheme {
       error: errorRed,
       errorContainer: errorRed,
       brightness: brightness,
+      onPrimary: onPrimary,
     );
   }
 

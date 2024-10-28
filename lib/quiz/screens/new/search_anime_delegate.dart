@@ -38,6 +38,10 @@ class SearchAnimeDelegate extends SearchDelegate<String> {
   }
 
   @override
+  TextStyle? get searchFieldStyle => const TextStyle(
+        fontSize: 14.0,
+      );
+  @override
   ThemeData appBarTheme(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return theme.copyWith(
@@ -48,8 +52,9 @@ class SearchAnimeDelegate extends SearchDelegate<String> {
         toolbarTextStyle: theme.textTheme.bodyMedium,
       ),
       inputDecorationTheme: InputDecorationTheme(
-        hintStyle: theme.textTheme.bodyMedium,
+        hintStyle: theme.textTheme.bodySmall,
         border: InputBorder.none,
+        helperStyle: theme.textTheme.bodySmall,
       ),
     );
   }
@@ -76,7 +81,10 @@ class SearchAnimeDelegate extends SearchDelegate<String> {
           leading: Container(
             width: 56,
             height: 56,
-            color: const Color(0xffD9D9D9),
+            decoration: BoxDecoration(
+              color: const Color(0xffD9D9D9),
+              borderRadius: BorderRadius.circular(8),
+            ),
           ),
           title: Text(suggestions[index],
               style: Theme.of(context).textTheme.titleMedium),

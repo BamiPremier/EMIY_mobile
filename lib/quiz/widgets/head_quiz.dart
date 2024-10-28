@@ -12,13 +12,15 @@ import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/themes.dart';
 
 class HeadQuiz extends StatelessWidget {
- 
-
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
       backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
       expandedHeight: 200,
+      systemOverlayStyle: Theme.of(context)
+          .appBarTheme
+          .systemOverlayStyle
+          ?.copyWith(statusBarIconBrightness: Brightness.light),
       pinned: true,
       flexibleSpace: FlexibleSpaceBar(
         background: Stack(
@@ -44,8 +46,7 @@ class HeadQuiz extends StatelessWidget {
             Align(
               alignment: Alignment.topCenter,
               child: Container(
-                height: MediaQuery.of(context).viewPadding.top +
-                    kToolbarHeight,
+                height: MediaQuery.of(context).viewPadding.top + kToolbarHeight,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,

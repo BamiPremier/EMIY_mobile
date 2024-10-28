@@ -42,126 +42,136 @@ class _AddQuizQuestionScreenState extends State<AddQuizQuestionScreen> {
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(
-            height: 136,
-            color: Theme.of(context).colorScheme.tertiaryContainer,
-            child: Center(
-              child: SvgPicture.asset(
-                Assets.iconPictureAdd,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              height: 200,
+              color: Theme.of(context).colorScheme.tertiaryContainer,
+              child: Center(
+                child: SvgPicture.asset(
+                  Assets.iconPictureAdd,
+                ),
               ),
             ),
-          ),
-          Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const SizedBox(height: 16),
-                    const Text('Question'),
-                    const SizedBox(height: 8),
-                    TextFormField(
-                        style: Theme.of(context).textTheme.bodyMedium,
-                        controller: _questionController,
-                        decoration: InputDecoration(
-                          hintText: 'Pose une question',
-                          hintStyle:
-                              Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurfaceVariant,
-                                  ),
-                        ),
-                        maxLines: 4,
-                        keyboardType: TextInputType.text,
-                        textCapitalization: TextCapitalization.sentences,
-                        textInputAction: TextInputAction.done,
-                        maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                        onTapOutside: (event) =>
-                            FocusScope.of(context).unfocus(),
-                        onEditingComplete: FocusScope.of(context).unfocus,
-                        validator: (value) => Validators.empty(value)),
-                    const SizedBox(height: 16),
-                    const Text('Propositions'),
-                  ])),
-          const Divider(),
-          const SizedBox(height: 8),
-          Padding(
-            padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                ..._propositionControllers.map((controller) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextFormField(
-                              style: Theme.of(context).textTheme.bodyMedium,
-                              controller: controller,
-                              decoration: InputDecoration(
-                                hintText: 'Entre le texte',
-                                hintStyle: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium!
-                                    .copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSurfaceVariant,
-                                    ),
-                              ),
-                              keyboardType: TextInputType.text,
-                              textCapitalization: TextCapitalization.sentences,
-                              textInputAction: TextInputAction.done,
-                              maxLengthEnforcement:
-                                  MaxLengthEnforcement.enforced,
-                              onTapOutside: (event) =>
-                                  FocusScope.of(context).unfocus(),
-                              onEditingComplete: FocusScope.of(context).unfocus,
-                              validator: (value) => Validators.empty(value)),
-                        ),
-                        const SizedBox(width: 8),
-                        GestureDetector(
-                          onTap: () => _removeProposition(
-                              _propositionControllers.indexOf(controller)),
-                          child: Icon(
-                            Icons.check_circle_outline,
-                            size: 24,
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
+            Padding(
+                padding:
+                    const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(height: 8),
+                      const Text('Question'),
+                      const SizedBox(height: 8),
+                      TextFormField(
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          controller: _questionController,
+                          decoration: InputDecoration(
+                            hintText: 'Pose une question',
+                            hintStyle: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSurfaceVariant,
+                                ),
                           ),
-                        ),
-                      ],
+                          maxLines: 4,
+                          keyboardType: TextInputType.text,
+                          textCapitalization: TextCapitalization.sentences,
+                          textInputAction: TextInputAction.done,
+                          maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                          onTapOutside: (event) =>
+                              FocusScope.of(context).unfocus(),
+                          onEditingComplete: FocusScope.of(context).unfocus,
+                          validator: (value) => Validators.empty(value)),
+                      const SizedBox(height: 16),
+                      const Text('Propositions'),
+                    ])),
+            const Divider(),
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  ..._propositionControllers.map((controller) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 12.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextFormField(
+                                style: Theme.of(context).textTheme.bodyMedium,
+                                controller: controller,
+                                decoration: InputDecoration(
+                                  hintText: 'Entre le texte',
+                                  hintStyle: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurfaceVariant,
+                                      ),
+                                ),
+                                keyboardType: TextInputType.text,
+                                textCapitalization:
+                                    TextCapitalization.sentences,
+                                textInputAction: TextInputAction.done,
+                                maxLengthEnforcement:
+                                    MaxLengthEnforcement.enforced,
+                                onTapOutside: (event) =>
+                                    FocusScope.of(context).unfocus(),
+                                onEditingComplete:
+                                    FocusScope.of(context).unfocus,
+                                validator: (value) => Validators.empty(value)),
+                          ),
+                          const SizedBox(width: 8),
+                          GestureDetector(
+                            onTap: () => _removeProposition(
+                                _propositionControllers.indexOf(controller)),
+                            child: Icon(
+                              Icons.check_circle_outline,
+                              size: 24,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurfaceVariant,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                  const SizedBox(height: 8),
+                  if (_propositionControllers.length < 4)
+                    GestureDetector(
+                      onTap: _addProposition,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Ajouter',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSurfaceVariant,
+                                ),
+                          ),
+                          const Icon(Icons.keyboard_arrow_down_outlined),
+                        ],
+                      ),
                     ),
-                  );
-                }).toList(),
-                const SizedBox(height: 8),
-                if (_propositionControllers.length < 4)
-                  GestureDetector(
-                    onTap: _addProposition,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Ajouter',
-                          style:
-                              Theme.of(context).textTheme.labelLarge!.copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurfaceVariant,
-                                  ),
-                        ),
-                        const Icon(Icons.keyboard_arrow_down_outlined),
-                      ],
-                    ),
-                  ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: SafeArea(
         minimum: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
