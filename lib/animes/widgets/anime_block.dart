@@ -207,12 +207,9 @@ enum AnimeBlockFilter { trending, nextSeason, all }
 extension AnimeBlockFilterExtension on AnimeBlockFilter {
   String get name {
     switch (this) {
-      case AnimeBlockFilter.trending:
-        return 'TRENDING_NOW';
-      case AnimeBlockFilter.nextSeason:
-        return 'POPULAR_THIS_SEASON';
-      case AnimeBlockFilter.all:
-        return 'POPULAR_ALL_TIME';
+      case AnimeBlockFilter.trending: return 'TRENDING';
+      case AnimeBlockFilter.nextSeason: return 'NEXT_SEASON';
+      case AnimeBlockFilter.all: return 'ALL';
     }
   }
 }
