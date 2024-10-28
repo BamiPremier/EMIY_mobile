@@ -48,7 +48,7 @@ class EditingQuizScreen extends StatelessWidget {
                           ),
                         ),
                         IconButton(
-                          icon: const Icon(Icons.edit),
+                          icon: const Icon(Icons.edit_outlined),
                           onPressed: () {
                             // Action pour éditer le quiz
                           },
@@ -70,6 +70,7 @@ class EditingQuizScreen extends StatelessWidget {
               padding: EdgeInsets.only(top: 32.0),
               child: Text('Questions'),
             ),
+            const Divider(),
             ListQuizQuestionsScreen()
           ],
         ),

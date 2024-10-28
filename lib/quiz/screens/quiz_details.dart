@@ -97,6 +97,7 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
               const SizedBox(height: 32.0),
               UmaiButton.primary(
                 onPressed: () {
+                  Navigator.of(context).pop();
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => QuizParticipationScreen()));
                 },
