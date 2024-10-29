@@ -12,10 +12,26 @@ import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/monthToString.dart';
 import 'package:umai/utils/themes.dart';
+import 'package:umai/quiz/models/quiz.dart';
+import 'package:umai/quiz/screens/quiz_details.dart';
+import 'package:umai/quiz/services/quiz_participation_cubit_manager.dart';
+import 'package:umai/utils/dialogs.dart';
+import 'package:umai/utils/themes.dart';
 
 class QuizInfo extends StatefulWidget {
-  const QuizInfo({super.key});
+  
+ final Quiz quiz;
+  static Widget get({
+    required BuildContext context,
+    required Quiz quiz,
+  }) {
+    return BlocProvider.value(
+      value: context.read<QuizParticipationCubitManager>().get(quiz),
+      child: QuizInfo._(quiz),
+    );
+  }
 
+  const QuizInfo._(this.quiz);
   @override
   State<QuizInfo> createState() => _QuizInfoState();
 }

@@ -81,17 +81,10 @@ class _QuizBlockState extends State<QuizBlock> {
         return SliverStickyHeader.builder(
           builder: headerBuilder,
           sliver: SliverToBoxAdapter(
-              child: ListView.builder(
-            padding: EdgeInsets.zero,
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemBuilder: (context, index) =>
-                ItemQuiz(quiz: null, haveImage: index % 2 == 0 ? true : false),
-            itemCount: 6,
-          ) /*  AutoListView.manual<Quiz>(
+            child: AutoListView.manual<Quiz>(
               cubit: cubit,
               autoManage: false,
-              itemBuilder: (context, quiz) => ItemQuiz(quiz: quiz),
+              itemBuilder: (context, quiz) => ItemQuiz.get(context: context, quiz: quiz),
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               errorBuilder: (context, retry) => Column(
@@ -128,24 +121,18 @@ class _QuizBlockState extends State<QuizBlock> {
                         Theme.of(context).colorScheme.tertiaryContainer,
                     borderRadius: BorderRadius.circular(30),
                   )),
-            ), */
-              ),
+            ),
+          ),
         );
       case QuizBlockType.empty:
         return SliverStickyHeader.builder(
           builder: headerBuilder,
         );
       case QuizBlockType.skinless:
-        return ListView.builder(
-          padding: EdgeInsets.zero,
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemBuilder: (context, index) => ItemQuiz(quiz: null),
-          itemCount: 6,
-        ) /* AutoListView.get<Quiz>(
+        return AutoListView.get<Quiz>(
           cubit: cubit,
           autoManage: false,
-          itemBuilder: (context, quiz) => ItemQuiz(quiz: quiz),
+          itemBuilder: (context, quiz) => ItemQuiz.get(context: context, quiz: quiz),
           errorBuilder: (context, retry) => Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -166,29 +153,165 @@ class _QuizBlockState extends State<QuizBlock> {
                     Theme.of(context).colorScheme.tertiaryContainer,
                 borderRadius: BorderRadius.circular(30),
               )),
-        ) */
-            ;
+        );
     }
   }
 
   Widget widgetBuilder(context) => Column(
         children: [
-          ListView.builder(
-            padding: EdgeInsets.zero,
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemBuilder: (context, index) => ListTile(
-              leading: Image.network(
-                'https://via.placeholder.com/50',
-                width: 50,
-                height: 50,
-                fit: BoxFit.cover,
-              ),
-              title: Text('Titre du quiz ${index + 1}'),
-              subtitle: Text('Description du quiz ${index + 1}'),
+          if (widget.type == QuizBlockType.regular)
+            ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemBuilder: (context, index) => Container(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Container(
+                          width: 72,
+                          height: 88,
+                          color:
+                              Theme.of(context).colorScheme.tertiaryContainer,
+                          child: Center(
+                            child: SizedBox(
+                              height: 16.0,
+                              width: 16.0,
+                              child: CircularProgressIndicator(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onTertiaryContainer,
+                                strokeWidth: 2.0,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 16,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .tertiaryContainer,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Container(
+                              height: 12,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .tertiaryContainer,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Container(
+                              height: 12,
+                              width: 120,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .tertiaryContainer,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )),
+              itemCount: 6, // Nombre d'éléments souhaité
             ),
-            itemCount: 6, // Nombre d'éléments souhaité
-          ),
+          if (widget.type != QuizBlockType.regular)
+            Expanded(
+              child: ListView.separated(
+                separatorBuilder: (context, index) => const SizedBox(height: 8),
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemBuilder: (context, index) => Container(
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Container(
+                            width: 72,
+                            height: 88,
+                            color:
+                                Theme.of(context).colorScheme.tertiaryContainer,
+                            child: Center(
+                              child: SizedBox(
+                                height: 16.0,
+                                width: 16.0,
+                                child: CircularProgressIndicator(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onTertiaryContainer,
+                                  strokeWidth: 2.0,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                height: 16,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .tertiaryContainer,
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Container(
+                                height: 12,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .tertiaryContainer,
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Container(
+                                height: 12,
+                                width: 120,
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .tertiaryContainer,
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    )),
+                itemCount: 6, // Nombre d'éléments souhaité
+              ),
+            ),
           if (widget.type == QuizBlockType.regular)
             Container(
               margin: const EdgeInsets.only(right: 16.0),

@@ -9,7 +9,7 @@ part of 'anime.dart';
 _$AnimeImpl _$$AnimeImplFromJson(Map<String, dynamic> json) => _$AnimeImpl(
       id: (json['id'] as num).toInt(),
       title: AnimeTitle.fromJson(json['title'] as Map<String, dynamic>),
-      description: json['description'] as String,
+      description: json['description'] as String?,
       coverImage:
           AnimeCoverImage.fromJson(json['coverImage'] as Map<String, dynamic>),
       bannerImage: json['bannerImage'] as String?,

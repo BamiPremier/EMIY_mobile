@@ -8,10 +8,22 @@ import 'package:umai/common/bloc/anime_manip_cubit.dart';
 import 'package:umai/common/services/cache_manager.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/screens/quiz_details.dart';
+import 'package:umai/quiz/services/quiz_participation_cubit_manager.dart';
 import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/themes.dart';
 
-class HeadQuiz extends StatelessWidget {
+class HeadQuiz extends StatelessWidget { final Quiz quiz;
+  static Widget get({
+    required BuildContext context,
+    required Quiz quiz,
+  }) {
+    return BlocProvider.value(
+      value: context.read<QuizParticipationCubitManager>().get(quiz),
+      child: HeadQuiz._(quiz),
+    );
+  }
+
+  const HeadQuiz._(this.quiz);
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(

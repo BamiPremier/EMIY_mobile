@@ -136,7 +136,7 @@ class _AnimeDetailScreenState extends State<AnimeDetailScreen>
                       alignment: Alignment.topCenter,
                       curve: Curves.easeInOut,
                       child: ReadMoreText(
-                        anime.description,
+                        anime.description??'',
                         trimMode: _trimMode,
                         trimLines: 3,
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(

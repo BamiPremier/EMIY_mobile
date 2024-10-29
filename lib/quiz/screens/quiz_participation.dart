@@ -1,11 +1,25 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:potatoes/libs.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/quiz/models/quiz.dart';
+import 'package:umai/quiz/services/quiz_participation_cubit_manager.dart';
 import 'package:umai/quiz/widgets/head_quiz.dart';
 import 'package:umai/utils/themes.dart';
 
 class QuizParticipationScreen extends StatefulWidget {
+   final Quiz quiz;
+  static Widget get({
+    required BuildContext context,
+    required Quiz quiz,
+  }) {
+    return BlocProvider.value(
+      value: context.read<QuizParticipationCubitManager>().get(quiz),
+      child: QuizParticipationScreen._(quiz),
+    );
+  }
+  const QuizParticipationScreen._(this.quiz);
+
   @override
   State<QuizParticipationScreen> createState() =>
       _QuizParticipationScreenState();
@@ -23,7 +37,7 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(slivers: [
-        HeadQuiz(),
+        HeadQuiz.get(context: context, quiz: widget.quiz),
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.all(16.0),

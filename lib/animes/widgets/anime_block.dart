@@ -31,7 +31,7 @@ class AnimeBlock extends StatefulWidget {
 }
 
 class _AnimeBlockState extends State<AnimeBlock> {
-  late final cubit = CategoryAnimeCubit(
+   late final cubit = CategoryAnimeCubit(
       context.read(),
       context.read(),
       widget.filter?.name ?? '',
@@ -129,7 +129,7 @@ class _AnimeBlockState extends State<AnimeBlock> {
           builder: headerBuilder,
         );
       case AnimeBlockType.skinless:
-        return AutoListView.get<Anime>(
+        return  AutoListView.get<Anime>(
           cubit: cubit,
           autoManage: false,
           viewType: ViewType.grid,

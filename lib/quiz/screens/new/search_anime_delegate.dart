@@ -1,17 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
+import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
+import 'package:umai/animes/bloc/category_anime_cubit.dart';
+import 'package:umai/animes/models/anime.dart';
+import 'package:umai/animes/services/anime_service.dart';
+import 'package:umai/animes/widgets/item_anime.dart';
+import 'package:umai/common/services/cache_manager.dart';
+import 'package:umai/quiz/bloc/quiz_cubit.dart';
 
 class SearchAnimeDelegate extends SearchDelegate<String> {
-  final List<String> data = [
-    'Re:Zero kara Hajimeru Isekai Seikatsu 3rd Season',
-    'Re:Zero kara Hajimeru Isekai Seikatsu 3rd Season',
-    'Re:Zero kara Hajimeru Isekai Seikatsu 3rd Season',
-    'Re:Zero kara Hajimeru Isekai Seikatsu 3rd Season',
-    'Re:Zero kara Hajimeru Isekai Seikatsu 3rd Season',
-  ];
+  late final AutoListCubit<Anime> _cubit;
+  final AnimeService _animeService;
+
+  SearchAnimeDelegate(BuildContext context)
+      : _animeService = context.read<AnimeService>() {
+    _cubit = AutoListCubit(
+      provider: ({page = 1}) => _animeService.getAnimesSearch(
+        search: query,
+        page: page,
+      ),
+    );
+  }
 
   @override
   List<Widget> buildActions(BuildContext context) {
-    return [];
+    return [
+      IconButton(
+        icon: const Icon(Icons.clear),
+        onPressed: () {
+          query = '';
+          _cubit.reset();
+        },
+      ),
+    ];
   }
 
   @override
@@ -26,13 +48,14 @@ class SearchAnimeDelegate extends SearchDelegate<String> {
 
   @override
   String? get searchFieldLabel => 'Rechercher...';
+
   @override
   PreferredSizeWidget? buildBottom(BuildContext context) {
     return const PreferredSize(
       preferredSize: Size.fromHeight(1.0),
       child: Divider(
         height: 5.0,
-        color: const Color(0xffD9D9D9),
+        color: Color(0xffD9D9D9),
       ),
     );
   }
@@ -41,6 +64,7 @@ class SearchAnimeDelegate extends SearchDelegate<String> {
   TextStyle? get searchFieldStyle => const TextStyle(
         fontSize: 14.0,
       );
+
   @override
   ThemeData appBarTheme(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -61,39 +85,107 @@ class SearchAnimeDelegate extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return _buildListView();
+    if (query.isEmpty) {
+      return Container();
+    }
+    _cubit.reset();
+    return _buildListView(context);
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return _buildListView();
+    if (query.isEmpty) {
+      return Container();
+    }
+    _cubit.reset();
+    return _buildListView(context);
   }
 
-  Widget _buildListView() {
-    final List<String> suggestions = data
-        .where((element) => element.toLowerCase().contains(query.toLowerCase()))
-        .toList();
-
-    return ListView.builder(
-      itemCount: suggestions.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          leading: Container(
-            width: 56,
-            height: 56,
-            decoration: BoxDecoration(
-              color: const Color(0xffD9D9D9),
-              borderRadius: BorderRadius.circular(8),
-            ),
-          ),
-          title: Text(suggestions[index],
-              style: Theme.of(context).textTheme.titleMedium),
+  Widget _buildListView(BuildContext context) {
+    return AutoListView.get<Anime>(
+      cubit: _cubit,
+      shrinkWrap: true,
+      autoManage: false,
+      separatorBuilder: (context, index) => const SizedBox(height: 8),
+      itemBuilder: (context, anime) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: InkWell(
           onTap: () {
-            query = suggestions[index];
-            showResults(context);
+            context.read<QuizCubit>().selectAnime(anime);
+            close(context, anime.title.romaji);
           },
-        );
-      },
+          child: Row(
+            children: [
+              Container(
+                height: 56,
+                width: 56,
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Image(
+                  fit: BoxFit.cover,
+                  image: context
+                      .read<AppCacheManager>()
+                      .getImage(anime.coverImage.extraLarge ?? ''),
+                  frameBuilder:
+                      (context, child, frame, wasSynchronouslyLoaded) {
+                    if (frame != null) return child;
+                    return Container(
+                      color: Theme.of(context).colorScheme.tertiaryContainer,
+                      child: wasSynchronouslyLoaded
+                          ? child
+                          : Center(
+                              child: SizedBox(
+                                height: 16.0,
+                                width: 16.0,
+                                child: CircularProgressIndicator(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onTertiaryContainer,
+                                  strokeWidth: 2.0,
+                                ),
+                              ),
+                            ),
+                    );
+                  },
+                  errorBuilder: (_, __, ___) => const Icon(Icons.error),
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Text(
+                  anime.title.romaji,
+                  maxLines: 2,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      errorBuilder: (context, retry) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text("Une erreur s'est produite"),
+          TextButton(
+            onPressed: retry,
+            child: const Text("Réessayer"),
+          )
+        ],
+      ),
+      loadingBuilder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+      loadingMoreBuilder: (context) => Container(
+        padding: const EdgeInsets.only(top: 16, bottom: 28)
+            .add(const EdgeInsets.symmetric(horizontal: 16)),
+        child: LinearProgressIndicator(
+          color: Theme.of(context).colorScheme.onTertiaryContainer,
+          backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
+          borderRadius: BorderRadius.circular(30),
+        ),
+      ),
     );
   }
 }

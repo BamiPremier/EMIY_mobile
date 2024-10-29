@@ -1,19 +1,31 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:potatoes/libs.dart';
 import 'package:readmore/readmore.dart';
 import 'package:umai/common/widgets/action_widget.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/screens/quiz_participation.dart';
+import 'package:umai/quiz/services/quiz_participation_cubit_manager.dart';
 import 'package:umai/quiz/widgets/head_quiz.dart';
 import 'package:umai/quiz/widgets/item_user_quiz.dart';
 import 'package:umai/quiz/widgets/quiz_info.dart';
 import 'package:umai/utils/themes.dart';
 
 class QuizDetailScreen extends StatefulWidget {
-  final Quiz? quiz;
-  QuizDetailScreen({required this.quiz});
+  final Quiz quiz;
+  static Widget get({
+    required BuildContext context,
+    required Quiz quiz,
+  }) {
+    return BlocProvider.value(
+      value: context.read<QuizParticipationCubitManager>().get(quiz),
+      child: QuizDetailScreen._(quiz: quiz),
+    );
+  }
+
+  const QuizDetailScreen._({required this.quiz});
   @override
   State<QuizDetailScreen> createState() => _QuizDetailScreenState();
 }
@@ -28,14 +40,14 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          HeadQuiz(),
+          HeadQuiz.get(context: context, quiz: widget.quiz),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.only(top: 8.0, left: 16.0, right: 16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const QuizInfo(),
+                  QuizInfo.get(context: context, quiz: widget.quiz),
                   Padding(
                     padding: const EdgeInsets.only(top: 32.0, bottom: 8.0),
                     child: Column(
@@ -99,7 +111,8 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
                 onPressed: () {
                   Navigator.of(context).pop();
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => QuizParticipationScreen()));
+                      builder: (context) => QuizParticipationScreen.get(
+                          context: context, quiz: widget.quiz)));
                 },
                 text: "Continuer",
               ),

@@ -39,8 +39,9 @@ class AnimeItem extends StatelessWidget {
               animeManipCubit: animeManipCubit,
             ),
             child: Image(
-              image: context.read<AppCacheManager>()
-                .getImage(anime.coverImage.extraLarge ?? ''),
+              image: context
+                  .read<AppCacheManager>()
+                  .getImage(anime.coverImage.extraLarge ?? ''),
               fit: BoxFit.cover,
               frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
                 if (frame != null) return child;
@@ -49,17 +50,19 @@ class AnimeItem extends StatelessWidget {
                   height: 368,
                   width: double.infinity,
                   child: wasSynchronouslyLoaded
-                    ? child
-                    : Center(
-                        child: SizedBox(
-                          height: 16.0,
-                          width: 16.0,
-                          child: CircularProgressIndicator(
-                            color: Theme.of(context).colorScheme.onTertiaryContainer,
-                            strokeWidth: 2.0,
+                      ? child
+                      : Center(
+                          child: SizedBox(
+                            height: 16.0,
+                            width: 16.0,
+                            child: CircularProgressIndicator(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onTertiaryContainer,
+                              strokeWidth: 2.0,
+                            ),
                           ),
                         ),
-                      ),
                 );
               },
               errorBuilder: (_, __, ___) => const Icon(Icons.error),

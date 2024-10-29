@@ -4,6 +4,7 @@ import 'package:umai/animes/models/anime.dart';
 import 'package:umai/common/services/api_service.dart';
 
 class AnimeService extends ApiService {
+  static const String _anime = '/animes';
   static const String _animeFeed = '/animes/feed';
 
   static const String _watchlistAdd = '/animes/:idAnime/watchlist';
@@ -11,11 +12,8 @@ class AnimeService extends ApiService {
 
   const AnimeService(super._dio);
 
-  Future<PaginatedList<Anime>> getAnimesFeed({
-    int page = 1,
-    int? size,
-    String? selectedFilter
-  }) async {
+  Future<PaginatedList<Anime>> getAnimesFeed(
+      {int page = 1, int? size, String? selectedFilter}) async {
     return compute(
         dio.get(_animeFeed,
             options: Options(headers: withAuth()),
@@ -23,6 +21,19 @@ class AnimeService extends ApiService {
               'page': page,
               'size': size ?? 6,
               'selectedFilter': selectedFilter,
+            }),
+        mapper: (result) => toPaginatedList(result, Anime.fromJson));
+  }
+
+  Future<PaginatedList<Anime>> getAnimesSearch(
+      {int page = 1, int? size, String? search}) async {
+    return compute(
+        dio.get(_anime,
+            options: Options(headers: withAuth()),
+            queryParameters: {
+              'page': page,
+              'size': size ?? 6,
+              'search': search,
             }),
         mapper: (result) => toPaginatedList(result, Anime.fromJson));
   }

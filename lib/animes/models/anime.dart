@@ -8,7 +8,7 @@ class Anime with _$Anime {
   const factory Anime({
     required int id,
     required AnimeTitle title,
-    required String description,
+    required String? description,
     required AnimeCoverImage coverImage,
     required String? bannerImage,
     @JsonKey(name: 'is_viewed') @Default(false) bool isViewed,
