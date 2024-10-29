@@ -3,6 +3,7 @@ import 'package:potatoes/libs.dart';
 import 'package:umai/animes/models/anime.dart';
 import 'package:umai/quiz/models/question_quiz.dart';
 import 'package:umai/quiz/models/quiz.dart';
+import 'package:umai/quiz/services/quiz_participation_cubit_manager.dart';
 import 'package:umai/quiz/services/quiz_service.dart';
 import 'dart:io';
 
@@ -11,9 +12,11 @@ import 'package:potatoes/potatoes.dart';
 part 'quiz_state.dart';
 
 class QuizCubit extends Cubit<QuizState> {
+  final QuizParticipationCubitManager quizParticipationCubitManager;
   final QuizService quizService;
 
-  QuizCubit(this.quizService) : super(const QuizIdleState());
+  QuizCubit(this.quizService, this.quizParticipationCubitManager)
+      : super(const QuizIdleState());
 
   void createQuiz({required String title, required String description}) async {
     final stateBefore = state;
@@ -27,6 +30,8 @@ class QuizCubit extends Cubit<QuizState> {
           "anime_id": stateBefore.anime.id,
       };
       await quizService.newQuiz(data: data).then((response) async {
+        print("==========${response.id}=====add quiz");
+        quizParticipationCubitManager.create(response);
         emit(QuizCreatedState(quiz: response, questions: []));
       });
     } catch (error, trace) {
@@ -50,6 +55,8 @@ class QuizCubit extends Cubit<QuizState> {
           .updateQuiz(
               data: data, idQuiz: (stateBefore as QuizCreatedState).quiz.id)
           .then((response) async {
+        quizParticipationCubitManager.updateCubit(
+            quizParticipationCubitManager.get(response), response);
         emit(QuizCreatedState(
             quiz: response,
             questions: (stateBefore as QuizCreatedState).questions));

@@ -12,22 +12,28 @@ part 'quiz_participation_state.dart';
 
 class QuizParticipationCubit extends ObjectCubit<Quiz, QuizParticipationState> {
   final QuizService quizService;
-  final Quiz quiz;
 
-  QuizParticipationCubit(this.quizService, this.quiz)
-      : super(const QuizParticipationIdleState());
-
-  void createQuizParticipation(
-      {required String title, required String description}) async {}
-
+  QuizParticipationCubit(this.quizService, Quiz quiz)
+      : super(InitializingQuizParticipationState(quiz));
+ 
   @override
   Quiz? getObject(QuizParticipationState state) {
-    // TODO: implement getObject
-    throw UnimplementedError();
+    if (state is InitializingQuizParticipationState) {
+      return state.quiz;
+    }
+    return null;
+  }
+
+  Quiz get quiz {
+    final quiz = getObject(state) ?? object;
+
+    if (quiz != null) return quiz;
+    throw UnsupportedError(
+        'cannot retrieve quiz: Current state is ${state.runtimeType}');
   }
 
   @override
   void update(Quiz object) {
-    // TODO: implement update
+    emit(InitializingQuizParticipationState(object));
   }
 }

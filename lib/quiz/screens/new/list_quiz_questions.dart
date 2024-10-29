@@ -12,13 +12,20 @@ class ListQuizQuestionsScreen extends StatelessWidget {
         builder: (context, state) => (state as QuizCreatedState)
                 .questions
                 .isEmpty
-            ? Text(
-                'Vos questions apparaissent ici',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium!
-                    .copyWith(color: AppTheme.disabledText),
-              )
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 150),
+                    Center(
+                        child: Text(
+                      'Vos questions apparaissent ici',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium!
+                          .copyWith(color: AppTheme.disabledText),
+                    ))
+                  ])
             : ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: (state).questions.length,

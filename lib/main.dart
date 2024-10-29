@@ -111,7 +111,8 @@ class MyApp extends StatelessWidget {
           BlocProvider(
               create: (context) =>
                   NewPostCubit(context.read(), context.read())),
-          BlocProvider(create: (context) => QuizCubit(context.read())),
+          BlocProvider(
+              create: (context) => QuizCubit(context.read(), context.read())),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

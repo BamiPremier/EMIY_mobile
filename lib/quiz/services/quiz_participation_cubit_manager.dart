@@ -13,11 +13,12 @@ class QuizParticipationCubitManager
 
   @override
   String buildId(Quiz object) {
-    return object.id.toString();
+    return object.id;
   }
 
   @override
   QuizParticipationCubit create(Quiz object) {
+    print("==========${object.id}=====add quiz cubit");
     return QuizParticipationCubit(quizService, object);
   }
 

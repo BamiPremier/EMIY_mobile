@@ -6,24 +6,34 @@ import 'package:umai/animes/screens/anime_details.dart';
 import 'package:umai/animes/services/anime_cubit_manager.dart';
 import 'package:umai/common/bloc/anime_manip_cubit.dart';
 import 'package:umai/common/services/cache_manager.dart';
+import 'package:umai/quiz/bloc/quiz_participation_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/screens/quiz_details.dart';
 import 'package:umai/quiz/services/quiz_participation_cubit_manager.dart';
 import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/themes.dart';
 
-class HeadQuiz extends StatelessWidget { final Quiz quiz;
+class HeadQuiz extends StatefulWidget {
+   
   static Widget get({
     required BuildContext context,
     required Quiz quiz,
   }) {
     return BlocProvider.value(
       value: context.read<QuizParticipationCubitManager>().get(quiz),
-      child: HeadQuiz._(quiz),
+      child: HeadQuiz._(),
     );
   }
 
-  const HeadQuiz._(this.quiz);
+  const HeadQuiz._();
+  @override
+  State<HeadQuiz> createState() => _HeadQuizState();
+}
+
+class _HeadQuizState extends State<HeadQuiz>
+    with SingleTickerProviderStateMixin {
+ late final quizParticipationCubit = context.read<QuizParticipationCubit>();
+  late final Quiz quiz = quizParticipationCubit.quiz;
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
@@ -38,23 +48,22 @@ class HeadQuiz extends StatelessWidget { final Quiz quiz;
         background: Stack(
           fit: StackFit.expand,
           children: [
-            // if (widget.quiz?.anime?.coverImage != null)
-            CachedNetworkImage(
-              imageUrl:
-                  'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21856-gutauxhWAwn6.png',
-              fit: BoxFit.cover,
-              errorWidget: (context, url, error) => Icon(
-                Icons.error,
-                color: Theme.of(context).colorScheme.onTertiaryContainer,
-                size: 32,
+            if (quiz.anime != null)
+              CachedNetworkImage(
+                imageUrl: quiz.anime!.coverImage.large ?? '',
+                fit: BoxFit.cover,
+                errorWidget: (context, url, error) => Icon(
+                  Icons.error,
+                  color: Theme.of(context).colorScheme.onTertiaryContainer,
+                  size: 32,
+                ),
               ),
-            ),
-            // if (widget.quiz?.anime?.coverImage == null)
-            // CachedNetworkImage(
-            //   color: Theme.of(context).colorScheme.onTertiaryContainer,
-            //   imageUrl: '',
-            //   errorWidget: (context, url, error) => Container(),
-            // ),
+            if (quiz.anime == null)
+              CachedNetworkImage(
+                color: Theme.of(context).colorScheme.onTertiaryContainer,
+                imageUrl: '',
+                errorWidget: (context, url, error) => Container(),
+              ),
             Align(
               alignment: Alignment.topCenter,
               child: Container(

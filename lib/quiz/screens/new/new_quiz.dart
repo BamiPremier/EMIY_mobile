@@ -10,6 +10,7 @@ import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/quiz/bloc/quiz_cubit.dart';
 import 'package:umai/quiz/screens/new/editing_quiz.dart';
 import 'package:umai/quiz/screens/new/search_anime_delegate.dart';
+import 'package:umai/quiz/services/quiz_participation_cubit_manager.dart';
 import 'package:umai/social/bloc/new_post_cubit.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/dialogs.dart';
@@ -193,12 +194,6 @@ class _NewQuizScreenState extends State<NewQuizScreen> with CompletableMixin {
             children: [
               UmaiButton.primary(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const EditingQuizScreen()),
-                  );
-
                   if (Validators.empty(_titreController.text) != null) {
                     showErrorToast(
                         content: "Veuillez ajouter un titre", context: context);
@@ -237,7 +232,7 @@ class _NewQuizScreenState extends State<NewQuizScreen> with CompletableMixin {
     } else if (state is QuizCreatedState) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const EditingQuizScreen()),
+        MaterialPageRoute(builder: (context) => EditingQuizScreen(state.quiz)),
       );
     } else if (state is QuizErrorState) {
       showErrorToast(content: state.error, context: context);

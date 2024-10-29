@@ -84,7 +84,8 @@ class _QuizBlockState extends State<QuizBlock> {
             child: AutoListView.manual<Quiz>(
               cubit: cubit,
               autoManage: false,
-              itemBuilder: (context, quiz) => ItemQuiz.get(context: context, quiz: quiz),
+              itemBuilder: (context, quiz) =>
+                  ItemQuiz.get(context: context, quiz: quiz),
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               errorBuilder: (context, retry) => Column(
@@ -132,7 +133,8 @@ class _QuizBlockState extends State<QuizBlock> {
         return AutoListView.get<Quiz>(
           cubit: cubit,
           autoManage: false,
-          itemBuilder: (context, quiz) => ItemQuiz.get(context: context, quiz: quiz),
+          itemBuilder: (context, quiz) =>
+              ItemQuiz.get(context: context, quiz: quiz),
           errorBuilder: (context, retry) => Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -339,9 +341,9 @@ extension QuizBlockFilterExtension on QuizBlockFilter {
   String get name {
     switch (this) {
       case QuizBlockFilter.trending:
-        return 'TRENDING_NOW';
+        return 'TRENDING';
       case QuizBlockFilter.favorites:
-        return 'FAVORITES';
+        return 'FAVORITE';
       case QuizBlockFilter.recent:
         return 'RECENT';
     }
