@@ -170,9 +170,10 @@ class _EditingQuizScreenState extends State<EditingQuizScreen>
     if (state is QuizLoadingState) {
       loadingDialogCompleter = showLoadingBarrier(context: context);
     } else if (state is QuizPublishedState) {
-      Navigator.push(
+      Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => const HomeScreen()),
+        (route) => false,
       );
     } else if (state is QuizErrorState) {
       showErrorToast(content: state.error, context: context);
