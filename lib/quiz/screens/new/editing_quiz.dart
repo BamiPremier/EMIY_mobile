@@ -110,7 +110,8 @@ class _EditingQuizScreenState extends State<EditingQuizScreen>
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                NewQuizScreen(isEdit: true)),
+                                                const NewQuizScreen(
+                                                    isEdit: true)),
                                       );
                                     },
                                   ),

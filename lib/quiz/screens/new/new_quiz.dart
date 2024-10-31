@@ -33,11 +33,16 @@ class _NewQuizScreenState extends State<NewQuizScreen> with CompletableMixin {
   late final QuizCubit quizCubit = context.read<QuizCubit>();
   @override
   void initState() {
+    print(widget.isEdit);
     super.initState();
     if (widget.isEdit) {
-      _titreController.text = (quizCubit.state as QuizCreatedState).quiz.title;
-      _descriptionController.text =
-          (quizCubit.state as QuizCreatedState).quiz.description;
+      setState(() {
+        _titreController.text =
+            (quizCubit.state as QuizCreatedState).quiz.title;
+        _descriptionController.text =
+            (quizCubit.state as QuizCreatedState).quiz.description;
+        quizCubit.selectAnime((quizCubit.state as QuizCreatedState).anime!);
+      });
     }
   }
 
@@ -148,17 +153,21 @@ class _NewQuizScreenState extends State<NewQuizScreen> with CompletableMixin {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          state is QuizSelectAnimeState
-                              ? Text(
-                                  state.anime.title.romaji,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium!
-                                      .copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSurfaceVariant,
-                                      ),
+                          (state is QuizSelectAnimeState)
+                              ? Expanded(
+                                  child: Text(
+                                    state.anime.title.romaji,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium!
+                                        .copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurfaceVariant,
+                                        ),
+                                  ),
                                 )
                               : Text(
                                   'Sélectionne un anime',

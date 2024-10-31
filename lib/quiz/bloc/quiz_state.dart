@@ -4,7 +4,7 @@ mixin QuizState on Equatable {}
 
 class QuizIdleState extends CubitSuccessState with QuizState {
   const QuizIdleState();
-  
+
   @override
   // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
@@ -15,12 +15,14 @@ class QuizLoadingState extends CubitLoadingState with QuizState {
 }
 
 class QuizCreatedState extends CubitInformationState with QuizState {
+  final Anime? anime;
   final Quiz quiz;
   final List<QuestionQuiz> questions;
 
-  const QuizCreatedState({required this.quiz, required this.questions});
+  const QuizCreatedState(
+      {this.anime, required this.quiz, required this.questions});
   @override
-  List<Object?> get props => [quiz, questions];
+  List<Object?> get props => [anime, quiz, questions];
 }
 
 class QuizPublishedState extends CubitInformationState with QuizState {
@@ -30,11 +32,18 @@ class QuizPublishedState extends CubitInformationState with QuizState {
 class QuizErrorState extends CubitErrorState with QuizState {
   QuizErrorState(super.error, [super.trace]);
 }
-  
+
 class QuizSelectAnimeState extends CubitInformationState with QuizState {
   final Anime anime;
+  final List<QuestionQuiz>? questions;
+  final Quiz? quiz;
 
-  const QuizSelectAnimeState(this.anime);
+  const QuizSelectAnimeState({
+    required this.anime,
+    this.quiz,
+    required this.questions,
+  });
+
   @override
-  List<Object?> get props => [anime];
+  List<Object?> get props => [anime, quiz, questions];
 }

@@ -68,9 +68,9 @@ class _AddQuizQuestionScreenState extends State<AddQuizQuestionScreen>
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<QuizCubit, QuizState>(
+    return BlocListener<QuizCubit, QuizState>(
       listener: onEventReceived,
-      builder: (context, state) => Scaffold(
+      child: Scaffold(
         appBar: AppBar(
           title: const Text('Question'),
           leading: IconButton(

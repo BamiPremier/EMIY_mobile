@@ -32,7 +32,12 @@ class QuizCubit extends Cubit<QuizState> {
       await quizService.newQuiz(data: data).then((response) async {
         print("==========${response.id}=====add quiz");
         quizManageCubitManager.add(response);
-        emit(QuizCreatedState(quiz: response, questions: []));
+        emit(QuizCreatedState(
+            quiz: response,
+            questions: [],
+            anime: (stateBefore is QuizSelectAnimeState)
+                ? stateBefore.anime
+                : null));
       });
     } catch (error, trace) {
       emit(QuizErrorState(error, trace));
@@ -45,21 +50,40 @@ class QuizCubit extends Cubit<QuizState> {
 
     try {
       emit(const QuizLoadingState());
+      final animeId = stateBefore is QuizSelectAnimeState
+          ? stateBefore.anime.id
+          : (stateBefore is QuizCreatedState && stateBefore.anime != null)
+              ? stateBefore.anime!.id
+              : null;
+      final idQuiz = stateBefore is QuizSelectAnimeState
+          ? stateBefore.quiz!.id
+          : (stateBefore is QuizCreatedState && stateBefore.quiz != null)
+              ? stateBefore.quiz!.id
+              : null;
+      final anime = stateBefore is QuizSelectAnimeState
+          ? stateBefore.anime
+          : (stateBefore is QuizCreatedState && stateBefore.anime != null)
+              ? stateBefore.anime!
+              : null;
+      final questions = stateBefore is QuizSelectAnimeState
+          ? stateBefore.questions
+          : (stateBefore is QuizCreatedState)
+              ? stateBefore.questions
+              : <QuestionQuiz>[];
       final data = {
         "title": title,
         "description": description,
-        if (stateBefore is QuizSelectAnimeState)
-          "anime_id": stateBefore.anime.id,
+        if (animeId != null) "anime_id": animeId,
       };
       await quizService
-          .updateQuiz(
-              data: data, idQuiz: (stateBefore as QuizCreatedState).quiz.id)
+          .updateQuiz(data: data, idQuiz: idQuiz!)
           .then((response) async {
         quizManageCubitManager.updateCubit(
             quizManageCubitManager.get(response), response);
         emit(QuizCreatedState(
+            anime: anime,
             quiz: response,
-            questions: (stateBefore as QuizCreatedState).questions));
+            questions: questions == null ? [] : <QuestionQuiz>[]));
       });
     } catch (error, trace) {
       emit(QuizErrorState(error, trace));
@@ -85,7 +109,21 @@ class QuizCubit extends Cubit<QuizState> {
   }
 
   void selectAnime(Anime anime) {
-    emit(QuizSelectAnimeState(anime));
+    final quiz = (state is QuizCreatedState)
+        ? (state as QuizCreatedState).quiz
+        : (state is QuizSelectAnimeState)
+            ? (state as QuizSelectAnimeState).quiz
+            : null;
+    final questions = (state is QuizCreatedState)
+        ? (state as QuizCreatedState).questions
+        : (state is QuizSelectAnimeState)
+            ? (state as QuizSelectAnimeState).questions
+            : <QuestionQuiz>[];
+    emit(QuizSelectAnimeState(
+      anime: anime,
+      quiz: quiz,
+      questions: questions,
+    ));
   }
 
   void addQuestion(QuestionQuiz question) async {
@@ -106,7 +144,9 @@ class QuizCubit extends Cubit<QuizState> {
               data: data, idQuiz: (stateBefore as QuizCreatedState).quiz.id)
           .then((response) {
         emit(QuizCreatedState(
-            quiz: response, questions: [...(stateBefore).questions, question]));
+            anime: (state as QuizCreatedState).anime,
+            quiz: response,
+            questions: [...(stateBefore).questions ?? [], question]));
       });
     } catch (error, trace) {
       emit(QuizErrorState(error, trace));
