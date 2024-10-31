@@ -9,6 +9,7 @@ import 'package:umai/common/bloc/anime_manip_cubit.dart';
 import 'package:umai/common/widgets/action_widget.dart';
 import 'package:umai/animes/screens/anime_details.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
+import 'package:umai/quiz/bloc/quiz_manage_cubit.dart';
 import 'package:umai/quiz/bloc/quiz_participation_cubit.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/utils/assets.dart';
@@ -16,7 +17,7 @@ import 'package:umai/utils/monthToString.dart';
 import 'package:umai/utils/themes.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/screens/quiz_details.dart';
-import 'package:umai/quiz/services/quiz_participation_cubit_manager.dart';
+import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/themes.dart';
 
@@ -26,7 +27,7 @@ class QuizInfo extends StatefulWidget {
     required Quiz quiz,
   }) {
     return BlocProvider.value(
-      value: context.read<QuizParticipationCubitManager>().get(quiz),
+      value: context.read<QuizManageCubitManager>().get(quiz),
       child: QuizInfo._(),
     );
   }
@@ -38,8 +39,8 @@ class QuizInfo extends StatefulWidget {
 
 class _QuizInfoState extends State<QuizInfo>
     with SingleTickerProviderStateMixin {
-  late final quizParticipationCubit = context.read<QuizParticipationCubit>();
-  late final Quiz quiz = quizParticipationCubit.quiz;
+  late final quizManageCubit = context.read<QuizManageCubit>();
+  late final Quiz quiz = quizManageCubit.quiz;
 
   final isCollapsed = ValueNotifier<bool>(true);
   @override

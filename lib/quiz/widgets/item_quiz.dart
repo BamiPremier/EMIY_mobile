@@ -5,22 +5,22 @@ import 'package:umai/animes/screens/anime_details.dart';
 import 'package:umai/animes/services/anime_cubit_manager.dart';
 import 'package:umai/common/bloc/anime_manip_cubit.dart';
 import 'package:umai/common/services/cache_manager.dart';
+import 'package:umai/quiz/bloc/quiz_manage_cubit.dart';
 import 'package:umai/quiz/bloc/quiz_participation_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/screens/quiz_details.dart';
-import 'package:umai/quiz/services/quiz_participation_cubit_manager.dart';
+import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/themes.dart';
 
-class ItemQuiz extends   StatefulWidget {
-  
- final Quiz quiz;
+class ItemQuiz extends StatefulWidget {
+  final Quiz quiz;
   static Widget get({
     required BuildContext context,
     required Quiz quiz,
   }) {
     return BlocProvider.value(
-      value: context.read<QuizParticipationCubitManager>().get(quiz),
+      value: context.read<QuizManageCubitManager>().get(quiz),
       child: ItemQuiz._(quiz),
     );
   }
@@ -32,8 +32,8 @@ class ItemQuiz extends   StatefulWidget {
 
 class _ItemQuizState extends State<ItemQuiz>
     with SingleTickerProviderStateMixin {
-     late final quizParticipationCubit = context.read<QuizParticipationCubit>();
-  late final Quiz quiz = quizParticipationCubit.quiz;  
+  late final quizParticipationCubit = context.read<QuizManageCubit>();
+  late final Quiz quiz = quizParticipationCubit.quiz;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -103,7 +103,7 @@ class _ItemQuizState extends State<ItemQuiz>
                   // Text(
                   //     "${quiz.questions.length} questions • par ${quiz.user.username}",
                   //     style: Theme.of(context).textTheme.labelSmall),
-                  Text("10 questions • par Hari Randoll",
+                  Text("10 questions • par ${quiz.user.username}",
                       style: Theme.of(context).textTheme.labelSmall),
                 ],
               ),

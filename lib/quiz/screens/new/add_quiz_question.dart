@@ -25,6 +25,7 @@ class _AddQuizQuestionScreenState extends State<AddQuizQuestionScreen>
     TextEditingController(),
     TextEditingController(),
   ];
+
   void _addProposition() {
     if (_propositionControllers.length < 4) {
       setState(() {
@@ -43,9 +44,13 @@ class _AddQuizQuestionScreenState extends State<AddQuizQuestionScreen>
 
   int? _correctAnswerIndex;
   void selectCorrectAnswer(int index) {
-    setState(() {
-      _correctAnswerIndex = index;
-    });
+    if (_propositionControllers.length > 1 &&
+        _correctAnswerIndex != index &&
+        _questionController.text.isNotEmpty) {
+      setState(() {
+        _correctAnswerIndex = index;
+      });
+    }
   }
 
   late final QuizCubit quizCubit = context.read<QuizCubit>();
@@ -241,18 +246,20 @@ class _AddQuizQuestionScreenState extends State<AddQuizQuestionScreen>
             mainAxisSize: MainAxisSize.min,
             children: [
               UmaiButton.primary(
-                onPressed: () {
-                  quizCubit.addQuestion(QuestionQuiz(
-                      correctAnswerIndex: _correctAnswerIndex!,
-                      image: image,
-                      label: _questionController.text,
-                      responses: _propositionControllers
-                          .map((e) => QuizResponse(
-                              label: e.text,
-                              isCorrect: _correctAnswerIndex ==
-                                  _propositionControllers.indexOf(e)))
-                          .toList()));
-                },
+                onPressed: _correctAnswerIndex == null
+                    ? null
+                    : () {
+                        quizCubit.addQuestion(QuestionQuiz(
+                            correctAnswerIndex: _correctAnswerIndex!,
+                            image: image,
+                            label: _questionController.text,
+                            responses: _propositionControllers
+                                .map((e) => QuizResponse(
+                                    label: e.text,
+                                    isCorrect: _correctAnswerIndex ==
+                                        _propositionControllers.indexOf(e)))
+                                .toList()));
+                      },
                 text: "Enregistrer",
               ),
             ],

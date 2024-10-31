@@ -7,9 +7,11 @@ import 'package:umai/common/widgets/action_widget.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/quiz/bloc/load_quiz_ranking_cubit.dart';
+import 'package:umai/quiz/bloc/quiz_manage_cubit.dart';
 import 'package:umai/quiz/bloc/quiz_participation_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/screens/quiz_participation.dart';
+import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/quiz/services/quiz_participation_cubit_manager.dart';
 import 'package:umai/quiz/services/quiz_service.dart';
 import 'package:umai/quiz/widgets/head_quiz.dart';
@@ -25,7 +27,7 @@ class QuizDetailScreen extends StatefulWidget {
     required Quiz quiz,
   }) {
     return BlocProvider.value(
-      value: context.read<QuizParticipationCubitManager>().get(quiz),
+      value: context.read<QuizManageCubitManager>().get(quiz),
       child: QuizDetailScreen._(quiz: quiz),
     );
   }
@@ -38,8 +40,8 @@ class QuizDetailScreen extends StatefulWidget {
 class _QuizDetailScreenState extends State<QuizDetailScreen>
     with SingleTickerProviderStateMixin {
   final isCollapsed = ValueNotifier<bool>(true);
-  late final quizParticipationCubit = context.read<QuizParticipationCubit>();
-  late final Quiz quiz = quizParticipationCubit.quiz;
+  late final quizManageCubit = context.read<QuizManageCubit>();
+  late final Quiz quiz = quizManageCubit.quiz;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -153,10 +155,11 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
               const SizedBox(height: 32.0),
               UmaiButton.primary(
                 onPressed: () {
+                  context.read<QuizParticipationCubitManager>().clear();
                   Navigator.of(context).pop();
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => QuizParticipationScreen.get(
-                          context: context, quiz: quiz)));
+                      builder: (context) =>
+                          QuizParticipationScreen(quiz: quiz)));
                 },
                 text: "Continuer",
               ),

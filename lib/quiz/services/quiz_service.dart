@@ -3,6 +3,7 @@ import 'package:potatoes/libs.dart';
 import 'package:umai/animes/models/anime.dart';
 import 'package:umai/common/services/api_service.dart';
 import 'package:umai/quiz/models/quiz.dart';
+import 'package:umai/quiz/models/quiz_response.dart';
 
 class QuizService extends ApiService {
   static const String _quiz = '/quiz';
@@ -66,18 +67,20 @@ class QuizService extends ApiService {
               'page': page,
               'size': size ?? 6,
             }),
-        mapper: (result) => toPaginatedList(result, QuizParticipation.fromJson));
+        mapper: (result) =>
+            toPaginatedList(result, QuizParticipation.fromJson));
   }
 
-  Future<PaginatedList<Quiz>> getQuizQuestions(
-      {int page = 1, int? size,required String idQuiz}) async {
+  Future<List<QuizQuestionResponse>> getQuizQuestions(
+      {required String idQuiz}) async {
     return compute(
-        dio.get(_quizQuestions.replaceFirst(':id', idQuiz),
-            options: Options(headers: withAuth()),
-            queryParameters: {
-              'page': page,
-              'size': size ?? 6,
-            }),
-        mapper: (result) => toPaginatedList(result, Quiz.fromJson));
+        dio.get(
+          _quizQuestions.replaceFirst(':id', idQuiz),
+          options: Options(headers: withAuth()),
+        ),
+        mapper: (result) => (result['questions'] as List<dynamic>)
+            .map((question) =>
+                QuizQuestionResponse.fromJson(question as Map<String, dynamic>))
+            .toList());
   }
 }

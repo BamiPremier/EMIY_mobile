@@ -4,12 +4,34 @@ mixin QuizParticipationState on Equatable {}
 
 class InitializingQuizParticipationState extends CubitSuccessState
     with QuizParticipationState {
-  final Quiz quiz;
+  final QuizQuestionResponse quizQuestionResponse;
+  final QuizResponse? userResponse;
 
-  const InitializingQuizParticipationState(this.quiz);
+  final int currentQuestion;
+  const InitializingQuizParticipationState(
+      {required this.quizQuestionResponse,
+      required this.userResponse,
+      this.currentQuestion = 0});
 
   @override
-  List<Object?> get props => [quiz];
+  List<Object?> get props =>
+      [quizQuestionResponse, userResponse, currentQuestion];
+}
+
+class ResponseQuizParticipationState extends CubitSuccessState
+    with QuizParticipationState {
+  final QuizQuestionResponse quizQuestionResponse;
+  final QuizResponse? userResponse;
+
+  final int currentQuestion;
+  const ResponseQuizParticipationState(
+      {required this.quizQuestionResponse,
+      required this.userResponse,
+      this.currentQuestion = 0});
+
+  @override
+  List<Object?> get props =>
+      [quizQuestionResponse, userResponse, currentQuestion];
 }
 
 class QuizParticipationIdleState extends CubitSuccessState

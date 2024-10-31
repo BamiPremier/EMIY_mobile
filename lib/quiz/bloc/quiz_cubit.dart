@@ -3,7 +3,7 @@ import 'package:potatoes/libs.dart';
 import 'package:umai/animes/models/anime.dart';
 import 'package:umai/quiz/models/question_quiz.dart';
 import 'package:umai/quiz/models/quiz.dart';
-import 'package:umai/quiz/services/quiz_participation_cubit_manager.dart';
+import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/quiz/services/quiz_service.dart';
 import 'dart:io';
 
@@ -12,10 +12,10 @@ import 'package:potatoes/potatoes.dart';
 part 'quiz_state.dart';
 
 class QuizCubit extends Cubit<QuizState> {
-  final QuizParticipationCubitManager quizParticipationCubitManager;
+  final QuizManageCubitManager quizManageCubitManager;
   final QuizService quizService;
 
-  QuizCubit(this.quizService, this.quizParticipationCubitManager)
+  QuizCubit(this.quizService, this.quizManageCubitManager)
       : super(const QuizIdleState());
 
   void createQuiz({required String title, required String description}) async {
@@ -31,7 +31,7 @@ class QuizCubit extends Cubit<QuizState> {
       };
       await quizService.newQuiz(data: data).then((response) async {
         print("==========${response.id}=====add quiz");
-        quizParticipationCubitManager.create(response);
+        quizManageCubitManager.add(response);
         emit(QuizCreatedState(quiz: response, questions: []));
       });
     } catch (error, trace) {
@@ -55,8 +55,8 @@ class QuizCubit extends Cubit<QuizState> {
           .updateQuiz(
               data: data, idQuiz: (stateBefore as QuizCreatedState).quiz.id)
           .then((response) async {
-        quizParticipationCubitManager.updateCubit(
-            quizParticipationCubitManager.get(response), response);
+        quizManageCubitManager.updateCubit(
+            quizManageCubitManager.get(response), response);
         emit(QuizCreatedState(
             quiz: response,
             questions: (stateBefore as QuizCreatedState).questions));
@@ -97,7 +97,7 @@ class QuizCubit extends Cubit<QuizState> {
 
       var data = FormData.fromMap({
         ...question.toFormData(),
-        if (question.image != null)
+        if (question.image != null && question.image!.isNotEmpty)
           "image": await MultipartFile.fromFile(question.image!,
               filename: basename(question.image!))
       });

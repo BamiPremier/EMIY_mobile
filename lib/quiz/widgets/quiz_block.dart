@@ -234,7 +234,7 @@ class _QuizBlockState extends State<QuizBlock> {
                       ),
                     ],
                   )),
-              itemCount: 6, // Nombre d'éléments souhaité
+              itemCount: 3, // Nombre d'éléments souhaité
             ),
           if (widget.type != QuizBlockType.regular)
             Expanded(
@@ -311,7 +311,7 @@ class _QuizBlockState extends State<QuizBlock> {
                         ),
                       ],
                     )),
-                itemCount: 6, // Nombre d'éléments souhaité
+                itemCount: 3, // Nombre d'éléments souhaité
               ),
             ),
           if (widget.type == QuizBlockType.regular)

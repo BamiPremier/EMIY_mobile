@@ -6,10 +6,11 @@ import 'package:umai/animes/screens/anime_details.dart';
 import 'package:umai/animes/services/anime_cubit_manager.dart';
 import 'package:umai/common/bloc/anime_manip_cubit.dart';
 import 'package:umai/common/services/cache_manager.dart';
+import 'package:umai/quiz/bloc/quiz_manage_cubit.dart';
 import 'package:umai/quiz/bloc/quiz_participation_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/screens/quiz_details.dart';
-import 'package:umai/quiz/services/quiz_participation_cubit_manager.dart';
+import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/themes.dart';
 
@@ -20,7 +21,7 @@ class HeadQuiz extends StatefulWidget {
     required Quiz quiz,
   }) {
     return BlocProvider.value(
-      value: context.read<QuizParticipationCubitManager>().get(quiz),
+      value: context.read<QuizManageCubitManager>().get(quiz),
       child: HeadQuiz._(),
     );
   }
@@ -32,8 +33,8 @@ class HeadQuiz extends StatefulWidget {
 
 class _HeadQuizState extends State<HeadQuiz>
     with SingleTickerProviderStateMixin {
- late final quizParticipationCubit = context.read<QuizParticipationCubit>();
-  late final Quiz quiz = quizParticipationCubit.quiz;
+  late final quizManageCubit = context.read<QuizManageCubit>();
+  late final Quiz quiz = quizManageCubit.quiz;
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(

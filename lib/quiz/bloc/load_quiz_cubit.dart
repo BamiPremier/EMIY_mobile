@@ -4,13 +4,13 @@ import 'package:umai/animes/models/anime.dart';
 import 'package:umai/animes/services/anime_cubit_manager.dart';
 import 'package:umai/animes/services/anime_service.dart';
 import 'package:umai/quiz/models/quiz.dart';
-import 'package:umai/quiz/services/quiz_participation_cubit_manager.dart';
+import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/quiz/services/quiz_service.dart';
 import 'package:umai/common/services/person_cubit_manager.dart';
 
 class LoadQuizCubit extends AutoListCubit<Quiz> {
   final QuizService quizService;
-  final QuizParticipationCubitManager cubitManager;
+  final QuizManageCubitManager cubitManager;
   final String selectedFilter;
   LoadQuizCubit(this.quizService, this.cubitManager, this.selectedFilter,
       [int? size])

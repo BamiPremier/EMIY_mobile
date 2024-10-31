@@ -10,7 +10,7 @@ import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/quiz/bloc/quiz_cubit.dart';
 import 'package:umai/quiz/screens/new/editing_quiz.dart';
 import 'package:umai/quiz/screens/new/search_anime_delegate.dart';
-import 'package:umai/quiz/services/quiz_participation_cubit_manager.dart';
+import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/social/bloc/new_post_cubit.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/dialogs.dart';

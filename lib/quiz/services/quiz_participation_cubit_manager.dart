@@ -1,10 +1,12 @@
 import 'package:potatoes/common/bloc/cubit_manager.dart';
+import 'package:umai/quiz/bloc/quiz_question_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/bloc/quiz_participation_cubit.dart';
+import 'package:umai/quiz/models/quiz_response.dart';
 import 'package:umai/quiz/services/quiz_service.dart';
 
 class QuizParticipationCubitManager
-    extends CubitManager<QuizParticipationCubit, Quiz, String> {
+    extends CubitManager<QuizParticipationCubit, QuizQuestionResponse, String> {
   final QuizService quizService;
 
   QuizParticipationCubitManager(
@@ -12,18 +14,19 @@ class QuizParticipationCubitManager
   );
 
   @override
-  String buildId(Quiz object) {
+  String buildId(QuizQuestionResponse object) {
     return object.id;
   }
 
   @override
-  QuizParticipationCubit create(Quiz object) {
+  QuizParticipationCubit create(QuizQuestionResponse object) {
     print("==========${object.id}=====add quiz cubit");
     return QuizParticipationCubit(quizService, object);
   }
 
-  @override
-  void updateCubit(QuizParticipationCubit cubit, Quiz object) {
+
+ @override
+  void updateCubit(QuizParticipationCubit cubit, QuizQuestionResponse object) {
     cubit.update(object);
   }
 }
