@@ -134,6 +134,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                                     .tertiaryContainer,
                                 borderRadius: BorderRadius.circular(30),
                               )),
+                          
                           errorBuilder: (context, retry) => Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,

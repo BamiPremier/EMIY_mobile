@@ -6,6 +6,7 @@ abstract class Assets {
 
   static const String _imagesDir = 'assets/images/';
   static const String defaultAvatar = '${_imagesDir}default_avatar.svg';
+  static const String iconStar = '${_imagesDir}Icon_star.svg';
 
   static const String _logoDir = 'assets/logo/';
   static const String logo = '${_logoDir}logo.png';
