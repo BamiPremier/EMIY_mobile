@@ -5,6 +5,8 @@ part 'anime.g.dart';
 
 @freezed
 class Anime with _$Anime {
+  const Anime._();
+
   const factory Anime({
     required int id,
     required AnimeTitle title,
@@ -20,6 +22,7 @@ class Anime with _$Anime {
     AnimeDate? endDate,
     int? episodes,
     String? format,
+    String? status,
     List<String>? genres,
     @Default(false) bool isAdult,
     AnimeEpisode? nextAiringEpisode,
@@ -32,6 +35,17 @@ class Anime with _$Anime {
   }) = _Anime;
 
   factory Anime.fromJson(Map<String, dynamic> json) => _$AnimeFromJson(json);
+
+  AnimeStatus? get animeStatus {
+    switch (status) {
+      case 'NOT_YET_RELEASED': return AnimeStatus.notYetReleased;
+      case 'RELEASING': return AnimeStatus.releasing;
+      case 'FINISHED': return AnimeStatus.finished;
+      case 'CANCELLED': return AnimeStatus.cancelled;
+      case 'HIATUS': return AnimeStatus.hiatus;
+      default: return null;
+    }
+  }
 }
 
 @freezed
@@ -82,4 +96,34 @@ class AnimeEpisode with _$AnimeEpisode {
 
   factory AnimeEpisode.fromJson(Map<String, dynamic> json) =>
       _$AnimeEpisodeFromJson(json);
+}
+
+enum AnimeStatus {
+  notYetReleased,
+  releasing,
+  finished,
+  cancelled,
+  hiatus
+}
+
+extension AnimeStatusExtension on AnimeStatus {
+  String get codeValue {
+    switch (this) {
+      case AnimeStatus.notYetReleased: return 'NOT_YET_RELEASED';
+      case AnimeStatus.releasing: return 'RELEASING';
+      case AnimeStatus.finished: return 'FINISHED';
+      case AnimeStatus.cancelled: return 'CANCELLED';
+      case AnimeStatus.hiatus: return 'HIATUS';
+    }
+  }
+
+  String get displayValue {
+    switch (this) {
+      case AnimeStatus.notYetReleased: return 'À venir';
+      case AnimeStatus.releasing: return 'En cours';
+      case AnimeStatus.finished: return 'Terminé';
+      case AnimeStatus.cancelled: return 'Annulé';
+      case AnimeStatus.hiatus: return 'Suspendu';
+    }
+  }
 }

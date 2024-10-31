@@ -1,3 +1,5 @@
+ 
+
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/account/screens/person_account.dart';
@@ -11,11 +13,10 @@ import 'package:umai/common/widgets/profile_picture.dart';
 class UserItem extends StatelessWidget {
   final bool canNavigate;
 
-  static Widget get({
-    required BuildContext context,
-    required User user,
-    bool canNavigate = true
-  }) {
+  static Widget get(
+      {required BuildContext context,
+      required User user,
+      bool canNavigate = true}) {
     return BlocProvider.value(
       value: context.read<PersonCubitManager>().get(user),
       child: UserItem._(canNavigate: canNavigate),
@@ -52,10 +53,10 @@ class UserItem extends StatelessWidget {
               ),
               trailing: const BtnActionItemUser()),
           onTap: () => canNavigate && (personCubit.user.id == userCubit.user.id)
-            ? Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => PersonAccountScreen.get(
-                  context: context, user: personCubit.user)))
-            : null,
+              ? Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => PersonAccountScreen.get(
+                      context: context, user: personCubit.user)))
+              : null,
         );
       },
     );

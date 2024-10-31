@@ -60,6 +60,7 @@ class _NewPostScreenState extends State<NewPostScreen> with CompletableMixin {
       data: AppTheme.fullBlackTheme(context),
       child: Scaffold(
         body: CameraAwesomeBuilder.custom(
+          mirrorFrontCamera: true,
           progressIndicator: const _LoadingCamera(),
           previewPadding: EdgeInsets.zero,
           builder: (cameraState, previewSize) {

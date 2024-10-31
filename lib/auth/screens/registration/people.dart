@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
-import 'package:umai/auth/bloc/people_follows_cubit.dart'; 
+import 'package:umai/auth/bloc/people_follows_cubit.dart';
 import 'package:umai/common/models/user.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/common/widgets/item_user.dart';
@@ -17,7 +17,6 @@ class PeopleToFollowScreen extends StatefulWidget {
 class _PeopleToFollowScreenState extends State<PeopleToFollowScreen> {
   late final peopleFollowsCubit =
       PeopleFollowsCubit(context.read(), context.read());
- 
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +37,7 @@ class _PeopleToFollowScreenState extends State<PeopleToFollowScreen> {
                       bottom: MediaQuery.of(context).viewInsets.bottom),
                   cubit: peopleFollowsCubit,
                   itemBuilder: (context, user) => UserItem.get(
-                    context: context,
-                    user: user,
-                    canNavigate: false
-                  ),
+                      context: context, user: user, canNavigate: false),
                   errorBuilder: (context, retry) => Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
