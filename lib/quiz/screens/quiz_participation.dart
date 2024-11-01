@@ -143,9 +143,7 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              (stateParticipation as QuizParticipationIdleState)
-                  .currentQuestion
-                  .label,
+              (stateParticipation).currentQuestion.label,
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                     color: AppTheme.disabledText,
                   ),
@@ -194,7 +192,7 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen> {
           itemCount: currentQuestionState.currentQuestion.responses.length,
           separatorBuilder: (_, __) => const SizedBox(height: 12.0),
           itemBuilder: (context, index) {
-            final backgroundColor, foregroundColor;
+            final Color backgroundColor, foregroundColor;
             final currentResponse =
                 currentQuestionState.currentQuestion.responses[index];
             if (stateParticipation is QuizParticipationSubmittedState) {
@@ -214,33 +212,28 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen> {
                   ? Theme.of(context).colorScheme.onPrimary
                   : Theme.of(context).colorScheme.onSurfaceVariant;
             } else {
-              // État par défaut
               backgroundColor = Theme.of(context).colorScheme.surfaceBright;
               foregroundColor = Theme.of(context).colorScheme.onSurfaceVariant;
             }
 
             return GestureDetector(
-              onTap: () => context
-                  .read<QuizParticipationCubit>()
-                  .selectAnswer(currentResponse),
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16),
-                decoration: BoxDecoration(
-                  color: backgroundColor,
-                  borderRadius: BorderRadius.circular(24.0),
-                ),
-                child: Text(
-                  currentResponse.label,
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: foregroundColor,
-                      ),
-                ),
-              ) /*  isSelected
-              ? selectedOption(currentResponse.label)
-              : unSelectedOption(currentResponse.label) */
-              ,
-            );
+                onTap: () => context
+                    .read<QuizParticipationCubit>()
+                    .selectAnswer(currentResponse),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 10.0, horizontal: 16),
+                  decoration: BoxDecoration(
+                    color: backgroundColor,
+                    borderRadius: BorderRadius.circular(24.0),
+                  ),
+                  child: Text(
+                    currentResponse.label,
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: foregroundColor,
+                        ),
+                  ),
+                ));
           },
         );
       },
