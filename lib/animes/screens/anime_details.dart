@@ -8,6 +8,7 @@ import 'package:umai/animes/widgets/btn_watch_view.dart';
 import 'package:umai/animes/widgets/primary_info.dart';
 import 'package:umai/animes/services/anime_cubit_manager.dart';
 import 'package:umai/common/bloc/anime_manip_cubit.dart';
+import 'package:umai/common/services/cache_manager.dart';
 import 'package:umai/common/widgets/action_widget.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/common/widgets/buttons.dart';
@@ -59,10 +60,12 @@ class _AnimeDetailScreenState extends State<AnimeDetailScreen>
                 background: Stack(
                   fit: StackFit.expand,
                   children: [
-                    CachedNetworkImage(
-                      imageUrl: anime.coverImage.extraLarge ?? '',
+                    Image(
                       fit: BoxFit.cover,
-                      errorWidget: (context, url, error) => Icon(
+                      image: context
+                          .read<AppCacheManager>()
+                          .getImage(anime.coverImage.extraLarge ?? ''),
+                      errorBuilder: (context, error, stackTrace) => Icon(
                         Icons.error,
                         color:
                             Theme.of(context).colorScheme.onTertiaryContainer,
@@ -95,7 +98,8 @@ class _AnimeDetailScreenState extends State<AnimeDetailScreen>
                   icon: const Icon(Icons.more_vert),
                 ),
               ],
-              systemOverlayStyle: Theme.of(context).appBarTheme
+              systemOverlayStyle: Theme.of(context)
+                  .appBarTheme
                   .systemOverlayStyle
                   ?.copyWith(statusBarIconBrightness: Brightness.light),
             ),
@@ -136,7 +140,7 @@ class _AnimeDetailScreenState extends State<AnimeDetailScreen>
                       alignment: Alignment.topCenter,
                       curve: Curves.easeInOut,
                       child: ReadMoreText(
-                        anime.description??'',
+                        anime.description ?? '',
                         trimMode: _trimMode,
                         trimLines: 3,
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(

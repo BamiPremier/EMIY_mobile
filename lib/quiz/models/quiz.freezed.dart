@@ -412,7 +412,7 @@ QuizParticipation _$QuizParticipationFromJson(Map<String, dynamic> json) {
 mixin _$QuizParticipation {
   String get id => throw _privateConstructorUsedError;
   int get score => throw _privateConstructorUsedError;
-  int get rank => throw _privateConstructorUsedError;
+  int? get rank => throw _privateConstructorUsedError;
   User get user => throw _privateConstructorUsedError;
 
   /// Serializes this QuizParticipation to a JSON map.
@@ -431,7 +431,7 @@ abstract class $QuizParticipationCopyWith<$Res> {
           QuizParticipation value, $Res Function(QuizParticipation) then) =
       _$QuizParticipationCopyWithImpl<$Res, QuizParticipation>;
   @useResult
-  $Res call({String id, int score, int rank, User user});
+  $Res call({String id, int score, int? rank, User user});
 
   $UserCopyWith<$Res> get user;
 }
@@ -453,7 +453,7 @@ class _$QuizParticipationCopyWithImpl<$Res, $Val extends QuizParticipation>
   $Res call({
     Object? id = null,
     Object? score = null,
-    Object? rank = null,
+    Object? rank = freezed,
     Object? user = null,
   }) {
     return _then(_value.copyWith(
@@ -465,10 +465,10 @@ class _$QuizParticipationCopyWithImpl<$Res, $Val extends QuizParticipation>
           ? _value.score
           : score // ignore: cast_nullable_to_non_nullable
               as int,
-      rank: null == rank
+      rank: freezed == rank
           ? _value.rank
           : rank // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       user: null == user
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
@@ -495,7 +495,7 @@ abstract class _$$QuizParticipationImplCopyWith<$Res>
       __$$QuizParticipationImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, int score, int rank, User user});
+  $Res call({String id, int score, int? rank, User user});
 
   @override
   $UserCopyWith<$Res> get user;
@@ -516,7 +516,7 @@ class __$$QuizParticipationImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? score = null,
-    Object? rank = null,
+    Object? rank = freezed,
     Object? user = null,
   }) {
     return _then(_$QuizParticipationImpl(
@@ -528,10 +528,10 @@ class __$$QuizParticipationImplCopyWithImpl<$Res>
           ? _value.score
           : score // ignore: cast_nullable_to_non_nullable
               as int,
-      rank: null == rank
+      rank: freezed == rank
           ? _value.rank
           : rank // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       user: null == user
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
@@ -544,10 +544,7 @@ class __$$QuizParticipationImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$QuizParticipationImpl implements _QuizParticipation {
   const _$QuizParticipationImpl(
-      {required this.id,
-      required this.score,
-      this.rank = 0,
-      required this.user});
+      {required this.id, required this.score, this.rank, required this.user});
 
   factory _$QuizParticipationImpl.fromJson(Map<String, dynamic> json) =>
       _$$QuizParticipationImplFromJson(json);
@@ -557,8 +554,7 @@ class _$QuizParticipationImpl implements _QuizParticipation {
   @override
   final int score;
   @override
-  @JsonKey()
-  final int rank;
+  final int? rank;
   @override
   final User user;
 
@@ -603,7 +599,7 @@ abstract class _QuizParticipation implements QuizParticipation {
   const factory _QuizParticipation(
       {required final String id,
       required final int score,
-      final int rank,
+      final int? rank,
       required final User user}) = _$QuizParticipationImpl;
 
   factory _QuizParticipation.fromJson(Map<String, dynamic> json) =
@@ -614,7 +610,7 @@ abstract class _QuizParticipation implements QuizParticipation {
   @override
   int get score;
   @override
-  int get rank;
+  int? get rank;
   @override
   User get user;
 

@@ -42,19 +42,19 @@ class UserItemQuiz extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (quizParticipation.rank == 1)
-            SvgPicture.asset(
+            Image.asset(
               Assets.iconMedalFirst,
               height: 20,
               width: 20,
             )
           else if (quizParticipation.rank == 1)
-            SvgPicture.asset(
+            Image.asset(
               Assets.iconMedalSecond,
               height: 20,
               width: 20,
             )
           else if (quizParticipation.rank == 3)
-            SvgPicture.asset(
+            Image.asset(
               Assets.iconMedalThird,
               height: 20,
               width: 20,

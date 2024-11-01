@@ -15,7 +15,6 @@ import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/themes.dart';
 
 class HeadQuiz extends StatefulWidget {
-   
   static Widget get({
     required BuildContext context,
     required Quiz quiz,
@@ -49,22 +48,20 @@ class _HeadQuizState extends State<HeadQuiz>
         background: Stack(
           fit: StackFit.expand,
           children: [
-            if (quiz.anime != null)
-              CachedNetworkImage(
-                imageUrl: quiz.anime!.coverImage.large ?? '',
-                fit: BoxFit.cover,
-                errorWidget: (context, url, error) => Icon(
-                  Icons.error,
-                  color: Theme.of(context).colorScheme.onTertiaryContainer,
-                  size: 32,
-                ),
-              ),
-            if (quiz.anime == null)
-              CachedNetworkImage(
-                color: Theme.of(context).colorScheme.onTertiaryContainer,
-                imageUrl: '',
-                errorWidget: (context, url, error) => Container(),
-              ),
+            CachedNetworkImage(
+              imageUrl: quiz.anime?.coverImage.large ?? '',
+              fit: BoxFit.cover,
+              color: quiz.anime == null
+                  ? Theme.of(context).colorScheme.onTertiaryContainer
+                  : null,
+              errorWidget: (context, url, error) => quiz.anime != null
+                  ? Icon(
+                      Icons.error,
+                      color: Theme.of(context).colorScheme.onTertiaryContainer,
+                      size: 32,
+                    )
+                  : Container(),
+            ),
             Align(
               alignment: Alignment.topCenter,
               child: Container(

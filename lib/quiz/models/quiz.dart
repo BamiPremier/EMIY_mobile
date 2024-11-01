@@ -28,7 +28,7 @@ class QuizParticipation with _$QuizParticipation {
   const factory QuizParticipation({
     required String id,
     required int score,
-    @Default(0) int rank,
+      int? rank,
     required User user,
   }) = _QuizParticipation;
 

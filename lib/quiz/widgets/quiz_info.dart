@@ -49,22 +49,18 @@ class _QuizInfoState extends State<QuizInfo>
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        ListTile(
-          title: Text(
-            quiz.title,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          contentPadding: const EdgeInsets.only(
-            top: 8.0,
-          ),
-          subtitle: Text(
-            quiz.description,
-            style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                  color: AppTheme.disabledText,
-                ),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
+        Text(
+          quiz.title,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        const SizedBox(height: 8),
+        Text(
+          quiz.description,
+          style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                color: AppTheme.disabledText,
+              ),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
         ),
         const SizedBox(height: 16),
         if (quiz.anime != null)
@@ -78,9 +74,13 @@ class _QuizInfoState extends State<QuizInfo>
                   Assets.iconStar,
                 ),
                 const SizedBox(width: 8),
-                Text(
-                  quiz.anime!.title.romaji,
-                  style: Theme.of(context).textTheme.bodyMedium,
+                Flexible(
+                  child: Text(
+                    quiz.anime!.title.romaji,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
                 ),
                 const SizedBox(width: 8),
                 if (quiz.anime!.isInWatchlist || quiz.anime!.isViewed)
@@ -99,9 +99,13 @@ class _QuizInfoState extends State<QuizInfo>
               width: 20,
             ),
             const SizedBox(width: 8),
-            Text(
-              quiz.user.username,
-              style: Theme.of(context).textTheme.bodyMedium,
+            Flexible(
+              child: Text(
+                quiz.user.username,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
             ),
           ],
         ),
@@ -109,15 +113,19 @@ class _QuizInfoState extends State<QuizInfo>
         if (quiz.participation != null)
           Row(
             children: [
-              SvgPicture.asset(
-                Assets.iconPen,
-                height: 20,
-                width: 20,
+              Icon(
+                Icons.edit_outlined,
+                size: 20,
+                color: Theme.of(context).colorScheme.surfaceTint,
               ),
               const SizedBox(width: 8),
-              Text(
-                "${quiz.participation!.score} points • ${quiz.participation!.rank}e",
-                style: Theme.of(context).textTheme.bodyMedium,
+              Flexible(
+                child: Text(
+                  "${quiz.participation!.score} points • ${quiz.participation!.rank}${quiz.participation!.rank == 1 ? 'er' : 'e'}",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
               ),
             ],
           ),

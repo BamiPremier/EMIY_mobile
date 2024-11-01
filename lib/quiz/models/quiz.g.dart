@@ -43,7 +43,7 @@ _$QuizParticipationImpl _$$QuizParticipationImplFromJson(
     _$QuizParticipationImpl(
       id: json['id'] as String,
       score: (json['score'] as num).toInt(),
-      rank: (json['rank'] as num?)?.toInt() ?? 0,
+      rank: (json['rank'] as num?)?.toInt(),
       user: User.fromJson(json['user'] as Map<String, dynamic>),
     );
 

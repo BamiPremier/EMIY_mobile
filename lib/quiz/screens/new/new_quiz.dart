@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -16,10 +17,8 @@ import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/dialogs.dart';
 
 class NewQuizScreen extends StatefulWidget {
-  final bool isEdit;
   const NewQuizScreen({
     super.key,
-    this.isEdit = false,
   });
 
   @override
@@ -33,15 +32,15 @@ class _NewQuizScreenState extends State<NewQuizScreen> with CompletableMixin {
   late final QuizCubit quizCubit = context.read<QuizCubit>();
   @override
   void initState() {
-    print(widget.isEdit);
     super.initState();
-    if (widget.isEdit) {
+    log(quizCubit.state.toString());
+    if (quizCubit.state is QuizUpdateState) {
       setState(() {
         _titreController.text =
-            (quizCubit.state as QuizCreatedState).quiz.title;
+            (quizCubit.state as QuizUpdateState).quiz!.title;
         _descriptionController.text =
-            (quizCubit.state as QuizCreatedState).quiz.description;
-        quizCubit.selectAnime((quizCubit.state as QuizCreatedState).anime!);
+            (quizCubit.state as QuizUpdateState).quiz!.description;
+    quizCubit.selectAnime((quizCubit.state as QuizUpdateState).anime!);
       });
     }
   }
@@ -60,7 +59,9 @@ class _NewQuizScreenState extends State<NewQuizScreen> with CompletableMixin {
       listener: onEventReceived,
       builder: (context, state) => Scaffold(
         appBar: AppBar(
-          title: Text(widget.isEdit ? "Modifier le quiz" : "Nouveau Quiz"),
+          title: Text(quizCubit.state is QuizUpdateState
+              ? "Modifier le quiz"
+              : "Nouveau Quiz"),
         ),
         body: Form(
           key: _formKey,
@@ -78,27 +79,26 @@ class _NewQuizScreenState extends State<NewQuizScreen> with CompletableMixin {
                       const Text('Titre'),
                       const SizedBox(height: 8.0),
                       TextFormField(
-                          style: Theme.of(context).textTheme.bodyMedium,
-                          controller: _titreController,
-                          decoration: InputDecoration(
-                            hintText: "Titre du quiz",
-                            hintStyle: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSurfaceVariant,
-                                ),
-                          ),
-                          keyboardType: TextInputType.text,
-                          textCapitalization: TextCapitalization.sentences,
-                          textInputAction: TextInputAction.done,
-                          maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                          onTapOutside: (event) =>
-                              FocusScope.of(context).unfocus(),
-                          onEditingComplete: FocusScope.of(context).unfocus,
-                          validator: (value) => Validators.empty(value)),
+                        style: Theme.of(context).textTheme.bodyMedium,
+                        controller: _titreController,
+                        decoration: InputDecoration(
+                          hintText: "Titre du quiz",
+                          hintStyle:
+                              Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurfaceVariant,
+                                  ),
+                        ),
+                        keyboardType: TextInputType.text,
+                        textCapitalization: TextCapitalization.sentences,
+                        textInputAction: TextInputAction.done,
+                        maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                        onTapOutside: (event) =>
+                            FocusScope.of(context).unfocus(),
+                        validator: (value) => Validators.empty(value),
+                        onEditingComplete: FocusScope.of(context).unfocus,
+                      ),
                       const SizedBox(height: 16),
                       const Text('Description'),
                       const SizedBox(height: 8.0),
@@ -124,6 +124,7 @@ class _NewQuizScreenState extends State<NewQuizScreen> with CompletableMixin {
                         maxLengthEnforcement:
                             MaxLengthEnforcement.truncateAfterCompositionEnds,
                         onEditingComplete: FocusScope.of(context).unfocus,
+                        validator: (value) => Validators.empty(value),
                       ),
                     ],
                   ),
@@ -148,33 +149,26 @@ class _NewQuizScreenState extends State<NewQuizScreen> with CompletableMixin {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        (state is QuizSelectAnimeState)
-                            ? Expanded(
-                                child: Text(
-                                  state.anime.title.romaji,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium!
-                                      .copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSurfaceVariant,
-                                      ),
+                        Expanded(
+                          child: Text(
+                            (state is QuizSelectAnimeState)
+                                ? (state).anime.title.romaji
+                                : (state is QuizUpdateState)
+                                    ? (state).anime?.title.romaji ??
+                                        'Sélectionne un anime'
+                                    : 'Sélectionne un anime',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSurfaceVariant,
                                 ),
-                              )
-                            : Text(
-                                'Sélectionne un anime',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium!
-                                    .copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSurfaceVariant,
-                                    ),
-                              ),
+                          ),
+                        ),
                         Icon(
                           Icons.arrow_forward_ios,
                           size: 20.0,
@@ -196,26 +190,22 @@ class _NewQuizScreenState extends State<NewQuizScreen> with CompletableMixin {
             children: [
               UmaiButton.primary(
                 onPressed: () {
-                  if (Validators.empty(_titreController.text) != null) {
-                    showErrorToast(
-                        content: "Veuillez ajouter un titre", context: context);
-                    return;
+                  if (_formKey.currentState!.validate()) {
+                    quizCubit.saveQuiz(
+                      title: _titreController.text,
+                      description: _descriptionController.text,
+                    );
+
+                    // widget.isEdit
+                    //     ? quizCubit.updateQuiz(
+                    //         title: _titreController.text,
+                    //         description: _descriptionController.text,
+                    //       )
+                    //     : quizCubit.createQuiz(
+                    //         title: _titreController.text,
+                    //         description: _descriptionController.text,
+                    //       );
                   }
-                  if (Validators.empty(_descriptionController.text) != null) {
-                    showErrorToast(
-                        content: "Veuillez ajouter une description",
-                        context: context);
-                    return;
-                  }
-                  widget.isEdit
-                      ? quizCubit.updateQuiz(
-                          title: _titreController.text,
-                          description: _descriptionController.text,
-                        )
-                      : quizCubit.createQuiz(
-                          title: _titreController.text,
-                          description: _descriptionController.text,
-                        );
                 },
                 text: "Suivant",
               ),

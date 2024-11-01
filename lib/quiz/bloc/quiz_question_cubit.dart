@@ -34,34 +34,7 @@ class QuizQuestionCubit extends Cubit<QuizQuestionState> {
       emit(stateBefore);
     }
   }
-
-  void createQuizQuestionResponse(
-      {required Quiz quiz,
-      required QuestionQuiz question,
-      required String response}) async {
-    final stateBefore = state;
-
-    try {
-      // emit(const QuizQuestionLoadingState());
-      // final data = {"response": response, "question_id": question.id};
-      // await quizService
-      //     .createQuizQuestionResponse(data: data, idQuiz: quiz.id)
-      //     .then((response) async {
-      //   print("==========${response}=====create quiz question response");
-      //   emit(QuizListQuestionState(
-      //       quiz: (state as QuizListQuestionState).quiz,
-      //       questions: (state as QuizListQuestionState).questions,
-      //       currentQuestion:
-      //           ((state as QuizListQuestionState).currentQuestion + 1) >=
-      //                   (state as QuizListQuestionState).questions.length
-      //               ? (state as QuizListQuestionState).questions.length - 1
-      //               : (state as QuizListQuestionState).currentQuestion + 1));
-      // });
-    } catch (error, trace) {
-      emit(QuizQuestionErrorState(error, trace));
-      emit(stateBefore);
-    }
-  }
+ 
 
   void selectResponse(QuizResponse response) {
     if (state is! QuizListQuestionState) return;
@@ -108,8 +81,7 @@ class QuizQuestionCubit extends Cubit<QuizQuestionState> {
     final currentState = state as QuizQuestionResponseValidateState;
     final nextQuestion = currentState.currentQuestion + 1;
     if (nextQuestion < currentState.questions.length) {
-      print('reserrr');
-
+      
       emit(QuizListQuestionState(
         quiz: currentState.quiz,
         questions: currentState.questions,

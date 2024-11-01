@@ -59,9 +59,10 @@ class QuizParticipationLoadingState extends CubitLoadingState
 
 class QuizParticipationFinishedState extends CubitSuccessState
     with QuizParticipationState {
-  const QuizParticipationFinishedState();
+  final int nombrePoints;
+  const QuizParticipationFinishedState(this.nombrePoints);
   @override
-  List<Object?> get props => [identityHashCode(this)];
+  List<Object?> get props => [identityHashCode(this), nombrePoints];
 }
 
 class QuizParticipationErrorState extends CubitErrorState

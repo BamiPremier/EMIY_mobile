@@ -18,8 +18,7 @@ class QuizManageCubitManager
 
   @override
   QuizManageCubit create(Quiz object) {
-    print("==========${object.id}=====add quiz cubit");
-    return QuizManageCubit(quizService, object);
+     return QuizManageCubit(quizService, object);
   }
 
   @override

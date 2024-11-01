@@ -85,7 +85,7 @@ class SearchAnimeDelegate extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    if (query.isEmpty) {
+    if (query.length < 3) {
       return Container();
     }
     _cubit.reset();
@@ -94,7 +94,7 @@ class SearchAnimeDelegate extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    if (query.isEmpty) {
+    if (query.length < 3) {
       return Container();
     }
     _cubit.reset();
@@ -128,28 +128,6 @@ class SearchAnimeDelegate extends SearchDelegate<String> {
                   image: context
                       .read<AppCacheManager>()
                       .getImage(anime.coverImage.extraLarge ?? ''),
-                  frameBuilder:
-                      (context, child, frame, wasSynchronouslyLoaded) {
-                    if (frame != null) return child;
-                    return Container(
-                      color: Theme.of(context).colorScheme.tertiaryContainer,
-                      child: wasSynchronouslyLoaded
-                          ? child
-                          : Center(
-                              child: SizedBox(
-                                height: 16.0,
-                                width: 16.0,
-                                child: CircularProgressIndicator(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onTertiaryContainer,
-                                  strokeWidth: 2.0,
-                                ),
-                              ),
-                            ),
-                    );
-                  },
-                  errorBuilder: (_, __, ___) => const Icon(Icons.error),
                 ),
               ),
               const SizedBox(width: 16),

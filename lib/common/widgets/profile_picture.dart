@@ -27,7 +27,7 @@ class ProfilePicture extends StatelessWidget {
 
     if (image == null) return defaultImage;
     return CachedNetworkImage(
-      imageUrl: image!,
+      imageUrl:  image!,
       height: height,
       width: width,
       fit: BoxFit.cover,

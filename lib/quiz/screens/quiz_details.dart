@@ -172,7 +172,7 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
                     Navigator.of(context).pop();
                     quizQuestionCubit.getQuizQuestions(quiz: widget.quiz);
                   },
-                  text: "Continuer",
+                  text: "Commencer",
                 ),
               ],
             ),
@@ -180,13 +180,12 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
 
   void onEventReceived(BuildContext context, QuizQuestionState state) async {
     await waitForDialog();
-    print(state);
+   
 
     if (state is QuizQuestionLoadingState) {
       loadingDialogCompleter = showLoadingBarrier(context: context);
     } else if (state is QuizListQuestionState) {
-      print(state.questions);
-      print("====-=-=0-=0=-");
+    
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => QuizParticipationScreen.get(
               context: context,

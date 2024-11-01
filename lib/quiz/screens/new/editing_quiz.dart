@@ -106,18 +106,12 @@ class _EditingQuizScreenState extends State<EditingQuizScreen>
                                   IconButton(
                                     icon: const Icon(Icons.edit_outlined),
                                     onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const NewQuizScreen(
-                                                    isEdit: true)),
-                                      );
+                                      quizCubit.toUpdate();
                                     },
                                   ),
                                 ]),
                                 Text(
-                                  (state as QuizCreatedState).quiz.description,
+                                  (state).quiz.description,
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyMedium!
@@ -167,13 +161,18 @@ class _EditingQuizScreenState extends State<EditingQuizScreen>
   void onEventReceived(BuildContext context, QuizState state) async {
     await waitForDialog();
 
-    if (state is QuizLoadingState) {
+    if (state is QuizLoadingPublishState) {
       loadingDialogCompleter = showLoadingBarrier(context: context);
     } else if (state is QuizPublishedState) {
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => const HomeScreen()),
         (route) => false,
+      );
+    } else if (state is QuizUpdateState) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const NewQuizScreen()),
       );
     } else if (state is QuizErrorState) {
       showErrorToast(content: state.error, context: context);

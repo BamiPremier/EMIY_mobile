@@ -6,14 +6,14 @@ import 'package:umai/common/screens/home.dart';
 import 'package:umai/utils/themes.dart';
 
 class QuizFinishedScreen extends StatefulWidget {
-  const QuizFinishedScreen({super.key});
+  final int nombrePoints;
+  const QuizFinishedScreen({super.key, required this.nombrePoints});
 
   @override
   State<QuizFinishedScreen> createState() => _QuizFinishedScreenState();
 }
 
 class _QuizFinishedScreenState extends State<QuizFinishedScreen> {
-  
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -32,12 +32,17 @@ class _QuizFinishedScreenState extends State<QuizFinishedScreen> {
                         style: Theme.of(context).textTheme.displaySmall),
                   ),
                 ),
+                Text(
+                  'Vous avez obtenu ${widget.nombrePoints} points!',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                const SizedBox(height: 32),
                 UmaiButton.white(
                   onPressed: () {
                     Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (_) => const HomeScreen()),
-                      (route) => false
-                    );
+                        MaterialPageRoute(builder: (_) => const HomeScreen()),
+                        (route) => false);
                   },
                   text: "Merci",
                 ),

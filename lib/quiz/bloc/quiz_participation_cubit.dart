@@ -18,6 +18,7 @@ class QuizParticipationCubit extends Cubit<QuizParticipationState> {
   final QuizService quizService;
   final TimerCubit timerCubit;
   late final StreamSubscription<ATimerState> timerSubscription;
+  late int nombrePoints = 0;
 
   QuizParticipationCubit(
     this.quizService,
@@ -55,7 +56,7 @@ class QuizParticipationCubit extends Cubit<QuizParticipationState> {
           stateBefore.questions.indexOf(stateBefore.currentQuestion);
 
       if (currentIndex == stateBefore.questions.length - 1) {
-        emit(const QuizParticipationFinishedState());
+        emit(QuizParticipationFinishedState(nombrePoints));
       } else {
         emit(QuizParticipationIdleState.copyWith(
           questions: stateBefore.questions,
@@ -63,14 +64,17 @@ class QuizParticipationCubit extends Cubit<QuizParticipationState> {
         ));
         timerCubit.reset();
       }
-      final currentIndex0 = stateBefore.questions
-          .indexOf((state as QuizParticipationIdleState).currentQuestion);
     }
   }
 
   void submit() {
     if (state is QuizParticipationIdleState) {
-      emit((state as QuizParticipationIdleState).toSubmited());
+      final stateBefore = state as QuizParticipationIdleState;
+      if (stateBefore.userResponse?.isCorrect ?? false) {
+        nombrePoints = nombrePoints + 1;
+      }
+      emit(stateBefore.toSubmited());
+      
     }
   }
 }
