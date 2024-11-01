@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/quiz/bloc/quiz_cubit.dart';
@@ -16,7 +17,7 @@ class ListQuizQuestionsScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 150),
+                    const SizedBox(height: 150),
                     Center(
                         child: Text(
                       'Vos questions apparaissent ici',
@@ -29,6 +30,7 @@ class ListQuizQuestionsScreen extends StatelessWidget {
             : ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: (state).questions.length,
+                shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
@@ -38,14 +40,27 @@ class ListQuizQuestionsScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Row(
                         children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              color: AppTheme.surfacegrey,
-                              borderRadius: BorderRadius.circular(8.0),
+                          if ((state).questions[index].image != null)
+                            Container(
+                              width: 48,
+                              height: 60,
+                              clipBehavior: Clip.hardEdge,
+                              decoration: BoxDecoration(
+                                color: AppTheme.surfacegrey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: CachedNetworkImage(
+                                imageUrl: (state).questions[index].image ?? '',
+                                fit: BoxFit.cover,
+                                errorWidget: (context, url, error) => Icon(
+                                  Icons.error,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onTertiaryContainer,
+                                  size: 32,
+                                ),
+                              ),
                             ),
-                            width: 48,
-                            height: 60,
-                          ),
                           const SizedBox(width: 16),
                           Expanded(
                             child: Column(

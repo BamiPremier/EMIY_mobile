@@ -18,6 +18,7 @@ _$QuizQuestionResponseImpl _$$QuizQuestionResponseImplFromJson(
       responses: (json['responses'] as List<dynamic>)
           .map((e) => QuizResponse.fromJson(e as Map<String, dynamic>))
           .toList(),
+      version: (json['__v'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$$QuizQuestionResponseImplToJson(
@@ -30,16 +31,19 @@ Map<String, dynamic> _$$QuizQuestionResponseImplToJson(
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
       'responses': instance.responses,
+      '__v': instance.version,
     };
 
 _$QuizResponseImpl _$$QuizResponseImplFromJson(Map<String, dynamic> json) =>
     _$QuizResponseImpl(
       label: json['label'] as String,
       isCorrect: json['isCorrect'] as bool,
+      id: json['_id'] as String?,
     );
 
 Map<String, dynamic> _$$QuizResponseImplToJson(_$QuizResponseImpl instance) =>
     <String, dynamic>{
       'label': instance.label,
       'isCorrect': instance.isCorrect,
+      '_id': instance.id,
     };

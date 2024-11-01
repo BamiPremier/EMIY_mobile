@@ -99,11 +99,8 @@ class _ItemQuizState extends State<ItemQuiz>
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 9),
-
-                  // Text(
-                  //     "${quiz.questions.length} questions • par ${quiz.user.username}",
-                  //     style: Theme.of(context).textTheme.labelSmall),
-                  Text("10 questions • par ${quiz.user.username}",
+                  Text(
+                      "${quiz.questionCount} questions • par ${quiz.user.username}",
                       style: Theme.of(context).textTheme.labelSmall),
                 ],
               ),

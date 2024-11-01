@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/models/anime.dart';
@@ -11,67 +13,64 @@ import 'package:path/path.dart';
 import 'package:potatoes/potatoes.dart';
 part 'quiz_participation_state.dart';
 
-class QuizParticipationCubit
-    extends ObjectCubit<QuizQuestionResponse, QuizParticipationState> {
+class QuizParticipationCubit extends Cubit<QuizParticipationState> {
+  static const timerDuration = Duration(seconds: 30);
   final QuizService quizService;
   final TimerCubit timerCubit;
+  late final StreamSubscription<ATimerState> timerSubscription;
 
   QuizParticipationCubit(
     this.quizService,
-    QuizQuestionResponse quizQuestionResponse,
-  )   : timerCubit = TimerCubit.duration(const Duration(seconds: 30)),
-        super(InitializingQuizParticipationState(
-          quizQuestionResponse: quizQuestionResponse,
-          userResponse: null,
-        ));
-
-  void resetTimer() {
-    timerCubit.reset();
+    List<QuizQuestionResponse> questions,
+  )   : timerCubit = TimerCubit.duration(timerDuration),
+        super(QuizParticipationIdleState.initQuestions(
+          questions: questions,
+        )) {
+    timerSubscription = timerCubit.stream.listen((event) {
+      if (event is TimerFinished) {
+        submit();
+      }
+    });
   }
 
-  @override
-  Future<void> close() {
+  void dispose() {
+    timerSubscription.cancel();
     timerCubit.close();
-    return super.close();
   }
 
-  @override
-  QuizQuestionResponse? getObject(QuizParticipationState state) {
-    if (state is InitializingQuizParticipationState) {
-      return state.quizQuestionResponse;
+  void selectAnswer(QuizResponse questionResponse) {
+    if (state is QuizParticipationIdleState) {
+      emit(QuizParticipationIdleState.copyWith(
+        userResponse: questionResponse,
+        questions: (state as QuizParticipationIdleState).questions,
+        currentQuestion: (state as QuizParticipationIdleState).currentQuestion,
+      ));
     }
-    return null;
   }
 
-  QuizQuestionResponse get quizQuestionResponse {
-    final quizQuestionResponse = getObject(state) ?? object;
+  void nextQuestion() {
+    if (state is QuizParticipationIdleState) {
+      final stateBefore = state as QuizParticipationSubmittedState;
+      final currentIndex =
+          stateBefore.questions.indexOf(stateBefore.currentQuestion);
 
-    if (quizQuestionResponse != null) return quizQuestionResponse;
-    throw UnsupportedError(
-        'cannot retrieve quiz: Current state is ${state.runtimeType}');
+      if (currentIndex == stateBefore.questions.length - 1) {
+        emit(const QuizParticipationFinishedState());
+      } else {
+        emit(QuizParticipationIdleState.copyWith(
+          questions: stateBefore.questions,
+          currentQuestion: stateBefore.questions[currentIndex + 1],
+        ));
+        timerCubit.reset();
+      }
+      final currentIndex0 = stateBefore.questions
+          .indexOf((state as QuizParticipationIdleState).currentQuestion);
+    }
   }
 
-  @override
-  void update(QuizQuestionResponse object) {
-    timerCubit.reset();
-    emit(InitializingQuizParticipationState(
-      quizQuestionResponse: object,
-      userResponse: (state as InitializingQuizParticipationState).userResponse,
-    ));
-  }
-
-  void selectResponse(QuizResponse response) {
-    final currentState = state as InitializingQuizParticipationState;
-    final currentResponse = currentState.userResponse;
-
-    final newResponse =
-        currentResponse != null && currentResponse.label == response.label
-            ? null
-            : response;
-
-    emit(InitializingQuizParticipationState(
-      quizQuestionResponse: quizQuestionResponse,
-      userResponse: newResponse,
-    ));
+  void submit() {
+    if (state is QuizParticipationIdleState) {
+      emit((state as QuizParticipationIdleState).toSubmited());
+    }
   }
 }

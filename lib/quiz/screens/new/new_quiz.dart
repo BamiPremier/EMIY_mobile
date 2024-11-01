@@ -62,53 +62,26 @@ class _NewQuizScreenState extends State<NewQuizScreen> with CompletableMixin {
         appBar: AppBar(
           title: Text(widget.isEdit ? "Modifier le quiz" : "Nouveau Quiz"),
         ),
-        body: SafeArea(
-          minimum: const EdgeInsets.only(bottom: 48),
-          child: Form(
-            key: _formKey,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8, bottom: 16),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Titre'),
-                        const SizedBox(height: 8.0),
-                        TextFormField(
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            controller: _titreController,
-                            decoration: InputDecoration(
-                              hintText: "Titre du quiz",
-                              hintStyle: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium!
-                                  .copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurfaceVariant,
-                                  ),
-                            ),
-                            keyboardType: TextInputType.text,
-                            textCapitalization: TextCapitalization.sentences,
-                            textInputAction: TextInputAction.done,
-                            maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                            onTapOutside: (event) =>
-                                FocusScope.of(context).unfocus(),
-                            onEditingComplete: FocusScope.of(context).unfocus,
-                            validator: (value) => Validators.empty(value)),
-                        const SizedBox(height: 16),
-                        const Text('Description'),
-                        const SizedBox(height: 8.0),
-                        TextFormField(
+        body: Form(
+          key: _formKey,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 8, bottom: 16),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Titre'),
+                      const SizedBox(height: 8.0),
+                      TextFormField(
                           style: Theme.of(context).textTheme.bodyMedium,
-                          controller: _descriptionController,
+                          controller: _titreController,
                           decoration: InputDecoration(
-                            hintText: "Quel est le thème du quiz?",
+                            hintText: "Titre du quiz",
                             hintStyle: Theme.of(context)
                                 .textTheme
                                 .bodyMedium!
@@ -120,57 +93,67 @@ class _NewQuizScreenState extends State<NewQuizScreen> with CompletableMixin {
                           ),
                           keyboardType: TextInputType.text,
                           textCapitalization: TextCapitalization.sentences,
-                          textInputAction: TextInputAction.next,
-                          minLines: 4,
-                          maxLines: 4,
+                          textInputAction: TextInputAction.done,
+                          maxLengthEnforcement: MaxLengthEnforcement.enforced,
                           onTapOutside: (event) =>
                               FocusScope.of(context).unfocus(),
-                          maxLengthEnforcement:
-                              MaxLengthEnforcement.truncateAfterCompositionEnds,
                           onEditingComplete: FocusScope.of(context).unfocus,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Text('Anime'),
-                  const SizedBox(height: 8.0),
-                  GestureDetector(
-                    onTap: () {
-                      showSearch(
-                        context: context,
-                        delegate: SearchAnimeDelegate(context),
-                      );
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 16.0, horizontal: 12.0),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .surfaceContainerHighest,
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          (state is QuizSelectAnimeState)
-                              ? Expanded(
-                                  child: Text(
-                                    state.anime.title.romaji,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium!
-                                        .copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSurfaceVariant,
-                                        ),
+                          validator: (value) => Validators.empty(value)),
+                      const SizedBox(height: 16),
+                      const Text('Description'),
+                      const SizedBox(height: 8.0),
+                      TextFormField(
+                        style: Theme.of(context).textTheme.bodyMedium,
+                        controller: _descriptionController,
+                        decoration: InputDecoration(
+                          hintText: "Quel est le thème du quiz?",
+                          hintStyle:
+                              Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurfaceVariant,
                                   ),
-                                )
-                              : Text(
-                                  'Sélectionne un anime',
+                        ),
+                        keyboardType: TextInputType.text,
+                        textCapitalization: TextCapitalization.sentences,
+                        textInputAction: TextInputAction.next,
+                        minLines: 4,
+                        maxLines: 4,
+                        onTapOutside: (event) =>
+                            FocusScope.of(context).unfocus(),
+                        maxLengthEnforcement:
+                            MaxLengthEnforcement.truncateAfterCompositionEnds,
+                        onEditingComplete: FocusScope.of(context).unfocus,
+                      ),
+                    ],
+                  ),
+                ),
+                const Text('Anime'),
+                const SizedBox(height: 8.0),
+                GestureDetector(
+                  onTap: () {
+                    showSearch(
+                      context: context,
+                      delegate: SearchAnimeDelegate(context),
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 16.0, horizontal: 12.0),
+                    decoration: BoxDecoration(
+                      color:
+                          Theme.of(context).colorScheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        (state is QuizSelectAnimeState)
+                            ? Expanded(
+                                child: Text(
+                                  state.anime.title.romaji,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyMedium!
@@ -180,19 +163,29 @@ class _NewQuizScreenState extends State<NewQuizScreen> with CompletableMixin {
                                             .onSurfaceVariant,
                                       ),
                                 ),
-                          Icon(
-                            Icons.arrow_forward_ios,
-                            size: 20.0,
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
-                          ),
-                        ],
-                      ),
+                              )
+                            : Text(
+                                'Sélectionne un anime',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurfaceVariant,
+                                    ),
+                              ),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          size: 20.0,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 16.0),
-                ],
-              ),
+                ),
+                const SizedBox(height: 16.0),
+              ],
             ),
           ),
         ),

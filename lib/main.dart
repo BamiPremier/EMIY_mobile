@@ -22,11 +22,9 @@ import 'package:umai/common/services/preferences_service.dart';
 import 'package:umai/common/services/user_service.dart';
 import 'package:umai/firebase_options.dart';
 import 'package:umai/quiz/bloc/quiz_cubit.dart';
-import 'package:umai/quiz/bloc/quiz_participation_cubit.dart';
 import 'package:umai/quiz/bloc/quiz_question_cubit.dart';
 import 'package:umai/quiz/bloc/timer_cubit.dart';
 import 'package:umai/quiz/services/quiz_cubit_manager.dart';
-import 'package:umai/quiz/services/quiz_participation_cubit_manager.dart';
 import 'package:umai/quiz/services/quiz_service.dart';
 import 'package:umai/social/bloc/new_post_cubit.dart';
 import 'package:umai/social/services/post_cubit_manager.dart';
@@ -99,10 +97,7 @@ class MyApp extends StatelessWidget {
         RepositoryProvider(
             create: (context) => AnimeCubitManager(context.read())),
         RepositoryProvider(create: (context) => QuizService(dio)),
-        RepositoryProvider(
-            create: (context) => QuizManageCubitManager(context.read())),
-        RepositoryProvider(
-            create: (context) => QuizParticipationCubitManager(context.read())),
+        RepositoryProvider(create: (context) => QuizManageCubitManager(context.read())),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -124,8 +119,9 @@ class MyApp extends StatelessWidget {
                 TimerCubit.duration(const Duration(seconds: 30)),
           ),
           BlocProvider(
-              create: (context) =>
-                  QuizQuestionCubit(context.read(), context.read())),
+              create: (context) => QuizQuestionCubit(
+                    context.read(),
+                  )),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

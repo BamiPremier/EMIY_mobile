@@ -37,12 +37,15 @@ class QuizService extends ApiService {
         mapper: Quiz.fromJson);
   }
 
-  Future<Quiz> addQuestion(
+  Future<QuizQuestionResponse> addQuestion(
       {required FormData data, required String idQuiz}) async {
     return compute(
         dio.post(_quizQuestion.replaceFirst(':id', idQuiz),
-            options: Options(headers: withAuth()), data: data),
-        mapper: Quiz.fromJson);
+            options: Options(headers: {
+              ...withAuth(),
+            }),
+            data: data),
+        mapper: QuizQuestionResponse.fromJson);
   }
 
   Future<PaginatedList<Quiz>> getQuizsFeed(

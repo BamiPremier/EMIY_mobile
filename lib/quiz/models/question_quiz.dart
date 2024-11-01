@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:potatoes/libs.dart';
 
 class QuestionQuiz extends Equatable {
@@ -15,7 +17,7 @@ class QuestionQuiz extends Equatable {
   Map<String, dynamic> toFormData() {
     return {
       'label': label,
-      'responses': responses.map((e) => e.toJson()).toList(),
+      'responses': jsonEncode(responses.map((e) => e.toJson()).toList()),
     };
   }
 

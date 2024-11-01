@@ -2,58 +2,69 @@ part of 'quiz_participation_cubit.dart';
 
 mixin QuizParticipationState on Equatable {}
 
-class InitializingQuizParticipationState extends CubitSuccessState
-    with QuizParticipationState {
-  final QuizQuestionResponse quizQuestionResponse;
-  final QuizResponse? userResponse;
-
-  final int currentQuestion;
-  const InitializingQuizParticipationState(
-      {required this.quizQuestionResponse,
-      required this.userResponse,
-      this.currentQuestion = 0});
-
-  @override
-  List<Object?> get props =>
-      [quizQuestionResponse, userResponse, currentQuestion];
-}
-
-class ResponseQuizParticipationState extends CubitSuccessState
-    with QuizParticipationState {
-  final QuizQuestionResponse quizQuestionResponse;
-  final QuizResponse? userResponse;
-
-  final int currentQuestion;
-  const ResponseQuizParticipationState(
-      {required this.quizQuestionResponse,
-      required this.userResponse,
-      this.currentQuestion = 0});
-
-  @override
-  List<Object?> get props =>
-      [quizQuestionResponse, userResponse, currentQuestion];
-}
-
 class QuizParticipationIdleState extends CubitSuccessState
     with QuizParticipationState {
-  const QuizParticipationIdleState();
+  final List<QuizQuestionResponse> questions;
+  final QuizQuestionResponse currentQuestion;
+  final QuizResponse? userResponse;
+
+  QuizParticipationIdleState._({
+    required this.questions,
+    this.userResponse,
+    required this.currentQuestion,
+  }) : assert(questions.isNotEmpty);
+
+  factory QuizParticipationIdleState.copyWith({
+    List<QuizQuestionResponse>? questions,
+    QuizResponse? userResponse,
+    QuizQuestionResponse? currentQuestion,
+  }) {
+    return QuizParticipationIdleState._(
+      questions: questions ?? [],
+      userResponse: userResponse,
+      currentQuestion: currentQuestion ?? questions!.first,
+    );
+  }
+
+  QuizParticipationIdleState.initQuestions({required this.questions})
+      : assert(questions.isNotEmpty),
+        currentQuestion = questions.first,
+        userResponse = null;
+
+  QuizParticipationSubmittedState toSubmited() {
+    return QuizParticipationSubmittedState(
+      questions: questions,
+      userResponse: userResponse,
+      currentQuestion: currentQuestion,
+    );
+  }
 
   @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [questions, currentQuestion, userResponse];
+}
+
+class QuizParticipationSubmittedState extends QuizParticipationIdleState {
+  QuizParticipationSubmittedState({
+    required super.questions,
+    required super.currentQuestion,
+    super.userResponse,
+  }) : super._();
 }
 
 class QuizParticipationLoadingState extends CubitLoadingState
     with QuizParticipationState {
-  const QuizParticipationLoadingState();
+  @override
+  List<Object?> get props => [];
 }
 
-class QuizParticipationPublishedState extends CubitInformationState
+class QuizParticipationFinishedState extends CubitSuccessState
     with QuizParticipationState {
-  const QuizParticipationPublishedState();
+  const QuizParticipationFinishedState();
+  @override
+  List<Object?> get props => [identityHashCode(this)];
 }
 
 class QuizParticipationErrorState extends CubitErrorState
     with QuizParticipationState {
-  QuizParticipationErrorState(super.error, [super.trace]);
+  QuizParticipationErrorState(super.error, super.trace);
 }

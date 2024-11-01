@@ -17,6 +17,7 @@ class QuizQuestionResponse with _$QuizQuestionResponse {
     @JsonKey(name: 'created_at') required int createdAt,
     @JsonKey(name: 'updated_at') required int updatedAt,
     required List<QuizResponse> responses,
+    @Default(0) @JsonKey(name: '__v') int version,
   }) = _QuizQuestionResponse;
 
   factory QuizQuestionResponse.fromJson(Map<String, dynamic> json) =>
@@ -31,6 +32,7 @@ class QuizResponse with _$QuizResponse {
   const factory QuizResponse({
     required String label,
     @JsonKey(name: 'isCorrect') required bool isCorrect,
+    @JsonKey(name: '_id') String? id,
   }) = _QuizResponse;
 
   factory QuizResponse.fromJson(Map<String, dynamic> json) =>

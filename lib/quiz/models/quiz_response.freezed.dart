@@ -31,6 +31,8 @@ mixin _$QuizQuestionResponse {
   @JsonKey(name: 'updated_at')
   int get updatedAt => throw _privateConstructorUsedError;
   List<QuizResponse> get responses => throw _privateConstructorUsedError;
+  @JsonKey(name: '__v')
+  int get version => throw _privateConstructorUsedError;
 
   /// Serializes this QuizQuestionResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -55,7 +57,8 @@ abstract class $QuizQuestionResponseCopyWith<$Res> {
       @JsonKey(name: 'quiz_id') String quizId,
       @JsonKey(name: 'created_at') int createdAt,
       @JsonKey(name: 'updated_at') int updatedAt,
-      List<QuizResponse> responses});
+      List<QuizResponse> responses,
+      @JsonKey(name: '__v') int version});
 }
 
 /// @nodoc
@@ -81,6 +84,7 @@ class _$QuizQuestionResponseCopyWithImpl<$Res,
     Object? createdAt = null,
     Object? updatedAt = null,
     Object? responses = null,
+    Object? version = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -111,6 +115,10 @@ class _$QuizQuestionResponseCopyWithImpl<$Res,
           ? _value.responses
           : responses // ignore: cast_nullable_to_non_nullable
               as List<QuizResponse>,
+      version: null == version
+          ? _value.version
+          : version // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -130,7 +138,8 @@ abstract class _$$QuizQuestionResponseImplCopyWith<$Res>
       @JsonKey(name: 'quiz_id') String quizId,
       @JsonKey(name: 'created_at') int createdAt,
       @JsonKey(name: 'updated_at') int updatedAt,
-      List<QuizResponse> responses});
+      List<QuizResponse> responses,
+      @JsonKey(name: '__v') int version});
 }
 
 /// @nodoc
@@ -153,6 +162,7 @@ class __$$QuizQuestionResponseImplCopyWithImpl<$Res>
     Object? createdAt = null,
     Object? updatedAt = null,
     Object? responses = null,
+    Object? version = null,
   }) {
     return _then(_$QuizQuestionResponseImpl(
       id: null == id
@@ -183,6 +193,10 @@ class __$$QuizQuestionResponseImplCopyWithImpl<$Res>
           ? _value._responses
           : responses // ignore: cast_nullable_to_non_nullable
               as List<QuizResponse>,
+      version: null == version
+          ? _value.version
+          : version // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -197,7 +211,8 @@ class _$QuizQuestionResponseImpl extends _QuizQuestionResponse {
       @JsonKey(name: 'quiz_id') required this.quizId,
       @JsonKey(name: 'created_at') required this.createdAt,
       @JsonKey(name: 'updated_at') required this.updatedAt,
-      required final List<QuizResponse> responses})
+      required final List<QuizResponse> responses,
+      @JsonKey(name: '__v') this.version = 0})
       : _responses = responses,
         super._();
 
@@ -229,8 +244,12 @@ class _$QuizQuestionResponseImpl extends _QuizQuestionResponse {
   }
 
   @override
+  @JsonKey(name: '__v')
+  final int version;
+
+  @override
   String toString() {
-    return 'QuizQuestionResponse(id: $id, label: $label, image: $image, quizId: $quizId, createdAt: $createdAt, updatedAt: $updatedAt, responses: $responses)';
+    return 'QuizQuestionResponse(id: $id, label: $label, image: $image, quizId: $quizId, createdAt: $createdAt, updatedAt: $updatedAt, responses: $responses, version: $version)';
   }
 
   @override
@@ -247,13 +266,22 @@ class _$QuizQuestionResponseImpl extends _QuizQuestionResponse {
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt) &&
             const DeepCollectionEquality()
-                .equals(other._responses, _responses));
+                .equals(other._responses, _responses) &&
+            (identical(other.version, version) || other.version == version));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, label, image, quizId,
-      createdAt, updatedAt, const DeepCollectionEquality().hash(_responses));
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      label,
+      image,
+      quizId,
+      createdAt,
+      updatedAt,
+      const DeepCollectionEquality().hash(_responses),
+      version);
 
   /// Create a copy of QuizQuestionResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -275,14 +303,14 @@ class _$QuizQuestionResponseImpl extends _QuizQuestionResponse {
 
 abstract class _QuizQuestionResponse extends QuizQuestionResponse {
   const factory _QuizQuestionResponse(
-          {@JsonKey(name: '_id') required final String id,
-          required final String label,
-          final String? image,
-          @JsonKey(name: 'quiz_id') required final String quizId,
-          @JsonKey(name: 'created_at') required final int createdAt,
-          @JsonKey(name: 'updated_at') required final int updatedAt,
-          required final List<QuizResponse> responses}) =
-      _$QuizQuestionResponseImpl;
+      {@JsonKey(name: '_id') required final String id,
+      required final String label,
+      final String? image,
+      @JsonKey(name: 'quiz_id') required final String quizId,
+      @JsonKey(name: 'created_at') required final int createdAt,
+      @JsonKey(name: 'updated_at') required final int updatedAt,
+      required final List<QuizResponse> responses,
+      @JsonKey(name: '__v') final int version}) = _$QuizQuestionResponseImpl;
   const _QuizQuestionResponse._() : super._();
 
   factory _QuizQuestionResponse.fromJson(Map<String, dynamic> json) =
@@ -306,6 +334,9 @@ abstract class _QuizQuestionResponse extends QuizQuestionResponse {
   int get updatedAt;
   @override
   List<QuizResponse> get responses;
+  @override
+  @JsonKey(name: '__v')
+  int get version;
 
   /// Create a copy of QuizQuestionResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -324,6 +355,8 @@ mixin _$QuizResponse {
   String get label => throw _privateConstructorUsedError;
   @JsonKey(name: 'isCorrect')
   bool get isCorrect => throw _privateConstructorUsedError;
+  @JsonKey(name: '_id')
+  String? get id => throw _privateConstructorUsedError;
 
   /// Serializes this QuizResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -341,7 +374,10 @@ abstract class $QuizResponseCopyWith<$Res> {
           QuizResponse value, $Res Function(QuizResponse) then) =
       _$QuizResponseCopyWithImpl<$Res, QuizResponse>;
   @useResult
-  $Res call({String label, @JsonKey(name: 'isCorrect') bool isCorrect});
+  $Res call(
+      {String label,
+      @JsonKey(name: 'isCorrect') bool isCorrect,
+      @JsonKey(name: '_id') String? id});
 }
 
 /// @nodoc
@@ -361,6 +397,7 @@ class _$QuizResponseCopyWithImpl<$Res, $Val extends QuizResponse>
   $Res call({
     Object? label = null,
     Object? isCorrect = null,
+    Object? id = freezed,
   }) {
     return _then(_value.copyWith(
       label: null == label
@@ -371,6 +408,10 @@ class _$QuizResponseCopyWithImpl<$Res, $Val extends QuizResponse>
           ? _value.isCorrect
           : isCorrect // ignore: cast_nullable_to_non_nullable
               as bool,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -383,7 +424,10 @@ abstract class _$$QuizResponseImplCopyWith<$Res>
       __$$QuizResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String label, @JsonKey(name: 'isCorrect') bool isCorrect});
+  $Res call(
+      {String label,
+      @JsonKey(name: 'isCorrect') bool isCorrect,
+      @JsonKey(name: '_id') String? id});
 }
 
 /// @nodoc
@@ -401,6 +445,7 @@ class __$$QuizResponseImplCopyWithImpl<$Res>
   $Res call({
     Object? label = null,
     Object? isCorrect = null,
+    Object? id = freezed,
   }) {
     return _then(_$QuizResponseImpl(
       label: null == label
@@ -411,6 +456,10 @@ class __$$QuizResponseImplCopyWithImpl<$Res>
           ? _value.isCorrect
           : isCorrect // ignore: cast_nullable_to_non_nullable
               as bool,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -420,7 +469,8 @@ class __$$QuizResponseImplCopyWithImpl<$Res>
 class _$QuizResponseImpl implements _QuizResponse {
   const _$QuizResponseImpl(
       {required this.label,
-      @JsonKey(name: 'isCorrect') required this.isCorrect});
+      @JsonKey(name: 'isCorrect') required this.isCorrect,
+      @JsonKey(name: '_id') this.id});
 
   factory _$QuizResponseImpl.fromJson(Map<String, dynamic> json) =>
       _$$QuizResponseImplFromJson(json);
@@ -430,10 +480,13 @@ class _$QuizResponseImpl implements _QuizResponse {
   @override
   @JsonKey(name: 'isCorrect')
   final bool isCorrect;
+  @override
+  @JsonKey(name: '_id')
+  final String? id;
 
   @override
   String toString() {
-    return 'QuizResponse(label: $label, isCorrect: $isCorrect)';
+    return 'QuizResponse(label: $label, isCorrect: $isCorrect, id: $id)';
   }
 
   @override
@@ -443,12 +496,13 @@ class _$QuizResponseImpl implements _QuizResponse {
             other is _$QuizResponseImpl &&
             (identical(other.label, label) || other.label == label) &&
             (identical(other.isCorrect, isCorrect) ||
-                other.isCorrect == isCorrect));
+                other.isCorrect == isCorrect) &&
+            (identical(other.id, id) || other.id == id));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, label, isCorrect);
+  int get hashCode => Object.hash(runtimeType, label, isCorrect, id);
 
   /// Create a copy of QuizResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -468,9 +522,9 @@ class _$QuizResponseImpl implements _QuizResponse {
 
 abstract class _QuizResponse implements QuizResponse {
   const factory _QuizResponse(
-          {required final String label,
-          @JsonKey(name: 'isCorrect') required final bool isCorrect}) =
-      _$QuizResponseImpl;
+      {required final String label,
+      @JsonKey(name: 'isCorrect') required final bool isCorrect,
+      @JsonKey(name: '_id') final String? id}) = _$QuizResponseImpl;
 
   factory _QuizResponse.fromJson(Map<String, dynamic> json) =
       _$QuizResponseImpl.fromJson;
@@ -480,6 +534,9 @@ abstract class _QuizResponse implements QuizResponse {
   @override
   @JsonKey(name: 'isCorrect')
   bool get isCorrect;
+  @override
+  @JsonKey(name: '_id')
+  String? get id;
 
   /// Create a copy of QuizResponse
   /// with the given fields replaced by the non-null parameter values.

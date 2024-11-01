@@ -178,18 +178,6 @@ class _QuizBlockState extends State<QuizBlock> {
                           height: 88,
                           color:
                               Theme.of(context).colorScheme.tertiaryContainer,
-                          child: Center(
-                            child: SizedBox(
-                              height: 16.0,
-                              width: 16.0,
-                              child: CircularProgressIndicator(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onTertiaryContainer,
-                                strokeWidth: 2.0,
-                              ),
-                            ),
-                          ),
                         ),
                       ),
                       const SizedBox(width: 12),
@@ -255,18 +243,6 @@ class _QuizBlockState extends State<QuizBlock> {
                             height: 88,
                             color:
                                 Theme.of(context).colorScheme.tertiaryContainer,
-                            child: Center(
-                              child: SizedBox(
-                                height: 16.0,
-                                width: 16.0,
-                                child: CircularProgressIndicator(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onTertiaryContainer,
-                                  strokeWidth: 2.0,
-                                ),
-                              ),
-                            ),
                           ),
                         ),
                         const SizedBox(width: 12),

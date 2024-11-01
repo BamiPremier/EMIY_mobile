@@ -30,6 +30,8 @@ mixin _$Quiz {
   int get createdAt => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
   QuizParticipation? get participation => throw _privateConstructorUsedError;
+  @JsonKey(name: 'question_count')
+  int get questionCount => throw _privateConstructorUsedError;
 
   /// Serializes this Quiz to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -54,7 +56,8 @@ abstract class $QuizCopyWith<$Res> {
       bool reported,
       @JsonKey(name: 'created_at') int createdAt,
       String status,
-      QuizParticipation? participation});
+      QuizParticipation? participation,
+      @JsonKey(name: 'question_count') int questionCount});
 
   $AnimeCopyWith<$Res>? get anime;
   $UserCopyWith<$Res> get user;
@@ -85,6 +88,7 @@ class _$QuizCopyWithImpl<$Res, $Val extends Quiz>
     Object? createdAt = null,
     Object? status = null,
     Object? participation = freezed,
+    Object? questionCount = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -123,6 +127,10 @@ class _$QuizCopyWithImpl<$Res, $Val extends Quiz>
           ? _value.participation
           : participation // ignore: cast_nullable_to_non_nullable
               as QuizParticipation?,
+      questionCount: null == questionCount
+          ? _value.questionCount
+          : questionCount // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 
@@ -181,7 +189,8 @@ abstract class _$$QuizImplCopyWith<$Res> implements $QuizCopyWith<$Res> {
       bool reported,
       @JsonKey(name: 'created_at') int createdAt,
       String status,
-      QuizParticipation? participation});
+      QuizParticipation? participation,
+      @JsonKey(name: 'question_count') int questionCount});
 
   @override
   $AnimeCopyWith<$Res>? get anime;
@@ -212,6 +221,7 @@ class __$$QuizImplCopyWithImpl<$Res>
     Object? createdAt = null,
     Object? status = null,
     Object? participation = freezed,
+    Object? questionCount = null,
   }) {
     return _then(_$QuizImpl(
       id: null == id
@@ -250,6 +260,10 @@ class __$$QuizImplCopyWithImpl<$Res>
           ? _value.participation
           : participation // ignore: cast_nullable_to_non_nullable
               as QuizParticipation?,
+      questionCount: null == questionCount
+          ? _value.questionCount
+          : questionCount // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -266,7 +280,8 @@ class _$QuizImpl implements _Quiz {
       required this.reported,
       @JsonKey(name: 'created_at') required this.createdAt,
       required this.status,
-      this.participation});
+      this.participation,
+      @JsonKey(name: 'question_count') required this.questionCount});
 
   factory _$QuizImpl.fromJson(Map<String, dynamic> json) =>
       _$$QuizImplFromJson(json);
@@ -290,10 +305,13 @@ class _$QuizImpl implements _Quiz {
   final String status;
   @override
   final QuizParticipation? participation;
+  @override
+  @JsonKey(name: 'question_count')
+  final int questionCount;
 
   @override
   String toString() {
-    return 'Quiz(id: $id, title: $title, description: $description, anime: $anime, user: $user, reported: $reported, createdAt: $createdAt, status: $status, participation: $participation)';
+    return 'Quiz(id: $id, title: $title, description: $description, anime: $anime, user: $user, reported: $reported, createdAt: $createdAt, status: $status, participation: $participation, questionCount: $questionCount)';
   }
 
   @override
@@ -313,13 +331,15 @@ class _$QuizImpl implements _Quiz {
                 other.createdAt == createdAt) &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.participation, participation) ||
-                other.participation == participation));
+                other.participation == participation) &&
+            (identical(other.questionCount, questionCount) ||
+                other.questionCount == questionCount));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, title, description, anime,
-      user, reported, createdAt, status, participation);
+      user, reported, createdAt, status, participation, questionCount);
 
   /// Create a copy of Quiz
   /// with the given fields replaced by the non-null parameter values.
@@ -339,15 +359,17 @@ class _$QuizImpl implements _Quiz {
 
 abstract class _Quiz implements Quiz {
   const factory _Quiz(
-      {required final String id,
-      required final String title,
-      required final String description,
-      required final Anime? anime,
-      required final User user,
-      required final bool reported,
-      @JsonKey(name: 'created_at') required final int createdAt,
-      required final String status,
-      final QuizParticipation? participation}) = _$QuizImpl;
+          {required final String id,
+          required final String title,
+          required final String description,
+          required final Anime? anime,
+          required final User user,
+          required final bool reported,
+          @JsonKey(name: 'created_at') required final int createdAt,
+          required final String status,
+          final QuizParticipation? participation,
+          @JsonKey(name: 'question_count') required final int questionCount}) =
+      _$QuizImpl;
 
   factory _Quiz.fromJson(Map<String, dynamic> json) = _$QuizImpl.fromJson;
 
@@ -370,6 +392,9 @@ abstract class _Quiz implements Quiz {
   String get status;
   @override
   QuizParticipation? get participation;
+  @override
+  @JsonKey(name: 'question_count')
+  int get questionCount;
 
   /// Create a copy of Quiz
   /// with the given fields replaced by the non-null parameter values.

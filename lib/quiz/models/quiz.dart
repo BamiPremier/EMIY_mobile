@@ -17,11 +17,12 @@ class Quiz with _$Quiz {
     @JsonKey(name: 'created_at') required int createdAt,
     required String status,
     QuizParticipation? participation,
+    @JsonKey(name: 'question_count') required int questionCount,
   }) = _Quiz;
 
   factory Quiz.fromJson(Map<String, dynamic> json) => _$QuizFromJson(json);
 }
- 
+
 @freezed
 class QuizParticipation with _$QuizParticipation {
   const factory QuizParticipation({
@@ -34,4 +35,3 @@ class QuizParticipation with _$QuizParticipation {
   factory QuizParticipation.fromJson(Map<String, dynamic> json) =>
       _$QuizParticipationFromJson(json);
 }
- 

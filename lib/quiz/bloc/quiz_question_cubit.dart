@@ -4,8 +4,7 @@ import 'package:umai/animes/models/anime.dart';
 import 'package:umai/quiz/models/question_quiz.dart' hide QuizResponse;
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/models/quiz_response.dart';
-import 'package:umai/quiz/services/quiz_cubit_manager.dart';
-import 'package:umai/quiz/services/quiz_participation_cubit_manager.dart';
+import 'package:umai/quiz/services/quiz_cubit_manager.dart'; 
 import 'package:umai/quiz/services/quiz_service.dart';
 import 'dart:io';
 
@@ -15,9 +14,9 @@ part 'quiz_question_state.dart';
 
 class QuizQuestionCubit extends Cubit<QuizQuestionState> {
   final QuizService quizService;
-  final QuizParticipationCubitManager quizParticipationCubitManager;
-  QuizQuestionCubit(this.quizService, this.quizParticipationCubitManager)
-      : super(const QuizQuestionIdleState());
+  QuizQuestionCubit(
+    this.quizService,
+  ) : super(const QuizQuestionIdleState());
 
   void getQuizQuestions({required Quiz quiz}) async {
     final stateBefore = state;
@@ -28,7 +27,6 @@ class QuizQuestionCubit extends Cubit<QuizQuestionState> {
       await quizService
           .getQuizQuestions(idQuiz: quiz.id)
           .then((response) async {
-        quizParticipationCubitManager.addAll(response);
         emit(QuizListQuestionState(quiz: quiz, questions: response));
       });
     } catch (error, trace) {
@@ -64,13 +62,14 @@ class QuizQuestionCubit extends Cubit<QuizQuestionState> {
       emit(stateBefore);
     }
   }
+
   void selectResponse(QuizResponse response) {
     if (state is! QuizListQuestionState) return;
     final currentState = state as QuizListQuestionState;
     final selectedResponses = currentState.selectedResponses ?? {};
     final currentResponse = selectedResponses[currentState.currentQuestion];
 
-    final newResponse = 
+    final newResponse =
         currentResponse != null && currentResponse.label == response.label
             ? null
             : response;
@@ -110,10 +109,7 @@ class QuizQuestionCubit extends Cubit<QuizQuestionState> {
     final nextQuestion = currentState.currentQuestion + 1;
     if (nextQuestion < currentState.questions.length) {
       print('reserrr');
-      print(quizParticipationCubitManager
-          .get(currentState.questions[nextQuestion])
-          .timerCubit
-          .state);
+
       emit(QuizListQuestionState(
         quiz: currentState.quiz,
         questions: currentState.questions,

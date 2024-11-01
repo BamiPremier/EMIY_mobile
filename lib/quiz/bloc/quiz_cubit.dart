@@ -132,7 +132,12 @@ class QuizCubit extends Cubit<QuizState> {
 
     try {
       emit(const QuizLoadingState());
-
+      print({
+        ...question.toFormData(),
+        if (question.image != null && question.image!.isNotEmpty)
+          "image": await MultipartFile.fromFile(question.image!,
+              filename: basename(question.image!))
+      });
       var data = FormData.fromMap({
         ...question.toFormData(),
         if (question.image != null && question.image!.isNotEmpty)
@@ -143,9 +148,15 @@ class QuizCubit extends Cubit<QuizState> {
           .addQuestion(
               data: data, idQuiz: (stateBefore as QuizCreatedState).quiz.id)
           .then((response) {
+        final updatedQuestion = QuestionQuiz(
+            label: question.label,
+            image: response.image,
+            responses: question.responses,
+            correctAnswerIndex: question.correctAnswerIndex);
+        question = updatedQuestion;
         emit(QuizCreatedState(
-            anime: (state as QuizCreatedState).anime,
-            quiz: response,
+            anime: (stateBefore).anime,
+            quiz: (stateBefore).quiz,
             questions: [...(stateBefore).questions ?? [], question]));
       });
     } catch (error, trace) {

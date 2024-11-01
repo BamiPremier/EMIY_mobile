@@ -7,7 +7,7 @@ import 'package:umai/quiz/bloc/quiz_question_cubit.dart';
 import 'package:umai/quiz/bloc/timer_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/models/quiz_response.dart';
-import 'package:umai/quiz/services/quiz_participation_cubit_manager.dart';
+import 'package:umai/quiz/screens/quizz_finished.dart';
 import 'package:umai/quiz/widgets/question_step.dart';
 import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/quiz/services/quiz_service.dart';
@@ -16,8 +16,20 @@ import 'package:umai/utils/themes.dart';
 
 class QuizParticipationScreen extends StatefulWidget {
   final Quiz quiz;
+  static Widget get(
+      {required BuildContext context,
+      required Quiz quiz,
+      required List<QuizQuestionResponse> questions}) {
+    return BlocProvider(
+      create: (context) => QuizParticipationCubit(
+        context.read(),
+        questions,
+      ),
+      child: QuizParticipationScreen._(quiz: quiz),
+    );
+  }
 
-  const QuizParticipationScreen({super.key, required this.quiz});
+  const QuizParticipationScreen._({required this.quiz});
 
   @override
   State<QuizParticipationScreen> createState() =>
@@ -27,22 +39,22 @@ class QuizParticipationScreen extends StatefulWidget {
 class _QuizParticipationScreenState extends State<QuizParticipationScreen> {
   late final QuizQuestionCubit quizQuestionCubit =
       context.read<QuizQuestionCubit>();
-
+  late final QuizParticipationCubit quizParticipationCubit =
+      context.read<QuizParticipationCubit>();
   @override
   void initState() {
     super.initState();
-    quizQuestionCubit.getQuizQuestions(quiz: widget.quiz);
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<QuizQuestionCubit, QuizQuestionState>(
         listener: (context, stateQuizQuestion) {
-      if (stateQuizQuestion is QuizListQuestionState) {
-        // context
-        //     .read<QuizParticipationCubitManager>()
-        //     .get(stateQuizQuestion.questions[stateQuizQuestion.currentQuestion])
-        //     .resetTimer();
+      if (stateQuizQuestion is QuizParticipationFinishedState) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const QuizFinishedScreen()));
       }
     }, builder: (context, stateQuizQuestion) {
       return Scaffold(
@@ -53,7 +65,7 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen> {
               _buildLoadingIndicator(context)
             else if (stateQuizQuestion is QuizListQuestionState)
               stateQuizQuestion.questions.isNotEmpty
-                  ? _buildQuestionContent(context, stateQuizQuestion)
+                  ? _buildQuestionContent(context)
                   : SliverToBoxAdapter(
                       child: Center(
                         child: Column(
@@ -72,64 +84,11 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen> {
                         ),
                       ),
                     )
-            else if (stateQuizQuestion is QuizQuestionResponseValidateState &&
-                stateQuizQuestion.questions.isNotEmpty)
-              _buildQuestionContentValidate(context, stateQuizQuestion)
-            else
-              SliverToBoxAdapter(
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text('Erreur Chargement des questions...'),
-                      const SizedBox(height: 16),
-                      TextButton(
-                        onPressed: () {
-                          quizQuestionCubit.getQuizQuestions(quiz: widget.quiz);
-                        },
-                        child: const Text('Rafraîchir'),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
           ],
         ),
-        bottomNavigationBar: (stateQuizQuestion is QuizListQuestionState &&
-                    stateQuizQuestion.questions.isNotEmpty) ||
-                stateQuizQuestion is QuizQuestionResponseValidateState &&
-                    stateQuizQuestion.questions.isNotEmpty
-            ? _buildBottomNavigation(context, stateQuizQuestion)
-            : const SizedBox.shrink(),
+        bottomNavigationBar: _buildBottomNavigation(context),
       );
     });
-  }
-
-  Widget _buildQuestionContentValidate(
-      BuildContext context, QuizQuestionResponseValidateState state) {
-    final questionResponse = state.questions[state.currentQuestion];
-
-    return SliverPadding(
-      padding: const EdgeInsets.all(16.0),
-      sliver: SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (context, index) {
-            if (index == 0) {
-              return Text(
-                'Question ${state.currentQuestion + 1} - ${state.questions.length}',
-                style: Theme.of(context).textTheme.titleSmall,
-              );
-            }
-
-            return _buildQuestionDetailsValidate(
-                context, questionResponse, state);
-          },
-          childCount: 2,
-          addAutomaticKeepAlives: false,
-          addRepaintBoundaries: false,
-        ),
-      ),
-    );
   }
 
   Widget _buildLoadingIndicator(BuildContext context) {
@@ -144,42 +103,39 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen> {
         ))));
   }
 
-  Widget _buildQuestionContent(
-      BuildContext context, QuizListQuestionState state) {
-    final questionResponse = state.questions[state.currentQuestion];
+  Widget _buildQuestionContent(BuildContext context) {
+    return BlocBuilder<QuizParticipationCubit, QuizParticipationState>(
+        builder: (context, stateParticipation) {
+      final state = (stateParticipation as QuizParticipationIdleState);
+      return SliverPadding(
+        padding: const EdgeInsets.all(16.0),
+        sliver: SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              if (index == 0) {
+                return Text(
+                  'Question ${state.questions.indexOf(state.currentQuestion) + 1} - ${stateParticipation.questions.length}',
+                  style: Theme.of(context).textTheme.titleSmall,
+                );
+              }
 
-    return SliverPadding(
-      padding: const EdgeInsets.all(16.0),
-      sliver: SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (context, index) {
-            if (index == 0) {
-              return Text(
-                'Question ${state.currentQuestion + 1} - ${state.questions.length}',
-                style: Theme.of(context).textTheme.titleSmall,
-              );
-            }
-
-            return BlocProvider.value(
-              value: context
-                  .read<QuizParticipationCubitManager>()
-                  .get(questionResponse),
-              child: _buildQuestionDetails(context, questionResponse, state),
-            );
-          },
-          childCount: 2,
-          addAutomaticKeepAlives: false,
-          addRepaintBoundaries: false,
+              return _buildQuestionDetails(context);
+            },
+            childCount: 2,
+            addAutomaticKeepAlives: false,
+            addRepaintBoundaries: false,
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 
-  Widget _buildQuestionDetails(BuildContext context,
-      QuizQuestionResponse questionResponse, QuizQuestionState quizState) {
+  Widget _buildQuestionDetails(
+    BuildContext context,
+  ) {
     return BlocBuilder<QuizParticipationCubit, QuizParticipationState>(
       builder: (context, stateParticipation) {
-        if (stateParticipation is! InitializingQuizParticipationState) {
+        if (stateParticipation is! QuizParticipationIdleState) {
           return const SizedBox.shrink();
         }
 
@@ -187,7 +143,9 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              questionResponse.label,
+              (stateParticipation as QuizParticipationIdleState)
+                  .currentQuestion
+                  .label,
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                     color: AppTheme.disabledText,
                   ),
@@ -197,213 +155,119 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen> {
             _buildTimer(context),
             const SizedBox(height: 32.0),
             _buildResponsesList(
-                context, questionResponse, stateParticipation, quizState),
+              context,
+            ),
           ],
         );
       },
     );
   }
 
-  Widget _buildQuestionDetailsValidate(
-      BuildContext context,
-      QuizQuestionResponse questionResponse,
-      QuizQuestionResponseValidateState quizState) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          questionResponse.label,
-          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                color: AppTheme.disabledText,
-              ),
-        ),
-        const SizedBox(height: 16.0),
-        const Divider(),
-        _buildTimer(context),
-        const SizedBox(height: 32.0),
-        _buildResponsesListValidate(context, questionResponse, quizState),
-      ],
-    );
-  }
-
   Widget _buildTimer(BuildContext context) {
-    return BlocConsumer<TimerCubit, ATimerState>(
-        listener: (context, timerState) {
-      if (timerState is TimerFinished) {
-        print('suivant;');
-        quizQuestionCubit.validate(response: null);
-      }
-    }, builder: (context, timerState) {
-      print(timerState);
-      // if (timerState is! TimerState) return const Text('dsd');
-      if (timerState is! TimerState) return const SizedBox.shrink();
+    return BlocProvider.value(
+        value: quizParticipationCubit.timerCubit,
+        child: BlocBuilder<TimerCubit, ATimerState>(
+            builder: (context, timerState) {
+          if (timerState is! TimerState) return const SizedBox.shrink();
 
-      final timerCubit = context.read<QuizParticipationCubit>().timerCubit;
-      return LinearProgressIndicator(
-        value: timerState.timer.inSeconds / timerCubit.maxDuration.inSeconds,
-        color: Theme.of(context).colorScheme.onTertiaryContainer,
-        backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
-        borderRadius: BorderRadius.circular(30),
-      );
-    });
+          final timerCubit = context.read<QuizParticipationCubit>().timerCubit;
+          return LinearProgressIndicator(
+            value: timerState.timer.inMilliseconds /
+                timerCubit.maxDuration.inMilliseconds,
+            color: Theme.of(context).colorScheme.onTertiaryContainer,
+            backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
+            borderRadius: BorderRadius.circular(30),
+          );
+        }));
   }
 
   Widget _buildResponsesList(
-      BuildContext context,
-      QuizQuestionResponse questionResponse,
-      InitializingQuizParticipationState stateParticipation,
-      QuizQuestionState quizState) {
-    return ListView.separated(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: questionResponse.responses.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 12.0),
-      itemBuilder: (context, index) {
-        final currentResponse = questionResponse.responses[index];
-        final isSelected =
-            stateParticipation.userResponse?.label == currentResponse.label;
+    BuildContext context,
+  ) {
+    return BlocBuilder<QuizParticipationCubit, QuizParticipationState>(
+      builder: (context, stateParticipation) {
+        final currentQuestionState =
+            (stateParticipation as QuizParticipationIdleState);
+        return ListView.separated(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: currentQuestionState.currentQuestion.responses.length,
+          separatorBuilder: (_, __) => const SizedBox(height: 12.0),
+          itemBuilder: (context, index) {
+            final backgroundColor, foregroundColor;
+            final currentResponse =
+                currentQuestionState.currentQuestion.responses[index];
+            if (stateParticipation is QuizParticipationSubmittedState) {
+              backgroundColor = currentResponse.isCorrect
+                  ? AppTheme.green
+                  : Theme.of(context).colorScheme.surfaceBright;
+              foregroundColor = currentResponse.isCorrect
+                  ? AppTheme.onHighGreen
+                  : Theme.of(context).colorScheme.onSurfaceVariant;
+            } else if (stateParticipation is QuizParticipationIdleState) {
+              final isSelected =
+                  stateParticipation.userResponse?.id == currentResponse.id;
+              backgroundColor = isSelected
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.surfaceBright;
+              foregroundColor = isSelected
+                  ? Theme.of(context).colorScheme.onPrimary
+                  : Theme.of(context).colorScheme.onSurfaceVariant;
+            } else {
+              // État par défaut
+              backgroundColor = Theme.of(context).colorScheme.surfaceBright;
+              foregroundColor = Theme.of(context).colorScheme.onSurfaceVariant;
+            }
 
-        return GestureDetector(
-          onTap: () => context
-              .read<QuizParticipationCubit>()
-              .selectResponse(currentResponse),
-          child: isSelected
+            return GestureDetector(
+              onTap: () => context
+                  .read<QuizParticipationCubit>()
+                  .selectAnswer(currentResponse),
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16),
+                decoration: BoxDecoration(
+                  color: backgroundColor,
+                  borderRadius: BorderRadius.circular(24.0),
+                ),
+                child: Text(
+                  currentResponse.label,
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: foregroundColor,
+                      ),
+                ),
+              ) /*  isSelected
               ? selectedOption(currentResponse.label)
-              : unSelectedOption(currentResponse.label),
+              : unSelectedOption(currentResponse.label) */
+              ,
+            );
+          },
         );
       },
     );
   }
 
-  Widget _buildResponsesListValidate(
-      BuildContext context,
-      QuizQuestionResponse questionResponse,
-      QuizQuestionResponseValidateState quizState) {
-    return ListView.separated(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: questionResponse.responses.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 12.0),
-      itemBuilder: (context, index) {
-        final currentResponse = questionResponse.responses[index];
-
-        final selectedResponse =
-            quizState.getSelectedResponse(quizState.currentQuestion);
-        if (selectedResponse?.label == currentResponse.label) {
-          return correctOption(currentResponse.label);
-        } else {
-          return inCorrectOption(currentResponse.label);
-        }
+  Widget _buildBottomNavigation(BuildContext context) {
+    return BlocBuilder<QuizParticipationCubit, QuizParticipationState>(
+      builder: (context, stateParticipation) {
+        return SafeArea(
+          minimum: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
+          child: UmaiButton.primary(
+            onPressed: ((stateParticipation is! QuizParticipationIdleState)
+                ? null
+                : () {
+                    if (stateParticipation is QuizParticipationSubmittedState) {
+                      quizParticipationCubit.nextQuestion();
+                    } else {
+                      quizParticipationCubit.submit();
+                    }
+                  }),
+            text: stateParticipation is QuizParticipationSubmittedState
+                ? "Suivant"
+                : "Valider",
+          ),
+        );
       },
-    );
-  }
-
-  Widget _buildBottomNavigation(BuildContext context, QuizQuestionState state) {
-    var questionResponse;
-
-    if (state is! QuizListQuestionState &&
-        state is! QuizQuestionResponseValidateState) {
-      return const SizedBox.shrink();
-    } else {
-      if (state is QuizListQuestionState) {
-        questionResponse = state.questions[state.currentQuestion];
-      }
-
-      if (state is QuizQuestionResponseValidateState) {
-        questionResponse = state.questions[state.currentQuestion];
-      }
-    }
-
-    return BlocProvider.value(
-      value:
-          context.read<QuizParticipationCubitManager>().get(questionResponse),
-      child: BlocBuilder<QuizParticipationCubit, QuizParticipationState>(
-        builder: (context, stateParticipation) {
-          return SafeArea(
-            minimum:
-                const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
-            child: UmaiButton.primary(
-              onPressed:
-                  ((stateParticipation is! InitializingQuizParticipationState)
-                      ? null
-                      : () {
-                          if (state is QuizQuestionResponseValidateState) {
-                            print('ggf');
-                            quizQuestionCubit.nextQuestion();
-                          } else {
-                            quizQuestionCubit.validate(
-                                response: stateParticipation.userResponse!);
-                          }
-                        }),
-              text: state is QuizQuestionResponseValidateState
-                  ? "Suivant"
-                  : "Valider",
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget selectedOption(String text) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primary,
-        borderRadius: BorderRadius.circular(24.0),
-      ),
-      child: Text(
-        text,
-        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: Theme.of(context).colorScheme.onPrimary,
-            ),
-      ),
-    );
-  }
-
-  Widget unSelectedOption(String text) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceBright,
-        borderRadius: BorderRadius.circular(24.0),
-      ),
-      child: Text(
-        text,
-        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-            ),
-      ),
-    );
-  }
-
-  Widget correctOption(String text) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16),
-      decoration: BoxDecoration(
-        color: AppTheme.green,
-        borderRadius: BorderRadius.circular(24.0),
-      ),
-      child: Text(
-        text,
-        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: AppTheme.onHighGreen,
-            ),
-      ),
-    );
-  }
-
-  Widget inCorrectOption(String text) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16),
-      decoration: BoxDecoration(
-        color: AppTheme.errorRed,
-        borderRadius: BorderRadius.circular(24.0),
-      ),
-      child: Text(
-        text,
-        style: const TextStyle(color: Colors.white),
-      ),
     );
   }
 }

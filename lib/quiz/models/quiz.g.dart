@@ -21,6 +21,7 @@ _$QuizImpl _$$QuizImplFromJson(Map<String, dynamic> json) => _$QuizImpl(
           ? null
           : QuizParticipation.fromJson(
               json['participation'] as Map<String, dynamic>),
+      questionCount: (json['question_count'] as num).toInt(),
     );
 
 Map<String, dynamic> _$$QuizImplToJson(_$QuizImpl instance) =>
@@ -34,6 +35,7 @@ Map<String, dynamic> _$$QuizImplToJson(_$QuizImpl instance) =>
       'created_at': instance.createdAt,
       'status': instance.status,
       'participation': instance.participation,
+      'question_count': instance.questionCount,
     };
 
 _$QuizParticipationImpl _$$QuizParticipationImplFromJson(
