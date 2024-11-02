@@ -1,9 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/account/screens/param/change_picture_screen.dart';
-import 'package:umai/common/bloc/user_cubit.dart'; 
+import 'package:umai/common/bloc/user_cubit.dart';
+import 'package:umai/common/services/cache_manager.dart';
 import 'package:umai/utils/themes.dart';
 
 class EditProfilePictureScreen extends StatelessWidget {
@@ -53,18 +54,13 @@ class EditProfilePictureScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CachedNetworkImage(
-                  imageUrl: context.read<UserCubit>().user.imageFull ?? '',
-                  // height: 375,
-                  width: double.infinity,
+                Image(
                   fit: BoxFit.cover,
-
-                  placeholder: (context, url) => Container(
-                    height: 368,
-                    width: double.infinity,
-                    color: Theme.of(context).colorScheme.tertiaryContainer,
-                  ),
-                  errorWidget: (context, url, error) => Container(
+                  image: context
+                      .read<AppCacheManager>()
+                      .getImage(context.read<UserCubit>().user.imageFull ?? ''),
+                  width: double.infinity,
+                  errorBuilder: (context, url, error) => Container(
                     height: 368,
                     width: double.infinity,
                     color: Theme.of(context).colorScheme.tertiaryContainer,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/common/screens/home.dart';
+import 'package:umai/common/services/cache_manager.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/quiz/bloc/quiz_cubit.dart';
 import 'package:umai/quiz/bloc/quiz_participation_cubit.dart';
@@ -59,14 +60,17 @@ class _EditingQuizScreenState extends State<EditingQuizScreen>
                       Row(
                         children: [
                           if (quiz.anime == null)
-                            CachedNetworkImage(
+                            Image(
+                              fit: BoxFit.cover,
                               width: 72,
                               height: 88,
                               color: Theme.of(context)
                                   .colorScheme
                                   .onTertiaryContainer,
-                              imageUrl: '',
-                              errorWidget: (context, url, error) => Container(),
+                              image:
+                                  context.read<AppCacheManager>().getImage(''),
+                              errorBuilder: (context, url, error) =>
+                                  Container(),
                             ),
                           if (quiz.anime != null)
                             Container(
@@ -76,10 +80,11 @@ class _EditingQuizScreenState extends State<EditingQuizScreen>
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              child: CachedNetworkImage(
-                                imageUrl: quiz.anime!.coverImage.large ?? '',
+                              child: Image(
                                 fit: BoxFit.cover,
-                                errorWidget: (context, url, error) => Icon(
+                                image: context.read<AppCacheManager>().getImage(
+                                    quiz.anime!.coverImage.large ?? ''),
+                                errorBuilder: (context, url, error) => Icon(
                                   Icons.error,
                                   color: Theme.of(context)
                                       .colorScheme

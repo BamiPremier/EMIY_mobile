@@ -48,13 +48,15 @@ class _HeadQuizState extends State<HeadQuiz>
         background: Stack(
           fit: StackFit.expand,
           children: [
-            CachedNetworkImage(
-              imageUrl: quiz.anime?.coverImage.large ?? '',
+            Image(
               fit: BoxFit.cover,
+              image: context
+                  .read<AppCacheManager>()
+                  .getImage(quiz.anime?.coverImage.large ?? ''),
               color: quiz.anime == null
                   ? Theme.of(context).colorScheme.onTertiaryContainer
                   : null,
-              errorWidget: (context, url, error) => quiz.anime != null
+              errorBuilder: (context, error, stackTrace) => quiz.anime != null
                   ? Icon(
                       Icons.error,
                       color: Theme.of(context).colorScheme.onTertiaryContainer,

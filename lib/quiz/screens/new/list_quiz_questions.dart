@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
+import 'package:umai/common/services/cache_manager.dart';
 import 'package:umai/quiz/bloc/quiz_cubit.dart';
 import 'package:umai/utils/themes.dart';
 
@@ -49,10 +50,11 @@ class ListQuizQuestionsScreen extends StatelessWidget {
                                 color: AppTheme.surfacegrey,
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              child: CachedNetworkImage(
-                                imageUrl: (state).questions[index].image ?? '',
+                              child: Image(
                                 fit: BoxFit.cover,
-                                errorWidget: (context, url, error) => Icon(
+                                image: context.read<AppCacheManager>().getImage(
+                                    (state).questions[index].image ?? ''),
+                                errorBuilder: (context, url, error) => Icon(
                                   Icons.error,
                                   color: Theme.of(context)
                                       .colorScheme
