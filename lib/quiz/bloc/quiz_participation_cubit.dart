@@ -35,8 +35,9 @@ class QuizParticipationCubit extends Cubit<QuizParticipationState> {
   }
 
   void dispose() {
-    timerSubscription.cancel();
     timerCubit.close();
+    timerSubscription.cancel();
+    super.close();
   }
 
   void selectAnswer(QuizResponse questionResponse) {
@@ -58,11 +59,11 @@ class QuizParticipationCubit extends Cubit<QuizParticipationState> {
       if (currentIndex == stateBefore.questions.length - 1) {
         emit(QuizParticipationFinishedState(nombrePoints));
       } else {
+        timerCubit.reset();
         emit(QuizParticipationIdleState.copyWith(
           questions: stateBefore.questions,
           currentQuestion: stateBefore.questions[currentIndex + 1],
         ));
-        timerCubit.reset();
       }
     }
   }
@@ -73,8 +74,30 @@ class QuizParticipationCubit extends Cubit<QuizParticipationState> {
       if (stateBefore.userResponse?.isCorrect ?? false) {
         nombrePoints = nombrePoints + 1;
       }
+      timerCubit.close();
+
       emit(stateBefore.toSubmited());
-      
+    }
+  }
+
+  void sendParticipation({required Quiz quiz}) async {
+    final stateBefore = state;
+
+    try {
+      final data = {
+        "quiz_id": quiz.id,
+      };
+      final response = await quizService.newQuiz(data: data);
+
+      // emit(QuizCreatedState(
+      //     quiz: response,
+      //     questions: [],
+      //     anime: (stateBefore is QuizSelectAnimeState)
+      //         ? stateBefore.anime
+      //         : null));
+    } catch (error, trace) {
+      emit(QuizParticipationErrorState(error, trace));
+      emit(stateBefore);
     }
   }
 }

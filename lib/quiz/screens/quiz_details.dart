@@ -180,17 +180,19 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
 
   void onEventReceived(BuildContext context, QuizQuestionState state) async {
     await waitForDialog();
-   
 
     if (state is QuizQuestionLoadingState) {
       loadingDialogCompleter = showLoadingBarrier(context: context);
     } else if (state is QuizListQuestionState) {
-    
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => QuizParticipationScreen.get(
-              context: context,
-              quiz: widget.quiz,
-              questions: state.questions)));
+      if (state.questions.isNotEmpty) {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => QuizParticipationScreen.get(
+                context: context,
+                quiz: widget.quiz,
+                questions: state.questions)));
+      } else {
+        showErrorToast(content: "Aucune question trouvée", context: context);
+      }
     } else if (state is QuizQuestionErrorState) {
       showErrorToast(content: state.error, context: context);
     }

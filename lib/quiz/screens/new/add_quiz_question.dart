@@ -21,7 +21,7 @@ class AddQuizQuestionScreen extends StatefulWidget {
 class _AddQuizQuestionScreenState extends State<AddQuizQuestionScreen>
     with CompletableMixin {
   final TextEditingController _questionController = TextEditingController();
-  final List<TextEditingController> _propositionControllers = [
+  List<TextEditingController> _propositionControllers = [
     TextEditingController(),
     TextEditingController(),
   ];
@@ -47,9 +47,12 @@ class _AddQuizQuestionScreenState extends State<AddQuizQuestionScreen>
     if (_propositionControllers.length > 1 &&
         _correctAnswerIndex != index &&
         _questionController.text.isNotEmpty) {
-      setState(() {
-        _correctAnswerIndex = index;
-      });
+      if (_propositionControllers[index].text.isNotEmpty) {
+        setState(() {
+          _correctAnswerIndex = index;
+        });
+      } else {}
+      ;
     }
   }
 
@@ -166,6 +169,13 @@ class _AddQuizQuestionScreenState extends State<AddQuizQuestionScreen>
                             child: TextFormField(
                                 style: Theme.of(context).textTheme.bodyMedium,
                                 controller: controller,
+                                onChanged: (value) {
+                                  if (value.trim().isEmpty) {
+                                    setState(() {
+                                      _correctAnswerIndex = null;
+                                    });
+                                  }
+                                },
                                 decoration: InputDecoration(
                                   hintText: 'Entre le texte',
                                   hintStyle: Theme.of(context)
@@ -245,7 +255,13 @@ class _AddQuizQuestionScreenState extends State<AddQuizQuestionScreen>
             mainAxisSize: MainAxisSize.min,
             children: [
               UmaiButton.primary(
-                onPressed: _correctAnswerIndex == null
+                onPressed: _correctAnswerIndex == null ||
+                        _propositionControllers
+                                .where(
+                                    (controller) => controller.text.isNotEmpty)
+                                .toList()
+                                .length <
+                            2
                     ? null
                     : () {
                         quizCubit.addQuestion(QuestionQuiz(
@@ -253,10 +269,16 @@ class _AddQuizQuestionScreenState extends State<AddQuizQuestionScreen>
                             image: image,
                             label: _questionController.text,
                             responses: _propositionControllers
+                                .where(
+                                    (controller) => controller.text.isNotEmpty)
                                 .map((e) => QuizResponse(
                                     label: e.text,
                                     isCorrect: _correctAnswerIndex ==
-                                        _propositionControllers.indexOf(e)))
+                                        _propositionControllers
+                                            .where((controller) =>
+                                                controller.text.isNotEmpty)
+                                            .toList()
+                                            .indexOf(e)))
                                 .toList()));
                       },
                 text: "Enregistrer",

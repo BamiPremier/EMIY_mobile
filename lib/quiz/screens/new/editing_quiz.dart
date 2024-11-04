@@ -151,11 +151,18 @@ class _EditingQuizScreenState extends State<EditingQuizScreen>
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            UmaiButton.primary(
-              onPressed: () {
-                quizCubit.publishQuiz();
+            BlocBuilder<QuizCubit, QuizState>(
+              builder: (context, state) {
+                return UmaiButton.primary(
+                  onPressed: (state is QuizCreatedState &&
+                          !(state as QuizCreatedState).questions.isEmpty)
+                      ? () {
+                          quizCubit.publishQuiz();
+                        }
+                      : null,
+                  text: "Publier",
+                );
               },
-              text: "Publier",
             ),
           ],
         ),

@@ -25,11 +25,11 @@ class TimerCubit extends Cubit<ATimerState> {
     _run();
   }
 
-  TimerCubit.duration(Duration time)
+  TimerCubit.duration(Duration duration)
       : _isolate = TimerIsolate(),
         super(const TimerInitializing()) {
     _start = DateTime.now();
-    _end = _start.add(time);
+    _end = _start.add(duration);
     _run();
   }
 

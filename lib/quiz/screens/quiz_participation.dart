@@ -7,7 +7,7 @@ import 'package:umai/quiz/bloc/quiz_question_cubit.dart';
 import 'package:umai/quiz/bloc/timer_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/models/quiz_response.dart';
-import 'package:umai/quiz/screens/quizz_finished.dart'; 
+import 'package:umai/quiz/screens/quizz_finished.dart';
 import 'package:umai/quiz/widgets/head_quiz.dart';
 import 'package:umai/utils/themes.dart';
 
@@ -167,14 +167,17 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen> {
   Widget _buildTimer(BuildContext context) {
     return BlocProvider.value(
         value: quizParticipationCubit.timerCubit,
-        child: BlocBuilder<TimerCubit, ATimerState>(
-            builder: (context, timerState) {
+        child:
+            BlocConsumer<TimerCubit, ATimerState>(listener: (context, state) {
+          print(state);
+        }, builder: (context, timerState) {
           if (timerState is! TimerState) return const SizedBox.shrink();
 
           final timerCubit = context.read<QuizParticipationCubit>().timerCubit;
           return LinearProgressIndicator(
-            value: timerState.timer.inMilliseconds /
-                timerCubit.maxDuration.inMilliseconds,
+            value: 1.0 -
+                timerState.timer.inMicroseconds /
+                    timerCubit.maxDuration.inMicroseconds,
             color: Theme.of(context).colorScheme.onTertiaryContainer,
             backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
             borderRadius: BorderRadius.circular(30),
@@ -199,12 +202,18 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen> {
             final currentResponse =
                 currentQuestionState.currentQuestion.responses[index];
             if (stateParticipation is QuizParticipationSubmittedState) {
+              final isSelected =
+                  stateParticipation.userResponse?.id == currentResponse.id;
               backgroundColor = currentResponse.isCorrect
                   ? AppTheme.green
-                  : AppTheme.errorRed;
+                  : isSelected
+                      ? AppTheme.errorRed
+                      : Theme.of(context).colorScheme.surfaceBright;
               foregroundColor = currentResponse.isCorrect
                   ? AppTheme.onHighGreen
-                  : Colors.white;
+                  : isSelected
+                      ? Colors.white
+                      : Theme.of(context).colorScheme.onSurfaceVariant;
             } else if (stateParticipation is QuizParticipationIdleState) {
               final isSelected =
                   stateParticipation.userResponse?.id == currentResponse.id;
@@ -220,9 +229,12 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen> {
             }
 
             return GestureDetector(
-                onTap: () => context
-                    .read<QuizParticipationCubit>()
-                    .selectAnswer(currentResponse),
+                onTap: () =>
+                    stateParticipation is QuizParticipationSubmittedState
+                        ? null
+                        : context
+                            .read<QuizParticipationCubit>()
+                            .selectAnswer(currentResponse),
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                       vertical: 10.0, horizontal: 16),
@@ -249,15 +261,7 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen> {
         return SafeArea(
           minimum: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
           child: UmaiButton.primary(
-            onPressed: ((stateParticipation is! QuizParticipationIdleState)
-                ? null
-                : () {
-                    if (stateParticipation is QuizParticipationSubmittedState) {
-                      quizParticipationCubit.nextQuestion();
-                    } else {
-                      quizParticipationCubit.submit();
-                    }
-                  }),
+            onPressed: getAction(stateParticipation),
             text: stateParticipation is QuizParticipationSubmittedState
                 ? "Suivant"
                 : "Valider",
@@ -265,5 +269,19 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen> {
         );
       },
     );
+  }
+
+  getAction(QuizParticipationState stateParticipation) {
+    return (stateParticipation is QuizParticipationSubmittedState)
+        ? () => quizParticipationCubit.nextQuestion()
+        : ((stateParticipation is! QuizParticipationIdleState &&
+                stateParticipation is! QuizParticipationSubmittedState)
+            ? null
+            : (stateParticipation is QuizParticipationIdleState &&
+                    (stateParticipation as QuizParticipationIdleState)
+                            .userResponse ==
+                        null)
+                ? null
+                : () => quizParticipationCubit.submit());
   }
 }
