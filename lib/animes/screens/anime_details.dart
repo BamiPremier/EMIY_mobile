@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:potatoes/libs.dart';
 import 'package:readmore/readmore.dart';
 import 'package:umai/animes/models/anime.dart';
+import 'package:umai/animes/screens/subpage/episode.dart';
+import 'package:umai/animes/screens/subpage/similar.dart';
 import 'package:umai/animes/widgets/btn_watch_view.dart';
 import 'package:umai/animes/widgets/primary_info.dart';
 import 'package:umai/animes/services/anime_cubit_manager.dart';
@@ -211,105 +213,8 @@ class _AnimeDetailScreenState extends State<AnimeDetailScreen>
                       height: 200,
                       child: TabBarView(
                         children: [
-                          const Center(child: Text("Épisodes Content")),
-                          SizedBox(
-                              height: double.infinity,
-                              child: GridView.builder(
-                                padding: const EdgeInsets.all(0),
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 3,
-                                        crossAxisSpacing: 2.0,
-                                        mainAxisSpacing: 2.0,
-                                        childAspectRatio: .65),
-                                itemCount: 50,
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) => InkWell(
-                                  child: Card(
-                                    elevation: 0,
-                                    margin: const EdgeInsets.all(0.0),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(0.0),
-                                    ),
-                                    child: Stack(
-                                      children: [
-                                        ClipRRect(
-                                          child: Image.network(
-                                            'https://img.freepik.com/photos-gratuite/representations-experience-utilisateur-design-interface_23-2150104489.jpg?t=st=1726481260~exp=1726484860~hmac=71aa8b5d32271a5f3d6a968bb6731cb8d35a797e60f574caa80514a1ff4bcac3&w=900',
-                                            height: 368,
-                                            width: double.infinity,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                        Positioned(
-                                          bottom: 0,
-                                          left: 0,
-                                          right: 0,
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 4.0),
-                                            decoration: BoxDecoration(
-                                              color: AppTheme.black
-                                                  .withOpacity(.4),
-                                            ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Text("428",
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .labelMedium!
-                                                            .copyWith(
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .colorScheme
-                                                                    .inverseSurface)),
-                                                    Icon(
-                                                      Icons.check,
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .inverseSurface,
-                                                      size: 24.0,
-                                                    ),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Text("59",
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .labelMedium!
-                                                            .copyWith(
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .colorScheme
-                                                                    .inverseSurface)),
-                                                    Icon(
-                                                      Icons.close,
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .inverseSurface,
-                                                      size: 24.0,
-                                                    ),
-                                                  ],
-                                                ),
-                                                const SizedBox(
-                                                  width: 30,
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              )),
+                          EpisodeScreen.get(context: context, anime: anime),
+                          SimilarScreen.get(context: context, anime: anime),
                           const Center(child: Text("Quiz Content")),
                         ],
                       ),
