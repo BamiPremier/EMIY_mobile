@@ -1,14 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:potatoes/libs.dart';
-import 'package:umai/account/screens/person_account.dart';
-import 'package:umai/common/bloc/person_cubit.dart';
-import 'package:umai/common/bloc/user_cubit.dart';
-import 'package:umai/common/models/user.dart';
-import 'package:umai/common/services/person_cubit_manager.dart';
-import 'package:umai/common/widgets/btn_action_item_user.dart';
-import 'package:umai/common/widgets/profile_picture.dart';
-import 'package:potatoes/libs.dart';
+import 'package:flutter/material.dart'; 
+import 'package:umai/common/widgets/profile_picture.dart'; 
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/utils/assets.dart';
 

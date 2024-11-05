@@ -1,25 +1,12 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+ 
+import 'package:flutter/material.dart';  
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
-import 'package:potatoes/libs.dart';
-import 'package:readmore/readmore.dart';
-import 'package:umai/animes/bloc/episode_anime_cubit.dart';
+import 'package:potatoes/libs.dart'; 
 import 'package:umai/animes/bloc/similar_anime_cubit.dart';
-import 'package:umai/animes/models/anime.dart';
-import 'package:umai/animes/models/episode.dart';
-import 'package:umai/animes/widgets/btn_watch_view.dart';
-import 'package:umai/animes/widgets/item_anime.dart';
-import 'package:umai/animes/widgets/item_episode.dart';
-import 'package:umai/animes/widgets/primary_info.dart';
+import 'package:umai/animes/models/anime.dart'; 
+import 'package:umai/animes/widgets/item_anime.dart'; 
 import 'package:umai/animes/services/anime_cubit_manager.dart';
-import 'package:umai/common/bloc/anime_manip_cubit.dart';
-import 'package:umai/common/services/cache_manager.dart';
-import 'package:umai/common/widgets/action_widget.dart';
-import 'package:umai/common/widgets/bottom_sheet.dart';
-import 'package:umai/common/widgets/buttons.dart';
-import 'package:umai/utils/monthToString.dart';
-import 'package:umai/utils/themes.dart';
+import 'package:umai/common/bloc/anime_manip_cubit.dart'; 
 
 class SimilarScreen extends StatefulWidget {
   static Widget get({

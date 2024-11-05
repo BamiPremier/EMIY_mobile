@@ -1,14 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
+ 
 import 'package:flutter/material.dart';
-import 'package:potatoes/libs.dart';
-import 'package:readmore/readmore.dart';
-import 'package:umai/animes/models/anime.dart';
-import 'package:umai/animes/services/anime_cubit_manager.dart';
-import 'package:umai/common/bloc/anime_manip_cubit.dart';
-import 'package:umai/common/widgets/action_widget.dart';
-import 'package:umai/common/widgets/bottom_sheet.dart';
-import 'package:umai/common/widgets/buttons.dart';
-import 'package:umai/utils/monthToString.dart';
+import 'package:potatoes/libs.dart'; 
+import 'package:umai/common/bloc/anime_manip_cubit.dart'; 
+import 'package:umai/utils/month_to_string.dart';
 import 'package:umai/utils/themes.dart';
 
 class PrimaryInfo extends StatefulWidget {

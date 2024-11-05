@@ -1,6 +1,4 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:umai/animes/models/anime.dart';
-import 'package:umai/common/models/user.dart';
+import 'package:freezed_annotation/freezed_annotation.dart'; 
 
 part 'quiz_response.freezed.dart';
 part 'quiz_response.g.dart';

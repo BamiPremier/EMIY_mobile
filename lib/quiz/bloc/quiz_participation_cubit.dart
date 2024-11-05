@@ -1,22 +1,16 @@
 import 'dart:async';
-
-import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
-import 'package:umai/animes/models/anime.dart';
 import 'package:umai/quiz/bloc/timer_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/models/quiz_response.dart';
 import 'package:umai/quiz/services/quiz_service.dart';
-import 'dart:io';
-
-import 'package:path/path.dart';
 import 'package:potatoes/potatoes.dart';
 part 'quiz_participation_state.dart';
 
 class QuizParticipationCubit extends Cubit<QuizParticipationState> {
   static const timerDuration = Duration(seconds: 30);
   final QuizService quizService;
-  final TimerCubit timerCubit;
+  late TimerCubit timerCubit;
   late final StreamSubscription<ATimerState> timerSubscription;
   late int nombrePoints = 0;
 
@@ -74,9 +68,11 @@ class QuizParticipationCubit extends Cubit<QuizParticipationState> {
       if (stateBefore.userResponse?.isCorrect ?? false) {
         nombrePoints = nombrePoints + 1;
       }
+      emit(stateBefore.toSubmited());
+      print("============close timer");
       timerCubit.close();
 
-      emit(stateBefore.toSubmited());
+      print("============close timer 00");
     }
   }
 

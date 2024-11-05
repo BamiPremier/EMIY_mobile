@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
@@ -6,27 +5,17 @@ import 'package:umai/common/screens/home.dart';
 import 'package:umai/common/services/cache_manager.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/quiz/bloc/quiz_cubit.dart';
-import 'package:umai/quiz/bloc/quiz_participation_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/screens/new/add_quiz_question.dart';
 import 'package:umai/quiz/screens/new/list_quiz_questions.dart';
 import 'package:umai/quiz/screens/new/new_quiz.dart';
-import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/themes.dart';
 
 class EditingQuizScreen extends StatefulWidget {
   final Quiz quiz;
-  // static Widget get({
-  //   required BuildContext context,
-  //   required Quiz quiz,
-  // }) {
-  //   return BlocProvider.value(
-  //     value: context.read<QuizParticipationCubitManager>().get(quiz),
-  //     child: EditingQuizScreen._(quiz),
-  //   );
-  // }
-  EditingQuizScreen(this.quiz);
+
+  const EditingQuizScreen(this.quiz, {super.key});
 
   @override
   State<EditingQuizScreen> createState() => _EditingQuizScreenState();
@@ -132,7 +121,7 @@ class _EditingQuizScreenState extends State<EditingQuizScreen>
                         child: Text('Questions'),
                       ),
                       const Divider(),
-                      ListQuizQuestionsScreen()
+                      const ListQuizQuestionsScreen()
                     ],
                   ),
                 )

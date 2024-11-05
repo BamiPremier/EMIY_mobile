@@ -1,7 +1,6 @@
 import 'package:potatoes/auto_list.dart';
 import 'package:potatoes/libs.dart';
-import 'package:umai/animes/models/anime.dart';
-import 'package:umai/animes/models/episode.dart';
+import 'package:umai/animes/models/anime.dart'; 
 import 'package:umai/animes/services/anime_cubit_manager.dart';
 import 'package:umai/animes/services/anime_service.dart';
 

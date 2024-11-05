@@ -1,10 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:potatoes/libs.dart';
 import 'package:readmore/readmore.dart';
 import 'package:umai/animes/models/anime.dart';
 import 'package:umai/animes/screens/subpage/episode.dart';
+import 'package:umai/animes/screens/subpage/quiz_anime.dart';
 import 'package:umai/animes/screens/subpage/similar.dart';
 import 'package:umai/animes/widgets/btn_watch_view.dart';
 import 'package:umai/animes/widgets/primary_info.dart';
@@ -13,8 +12,6 @@ import 'package:umai/common/bloc/anime_manip_cubit.dart';
 import 'package:umai/common/services/cache_manager.dart';
 import 'package:umai/common/widgets/action_widget.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
-import 'package:umai/common/widgets/buttons.dart';
-import 'package:umai/utils/monthToString.dart';
 import 'package:umai/utils/themes.dart';
 
 class AnimeDetailScreen extends StatefulWidget {
@@ -215,7 +212,7 @@ class _AnimeDetailScreenState extends State<AnimeDetailScreen>
                         children: [
                           EpisodeScreen.get(context: context, anime: anime),
                           SimilarScreen.get(context: context, anime: anime),
-                          const Center(child: Text("Quiz Content")),
+                          QuizAnimeScreen.get(context: context, anime: anime),
                         ],
                       ),
                     ),

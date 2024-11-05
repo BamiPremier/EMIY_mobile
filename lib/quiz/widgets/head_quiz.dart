@@ -1,17 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:flutter/material.dart';
-import 'package:potatoes/libs.dart';
-import 'package:umai/animes/models/anime.dart';
-import 'package:umai/animes/screens/anime_details.dart';
-import 'package:umai/animes/services/anime_cubit_manager.dart';
-import 'package:umai/common/bloc/anime_manip_cubit.dart';
+import 'package:potatoes/libs.dart'; 
 import 'package:umai/common/services/cache_manager.dart';
-import 'package:umai/quiz/bloc/quiz_manage_cubit.dart';
-import 'package:umai/quiz/bloc/quiz_participation_cubit.dart';
-import 'package:umai/quiz/models/quiz.dart';
-import 'package:umai/quiz/screens/quiz_details.dart';
-import 'package:umai/quiz/services/quiz_cubit_manager.dart';
-import 'package:umai/utils/dialogs.dart';
+import 'package:umai/quiz/bloc/quiz_manage_cubit.dart'; 
+import 'package:umai/quiz/models/quiz.dart'; 
+import 'package:umai/quiz/services/quiz_cubit_manager.dart'; 
 import 'package:umai/utils/themes.dart';
 
 class HeadQuiz extends StatefulWidget {
@@ -21,7 +14,7 @@ class HeadQuiz extends StatefulWidget {
   }) {
     return BlocProvider.value(
       value: context.read<QuizManageCubitManager>().get(quiz),
-      child: HeadQuiz._(),
+      child: const HeadQuiz._(),
     );
   }
 
@@ -83,7 +76,7 @@ class _HeadQuizState extends State<HeadQuiz>
           ],
         ),
       ),
-      leading: BackButton(
+      leading: const BackButton(
         color: AppTheme.white,
       ),
       actions: [

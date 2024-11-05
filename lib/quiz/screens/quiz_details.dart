@@ -1,15 +1,13 @@
-import 'package:cached_network_image/cached_network_image.dart';
+ 
 import 'package:flutter/material.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/common/widgets/loaders.dart';
-import 'package:potatoes/libs.dart';
-import 'package:readmore/readmore.dart';
+import 'package:potatoes/libs.dart'; 
 import 'package:umai/common/widgets/action_widget.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/quiz/bloc/load_quiz_ranking_cubit.dart';
-import 'package:umai/quiz/bloc/quiz_manage_cubit.dart';
-import 'package:umai/quiz/bloc/quiz_participation_cubit.dart';
+import 'package:umai/quiz/bloc/quiz_manage_cubit.dart'; 
 import 'package:umai/quiz/bloc/quiz_question_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/screens/quiz_participation.dart';
@@ -17,10 +15,8 @@ import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/quiz/services/quiz_service.dart';
 import 'package:umai/quiz/widgets/head_quiz.dart';
 import 'package:umai/quiz/widgets/item_user_quiz.dart';
-import 'package:umai/quiz/widgets/quiz_info.dart';
-import 'package:umai/social/model/comment.dart';
-import 'package:umai/utils/dialogs.dart';
-import 'package:umai/utils/themes.dart';
+import 'package:umai/quiz/widgets/quiz_info.dart'; 
+import 'package:umai/utils/dialogs.dart'; 
 
 class QuizDetailScreen extends StatefulWidget {
   final Quiz quiz;

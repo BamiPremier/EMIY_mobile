@@ -36,18 +36,18 @@ class TimerParams {
   final DateTime endTime;
   final SendPort sendPort;
 
-  const TimerParams(
-      this.currentTime, this.startTime, this.endTime, this.sendPort);
+  const TimerParams(this.currentTime, this.startTime, this.endTime, this.sendPort);
 }
 
 class TimerIsolate {
   late ReceivePort _receivePort;
   Isolate? _isolate;
 
-  void start(
-      {required DateTime startTime,
-      required DateTime endTime,
-      ValueChanged<dynamic>? onUpdate}) async {
+  void start({
+    required DateTime startTime,
+    required DateTime endTime,
+    ValueChanged<dynamic>? onUpdate
+  }) async {
     _receivePort = ReceivePort();
     Isolate.spawn(
       runTimer,

@@ -1,6 +1,5 @@
 import 'package:potatoes/auto_list/models/paginated_list.dart';
 import 'package:potatoes/libs.dart';
-import 'package:umai/animes/models/anime.dart';
 import 'package:umai/common/services/api_service.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/models/quiz_response.dart';
@@ -15,6 +14,7 @@ class QuizService extends ApiService {
   static const String _quizPublished = '/quiz/:id/publish';
   static const String _quizFeedByUser = '/quiz/user';
   static const String _quizRanking = '/quiz/:id/ranking';
+  static const String _quizAnimes = '/quiz/animes/:id';
   QuizService(super._dio);
   Future<Quiz> newQuiz({required Map<String, dynamic> data}) async {
     return compute(
@@ -46,6 +46,18 @@ class QuizService extends ApiService {
             }),
             data: data),
         mapper: QuizQuestionResponse.fromJson);
+  }
+
+  Future<PaginatedList<Quiz>> getQuizsAnime(
+      {int page = 1, int? size, required String animeId}) async {
+    return compute(
+        dio.get(_quizAnimes.replaceFirst(':id', animeId),
+            options: Options(headers: withAuth()),
+            queryParameters: {
+              'page': page,
+              'size': size ?? 10,
+            }),
+        mapper: (result) => toPaginatedList(result, Quiz.fromJson));
   }
 
   Future<PaginatedList<Quiz>> getQuizsFeed(

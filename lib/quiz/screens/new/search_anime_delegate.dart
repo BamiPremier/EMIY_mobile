@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:potatoes/libs.dart';
 import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
-import 'package:umai/animes/bloc/category_anime_cubit.dart';
 import 'package:umai/animes/models/anime.dart';
 import 'package:umai/animes/services/anime_service.dart';
-import 'package:umai/animes/widgets/item_anime.dart';
 import 'package:umai/common/services/cache_manager.dart';
 import 'package:umai/quiz/bloc/quiz_cubit.dart';
 

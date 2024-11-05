@@ -1,19 +1,13 @@
-import 'dart:developer';
-import 'dart:io';
-
+import 'dart:developer'; 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/services.dart'; 
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/common/utils/validators.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/quiz/bloc/quiz_cubit.dart';
 import 'package:umai/quiz/screens/new/editing_quiz.dart';
-import 'package:umai/quiz/screens/new/search_anime_delegate.dart';
-import 'package:umai/quiz/services/quiz_cubit_manager.dart';
-import 'package:umai/social/bloc/new_post_cubit.dart';
-import 'package:umai/utils/assets.dart';
+import 'package:umai/quiz/screens/new/search_anime_delegate.dart'; 
 import 'package:umai/utils/dialogs.dart';
 
 class NewQuizScreen extends StatefulWidget {

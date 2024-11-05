@@ -35,6 +35,10 @@ class TimerCubit extends Cubit<ATimerState> {
 
   Duration get maxDuration => _end.difference(_start);
 
+  void start() {
+    _run();
+  }
+
   void _run() {
     _isolate.start(
         startTime: _start,
@@ -42,6 +46,7 @@ class TimerCubit extends Cubit<ATimerState> {
         onUpdate: (dynamic state) {
           if (!isClosed) emit(state as ATimerState);
         });
+    print("=isClosed==$isClosed===$isClosed===run timer");
   }
 
   void reset() {
@@ -49,11 +54,14 @@ class TimerCubit extends Cubit<ATimerState> {
     final now = DateTime.now();
     _end = now.add(_end.difference(_start));
     _start = now;
+    print("===$_start===$_end===reset timer");
+
     _run();
   }
 
   @override
   Future<void> close() {
+    print("============close timer");
     _isolate.dispose();
     return super.close();
   }

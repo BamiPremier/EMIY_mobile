@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
-import 'package:potatoes/libs.dart';
-import 'package:umai/animes/bloc/category_anime_cubit.dart';
-import 'package:umai/animes/models/anime.dart';
-import 'package:umai/animes/widgets/item_anime.dart';
+import 'package:potatoes/libs.dart'; 
 import 'package:umai/quiz/bloc/load_quiz_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/widgets/item_quiz.dart';
