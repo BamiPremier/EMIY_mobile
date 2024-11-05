@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:potatoes/libs.dart'; 
-import 'package:umai/quiz/bloc/quiz_manage_cubit.dart'; 
+import 'package:potatoes/libs.dart';
+import 'package:umai/quiz/bloc/quiz_manage_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/screens/quiz_details.dart';
-import 'package:umai/quiz/services/quiz_cubit_manager.dart'; 
+import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/utils/themes.dart';
 
 class ItemQuiz extends StatefulWidget {
@@ -31,8 +31,12 @@ class _ItemQuizState extends State<ItemQuiz>
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: () => Navigator.of(context).push(MaterialPageRoute(
-          builder: (_) => QuizDetailScreen.get(context: context, quiz: quiz))),
+      onTap: () => Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => QuizDetailScreen.get(context: context, quiz: quiz),
+          settings: const RouteSettings(name: quizRouteName),
+        ),
+      ),
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Row(

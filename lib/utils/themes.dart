@@ -152,6 +152,9 @@ abstract class AppTheme {
           size: 24,
         ),
       ),
+      textSelectionTheme: const TextSelectionThemeData(
+        cursorColor: primaryYellow,
+      ),
       bottomSheetTheme: theme.bottomSheetTheme.copyWith(
         clipBehavior: Clip.antiAlias,
         backgroundColor: white,

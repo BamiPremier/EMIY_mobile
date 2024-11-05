@@ -38,6 +38,7 @@ class _QuizAnimeScreenState extends State<QuizAnimeScreen>
   Widget build(BuildContext context) {
     return AutoListView.get<Quiz>(
       cubit: cubit,
+      padding: EdgeInsets.zero,
       autoManage: false,
       itemBuilder: (context, quiz) =>
           ItemQuiz.get(context: context, quiz: quiz),

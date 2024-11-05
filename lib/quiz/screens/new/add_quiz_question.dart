@@ -83,29 +83,9 @@ class _AddQuizQuestionScreenState extends State<AddQuizQuestionScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            PopupMenuButton(
-              itemBuilder: (_) => [
-                const PopupMenuItem(
-                  value: ImageSource.camera,
-                  child: ListTile(
-                    leading: Icon(Icons.camera_alt),
-                    minLeadingWidth: 24.0,
-                    title: Text('Prendre une photo'),
-                    dense: true,
-                  ),
-                ),
-                const PopupMenuItem(
-                  value: ImageSource.gallery,
-                  child: ListTile(
-                    leading: Icon(Icons.image),
-                    minLeadingWidth: 24.0,
-                    title: Text('Choisir une image'),
-                    dense: true,
-                  ),
-                ),
-              ],
-              onSelected: (value) =>
-                  onPickImage(source: value, context: context),
+            GestureDetector(
+              onTap: () =>
+                  onPickImage(source: ImageSource.gallery, context: context),
               child: Container(
                 height: 200,
                 width: double.infinity,

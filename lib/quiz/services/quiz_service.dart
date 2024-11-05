@@ -15,18 +15,34 @@ class QuizService extends ApiService {
   static const String _quizFeedByUser = '/quiz/user';
   static const String _quizRanking = '/quiz/:id/ranking';
   static const String _quizAnimes = '/quiz/animes/:id';
+  static const String _shareQuiz = '/quiz/:id/share';
+
   QuizService(super._dio);
+
+  Future shareQuiz({required String idQuiz}) {
+    return compute(
+      dio.post(
+        _shareQuiz.replaceAll(':id', idQuiz),
+        options: Options(headers: withAuth()),
+      ),
+    );
+  }
+
   Future<Quiz> newQuiz({required Map<String, dynamic> data}) async {
     return compute(
         dio.post(_quiz, options: Options(headers: withAuth()), data: data),
         mapper: Quiz.fromJson);
   }
 
-  Future participationQuiz(
-      {required Map<String, dynamic> data, required String idQuiz}) async {
+  Future<Quiz> participationQuiz(
+      {required int score, required String idQuiz}) async {
     return compute(
       dio.put(_quizUpdate.replaceFirst(':id', idQuiz),
-          options: Options(headers: withAuth()), data: data),
+          options: Options(headers: withAuth()),
+          data: {
+            "score": score,
+          }),
+      mapper: Quiz.fromJson,
     );
   }
 

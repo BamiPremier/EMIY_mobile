@@ -1,5 +1,4 @@
-
-import 'package:potatoes/libs.dart'; 
+import 'package:potatoes/libs.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/services/quiz_service.dart';
 
@@ -12,7 +11,6 @@ class QuizManageCubit extends ObjectCubit<Quiz, QuizManageState> {
   QuizManageCubit(this.quizService, Quiz quiz)
       : super(InitializingQuizManageState(quiz));
 
- 
   @override
   Quiz? getObject(QuizManageState state) {
     if (state is InitializingQuizManageState) {
@@ -27,6 +25,25 @@ class QuizManageCubit extends ObjectCubit<Quiz, QuizManageState> {
     if (quiz != null) return quiz;
     throw UnsupportedError(
         'cannot retrieve quiz: Current state is ${state.runtimeType}');
+  }
+
+  void shareQuiz() {
+    if (state is InitializingQuizManageState) {
+      final stateBefore = state;
+
+      emit(const ShareQuizLoadingState());
+      quizService
+          .shareQuiz(
+        idQuiz: quiz.id,
+      )
+          .then((reponse) {
+        emit(ShareQuizSuccesState(reponse['shareLink']));
+        emit(InitializingQuizManageState(quiz));
+      }, onError: (error, trace) {
+        emit(QuizManageErrorState(error, trace));
+        emit(stateBefore);
+      });
+    }
   }
 
   @override

@@ -12,7 +12,7 @@ class QuizParticipationCubit extends Cubit<QuizParticipationState> {
   final QuizService quizService;
   late TimerCubit timerCubit;
   late StreamSubscription<ATimerState> timerSubscription;
-  late int nombrePoints = 0;
+  late int score = 0;
 
   QuizParticipationCubit(
     this.quizService,
@@ -25,11 +25,13 @@ class QuizParticipationCubit extends Cubit<QuizParticipationState> {
   }
 
   void _startTimer() {
-    timerSubscription = timerCubit.stream.listen((event) {
-      if (event is TimerFinished) {
-        submit();
-      }
-    });
+    if (!isClosed) {
+      timerSubscription = timerCubit.stream.listen((event) {
+        if (event is TimerFinished) {
+          submit();
+        }
+      });
+    }
   }
 
   void dispose() {
@@ -73,7 +75,7 @@ class QuizParticipationCubit extends Cubit<QuizParticipationState> {
     if (state is QuizParticipationIdleState) {
       final stateBefore = state as QuizParticipationIdleState;
       if (stateBefore.userResponse?.isCorrect ?? false) {
-        nombrePoints = nombrePoints + 1;
+        score = score + 1;
       }
       emit(stateBefore.toSubmited());
       print("============close timer");
@@ -87,18 +89,15 @@ class QuizParticipationCubit extends Cubit<QuizParticipationState> {
     final stateBefore = state;
     emit(QuizParticipationLoadingState());
 
-    final data = {
-      "score": nombrePoints,
-    };
     await quizService
         .participationQuiz(
-            data: data,
+            score: score,
             idQuiz: (stateBefore as QuizParticipationIdleState)
                 .questions
                 .first
                 .quizId)
-        .then((value) {
-      emit(QuizParticipationFinishedState(nombrePoints));
+        .then((quiz) {
+      emit(QuizParticipationFinishedState(nombrePoints: score, quiz: quiz));
     }, onError: (error, trace) {
       emit(QuizParticipationErrorState(error, trace));
       emit(stateBefore);

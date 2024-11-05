@@ -1,12 +1,11 @@
- 
-import 'package:flutter/material.dart';  
+import 'package:flutter/material.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
-import 'package:potatoes/libs.dart'; 
+import 'package:potatoes/libs.dart';
 import 'package:umai/animes/bloc/similar_anime_cubit.dart';
-import 'package:umai/animes/models/anime.dart'; 
-import 'package:umai/animes/widgets/item_anime.dart'; 
+import 'package:umai/animes/models/anime.dart';
+import 'package:umai/animes/widgets/item_anime.dart';
 import 'package:umai/animes/services/anime_cubit_manager.dart';
-import 'package:umai/common/bloc/anime_manip_cubit.dart'; 
+import 'package:umai/common/bloc/anime_manip_cubit.dart';
 
 class SimilarScreen extends StatefulWidget {
   static Widget get({
@@ -33,12 +32,13 @@ class _SimilarScreenState extends State<SimilarScreen>
   late final anime = animeManipCubit.anime;
   late final SimilarAnimeCubit cubit =
       SimilarAnimeCubit(context.read(), context.read(), anime.id.toString());
- 
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AnimeManipCubit, AnimeManipState>(
         builder: (context, state) {
       return AutoListView.get<Anime>(
+        padding: const EdgeInsets.only(top: 4),
         cubit: cubit,
         autoManage: false,
         viewType: ViewType.grid,

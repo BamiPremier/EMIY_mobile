@@ -113,12 +113,13 @@ class _NewQuizScreenState extends State<NewQuizScreen> with CompletableMixin {
                         textInputAction: TextInputAction.next,
                         minLines: 4,
                         maxLines: 4,
+                        maxLength: 360,
                         onTapOutside: (event) =>
                             FocusScope.of(context).unfocus(),
                         maxLengthEnforcement:
                             MaxLengthEnforcement.truncateAfterCompositionEnds,
                         onEditingComplete: FocusScope.of(context).unfocus,
-                        validator: (value) => Validators.empty(value),
+                    
                       ),
                     ],
                   ),

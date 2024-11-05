@@ -24,6 +24,19 @@ class QuizManageLoadingState extends CubitLoadingState with QuizManageState {
   const QuizManageLoadingState();
 }
 
+class ShareQuizLoadingState extends CubitLoadingState with QuizManageState {
+  const ShareQuizLoadingState();
+}
+
+class ShareQuizSuccesState extends CubitInformationState with QuizManageState {
+  final String link;
+
+  const ShareQuizSuccesState(this.link);
+
+  @override
+  List<Object?> get props => [link];
+}
+
 class QuizManagePublishedState extends CubitInformationState
     with QuizManageState {
   const QuizManagePublishedState();

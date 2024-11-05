@@ -4,12 +4,16 @@ import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 
 import 'package:umai/common/widgets/buttons.dart';
+import 'package:umai/quiz/bloc/quiz_manage_cubit.dart';
 import 'package:umai/quiz/bloc/quiz_participation_cubit.dart';
 import 'package:umai/quiz/bloc/quiz_question_cubit.dart';
 import 'package:umai/quiz/bloc/timer_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/models/quiz_response.dart';
+import 'package:umai/quiz/screens/quiz_details.dart';
 import 'package:umai/quiz/screens/quizz_finished.dart';
+import 'package:umai/quiz/services/quiz_cubit_manager.dart';
+import 'package:umai/quiz/widgets/head_particiation.dart';
 import 'package:umai/quiz/widgets/head_quiz.dart';
 import 'package:umai/utils/themes.dart';
 
@@ -55,7 +59,7 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen>
             return Scaffold(
               body: CustomScrollView(
                 slivers: [
-                  HeadQuiz.get(context: context, quiz: widget.quiz),
+                  HeadParticipation.get(context: context, quiz: widget.quiz),
                   if (stateQuizQuestion is QuizQuestionLoadingState)
                     _buildLoadingIndicator(context)
                   else if (stateQuizQuestion is QuizListQuestionState)
@@ -98,11 +102,12 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen>
     }
 
     if (state is QuizParticipationFinishedState) {
+      context.read<QuizManageCubitManager>().add(state.quiz);
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-              builder: (_) =>
-                  QuizFinishedScreen(nombrePoints: state.nombrePoints)),
-          (route) => false);
+              builder: (_) => QuizFinishedScreen(
+                  nombrePoints: state.nombrePoints, quiz: widget.quiz)),
+          (route) => route.settings.name == quizRouteName);
     }
   }
 
@@ -141,8 +146,6 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen>
               return _buildQuestionDetails(context);
             },
             childCount: 2,
-            addAutomaticKeepAlives: false,
-            addRepaintBoundaries: false,
           ),
         ),
       );
@@ -171,9 +174,7 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen>
             const Divider(),
             _buildTimer(context),
             const SizedBox(height: 32.0),
-            _buildResponsesList(
-              context,
-            ),
+            _buildResponsesList(context),
           ],
         );
       },
@@ -210,6 +211,7 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen>
             (stateParticipation as QuizParticipationIdleState);
         return ListView.separated(
           shrinkWrap: true,
+          padding: EdgeInsets.zero,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: currentQuestionState.currentQuestion.responses.length,
           separatorBuilder: (_, __) => const SizedBox(height: 12.0),

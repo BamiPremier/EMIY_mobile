@@ -16,7 +16,9 @@ class EpisodeItem extends StatelessWidget {
           builder: (context) =>
               EpisodeDetailsScreen.from(context: context, episode: episode))),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        padding: const EdgeInsets.symmetric(
+          vertical: 8.0,
+        ),
         child: Row(
           children: [
             Expanded(
@@ -38,6 +40,7 @@ class EpisodeItem extends StatelessWidget {
                                   ),
                         ),
                       ]),
+                  const SizedBox(height: 8),
                   Text(
                     '12 commentaires',
                     style: Theme.of(context).textTheme.labelMedium!.copyWith(

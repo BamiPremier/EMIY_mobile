@@ -1,26 +1,14 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/screens/anime_details.dart';
-import 'package:umai/quiz/bloc/quiz_manage_cubit.dart'; 
+import 'package:umai/quiz/bloc/quiz_manage_cubit.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/themes.dart';
-import 'package:umai/quiz/models/quiz.dart'; 
-import 'package:umai/quiz/services/quiz_cubit_manager.dart'; 
+import 'package:umai/quiz/models/quiz.dart';
+import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 
 class QuizInfo extends StatefulWidget {
-  static Widget get({
-    required BuildContext context,
-    required Quiz quiz,
-  }) {
-    return BlocProvider.value(
-      value: context.read<QuizManageCubitManager>().get(quiz),
-      child: QuizInfo._(),
-    );
-  }
-
-  const QuizInfo._();
   @override
   State<QuizInfo> createState() => _QuizInfoState();
 }
@@ -50,7 +38,7 @@ class _QuizInfoState extends State<QuizInfo>
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),
-        const SizedBox(height: 16),
+        if (quiz.anime != null) const SizedBox(height: 16),
         if (quiz.anime != null)
           GestureDetector(
             onTap: () => Navigator.of(context).push(MaterialPageRoute(
@@ -78,26 +66,27 @@ class _QuizInfoState extends State<QuizInfo>
               ],
             ),
           ),
-        const SizedBox(height: 16),
-        Row(
-          children: [
-            SvgPicture.asset(
-              Assets.defaultAvatar,
-              height: 20,
-              width: 20,
-            ),
-            const SizedBox(width: 8),
-            Flexible(
-              child: Text(
-                quiz.user.username,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodyMedium,
+        if (quiz.participation != null) const SizedBox(height: 16),
+        if (quiz.participation != null)
+          Row(
+            children: [
+              SvgPicture.asset(
+                Assets.defaultAvatar,
+                height: 20,
+                width: 20,
               ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 16),
+              const SizedBox(width: 8),
+              Flexible(
+                child: Text(
+                  quiz.participation!.user.username,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ),
+            ],
+          ),
+        if (quiz.participation != null) const SizedBox(height: 16),
         if (quiz.participation != null)
           Row(
             children: [

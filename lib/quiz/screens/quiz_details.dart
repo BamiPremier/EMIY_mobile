@@ -1,13 +1,13 @@
- 
 import 'package:flutter/material.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/common/widgets/loaders.dart';
-import 'package:potatoes/libs.dart'; 
+import 'package:potatoes/libs.dart';
+import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/widgets/action_widget.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/quiz/bloc/load_quiz_ranking_cubit.dart';
-import 'package:umai/quiz/bloc/quiz_manage_cubit.dart'; 
+import 'package:umai/quiz/bloc/quiz_manage_cubit.dart';
 import 'package:umai/quiz/bloc/quiz_question_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/screens/quiz_participation.dart';
@@ -15,8 +15,10 @@ import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/quiz/services/quiz_service.dart';
 import 'package:umai/quiz/widgets/head_quiz.dart';
 import 'package:umai/quiz/widgets/item_user_quiz.dart';
-import 'package:umai/quiz/widgets/quiz_info.dart'; 
-import 'package:umai/utils/dialogs.dart'; 
+import 'package:umai/quiz/widgets/quiz_info.dart';
+import 'package:umai/utils/dialogs.dart';
+
+const quizRouteName = 'quiz_details';
 
 class QuizDetailScreen extends StatefulWidget {
   final Quiz quiz;
@@ -55,7 +57,7 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
       builder: (context, stateQuizQuestion) => Scaffold(
         body: CustomScrollView(
           slivers: [
-            HeadQuiz.get(context: context, quiz: quiz),
+            HeadQuiz(),
             SliverToBoxAdapter(
               child: Padding(
                 padding:
@@ -63,7 +65,7 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    QuizInfo.get(context: context, quiz: quiz),
+                    QuizInfo(),
                     Padding(
                       padding: const EdgeInsets.only(top: 32.0, bottom: 8.0),
                       child: Column(
@@ -134,10 +136,12 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              UmaiButton.primary(
-                onPressed: participer,
-                text: "Participer",
-              ),
+              if (quiz.participation == null &&
+                  quiz.user.id != context.read<UserCubit>().user.id)
+                UmaiButton.primary(
+                  onPressed: participer,
+                  text: "Participer",
+                ),
             ],
           ),
         ),
@@ -158,9 +162,21 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const SizedBox(height: 16.0),
-                Text(
-                  'Tu auras 30s pour répondre à chacune des 8 questions, ton score te sera dévoilé à la fin. ',
-                  style: Theme.of(context).textTheme.bodyMedium,
+                RichText(
+                  text: TextSpan(
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    children: [
+                      TextSpan(
+                          text:
+                              'Tu auras 30s pour répondre à chacune des ${quiz.questionCount} questions, ton score te sera dévoilé à la fin. '),
+                      TextSpan(
+                          text:
+                              '${quiz.questionCount} questions, ton score te sera dévoilé à la fin. '),
+                      const TextSpan(
+                          text:
+                              '\nTu ne peux participer à un quiz qu’une seule fois!'),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 32.0),
                 UmaiButton.primary(
