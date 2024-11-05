@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart'; 
-import 'package:umai/animes/models/episode.dart'; 
-import 'package:umai/animes/screens/episode_details.dart'; 
+import 'package:flutter/material.dart';
+import 'package:umai/animes/models/episode.dart';
+import 'package:umai/animes/screens/episode_details.dart';
 import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
@@ -31,7 +31,7 @@ class EpisodeItem extends StatelessWidget {
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                         Text(
-                          DateTime(episode.timeUntilAiring).elapsed(),
+                          "il y'a 12 h",
                           style:
                               Theme.of(context).textTheme.bodySmall!.copyWith(
                                     color: AppTheme.disabledText,
@@ -39,7 +39,7 @@ class EpisodeItem extends StatelessWidget {
                         ),
                       ]),
                   Text(
-                    '${episode.airingAt} commentaires',
+                    '12 commentaires',
                     style: Theme.of(context).textTheme.labelMedium!.copyWith(
                           color: AppTheme.disabledText,
                         ),

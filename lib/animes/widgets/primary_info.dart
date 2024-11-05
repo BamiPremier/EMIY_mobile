@@ -4,7 +4,6 @@ import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/anime_manip_cubit.dart'; 
 import 'package:umai/utils/month_to_string.dart';
 import 'package:umai/utils/themes.dart';
-
 import 'package:umai/animes/models/anime.dart';
 
 class PrimaryInfo extends StatefulWidget {

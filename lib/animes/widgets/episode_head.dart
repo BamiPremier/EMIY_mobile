@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/models/episode.dart';
@@ -86,9 +85,14 @@ class EpisodeHead extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          episode.anime.title.romaji,
-                          style: Theme.of(context).textTheme.titleMedium,
+                        Container(
+                          width: MediaQuery.of(context).size.width * .7,
+                          child: Text(
+                            episode.anime.title.romaji,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
                         ),
                         Text(
                           episode.anime.season ?? '',
