@@ -22,12 +22,12 @@ class QuizService extends ApiService {
         mapper: Quiz.fromJson);
   }
 
-  Future<Quiz> participationQuiz(
+  Future participationQuiz(
       {required Map<String, dynamic> data, required String idQuiz}) async {
     return compute(
-        dio.put(_quizUpdate.replaceFirst(':id', idQuiz),
-            options: Options(headers: withAuth()), data: data),
-        mapper: Quiz.fromJson);
+      dio.put(_quizUpdate.replaceFirst(':id', idQuiz),
+          options: Options(headers: withAuth()), data: data),
+    );
   }
 
   Future<Quiz> quizPublished({required String idQuiz}) async {
