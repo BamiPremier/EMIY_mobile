@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:potatoes/libs.dart';
+import 'package:umai/account/screens/person_account.dart';
 import 'package:umai/animes/screens/anime_details.dart';
 import 'package:umai/quiz/bloc/quiz_manage_cubit.dart';
 import 'package:umai/utils/assets.dart';
@@ -66,25 +67,30 @@ class _QuizInfoState extends State<QuizInfo>
               ],
             ),
           ),
-        if (quiz.participation != null) const SizedBox(height: 16),
-        if (quiz.participation != null)
-          Row(
-            children: [
-              SvgPicture.asset(
-                Assets.defaultAvatar,
-                height: 20,
-                width: 20,
-              ),
-              const SizedBox(width: 8),
-              Flexible(
-                child: Text(
-                  quiz.participation!.user.username,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyMedium,
+        if (quiz.user != null) const SizedBox(height: 16),
+        if (quiz.user != null)
+          GestureDetector(
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => PersonAccountScreen.get(
+                    context: context, user: quiz.user))),
+            child: Row(
+              children: [
+                SvgPicture.asset(
+                  Assets.defaultAvatar,
+                  height: 20,
+                  width: 20,
                 ),
-              ),
-            ],
+                const SizedBox(width: 8),
+                Flexible(
+                  child: Text(
+                    quiz.user.username,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ),
+              ],
+            ),
           ),
         if (quiz.participation != null) const SizedBox(height: 16),
         if (quiz.participation != null)

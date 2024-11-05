@@ -34,7 +34,8 @@ class UserItem extends StatelessWidget {
 
         final personCubit = context.read<PersonCubit>();
         return GestureDetector(
-          child: ListTile(
+          child:
+           ListTile(
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
               leading: ProfilePicture(
