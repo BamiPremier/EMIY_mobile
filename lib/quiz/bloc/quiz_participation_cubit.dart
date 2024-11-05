@@ -11,7 +11,7 @@ class QuizParticipationCubit extends Cubit<QuizParticipationState> {
   static const timerDuration = Duration(seconds: 30);
   final QuizService quizService;
   late TimerCubit timerCubit;
-  late final StreamSubscription<ATimerState> timerSubscription;
+  late StreamSubscription<ATimerState> timerSubscription;
   late int nombrePoints = 0;
 
   QuizParticipationCubit(
@@ -21,6 +21,10 @@ class QuizParticipationCubit extends Cubit<QuizParticipationState> {
         super(QuizParticipationIdleState.initQuestions(
           questions: questions,
         )) {
+    _startTimer();
+  }
+
+  void _startTimer() {
     timerSubscription = timerCubit.stream.listen((event) {
       if (event is TimerFinished) {
         submit();
@@ -53,7 +57,10 @@ class QuizParticipationCubit extends Cubit<QuizParticipationState> {
       if (currentIndex == stateBefore.questions.length - 1) {
         emit(QuizParticipationFinishedState(nombrePoints));
       } else {
-        timerCubit.reset();
+        timerCubit.close();
+        timerSubscription.cancel();
+        timerCubit = TimerCubit.duration(timerDuration);
+        _startTimer();
         emit(QuizParticipationIdleState.copyWith(
           questions: stateBefore.questions,
           currentQuestion: stateBefore.questions[currentIndex + 1],
