@@ -37,6 +37,7 @@ mixin _$Anime {
   AnimeDate? get endDate => throw _privateConstructorUsedError;
   int? get episodes => throw _privateConstructorUsedError;
   String? get format => throw _privateConstructorUsedError;
+  String? get status => throw _privateConstructorUsedError;
   List<String>? get genres => throw _privateConstructorUsedError;
   bool get isAdult => throw _privateConstructorUsedError;
   AnimeEpisode? get nextAiringEpisode => throw _privateConstructorUsedError;
@@ -77,6 +78,7 @@ abstract class $AnimeCopyWith<$Res> {
       AnimeDate? endDate,
       int? episodes,
       String? format,
+      String? status,
       List<String>? genres,
       bool isAdult,
       AnimeEpisode? nextAiringEpisode,
@@ -123,6 +125,7 @@ class _$AnimeCopyWithImpl<$Res, $Val extends Anime>
     Object? endDate = freezed,
     Object? episodes = freezed,
     Object? format = freezed,
+    Object? status = freezed,
     Object? genres = freezed,
     Object? isAdult = null,
     Object? nextAiringEpisode = freezed,
@@ -189,6 +192,10 @@ class _$AnimeCopyWithImpl<$Res, $Val extends Anime>
       format: freezed == format
           ? _value.format
           : format // ignore: cast_nullable_to_non_nullable
+              as String?,
+      status: freezed == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
               as String?,
       genres: freezed == genres
           ? _value.genres
@@ -314,6 +321,7 @@ abstract class _$$AnimeImplCopyWith<$Res> implements $AnimeCopyWith<$Res> {
       AnimeDate? endDate,
       int? episodes,
       String? format,
+      String? status,
       List<String>? genres,
       bool isAdult,
       AnimeEpisode? nextAiringEpisode,
@@ -363,6 +371,7 @@ class __$$AnimeImplCopyWithImpl<$Res>
     Object? endDate = freezed,
     Object? episodes = freezed,
     Object? format = freezed,
+    Object? status = freezed,
     Object? genres = freezed,
     Object? isAdult = null,
     Object? nextAiringEpisode = freezed,
@@ -430,6 +439,10 @@ class __$$AnimeImplCopyWithImpl<$Res>
           ? _value.format
           : format // ignore: cast_nullable_to_non_nullable
               as String?,
+      status: freezed == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String?,
       genres: freezed == genres
           ? _value._genres
           : genres // ignore: cast_nullable_to_non_nullable
@@ -472,7 +485,7 @@ class __$$AnimeImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$AnimeImpl implements _Anime {
+class _$AnimeImpl extends _Anime {
   const _$AnimeImpl(
       {required this.id,
       required this.title,
@@ -488,6 +501,7 @@ class _$AnimeImpl implements _Anime {
       this.endDate,
       this.episodes,
       this.format,
+      this.status,
       final List<String>? genres,
       this.isAdult = false,
       this.nextAiringEpisode,
@@ -497,7 +511,8 @@ class _$AnimeImpl implements _Anime {
       this.startDate,
       this.volumes,
       @JsonKey(name: 'watchlist_count') this.watchlistCount = 0})
-      : _genres = genres;
+      : _genres = genres,
+        super._();
 
   factory _$AnimeImpl.fromJson(Map<String, dynamic> json) =>
       _$$AnimeImplFromJson(json);
@@ -533,6 +548,8 @@ class _$AnimeImpl implements _Anime {
   final int? episodes;
   @override
   final String? format;
+  @override
+  final String? status;
   final List<String>? _genres;
   @override
   List<String>? get genres {
@@ -564,7 +581,7 @@ class _$AnimeImpl implements _Anime {
 
   @override
   String toString() {
-    return 'Anime(id: $id, title: $title, description: $description, coverImage: $coverImage, bannerImage: $bannerImage, isViewed: $isViewed, isInWatchlist: $isInWatchlist, animeViewCount: $animeViewCount, averageScore: $averageScore, chapters: $chapters, duration: $duration, endDate: $endDate, episodes: $episodes, format: $format, genres: $genres, isAdult: $isAdult, nextAiringEpisode: $nextAiringEpisode, popularity: $popularity, season: $season, seasonYear: $seasonYear, startDate: $startDate, volumes: $volumes, watchlistCount: $watchlistCount)';
+    return 'Anime(id: $id, title: $title, description: $description, coverImage: $coverImage, bannerImage: $bannerImage, isViewed: $isViewed, isInWatchlist: $isInWatchlist, animeViewCount: $animeViewCount, averageScore: $averageScore, chapters: $chapters, duration: $duration, endDate: $endDate, episodes: $episodes, format: $format, status: $status, genres: $genres, isAdult: $isAdult, nextAiringEpisode: $nextAiringEpisode, popularity: $popularity, season: $season, seasonYear: $seasonYear, startDate: $startDate, volumes: $volumes, watchlistCount: $watchlistCount)';
   }
 
   @override
@@ -596,6 +613,7 @@ class _$AnimeImpl implements _Anime {
             (identical(other.episodes, episodes) ||
                 other.episodes == episodes) &&
             (identical(other.format, format) || other.format == format) &&
+            (identical(other.status, status) || other.status == status) &&
             const DeepCollectionEquality().equals(other._genres, _genres) &&
             (identical(other.isAdult, isAdult) || other.isAdult == isAdult) &&
             (identical(other.nextAiringEpisode, nextAiringEpisode) ||
@@ -630,6 +648,7 @@ class _$AnimeImpl implements _Anime {
         endDate,
         episodes,
         format,
+        status,
         const DeepCollectionEquality().hash(_genres),
         isAdult,
         nextAiringEpisode,
@@ -657,7 +676,7 @@ class _$AnimeImpl implements _Anime {
   }
 }
 
-abstract class _Anime implements Anime {
+abstract class _Anime extends Anime {
   const factory _Anime(
           {required final int id,
           required final AnimeTitle title,
@@ -673,6 +692,7 @@ abstract class _Anime implements Anime {
           final AnimeDate? endDate,
           final int? episodes,
           final String? format,
+          final String? status,
           final List<String>? genres,
           final bool isAdult,
           final AnimeEpisode? nextAiringEpisode,
@@ -683,6 +703,7 @@ abstract class _Anime implements Anime {
           final int? volumes,
           @JsonKey(name: 'watchlist_count') final int watchlistCount}) =
       _$AnimeImpl;
+  const _Anime._() : super._();
 
   factory _Anime.fromJson(Map<String, dynamic> json) = _$AnimeImpl.fromJson;
 
@@ -717,6 +738,8 @@ abstract class _Anime implements Anime {
   int? get episodes;
   @override
   String? get format;
+  @override
+  String? get status;
   @override
   List<String>? get genres;
   @override

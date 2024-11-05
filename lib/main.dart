@@ -9,7 +9,7 @@ import 'package:potatoes_secured_preferences/potatoes_secured_preferences.dart';
 import 'package:umai/animes/services/anime_cubit_manager.dart';
 import 'package:umai/animes/services/anime_service.dart';
 import 'package:umai/auth/bloc/auth_cubit.dart';
-import 'package:umai/auth/screens/onboarding_screen.dart';
+import 'package:umai/auth/screens/onboarding_screen.dart'; 
 import 'package:umai/auth/screens/registration/username.dart';
 import 'package:umai/auth/services/auth_service.dart';
 import 'package:umai/common/bloc/home_cubit.dart';

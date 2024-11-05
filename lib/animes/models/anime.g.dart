@@ -24,6 +24,7 @@ _$AnimeImpl _$$AnimeImplFromJson(Map<String, dynamic> json) => _$AnimeImpl(
           : AnimeDate.fromJson(json['endDate'] as Map<String, dynamic>),
       episodes: (json['episodes'] as num?)?.toInt(),
       format: json['format'] as String?,
+      status: json['status'] as String?,
       genres:
           (json['genres'] as List<dynamic>?)?.map((e) => e as String).toList(),
       isAdult: json['isAdult'] as bool? ?? false,
@@ -57,6 +58,7 @@ Map<String, dynamic> _$$AnimeImplToJson(_$AnimeImpl instance) =>
       'endDate': instance.endDate,
       'episodes': instance.episodes,
       'format': instance.format,
+      'status': instance.status,
       'genres': instance.genres,
       'isAdult': instance.isAdult,
       'nextAiringEpisode': instance.nextAiringEpisode,
