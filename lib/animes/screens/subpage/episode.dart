@@ -39,30 +39,29 @@ class _EpisodeScreenState extends State<EpisodeScreen>
     return BlocBuilder<AnimeManipCubit, AnimeManipState>(
         builder: (context, state) {
       return AutoListView.get<Episode>(
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom,
-          left: 16,
-          right: 16,
-        ),
-        cubit: _episodeAnimeCubit,
-        itemBuilder: (context, episode) => EpisodeItem(episode: episode),
-        errorBuilder: (context, retry) => Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Text("An error occured"),
-              TextButton(
-                onPressed: retry,
-                child: const Text("Retry"),
-              )
-            ],
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+            left: 16,
+            right: 16,
           ),
-        ),
-      );
+          cubit: _episodeAnimeCubit,
+          itemBuilder: (context, episode) => EpisodeItem(episode: episode),
+          errorBuilder: (context, retry) => Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text("An error occured"),
+                    TextButton(
+                      onPressed: retry,
+                      child: const Text("Retry"),
+                    )
+                  ],
+                ),
+              ));
     });
   }
 }

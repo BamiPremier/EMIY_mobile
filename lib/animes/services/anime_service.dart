@@ -13,6 +13,7 @@ class AnimeService extends ApiService {
   static const String _similar = '/animes/:idAnime/similar';
   static const String _watchlistAdd = '/animes/:idAnime/watchlist';
   static const String _viewerAdd = '/animes/:idAnime/viewed';
+  static const String _shareAnime = '/animes/:idAnime/share';
 
   static const String _likeEpisode = '/animes/:idEpisode/like';
   static const String _commentEpisode = '/animes/:idEpisode/comment';
@@ -30,6 +31,15 @@ class AnimeService extends ApiService {
       '/animes/comment/:idComment/report';
 
   const AnimeService(super._dio);
+
+  Future shareAnime({required int idAnime}) {
+    return compute(
+      dio.post(
+        _shareAnime.replaceAll(':idAnime', idAnime.toString()),
+        options: Options(headers: withAuth()),
+      ),
+    );
+  }
 
   Future<PaginatedList<CommentEpisode>> getCommentsEpisode({
     required int idEpisode,

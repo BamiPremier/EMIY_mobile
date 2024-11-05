@@ -142,6 +142,8 @@ class SearchAnimeDelegate extends SearchDelegate<String> {
       ),
       errorBuilder: (context, retry) => Column(
         mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Text("Une erreur s'est produite"),
           TextButton(

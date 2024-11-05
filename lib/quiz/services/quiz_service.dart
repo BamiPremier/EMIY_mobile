@@ -22,6 +22,14 @@ class QuizService extends ApiService {
         mapper: Quiz.fromJson);
   }
 
+  Future<Quiz> participationQuiz(
+      {required Map<String, dynamic> data, required String idQuiz}) async {
+    return compute(
+        dio.put(_quizUpdate.replaceFirst(':id', idQuiz),
+            options: Options(headers: withAuth()), data: data),
+        mapper: Quiz.fromJson);
+  }
+
   Future<Quiz> quizPublished({required String idQuiz}) async {
     return compute(
         dio.post(_quizPublished.replaceFirst(':id', idQuiz),
@@ -55,7 +63,7 @@ class QuizService extends ApiService {
             options: Options(headers: withAuth()),
             queryParameters: {
               'page': page,
-              'size': size ?? 10,
+              'size': size ?? 610,
             }),
         mapper: (result) => toPaginatedList(result, Quiz.fromJson));
   }

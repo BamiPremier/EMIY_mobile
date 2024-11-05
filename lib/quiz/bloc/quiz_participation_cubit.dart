@@ -55,7 +55,7 @@ class QuizParticipationCubit extends Cubit<QuizParticipationState> {
           stateBefore.questions.indexOf(stateBefore.currentQuestion);
 
       if (currentIndex == stateBefore.questions.length - 1) {
-        emit(QuizParticipationFinishedState(nombrePoints));
+        sendParticipation();
       } else {
         timerCubit.close();
         timerSubscription.cancel();
@@ -83,24 +83,25 @@ class QuizParticipationCubit extends Cubit<QuizParticipationState> {
     }
   }
 
-  void sendParticipation({required Quiz quiz}) async {
+  void sendParticipation() async {
     final stateBefore = state;
+    emit(QuizParticipationLoadingState());
 
-    try {
-      final data = {
-        "quiz_id": quiz.id,
-      };
-      final response = await quizService.newQuiz(data: data);
-
-      // emit(QuizCreatedState(
-      //     quiz: response,
-      //     questions: [],
-      //     anime: (stateBefore is QuizSelectAnimeState)
-      //         ? stateBefore.anime
-      //         : null));
-    } catch (error, trace) {
+    final data = {
+      "score": nombrePoints,
+    };
+    await quizService
+        .participationQuiz(
+            data: data,
+            idQuiz: (stateBefore as QuizParticipationIdleState)
+                .questions
+                .first
+                .quizId)
+        .then((value) {
+      emit(QuizParticipationFinishedState(nombrePoints));
+    }, onError: (error, trace) {
       emit(QuizParticipationErrorState(error, trace));
       emit(stateBefore);
-    }
+    });
   }
 }
