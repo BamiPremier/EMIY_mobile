@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/common/widgets/loaders.dart';
 import 'package:potatoes/libs.dart';
+import 'package:umai/account/screens/external_user_section/activities.dart';
+import 'package:umai/account/screens/external_user_section/animes.dart';
+import 'package:umai/account/screens/external_user_section/posts.dart';
+import 'package:umai/account/screens/external_user_section/quiz_user.dart';
+import 'package:umai/account/screens/external_user_section/watchlist.dart';
 import 'package:umai/account/screens/follow.dart';
-import 'package:umai/account/screens/section/activities.dart';
-import 'package:umai/account/screens/section/animes.dart';
-import 'package:umai/account/screens/section/posts.dart';
-import 'package:umai/account/screens/section/watchlist.dart';
+import 'package:umai/account/screens/current_user_section/activities.dart';
+import 'package:umai/account/screens/current_user_section/animes.dart';
+import 'package:umai/account/screens/current_user_section/posts.dart';
+import 'package:umai/account/screens/current_user_section/quiz_user.dart';
+import 'package:umai/account/screens/current_user_section/watchlist.dart';
 import 'package:umai/common/bloc/follow_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/services/person_cubit_manager.dart';
@@ -78,7 +84,7 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                 ],
               ),
               body: DefaultTabController(
-                length: 4,
+                length: 5,
                 child: Column(children: [
                   const SizedBox(height: 16.0),
                   Padding(
@@ -223,9 +229,9 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                                             .textTheme
                                             .labelLarge!
                                             .copyWith(
-                                              color:
-                                                  Theme.of(context)
-                                            .colorScheme.onTertiaryContainer,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onTertiaryContainer,
                                             ),
                                       ),
                                       child: Row(
@@ -234,7 +240,7 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                                             MainAxisAlignment.center,
                                         children: [
                                           state is PersonLoadingState
-                                              ?   SizedBox(
+                                              ? SizedBox(
                                                   width: 16,
                                                   height: 16,
                                                   child:
@@ -407,15 +413,17 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                       Tab(text: 'Animes'),
                       Tab(text: 'Watchlist'),
                       Tab(text: 'Social'),
+                      Tab(text: 'Quiz'),
                     ],
                   ),
                   const Expanded(
                     child: TabBarView(
                       children: [
-                        ActivityTab(),
-                        AnimesTab(),
-                        WatchList(),
-                        PostTab(),
+                        EActivityTab(),
+                        EAnimesTab(),
+                        EWatchList(),
+                        EPostTab(),
+                        EQuizUserScreen(),
                       ],
                     ),
                   ),

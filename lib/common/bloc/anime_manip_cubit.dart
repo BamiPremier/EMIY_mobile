@@ -38,7 +38,7 @@ class AnimeManipCubit extends ObjectCubit<Anime, AnimeManipState> {
     emit(const AnimeManipWatchlistLoadingState());
     animeService
         .addToWatchList(
-      anime: anime!.id,
+      anime: anime.id,
     )
         .then((updateAnime) {
       emit(WatchListAddSuccesState());
@@ -53,7 +53,7 @@ class AnimeManipCubit extends ObjectCubit<Anime, AnimeManipState> {
     final stateBefore = state;
 
     emit(const AnimeManipViewedLoadingState());
-    animeService.addToViewerList(anime: anime!.id).then((updateAnime) {
+    animeService.addToViewerList(anime: anime.id).then((updateAnime) {
       emit(AnimeViewedAddSuccesState());
       update(updateAnime);
     }, onError: (error, trace) {
@@ -66,7 +66,7 @@ class AnimeManipCubit extends ObjectCubit<Anime, AnimeManipState> {
     final stateBefore = state;
 
     emit(const AnimeManipViewedLoadingState());
-    animeService.removeFromViewed(anime: anime!.id).then((updateAnime) {
+    animeService.removeFromViewed(anime: anime.id).then((updateAnime) {
       emit(AnimeViewedAddSuccesState());
       update(updateAnime);
     }, onError: (error, trace) {
@@ -81,7 +81,7 @@ class AnimeManipCubit extends ObjectCubit<Anime, AnimeManipState> {
     emit(const AnimeManipWatchlistLoadingState());
     animeService
         .removeFromWatchList(
-      anime: anime!.id,
+      anime: anime.id,
     )
         .then((updateAnime) {
       emit(WatchListAddSuccesState());
@@ -90,5 +90,24 @@ class AnimeManipCubit extends ObjectCubit<Anime, AnimeManipState> {
       emit(AnimeManipErrorState(error, trace));
       emit(stateBefore);
     });
+  }
+
+  void shareAnime () {
+    if (state is InitializingAnimeManipState) {
+      final stateBefore = state;
+
+        emit(const ShareAnimeLoadingState());
+      animeService
+          .shareAnime(
+        idAnime: anime.id,
+      )
+          .then((reponse) {
+        emit(ShareAnimeSuccesState(reponse['shareLink']));
+        emit(InitializingAnimeManipState(anime));
+      }, onError: (error, trace) {
+        emit(AnimeManipErrorState(error, trace));
+        emit(stateBefore);
+      });
+    }
   }
 }

@@ -22,7 +22,7 @@ Anime _$AnimeFromJson(Map<String, dynamic> json) {
 mixin _$Anime {
   int get id => throw _privateConstructorUsedError;
   AnimeTitle get title => throw _privateConstructorUsedError;
-  String get description => throw _privateConstructorUsedError;
+  String? get description => throw _privateConstructorUsedError;
   AnimeCoverImage get coverImage => throw _privateConstructorUsedError;
   String? get bannerImage => throw _privateConstructorUsedError;
   @JsonKey(name: 'is_viewed')
@@ -66,7 +66,7 @@ abstract class $AnimeCopyWith<$Res> {
   $Res call(
       {int id,
       AnimeTitle title,
-      String description,
+      String? description,
       AnimeCoverImage coverImage,
       String? bannerImage,
       @JsonKey(name: 'is_viewed') bool isViewed,
@@ -113,7 +113,7 @@ class _$AnimeCopyWithImpl<$Res, $Val extends Anime>
   $Res call({
     Object? id = null,
     Object? title = null,
-    Object? description = null,
+    Object? description = freezed,
     Object? coverImage = null,
     Object? bannerImage = freezed,
     Object? isViewed = null,
@@ -145,10 +145,10 @@ class _$AnimeCopyWithImpl<$Res, $Val extends Anime>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as AnimeTitle,
-      description: null == description
+      description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       coverImage: null == coverImage
           ? _value.coverImage
           : coverImage // ignore: cast_nullable_to_non_nullable
@@ -309,7 +309,7 @@ abstract class _$$AnimeImplCopyWith<$Res> implements $AnimeCopyWith<$Res> {
   $Res call(
       {int id,
       AnimeTitle title,
-      String description,
+      String? description,
       AnimeCoverImage coverImage,
       String? bannerImage,
       @JsonKey(name: 'is_viewed') bool isViewed,
@@ -359,7 +359,7 @@ class __$$AnimeImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? title = null,
-    Object? description = null,
+    Object? description = freezed,
     Object? coverImage = null,
     Object? bannerImage = freezed,
     Object? isViewed = null,
@@ -391,10 +391,10 @@ class __$$AnimeImplCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as AnimeTitle,
-      description: null == description
+      description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       coverImage: null == coverImage
           ? _value.coverImage
           : coverImage // ignore: cast_nullable_to_non_nullable
@@ -522,7 +522,7 @@ class _$AnimeImpl extends _Anime {
   @override
   final AnimeTitle title;
   @override
-  final String description;
+  final String? description;
   @override
   final AnimeCoverImage coverImage;
   @override
@@ -680,7 +680,7 @@ abstract class _Anime extends Anime {
   const factory _Anime(
           {required final int id,
           required final AnimeTitle title,
-          required final String description,
+          required final String? description,
           required final AnimeCoverImage coverImage,
           required final String? bannerImage,
           @JsonKey(name: 'is_viewed') final bool isViewed,
@@ -712,7 +712,7 @@ abstract class _Anime extends Anime {
   @override
   AnimeTitle get title;
   @override
-  String get description;
+  String? get description;
   @override
   AnimeCoverImage get coverImage;
   @override

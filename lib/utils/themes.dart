@@ -11,6 +11,7 @@ abstract class AppTheme {
   static const Color black = Colors.black;
   static const Color lightGrey = Color(0xFFF5F5F5);
   static const Color disabledText = Color(0xFF9F9F9F);
+  static const Color surfacegrey = Color(0xFFD9D9D9);
   static const Color errorRed = Color(0xFFFF0717);
   static const Color green = Color(0xFF00F57A);
   static const Color onHighGreen = Color(0xFF002914);
@@ -21,7 +22,7 @@ abstract class AppTheme {
   static const Color tertiary = Color(0xFF904A42);
   static const Color onTertiaryContainer = Color(0xFF3B0906);
   static const Color mainText = Colors.black;
-
+  static const Color onPrimary = Color(0xFF090909);
   static TextTheme _textTheme(BuildContext context) {
     final arco =
         Theme.of(context).textTheme.apply(fontFamily: Assets.fontsFamilyARCO);
@@ -104,6 +105,7 @@ abstract class AppTheme {
       error: errorRed,
       errorContainer: errorRed,
       brightness: brightness,
+      onPrimary: onPrimary,
     );
   }
 
@@ -149,6 +151,9 @@ abstract class AppTheme {
           color: Color(0xFF4C4639),
           size: 24,
         ),
+      ),
+      textSelectionTheme: const TextSelectionThemeData(
+        cursorColor: primaryYellow,
       ),
       bottomSheetTheme: theme.bottomSheetTheme.copyWith(
         clipBehavior: Clip.antiAlias,

@@ -1,5 +1,3 @@
- 
-
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/account/screens/person_account.dart';
@@ -52,7 +50,7 @@ class UserItem extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
               trailing: const BtnActionItemUser()),
-          onTap: () => canNavigate && (personCubit.user.id == userCubit.user.id)
+          onTap: () => canNavigate && (personCubit.user.id != userCubit.user.id)
               ? Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => PersonAccountScreen.get(
                       context: context, user: personCubit.user)))

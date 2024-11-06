@@ -1,8 +1,7 @@
 import 'package:potatoes/auto_list.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/models/user.dart';
-import 'package:umai/common/services/person_cubit_manager.dart';
-import 'package:umai/common/services/user_service.dart';
+import 'package:umai/common/services/person_cubit_manager.dart'; 
 
 class FollowCubit extends AutoListCubit<User> {
   final source;

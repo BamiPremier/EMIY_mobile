@@ -4,6 +4,7 @@ import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/models/anime.dart';
 import 'package:umai/animes/widgets/item_anime.dart';
+import 'package:umai/auth/bloc/anime_by_genre_cubit.dart';
 import 'package:umai/auth/screens/registration/people.dart';
 import 'package:umai/auth/services/auth_service.dart';
 import 'package:umai/common/widgets/buttons.dart';
@@ -23,6 +24,12 @@ class RegistrationAnimeSelection extends StatefulWidget {
 
 class _RegistrationAnimeSelectionState
     extends State<RegistrationAnimeSelection> {
+  late final animeByGenreCubit = AnimeByGenreCubit(
+    cubitManager: context.read(),
+    authService: context.read(),
+    genres: widget.listGenre,
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,10 +49,7 @@ class _RegistrationAnimeSelectionState
             child: AutoListView.get<Anime>(
               padding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom),
-              cubit: AutoListCubit(
-                  provider: ({int page = 1}) => context
-                      .read<AuthService>()
-                      .getAnimes(page: page, genres: widget.listGenre)),
+              cubit: animeByGenreCubit,
               viewType: ViewType.grid,
               itemBuilder: (context, anime) => AnimeItem.get(
                   context: context, anime: anime, withAction: true),
@@ -68,24 +72,23 @@ class _RegistrationAnimeSelectionState
           )
         ],
       ),
-      bottomNavigationBar:   SafeArea(
-          minimum: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              UmaiButton.primary(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (context) => const PeopleToFollowScreen()),
-                  );
-                },
-                text: "Continuer",
-              ),
-            ],
-          ),
+      bottomNavigationBar: SafeArea(
+        minimum: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            UmaiButton.primary(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (context) => const PeopleToFollowScreen()),
+                );
+              },
+              text: "Continuer",
+            ),
+          ],
         ),
-      
+      ),
     );
   }
 }
