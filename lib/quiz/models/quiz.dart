@@ -35,3 +35,8 @@ class QuizParticipation with _$QuizParticipation {
   factory QuizParticipation.fromJson(Map<String, dynamic> json) =>
       _$QuizParticipationFromJson(json);
 }
+
+abstract class QuizStatus {
+  static const String pending = 'PENDING';
+  static const String published = 'PUBLISHED';
+}
