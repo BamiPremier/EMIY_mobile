@@ -144,8 +144,8 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  //if (quiz.participation == null &&
-                    //  quiz.user.id != context.read<UserCubit>().user.id)
+                  if (quiz.participation == null &&
+                      quiz.user.id != context.read<UserCubit>().user.id)
                     UmaiButton.primary(
                       onPressed: participer,
                       text: "Participer",
