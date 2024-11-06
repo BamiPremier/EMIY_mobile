@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
-import 'package:umai/account/bloc/post_user_cubit.dart'; 
+import 'package:umai/account/bloc/post_user_cubit.dart';
 import 'package:umai/social/model/post.dart';
 import 'package:umai/social/widget/item_post.dart';
 
@@ -14,7 +14,10 @@ class PostTab extends StatefulWidget {
 }
 
 class _PostTabState extends State<PostTab> with CompletableMixin {
-  late final postUserCubit = PostUserCubit(context.read(), context.read());
+  late final postUserCubit = PostUserCubit(
+    cubitManager: context.read(),
+    userService: context.read(),
+  );
 
   @override
   Widget build(BuildContext context) {

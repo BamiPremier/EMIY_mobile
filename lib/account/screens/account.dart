@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/common/widgets/loaders.dart';
-import 'package:potatoes/libs.dart'; 
+import 'package:potatoes/libs.dart';
 import 'package:umai/account/screens/edit_profile.dart';
 import 'package:umai/account/screens/follow.dart';
 import 'package:umai/account/screens/param/settings_screen.dart';
-import 'package:umai/account/screens/section/activities.dart';
-import 'package:umai/account/screens/section/animes.dart';
-import 'package:umai/account/screens/section/posts.dart';
-import 'package:umai/account/screens/section/watchlist.dart';
+import 'package:umai/account/screens/current_user_section/activities.dart';
+import 'package:umai/account/screens/current_user_section/animes.dart';
+import 'package:umai/account/screens/current_user_section/posts.dart';
+import 'package:umai/account/screens/current_user_section/quiz_user.dart';
+import 'package:umai/account/screens/current_user_section/watchlist.dart';
 import 'package:umai/auth/screens/onboarding_screen.dart';
 import 'package:umai/common/bloc/follow_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
@@ -41,7 +42,6 @@ class _AccountScreenState extends State<AccountScreen>
 
   late final followingCubit = FollowCubit(
       context.read<UserService>().getUserFollowing(), context.read());
- 
 
   @override
   void dispose() {
@@ -68,7 +68,7 @@ class _AccountScreenState extends State<AccountScreen>
                 ],
               ),
               body: DefaultTabController(
-                length: 4,
+                length: 5,
                 child: Column(children: [
                   const SizedBox(height: 16.0),
                   Padding(
@@ -261,6 +261,7 @@ class _AccountScreenState extends State<AccountScreen>
                       Tab(text: 'Animes'),
                       Tab(text: 'Watchlist'),
                       Tab(text: 'Social'),
+                      Tab(text: 'Quiz'),
                     ],
                   ),
                   const Expanded(
@@ -270,6 +271,7 @@ class _AccountScreenState extends State<AccountScreen>
                         AnimesTab(),
                         WatchList(),
                         PostTab(),
+                        QuizUserScreen(),
                       ],
                     ),
                   ),

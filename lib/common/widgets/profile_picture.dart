@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:potatoes/libs.dart';
@@ -55,8 +54,10 @@ class UserProfilePicture extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<UserCubit, UserState>(
       buildWhen: (_, state) => state is UserLoggedState,
-      builder: (_, __) => ProfilePicture(
-        image: context.read<UserCubit>().user.image,
+      builder: (_, state) => ProfilePicture(
+        image: state is! CompleteUserProfileState
+            ? context.read<UserCubit>().user.image
+            : null,
         height: height,
         width: width,
       ),

@@ -8,13 +8,16 @@ import 'package:umai/common/services/user_service.dart';
 class UserWatchlistCubit extends AutoListCubit<Anime> {
   final UserService userService;
   final AnimeCubitManager cubitManager;
+  final String? userId;
 
-  UserWatchlistCubit(
-    this.cubitManager,
-    this.userService,
-  ) : super(
+  UserWatchlistCubit({
+    required this.cubitManager,
+    required this.userService,
+    this.userId,
+  }) : super(
             provider: ({page = 1}) => userService.getWatchList(
                   page: page,
+                  userId: userId,
                 ));
 
   @override

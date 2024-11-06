@@ -10,7 +10,7 @@ class QuizService extends ApiService {
   static const String _quizFeed = '/quiz/feed';
   static const String _quizQuestion = '/quiz/:id/question';
   static const String _quizQuestions = '/quiz/:id/questions';
-  static const String _quizQuestionsUpdate = '/quiz/:id/questions/{questionId}';
+  static const String _quizQuestionsUpdate = '/quiz/:id/question/:questionId';
   static const String _quizPublished = '/quiz/:id/publish';
   static const String _quizFeedByUser = '/quiz/user';
   static const String _quizRanking = '/quiz/:id/ranking';
@@ -85,6 +85,22 @@ class QuizService extends ApiService {
         mapper: QuizQuestionResponse.fromJson);
   }
 
+  Future<QuizQuestionResponse> updateQuestion(
+      {required FormData data,
+      required String idQuiz,
+      required String idQuestion}) async {
+    return compute(
+        dio.patch(
+            _quizQuestionsUpdate
+                .replaceFirst(':id', idQuiz)
+                .replaceFirst(':questionId', idQuestion),
+            options: Options(headers: {
+              ...withAuth(),
+            }),
+            data: data),
+        mapper: QuizQuestionResponse.fromJson);
+  }
+
   Future<PaginatedList<Quiz>> getQuizsAnime(
       {int page = 1, int? size, required String animeId}) async {
     return compute(
@@ -92,7 +108,7 @@ class QuizService extends ApiService {
             options: Options(headers: withAuth()),
             queryParameters: {
               'page': page,
-              'size': size ?? 610,
+              'size': size ?? 10,
             }),
         mapper: (result) => toPaginatedList(result, Quiz.fromJson));
   }

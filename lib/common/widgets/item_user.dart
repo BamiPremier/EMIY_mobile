@@ -1,5 +1,3 @@
- 
-
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/account/screens/person_account.dart';
@@ -34,8 +32,7 @@ class UserItem extends StatelessWidget {
 
         final personCubit = context.read<PersonCubit>();
         return GestureDetector(
-          child:
-           ListTile(
+          child: ListTile(
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
               leading: ProfilePicture(
@@ -53,7 +50,7 @@ class UserItem extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
               trailing: const BtnActionItemUser()),
-          onTap: () => canNavigate && (personCubit.user.id == userCubit.user.id)
+          onTap: () => canNavigate && (personCubit.user.id != userCubit.user.id)
               ? Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => PersonAccountScreen.get(
                       context: context, user: personCubit.user)))

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:potatoes/libs.dart';
 
 class QuestionQuiz extends Equatable {
+  final String? id;
   final String label;
   final String? image;
   final List<QuizResponse> responses;
@@ -10,6 +11,7 @@ class QuestionQuiz extends Equatable {
   const QuestionQuiz({
     required this.label,
     this.image,
+    this.id,
     required this.responses,
     required this.correctAnswerIndex,
   });

@@ -3,11 +3,13 @@ import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/common/widgets/loaders.dart';
 import 'package:potatoes/libs.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:umai/account/screens/current_user_section/quiz/update_quiz_after_publish.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/widgets/action_widget.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/quiz/bloc/load_quiz_ranking_cubit.dart';
+import 'package:umai/quiz/bloc/quiz_cubit.dart';
 import 'package:umai/quiz/bloc/quiz_manage_cubit.dart';
 import 'package:umai/quiz/bloc/quiz_question_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
@@ -44,6 +46,7 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
   late final Quiz quiz = quizManageCubit.quiz;
   late final QuizQuestionCubit quizQuestionCubit =
       context.read<QuizQuestionCubit>();
+  late final quizCubit = context.read<QuizCubit>();
 
   @override
   void initState() {
@@ -54,99 +57,126 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
   Widget build(BuildContext context) {
     return BlocConsumer<QuizQuestionCubit, QuizQuestionState>(
       listener: onEventReceived,
-      builder: (context, stateQuizQuestion) => Scaffold(
-        body: CustomScrollView(
-          slivers: [
-            const HeadQuiz(),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding:
-                    const EdgeInsets.only(top: 8.0, left: 16.0, right: 16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const QuizInfo(),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 32.0, bottom: 8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Classement",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.titleSmall),
-                          Divider(
-                            color: Theme.of(context).colorScheme.outlineVariant,
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: AutoListView.get<QuizParticipation>(
-                shrinkWrap: true,
-                padding: EdgeInsets.zero,
-                physics: const NeverScrollableScrollPhysics(),
-                cubit: LoadQuizRankingCubit(
-                  context.read<QuizService>(),
-                  quiz.id,
-                ),
-                itemBuilder: (context, quizParticipation) =>
-                    UserItemQuiz(quizParticipation: quizParticipation),
-                loadingBuilder: (context) => Container(
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.all(16),
-                    child: LinearProgressIndicator(
-                      color: Theme.of(context).colorScheme.onTertiaryContainer,
-                      backgroundColor:
-                          Theme.of(context).colorScheme.tertiaryContainer,
-                      borderRadius: BorderRadius.circular(30),
-                    )),
-                loadingMoreBuilder: (context) => Container(
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.all(16),
-                    child: LinearProgressIndicator(
-                      color: Theme.of(context).colorScheme.onTertiaryContainer,
-                      backgroundColor:
-                          Theme.of(context).colorScheme.tertiaryContainer,
-                      borderRadius: BorderRadius.circular(30),
-                    )),
-                errorBuilder: (context, retry) => Align(
-                  alignment: Alignment.center,
+      builder: (context, stateQuizQuestion) =>
+          BlocListener<QuizCubit, QuizState>(
+        listener: onEventReceivedQuiz,
+        child: Scaffold(
+          body: CustomScrollView(
+            slivers: [
+              const HeadQuiz(),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.only(top: 8.0, left: 16.0, right: 16.0),
                   child: Column(
-                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text("Une erreur est survenue"),
-                      TextButton(
-                        onPressed: retry,
-                        child: const Text("Réessayer"),
-                      )
+                      const QuizInfo(),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 32.0, bottom: 8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Classement",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.titleSmall),
+                            Divider(
+                              color:
+                                  Theme.of(context).colorScheme.outlineVariant,
+                            )
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-        bottomNavigationBar: SafeArea(
-          minimum: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (quiz.participation == null &&
-                  quiz.user.id != context.read<UserCubit>().user.id)
-                UmaiButton.primary(
-                  onPressed: participer,
-                  text: "Participer",
+              SliverToBoxAdapter(
+                child: AutoListView.get<QuizParticipation>(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
+                  physics: const NeverScrollableScrollPhysics(),
+                  cubit: LoadQuizRankingCubit(
+                    context.read<QuizService>(),
+                    quiz.id,
+                  ),
+                  itemBuilder: (context, quizParticipation) =>
+                      UserItemQuiz(quizParticipation: quizParticipation),
+                  loadingBuilder: (context) => Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(16),
+                      child: LinearProgressIndicator(
+                        color:
+                            Theme.of(context).colorScheme.onTertiaryContainer,
+                        backgroundColor:
+                            Theme.of(context).colorScheme.tertiaryContainer,
+                        borderRadius: BorderRadius.circular(30),
+                      )),
+                  loadingMoreBuilder: (context) => Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(16),
+                      child: LinearProgressIndicator(
+                        color:
+                            Theme.of(context).colorScheme.onTertiaryContainer,
+                        backgroundColor:
+                            Theme.of(context).colorScheme.tertiaryContainer,
+                        borderRadius: BorderRadius.circular(30),
+                      )),
+                  errorBuilder: (context, retry) => Align(
+                    alignment: Alignment.center,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text("Une erreur est survenue"),
+                        TextButton(
+                          onPressed: retry,
+                          child: const Text("Réessayer"),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
+              ),
             ],
+          ),
+          bottomNavigationBar: SafeArea(
+            minimum:
+                const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (quiz.participation == null &&
+                    quiz.user.id != context.read<UserCubit>().user.id)
+                  UmaiButton.primary(
+                    onPressed: participer,
+                    text: "Participer",
+                  ),
+                if (quiz.participation == null &&
+                    (quiz.status != 'PUBLISHED' &&
+                        quiz.user.id == context.read<UserCubit>().user.id))
+                  UmaiButton.primary(
+                    onPressed: () => quizCubit.toUpdateThisQuiz(quiz: quiz),
+                    text: "Editer",
+                  ),
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  void onEventReceivedQuiz(BuildContext context, QuizState state) async {
+    await waitForDialog();
+    print(state);
+    if (state is QuizUpdateState) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => const UpdateQuizAfterPublishScreen()),
+      );
+    }
   }
 
   void participer() => showAppBottomSheet(

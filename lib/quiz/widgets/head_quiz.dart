@@ -11,7 +11,7 @@ import 'package:umai/quiz/bloc/quiz_cubit.dart';
 import 'package:umai/quiz/bloc/quiz_manage_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/screens/new/new_quiz.dart';
-import 'package:umai/quiz/screens/new/update_quiz_after_publish.dart';
+import 'package:umai/account/screens/current_user_section/quiz/update_quiz_after_publish.dart';
 import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/themes.dart';
@@ -31,10 +31,7 @@ class _HeadQuizState extends State<HeadQuiz> with CompletableMixin {
   Widget build(BuildContext context) {
     return BlocConsumer<QuizManageCubit, QuizManageState>(
         listener: onEventReceived,
-        builder: (context, stateQuizManage) => BlocListener<QuizCubit,
-                QuizState>(
-            listener: onEventReceivedQuiz,
-            child: SliverAppBar(
+        builder: (context, stateQuizManage) => SliverAppBar(
               backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
               expandedHeight: 200,
               systemOverlayStyle: Theme.of(context)
@@ -96,20 +93,9 @@ class _HeadQuizState extends State<HeadQuiz> with CompletableMixin {
                   icon: const Icon(Icons.more_vert),
                 ),
               ],
-            )));
+            ));
   }
 
-  void onEventReceivedQuiz(BuildContext context, QuizState state) async {
-    await waitForDialog();
-    print(state);
-    if (state is QuizUpdateState) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => const UpdateQuizAfterPublishScreen()),
-      );
-    }
-  }
 
   void onEventReceived(BuildContext context, QuizManageState state) async {
     await waitForDialog();
@@ -139,15 +125,7 @@ class _HeadQuizState extends State<HeadQuiz> with CompletableMixin {
                 icon: Icons.share_outlined,
                 onTap: () => quizManageCubit.shareQuiz(),
               ),
-              const SizedBox(
-                height: 16,
-              ),
-              if (quiz.user.id == context.read<UserCubit>().user.id)
-                ActionWidget(
-                  title: 'Editer',
-                  icon: Icons.edit_outlined,
-                  onTap: () => quizCubit.toUpdateThisQuiz(quiz: quiz),
-                ),
+              
               const SizedBox(
                 height: 16,
               ),

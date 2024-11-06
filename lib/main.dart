@@ -9,7 +9,7 @@ import 'package:potatoes_secured_preferences/potatoes_secured_preferences.dart';
 import 'package:umai/animes/services/anime_cubit_manager.dart';
 import 'package:umai/animes/services/anime_service.dart';
 import 'package:umai/auth/bloc/auth_cubit.dart';
-import 'package:umai/auth/screens/onboarding_screen.dart'; 
+import 'package:umai/auth/screens/onboarding_screen.dart';
 import 'package:umai/auth/screens/registration/username.dart';
 import 'package:umai/auth/services/auth_service.dart';
 import 'package:umai/common/bloc/home_cubit.dart';
@@ -21,6 +21,7 @@ import 'package:umai/common/services/person_cubit_manager.dart';
 import 'package:umai/common/services/preferences_service.dart';
 import 'package:umai/common/services/user_service.dart';
 import 'package:umai/firebase_options.dart';
+import 'package:umai/quiz/bloc/create_quiz_question_cubit.dart';
 import 'package:umai/quiz/bloc/quiz_cubit.dart';
 import 'package:umai/quiz/bloc/quiz_question_cubit.dart';
 import 'package:umai/quiz/bloc/timer_cubit.dart';
@@ -97,7 +98,8 @@ class MyApp extends StatelessWidget {
         RepositoryProvider(
             create: (context) => AnimeCubitManager(context.read())),
         RepositoryProvider(create: (context) => QuizService(dio)),
-        RepositoryProvider(create: (context) => QuizManageCubitManager(context.read())),
+        RepositoryProvider(
+            create: (context) => QuizManageCubitManager(context.read())),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -120,6 +122,11 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
               create: (context) => QuizQuestionCubit(
+                    context.read(),
+                  )),
+          BlocProvider(
+              create: (context) => CreateQuizQuestionCubit(
+                    context.read(),
                     context.read(),
                   )),
         ],

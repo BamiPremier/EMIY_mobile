@@ -174,30 +174,20 @@ class QuizCubit extends Cubit<QuizState> {
     if (state is! QuizCreatedState) return;
     final stateBefore = state;
 
-    try {
-      emit(const QuizLoadingState());
+    final updatedQuestions =
+        (stateBefore as QuizCreatedState).questions.map((q) {
+      return q.id == question.id ? question : q;
+    }).toList();
 
-      var data = FormData.fromMap({
-        ...question.toFormData(),
-        if (question.image != null && question.image!.isNotEmpty)
-          "image": await MultipartFile.fromFile(question.image!,
-              filename: basename(question.image!))
-      });
-      final response = await quizService.addQuestion(
-          data: data, idQuiz: (stateBefore as QuizCreatedState).quiz.id);
-      final updatedQuestion = QuestionQuiz(
-          label: question.label,
-          image: response.image,
-          responses: question.responses,
-          correctAnswerIndex: question.correctAnswerIndex);
-      question = updatedQuestion;
-      emit(QuizCreatedState(
-          anime: (stateBefore).anime,
-          quiz: (stateBefore).quiz,
-          questions: [...(stateBefore).questions, question]));
-    } catch (error, trace) {
-      emit(QuizErrorState(error, trace));
-      emit(stateBefore);
+    if (!(stateBefore as QuizCreatedState)
+        .questions
+        .any((q) => q.id == question.id)) {
+      updatedQuestions.add(question);
     }
+
+    emit(QuizCreatedState(
+        anime: (stateBefore as QuizCreatedState).anime,
+        quiz: (stateBefore as QuizCreatedState).quiz,
+        questions: updatedQuestions));
   }
 }

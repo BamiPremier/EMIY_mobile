@@ -3,20 +3,21 @@ import 'package:potatoes/libs.dart';
 import 'package:umai/animes/models/anime.dart';
 import 'package:umai/animes/services/anime_cubit_manager.dart';
 import 'package:umai/animes/services/anime_service.dart';
+import 'package:umai/auth/services/auth_service.dart';
 import 'package:umai/common/services/user_service.dart';
 
-class UserAnimeCubit extends AutoListCubit<Anime> {
-  final UserService userService;
+class AnimeByGenreCubit extends AutoListCubit<Anime> {
+  final AuthService authService;
   final AnimeCubitManager cubitManager;
-  final String? userId;
-  UserAnimeCubit({
+  final List<String> genres;
+  AnimeByGenreCubit({
     required this.cubitManager,
-    required this.userService,
-    this.userId,
+    required this.authService,
+    required this.genres,
   }) : super(
-            provider: ({page = 1}) => userService.getAnimeViewed(
+            provider: ({page = 1}) => authService.getAnimes(
                   page: page,
-                  userId: userId,
+                  genres: genres,
                 ));
 
   @override
