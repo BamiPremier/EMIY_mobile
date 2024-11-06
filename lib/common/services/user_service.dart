@@ -14,6 +14,7 @@ class UserService extends ApiService {
   static const String _follow = '/users/follow';
   static const String _unfollow = '/users/unfollow';
   static const String _block = '/users/:userId/block';
+  static const String _unblock = '/users/:userId/unblock';
   static const String _blockedUsers = '/users/block';
   static const String _updateUser = '/users';
   static const String _updateProfilePicture = '/users/picture';
@@ -70,25 +71,25 @@ class UserService extends ApiService {
         mapper: (result) => toPaginatedList(result, User.fromJson));
   }
 
-   Future<User> blockUser({required user}) async {
+  Future<User> blockUser({required user}) async {
     return compute(
-      dio.post(
-        _block.replaceAll(':userId', user),
-        data: {
-          'reason': null,
-        },
-        options: Options(headers: withAuth()),
-      ),     mapper: User.fromJson
-    );
+        dio.post(
+          _block.replaceAll(':userId', user),
+          data: {
+            'reason': null,
+          },
+          options: Options(headers: withAuth()),
+        ),
+        mapper: User.fromJson);
   }
 
-  unBlockUser({required user}) async {
+  Future<User> unBlockUser({required user}) async {
     return compute(
-      dio.post(
-        _block.replaceAll(':userId', user),
-        options: Options(headers: withAuth()),
-      ),
-    );
+        dio.post(
+          _unblock.replaceAll(':userId', user),
+          options: Options(headers: withAuth()),
+        ),
+        mapper: User.fromJson);
   }
 
   Future<User> updateUser({

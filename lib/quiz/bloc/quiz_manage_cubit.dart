@@ -46,6 +46,25 @@ class QuizManageCubit extends ObjectCubit<Quiz, QuizManageState> {
     }
   }
 
+  void reportQuiz({required String reason}) {
+    if (state is InitializingQuizManageState) {
+      final stateBefore = state;
+
+      emit(const SendQuizRepportLoadingState());
+      quizService
+          .reportQuiz(
+        idQuiz: quiz.id,
+        reason: reason,
+      )
+          .then((_) {
+        emit(SuccessSendQuizRepportPostState(quiz));
+      }, onError: (error, trace) {
+        emit(QuizManageErrorState(error, trace));
+        emit(stateBefore);
+      });
+    }
+  }
+
   @override
   void update(Quiz object) {
     emit(InitializingQuizManageState(object));

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/common/widgets/loaders.dart';
 import 'package:potatoes/libs.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/widgets/action_widget.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
@@ -21,18 +22,17 @@ import 'package:umai/utils/dialogs.dart';
 const quizRouteName = 'quiz_details';
 
 class QuizDetailScreen extends StatefulWidget {
-  final Quiz quiz;
   static Widget get({
     required BuildContext context,
     required Quiz quiz,
   }) {
     return BlocProvider.value(
       value: context.read<QuizManageCubitManager>().get(quiz),
-      child: QuizDetailScreen._(quiz: quiz),
+      child: QuizDetailScreen._(),
     );
   }
 
-  const QuizDetailScreen._({required this.quiz});
+  const QuizDetailScreen._();
   @override
   State<QuizDetailScreen> createState() => _QuizDetailScreenState();
 }
@@ -57,7 +57,7 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
       builder: (context, stateQuizQuestion) => Scaffold(
         body: CustomScrollView(
           slivers: [
-            HeadQuiz(),
+            const HeadQuiz(),
             SliverToBoxAdapter(
               child: Padding(
                 padding:
@@ -65,7 +65,7 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    QuizInfo(),
+                    const QuizInfo(),
                     Padding(
                       padding: const EdgeInsets.only(top: 32.0, bottom: 8.0),
                       child: Column(
@@ -182,7 +182,7 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
                 UmaiButton.primary(
                   onPressed: () {
                     Navigator.of(context).pop();
-                    quizQuestionCubit.getQuizQuestions(quiz: widget.quiz);
+                    quizQuestionCubit.getQuizQuestions(quiz: quiz);
                   },
                   text: "Commencer",
                 ),
@@ -199,9 +199,7 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
       if (state.questions.isNotEmpty) {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => QuizParticipationScreen.get(
-                context: context,
-                quiz: widget.quiz,
-                questions: state.questions)));
+                context: context, quiz: quiz, questions: state.questions)));
       } else {
         showErrorToast(content: "Aucune question trouvée", context: context);
       }
@@ -209,37 +207,4 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
       showErrorToast(content: state.error, context: context);
     }
   }
-
-  void actionsOptions() => showAppBottomSheet(
-      context: context,
-      horizontalPadding: 16.0,
-      builder: (_) => Padding(
-          padding: const EdgeInsets.only(top: 24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ActionWidget(
-                title: 'Partager...',
-                icon: Icons.share_outlined,
-                onTap: () => print(''),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              ActionWidget(
-                title: 'Editer',
-                icon: Icons.edit_outlined,
-                onTap: () => print(''),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              ActionWidget(
-                title: 'Signaler',
-                icon: Icons.report_gmailerrorred_rounded,
-                onTap: () => print(''),
-              ),
-            ],
-          )));
 }

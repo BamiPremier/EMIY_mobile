@@ -3,6 +3,7 @@ import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
+import 'package:umai/account/bloc/user_watxhlist_cubit.dart';
 import 'package:umai/animes/models/anime.dart';
 import 'package:umai/animes/widgets/item_anime.dart';
 import 'package:umai/common/services/user_service.dart';
@@ -15,13 +16,16 @@ class WatchList extends StatefulWidget {
 }
 
 class _WatchListState extends State<WatchList> with CompletableMixin {
+  late final userWatchlistCubit = UserWatchlistCubit(
+    context.read(),
+    context.read(),
+  );
   @override
   Widget build(BuildContext context) {
     return AutoListView.get<Anime>(
         padding:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-        cubit:
-            AutoListCubit(provider: context.read<UserService>().getWatchList),
+        cubit: userWatchlistCubit,
         viewType: ViewType.grid,
         itemBuilder: (context, anime) =>
             AnimeItem.get(context: context, anime: anime, withAction: true),

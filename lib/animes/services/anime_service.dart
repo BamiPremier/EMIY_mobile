@@ -96,7 +96,7 @@ class AnimeService extends ApiService {
       mapper: CommentEpisode.fromJson,
     );
   }
- 
+
   Future<PaginatedList<CommentEpisode>> getCommentsResponseEpisode({
     required String commentId,
     int page = 1,
@@ -207,7 +207,7 @@ class AnimeService extends ApiService {
             options: Options(headers: withAuth()),
             queryParameters: {
               'page': page,
-              'size': size ?? 10,
+              'size': size ?? 5,
             }),
         mapper: (result) => toPaginatedList(result, Anime.fromJson));
   }

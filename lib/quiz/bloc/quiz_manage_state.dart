@@ -45,3 +45,18 @@ class QuizManagePublishedState extends CubitInformationState
 class QuizManageErrorState extends CubitErrorState with QuizManageState {
   QuizManageErrorState(super.error, [super.trace]);
 }
+
+class SendQuizRepportLoadingState extends CubitLoadingState
+    with QuizManageState {
+  const SendQuizRepportLoadingState() : super();
+}
+
+class SuccessSendQuizRepportPostState extends CubitSuccessState
+    with QuizManageState {
+  final Quiz quiz;
+
+  const SuccessSendQuizRepportPostState(this.quiz);
+
+  @override
+  List<Object?> get props => [quiz];
+}

@@ -15,7 +15,7 @@ class SimilarScreen extends StatefulWidget {
   }) {
     return BlocProvider.value(
       value: context.read<AnimeCubitManager>().get(anime),
-      child: SimilarScreen._(),
+      child: const SimilarScreen._(),
     );
   }
 
@@ -44,12 +44,12 @@ class _SimilarScreenState extends State<SimilarScreen>
         viewType: ViewType.grid,
         itemBuilder: (context, anime) =>
             AnimeItem.get(context: context, anime: anime, withAction: false),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
             crossAxisSpacing: 2.0,
             mainAxisSpacing: 2.0,
             childAspectRatio: .65),
-        physics: const NeverScrollableScrollPhysics(),
+
         shrinkWrap: true,
         errorBuilder: (context, retry) => Column(
           mainAxisSize: MainAxisSize.min,

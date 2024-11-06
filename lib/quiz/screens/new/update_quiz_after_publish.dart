@@ -10,16 +10,18 @@ import 'package:umai/quiz/screens/new/editing_quiz.dart';
 import 'package:umai/quiz/screens/new/search_anime_delegate.dart';
 import 'package:umai/utils/dialogs.dart';
 
-class NewQuizScreen extends StatefulWidget {
-  const NewQuizScreen({
+class UpdateQuizAfterPublishScreen extends StatefulWidget {
+  const UpdateQuizAfterPublishScreen({
     super.key,
   });
 
   @override
-  State<NewQuizScreen> createState() => _NewQuizScreenState();
+  State<UpdateQuizAfterPublishScreen> createState() =>
+      _UpdateQuizAfterPublishScreenState();
 }
 
-class _NewQuizScreenState extends State<NewQuizScreen> with CompletableMixin {
+class _UpdateQuizAfterPublishScreenState
+    extends State<UpdateQuizAfterPublishScreen> with CompletableMixin {
   final TextEditingController _titreController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
@@ -53,18 +55,10 @@ class _NewQuizScreenState extends State<NewQuizScreen> with CompletableMixin {
       listener: onEventReceived,
       builder: (context, state) => Scaffold(
         appBar: AppBar(
-          title: Text(quizCubit.state is QuizUpdateState
-              ? "Modifier le quiz"
-              : "Nouveau Quiz"),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              if (state is QuizUpdateState) {
-                quizCubit.resetState();
-              }
-              Navigator.pop(context);
-            },
+          leading: BackButton(
+            onPressed: () => quizCubit.resetState(),
           ),
+          title: const Text("Modifier le quiz"),
         ),
         body: Form(
           key: _formKey,
@@ -198,16 +192,6 @@ class _NewQuizScreenState extends State<NewQuizScreen> with CompletableMixin {
                       title: _titreController.text,
                       description: _descriptionController.text,
                     );
-
-                    // widget.isEdit
-                    //     ? quizCubit.updateQuiz(
-                    //         title: _titreController.text,
-                    //         description: _descriptionController.text,
-                    //       )
-                    //     : quizCubit.createQuiz(
-                    //         title: _titreController.text,
-                    //         description: _descriptionController.text,
-                    //       );
                   }
                 },
                 text: "Suivant",
@@ -225,10 +209,7 @@ class _NewQuizScreenState extends State<NewQuizScreen> with CompletableMixin {
     if (state is QuizLoadingState) {
       loadingDialogCompleter = showLoadingBarrier(context: context);
     } else if (state is QuizCreatedState) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => EditingQuizScreen(state.quiz)),
-      );
+      Navigator.pop(context);
     } else if (state is QuizErrorState) {
       showErrorToast(content: state.error, context: context);
     }

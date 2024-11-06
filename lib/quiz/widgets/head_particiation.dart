@@ -90,6 +90,52 @@ class _HeadParticipationState extends State<HeadParticipation>
           );
         }
         final state = stateParticipation;
+        if (state.currentQuestion.image == null ||
+            state.currentQuestion.image == '') {
+          return SliverAppBar(
+            systemOverlayStyle: Theme.of(context)
+                .appBarTheme
+                .systemOverlayStyle
+                ?.copyWith(statusBarIconBrightness: Brightness.light),
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+              background: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Container(
+                      height: MediaQuery.of(context).viewPadding.top +
+                          kToolbarHeight,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Theme.of(context).colorScheme.inverseSurface,
+                            Colors.transparent
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            leading: const BackButton(
+              color: AppTheme.white,
+            ),
+            actions: [
+              IconButton(
+                padding: EdgeInsets.zero,
+                onPressed: () => actionsOptions(),
+                color: AppTheme.white,
+                icon: const Icon(Icons.more_vert),
+              ),
+            ],
+          );
+        }
+
         return SliverAppBar(
           backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
           expandedHeight: 200,
