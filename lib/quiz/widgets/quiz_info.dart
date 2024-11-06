@@ -1,0 +1,123 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:potatoes/libs.dart';
+import 'package:umai/account/screens/person_account.dart';
+import 'package:umai/animes/screens/anime_details.dart';
+import 'package:umai/common/widgets/profile_picture.dart';
+import 'package:umai/quiz/bloc/quiz_manage_cubit.dart';
+import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/themes.dart';
+import 'package:umai/quiz/models/quiz.dart';
+
+class QuizInfo extends StatefulWidget {
+  const QuizInfo({super.key});
+
+  @override
+  State<QuizInfo> createState() => _QuizInfoState();
+}
+
+class _QuizInfoState extends State<QuizInfo>
+    with SingleTickerProviderStateMixin {
+  late final quizManageCubit = context.read<QuizManageCubit>();
+
+  final isCollapsed = ValueNotifier<bool>(true);
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<QuizManageCubit, QuizManageState>(
+        builder: (context, state) {
+      final Quiz quiz = quizManageCubit.quiz;
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text(
+            quiz.title,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            quiz.description,
+            style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                  color: AppTheme.disabledText,
+                ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          if (quiz.anime != null) const SizedBox(height: 16),
+          if (quiz.anime != null)
+            GestureDetector(
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => AnimeDetailScreen.get(
+                      context: context, anime: quiz.anime!))),
+              child: Row(
+                children: [
+                  SvgPicture.asset(
+                    Assets.iconStar,
+                  ),
+                  const SizedBox(width: 8),
+                  Flexible(
+                    child: Text(
+                      quiz.anime!.title.romaji,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  if (quiz.anime!.isInWatchlist || quiz.anime!.isViewed)
+                    SvgPicture.asset(
+                      Assets.iconBookmark,
+                    ),
+                ],
+              ),
+            ),
+          if (quiz.user != null) const SizedBox(height: 16),
+          if (quiz.user != null)
+            GestureDetector(
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => PersonAccountScreen.get(
+                      context: context, user: quiz.user))),
+              child: Row(
+                children: [
+                  ProfilePicture(
+                    image: quiz.user.image,
+                    height: 20,
+                    width: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  Flexible(
+                    child: Text(
+                      quiz.user.username,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          if (quiz.participation != null) const SizedBox(height: 16),
+          if (quiz.participation != null)
+            Row(
+              children: [
+                Icon(
+                  Icons.edit_outlined,
+                  size: 20,
+                  color: Theme.of(context).colorScheme.surfaceTint,
+                ),
+                const SizedBox(width: 8),
+                Flexible(
+                  child: Text(
+                    "${quiz.participation!.score} points • ${quiz.participation!.rank}${quiz.participation!.rank == 1 ? 'er' : 'e'}",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ),
+              ],
+            ),
+        ],
+      );
+    });
+  }
+}

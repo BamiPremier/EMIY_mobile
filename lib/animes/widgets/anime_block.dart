@@ -11,40 +11,37 @@ class AnimeBlock extends StatefulWidget {
   final AnimeBlockFilter? filter;
   final AnimeBlockType type;
 
-  const AnimeBlock({
-    super.key,
-    required this.title,
-    required this.filter
-  }) : type = AnimeBlockType.regular;
+  const AnimeBlock({super.key, required this.title, required this.filter})
+      : type = AnimeBlockType.regular;
 
   const AnimeBlock.empty({
     super.key,
     required this.title,
-  }) : type = AnimeBlockType.empty, filter = null;
+  })  : type = AnimeBlockType.empty,
+        filter = null;
 
   const AnimeBlock.skinless({
     super.key,
     required this.filter,
-  }) : type = AnimeBlockType.skinless, title = '';
+  })  : type = AnimeBlockType.skinless,
+        title = '';
 
   @override
   State<AnimeBlock> createState() => _AnimeBlockState();
 }
 
 class _AnimeBlockState extends State<AnimeBlock> {
-  late final cubit = CategoryAnimeCubit(
-    context.read(),
-    context.read(),
-    widget.filter?.name ?? '',
-    widget.type == AnimeBlockType.skinless ? 9 : null
-  );
+   late final cubit = CategoryAnimeCubit(
+      context.read(),
+      context.read(),
+      widget.filter?.name ?? '',
+      widget.type == AnimeBlockType.skinless ? 9 : null);
 
   final gridDelegate = const SliverGridDelegateWithFixedCrossAxisCount(
-    crossAxisCount: 3,
-    crossAxisSpacing: 2.0,
-    mainAxisSpacing: 2.0,
-    childAspectRatio: .65
-  );
+      crossAxisCount: 3,
+      crossAxisSpacing: 2.0,
+      mainAxisSpacing: 2.0,
+      childAspectRatio: .65);
 
   Widget headerBuilder(BuildContext context, SliverStickyHeaderState state) {
     return Container(
@@ -55,25 +52,21 @@ class _AnimeBlockState extends State<AnimeBlock> {
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(
-            color: state.isPinned
-              ? Theme.of(context).colorScheme.tertiaryContainer
-              : Theme.of(context).colorScheme.outline,
-            width: 2.0
-          ),
+              color: state.isPinned
+                  ? Theme.of(context).colorScheme.tertiaryContainer
+                  : Theme.of(context).colorScheme.outline,
+              width: 2.0),
           borderRadius: BorderRadius.circular(100),
           color: state.isPinned
-            ? Theme.of(context).colorScheme.tertiaryContainer
-            : null,
+              ? Theme.of(context).colorScheme.tertiaryContainer
+              : null,
         ),
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
-        child: Text(
-          widget.title,
-          style: Theme.of(context).textTheme.labelLarge!.copyWith(
-            color: state.isPinned
-              ? Theme.of(context).colorScheme.onTertiaryContainer
-              : Theme.of(context).colorScheme.onSurfaceVariant
-          )
-        ),
+        child: Text(widget.title,
+            style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                color: state.isPinned
+                    ? Theme.of(context).colorScheme.onTertiaryContainer
+                    : Theme.of(context).colorScheme.onSurfaceVariant)),
       ),
     );
   }
@@ -120,15 +113,14 @@ class _AnimeBlockState extends State<AnimeBlock> {
                 ),
               ),
               loadingMoreBuilder: (context) => Container(
-                padding: const EdgeInsets.only(top: 16, bottom: 28)
-                    .add(const EdgeInsets.symmetric(horizontal: 16)),
-                child: LinearProgressIndicator(
-                  color:
-                  Theme.of(context).colorScheme.onTertiaryContainer,
-                  backgroundColor:
-                  Theme.of(context).colorScheme.tertiaryContainer,
-                  borderRadius: BorderRadius.circular(30),
-                )),
+                  padding: const EdgeInsets.only(top: 16, bottom: 28)
+                      .add(const EdgeInsets.symmetric(horizontal: 16)),
+                  child: LinearProgressIndicator(
+                    color: Theme.of(context).colorScheme.onTertiaryContainer,
+                    backgroundColor:
+                        Theme.of(context).colorScheme.tertiaryContainer,
+                    borderRadius: BorderRadius.circular(30),
+                  )),
             ),
           ),
         );
@@ -137,12 +129,12 @@ class _AnimeBlockState extends State<AnimeBlock> {
           builder: headerBuilder,
         );
       case AnimeBlockType.skinless:
-        return AutoListView.get<Anime>(
+        return  AutoListView.get<Anime>(
           cubit: cubit,
           autoManage: false,
           viewType: ViewType.grid,
-          itemBuilder: (context, anime) => AnimeItem.get(
-              context: context, anime: anime, withAction: false),
+          itemBuilder: (context, anime) =>
+              AnimeItem.get(context: context, anime: anime, withAction: false),
           gridDelegate: gridDelegate,
           errorBuilder: (context, retry) => Column(
             mainAxisSize: MainAxisSize.min,
@@ -156,70 +148,61 @@ class _AnimeBlockState extends State<AnimeBlock> {
           ),
           loadingBuilder: widgetBuilder,
           loadingMoreBuilder: (context) => Container(
-            padding: const EdgeInsets.only(top: 16, bottom: 28)
-                .add(const EdgeInsets.symmetric(horizontal: 16)),
-            child: LinearProgressIndicator(
-              color:
-              Theme.of(context).colorScheme.onTertiaryContainer,
-              backgroundColor:
-              Theme.of(context).colorScheme.tertiaryContainer,
-              borderRadius: BorderRadius.circular(30),
-            )),
+              padding: const EdgeInsets.only(top: 16, bottom: 28)
+                  .add(const EdgeInsets.symmetric(horizontal: 16)),
+              child: LinearProgressIndicator(
+                color: Theme.of(context).colorScheme.onTertiaryContainer,
+                backgroundColor:
+                    Theme.of(context).colorScheme.tertiaryContainer,
+                borderRadius: BorderRadius.circular(30),
+              )),
         );
     }
   }
 
   Widget widgetBuilder(context) => Column(
-    children: [
-      GridView.builder(
-        padding: EdgeInsets.zero,
-        physics: const PageScrollPhysics(),
-        shrinkWrap: true,
-        gridDelegate: gridDelegate,
-        itemBuilder: (_, __) => Container(
-          alignment: Alignment.center,
-          color: Theme.of(context).colorScheme.tertiaryContainer,
-          child: SizedBox(
-            height: 16.0,
-            width: 16.0,
-            child: CircularProgressIndicator(
-              color: Theme.of(context).colorScheme.onTertiaryContainer,
-              strokeWidth: 2.0,
+        children: [
+          GridView.builder(
+            padding: EdgeInsets.zero,
+            physics: const PageScrollPhysics(),
+            shrinkWrap: true,
+            gridDelegate: gridDelegate,
+            itemBuilder: (_, __) => Container(
+              alignment: Alignment.center,
+              color: Theme.of(context).colorScheme.tertiaryContainer,
+              child: SizedBox(
+                height: 16.0,
+                width: 16.0,
+                child: CircularProgressIndicator(
+                  color: Theme.of(context).colorScheme.onTertiaryContainer,
+                  strokeWidth: 2.0,
+                ),
+              ),
             ),
+            itemCount: 6, // Nombre de carrés souhaité
           ),
-        ),
-        itemCount: 6, // Nombre de carrés souhaité
-      ),
-      if (widget.type == AnimeBlockType.regular)
-        Container(
-          margin: const EdgeInsets.only(right: 16.0),
-          alignment: Alignment.bottomRight,
-          child: TextButton.icon(
-            iconAlignment: IconAlignment.end,
-            style: TextButton.styleFrom(
-              padding: EdgeInsets.zero,
-              textStyle: Theme.of(context).textTheme.labelMedium,
+          if (widget.type == AnimeBlockType.regular)
+            Container(
+              margin: const EdgeInsets.only(right: 16.0),
+              alignment: Alignment.bottomRight,
+              child: TextButton.icon(
+                iconAlignment: IconAlignment.end,
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                  textStyle: Theme.of(context).textTheme.labelMedium,
+                ),
+                onPressed: null,
+                icon: const Icon(Icons.keyboard_arrow_down_outlined),
+                label: const Text("Voir plus"),
+              ),
             ),
-            onPressed: null,
-            icon: const Icon(Icons.keyboard_arrow_down_outlined),
-            label: const Text("Voir plus"),
-          ),
-        ),
-    ],
-  );
+        ],
+      );
 }
 
-enum AnimeBlockType {
-  regular,
-  empty,
-  skinless
-}
+enum AnimeBlockType { regular, empty, skinless }
 
-enum AnimeBlockFilter {
-  trending,
-  nextSeason,
-  all
-}
+enum AnimeBlockFilter { trending, nextSeason, all }
 
 extension AnimeBlockFilterExtension on AnimeBlockFilter {
   String get name {

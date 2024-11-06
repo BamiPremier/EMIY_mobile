@@ -27,8 +27,8 @@ mixin _$User {
   @JsonKey(name: 'image_full')
   String? get imageFull => throw _privateConstructorUsedError;
   String? get biography => throw _privateConstructorUsedError;
-  String get type => throw _privateConstructorUsedError;
-  String get status => throw _privateConstructorUsedError;
+  String? get type => throw _privateConstructorUsedError;
+  String? get status => throw _privateConstructorUsedError;
   @JsonKey(name: 'followers_count')
   int get followersCount => throw _privateConstructorUsedError;
   @JsonKey(name: 'following_count')
@@ -64,8 +64,8 @@ abstract class $UserCopyWith<$Res> {
       String? image,
       @JsonKey(name: 'image_full') String? imageFull,
       String? biography,
-      String type,
-      String status,
+      String? type,
+      String? status,
       @JsonKey(name: 'followers_count') int followersCount,
       @JsonKey(name: 'following_count') int followingCount,
       @JsonKey(name: 'animes_viewed_count') int animesViewedCount,
@@ -96,8 +96,8 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? image = freezed,
     Object? imageFull = freezed,
     Object? biography = freezed,
-    Object? type = null,
-    Object? status = null,
+    Object? type = freezed,
+    Object? status = freezed,
     Object? followersCount = null,
     Object? followingCount = null,
     Object? animesViewedCount = null,
@@ -131,14 +131,14 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.biography
           : biography // ignore: cast_nullable_to_non_nullable
               as String?,
-      type: null == type
+      type: freezed == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
-              as String,
-      status: null == status
+              as String?,
+      status: freezed == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       followersCount: null == followersCount
           ? _value.followersCount
           : followersCount // ignore: cast_nullable_to_non_nullable
@@ -185,8 +185,8 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       String? image,
       @JsonKey(name: 'image_full') String? imageFull,
       String? biography,
-      String type,
-      String status,
+      String? type,
+      String? status,
       @JsonKey(name: 'followers_count') int followersCount,
       @JsonKey(name: 'following_count') int followingCount,
       @JsonKey(name: 'animes_viewed_count') int animesViewedCount,
@@ -214,8 +214,8 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? image = freezed,
     Object? imageFull = freezed,
     Object? biography = freezed,
-    Object? type = null,
-    Object? status = null,
+    Object? type = freezed,
+    Object? status = freezed,
     Object? followersCount = null,
     Object? followingCount = null,
     Object? animesViewedCount = null,
@@ -249,14 +249,14 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.biography
           : biography // ignore: cast_nullable_to_non_nullable
               as String?,
-      type: null == type
+      type: freezed == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
-              as String,
-      status: null == status
+              as String?,
+      status: freezed == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       followersCount: null == followersCount
           ? _value.followersCount
           : followersCount // ignore: cast_nullable_to_non_nullable
@@ -299,8 +299,8 @@ class _$UserImpl implements _User {
       this.image,
       @JsonKey(name: 'image_full') this.imageFull,
       this.biography,
-      required this.type,
-      required this.status,
+      this.type,
+      this.status,
       @JsonKey(name: 'followers_count') this.followersCount = 0,
       @JsonKey(name: 'following_count') this.followingCount = 0,
       @JsonKey(name: 'animes_viewed_count') this.animesViewedCount = 0,
@@ -328,9 +328,9 @@ class _$UserImpl implements _User {
   @override
   final String? biography;
   @override
-  final String type;
+  final String? type;
   @override
-  final String status;
+  final String? status;
   @override
   @JsonKey(name: 'followers_count')
   final int followersCount;
@@ -434,8 +434,8 @@ abstract class _User implements User {
       final String? image,
       @JsonKey(name: 'image_full') final String? imageFull,
       final String? biography,
-      required final String type,
-      required final String status,
+      final String? type,
+      final String? status,
       @JsonKey(name: 'followers_count') final int followersCount,
       @JsonKey(name: 'following_count') final int followingCount,
       @JsonKey(name: 'animes_viewed_count') final int animesViewedCount,
@@ -460,9 +460,9 @@ abstract class _User implements User {
   @override
   String? get biography;
   @override
-  String get type;
+  String? get type;
   @override
-  String get status;
+  String? get status;
   @override
   @JsonKey(name: 'followers_count')
   int get followersCount;

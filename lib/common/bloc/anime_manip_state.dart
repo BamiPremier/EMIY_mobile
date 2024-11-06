@@ -12,6 +12,19 @@ class InitializingAnimeManipState extends CubitSuccessState
   List<Object?> get props => [anime];
 }
 
+class ShareAnimeLoadingState extends CubitLoadingState with AnimeManipState {
+  const ShareAnimeLoadingState() : super();
+}
+
+class ShareAnimeSuccesState extends CubitInformationState with AnimeManipState {
+  final String link;
+
+  const ShareAnimeSuccesState(this.link);
+
+  @override
+  List<Object?> get props => [link];
+}
+
 class AnimeManipWatchlistLoadingState extends CubitLoadingState
     with AnimeManipState {
   const AnimeManipWatchlistLoadingState() : super();

@@ -1,8 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
+import 'package:umai/common/services/cache_manager.dart';
 import 'package:umai/utils/assets.dart';
 
 class ProfilePicture extends StatelessWidget {
@@ -26,20 +26,16 @@ class ProfilePicture extends StatelessWidget {
     );
 
     if (image == null) return defaultImage;
-    return CachedNetworkImage(
-      imageUrl: image!,
+    return Container(
       height: height,
       width: width,
-      fit: BoxFit.cover,
-      imageBuilder: (context, imageProvider) => CircleAvatar(
-        radius: height / 2,
-        backgroundImage: imageProvider,
+      clipBehavior: Clip.hardEdge,
+      decoration: const BoxDecoration(shape: BoxShape.circle),
+      child: Image(
+        fit: BoxFit.cover,
+        image: context.read<AppCacheManager>().getImage(image ?? ''),
+        errorBuilder: (context, url, error) => defaultImage,
       ),
-      placeholder: (context, url) => CircleAvatar(
-        radius: height / 2,
-        backgroundColor: Theme.of(context).disabledColor,
-      ),
-      errorWidget: (context, url, error) => defaultImage,
     );
   }
 }
@@ -58,8 +54,10 @@ class UserProfilePicture extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<UserCubit, UserState>(
       buildWhen: (_, state) => state is UserLoggedState,
-      builder: (_, __) => ProfilePicture(
-        image: context.read<UserCubit>().user.image,
+      builder: (_, state) => ProfilePicture(
+        image: state is! CompleteUserProfileState
+            ? context.read<UserCubit>().user.image
+            : null,
         height: height,
         width: width,
       ),

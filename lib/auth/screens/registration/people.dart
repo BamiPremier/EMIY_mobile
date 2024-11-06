@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/auth/bloc/people_follows_cubit.dart';
+import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/models/user.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/common/widgets/item_user.dart';
@@ -57,6 +58,7 @@ class _PeopleToFollowScreenState extends State<PeopleToFollowScreen> {
           children: [
             UmaiButton.primary(
               onPressed: () {
+                context.read<UserCubit>().refreshData();
                 Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (context) => const HomeScreen()),
                     (route) => false);
