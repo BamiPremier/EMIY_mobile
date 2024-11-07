@@ -16,6 +16,7 @@ import 'package:umai/common/widgets/action_widget.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/themes.dart';
+import 'package:html/parser.dart';
 
 class AnimeDetailScreen extends StatefulWidget {
   final Anime anime;
@@ -150,7 +151,9 @@ class _AnimeDetailScreenState extends State<AnimeDetailScreen>
                           alignment: Alignment.topCenter,
                           curve: Curves.easeInOut,
                           child: ReadMoreText(
-                            anime.description ?? '',
+                            parse(anime.description ?? '')
+                                .documentElement!
+                                .text,
                             trimMode: _trimMode,
                             trimLines: 3,
                             style: Theme.of(context)
