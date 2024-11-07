@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/common/widgets/loaders.dart';
 import 'package:potatoes/libs.dart';
+import 'package:potatoes/libs.dart';
 import 'package:umai/account/screens/edit_profile.dart';
 import 'package:umai/account/screens/follow.dart';
 import 'package:umai/account/screens/param/settings_screen.dart';
@@ -69,6 +70,7 @@ class _AccountScreenState extends State<AccountScreen>
               ),
               body: DefaultTabController(
                 length: 5,
+              
                 child: Column(children: [
                   const SizedBox(height: 16.0),
                   Padding(
@@ -262,6 +264,7 @@ class _AccountScreenState extends State<AccountScreen>
                       Tab(text: 'Watchlist'),
                       Tab(text: 'Social'),
                       Tab(text: 'Quiz'),
+                      Tab(text: 'Quiz'),
                     ],
                   ),
                   Expanded(
@@ -271,6 +274,7 @@ class _AccountScreenState extends State<AccountScreen>
                         AnimesTab(),
                         WatchList(),
                         PostTab(),
+                        QuizUserScreen(),
                         QuizUserScreen(),
                       ],
                     ),

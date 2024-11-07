@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/common/widgets/loaders.dart';
+import 'package:potatoes/common/widgets/loaders.dart';
 import 'package:potatoes/libs.dart';
 import 'package:readmore/readmore.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:umai/animes/models/anime.dart';
+import 'package:umai/animes/screens/subpage/episode.dart';
+import 'package:umai/animes/screens/subpage/quiz_anime.dart';
+import 'package:umai/animes/screens/subpage/similar.dart';
 import 'package:umai/animes/screens/subpage/episode.dart';
 import 'package:umai/animes/screens/subpage/quiz_anime.dart';
 import 'package:umai/animes/screens/subpage/similar.dart';
@@ -12,8 +17,10 @@ import 'package:umai/animes/widgets/primary_info.dart';
 import 'package:umai/animes/services/anime_cubit_manager.dart';
 import 'package:umai/common/bloc/anime_manip_cubit.dart';
 import 'package:umai/common/services/cache_manager.dart';
+import 'package:umai/common/services/cache_manager.dart';
 import 'package:umai/common/widgets/action_widget.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
+import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/themes.dart';
 import 'package:html/parser.dart';
@@ -41,6 +48,7 @@ class AnimeDetailScreen extends StatefulWidget {
 }
 
 class _AnimeDetailScreenState extends State<AnimeDetailScreen>
+    
     with CompletableMixin {
   late final animeManipCubit = context.read<AnimeManipCubit>();
 
@@ -48,6 +56,7 @@ class _AnimeDetailScreenState extends State<AnimeDetailScreen>
   final isCollapsed = ValueNotifier<bool>(true);
   @override
   Widget build(BuildContext context) {
+   
     return BlocConsumer<AnimeManipCubit, AnimeManipState>(
         listener: onEventReceived,
         builder: (context, state) {
@@ -252,6 +261,7 @@ class _AnimeDetailScreenState extends State<AnimeDetailScreen>
               ActionWidget(
                 title: 'Partager...',
                 icon: Icons.share_outlined,
+              
                 onTap: () => animeManipCubit.shareAnime(),
               ),
               const SizedBox(
@@ -259,6 +269,7 @@ class _AnimeDetailScreenState extends State<AnimeDetailScreen>
               ),
             ],
           )));
+ 
 
   void onEventReceived(BuildContext context, AnimeManipState state) async {
     await waitForDialog();
