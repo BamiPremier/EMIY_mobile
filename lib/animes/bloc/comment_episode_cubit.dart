@@ -2,13 +2,15 @@ import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/animes/models/comment_episode.dart';
 import 'package:umai/animes/services/anime_service.dart';
+import 'package:umai/animes/services/episode_service.dart';
 
 part 'comment_episode_state.dart';
 
-class CommentEpisodeCubit extends ObjectCubit<CommentEpisode, CommentEpisodeState> {
-  final AnimeService animeService;
+class CommentEpisodeCubit
+    extends ObjectCubit<CommentEpisode, CommentEpisodeState> {
+  final EpisodeService episodeService;
 
-  CommentEpisodeCubit(this.animeService, CommentEpisode comment)
+  CommentEpisodeCubit(this.episodeService, CommentEpisode comment)
       : super(InitializingCommentEpisodeState(comment));
 
   @override
@@ -42,31 +44,31 @@ class CommentEpisodeCubit extends ObjectCubit<CommentEpisode, CommentEpisodeStat
 
   void likeCommentEpisode() {
     final stateBefore = state;
-    // var newCommentEpisode = comment.copyWith(hasLiked: !comment.hasLiked);
+    var newCommentEpisode = comment.copyWith(hasLiked: !comment.hasLiked);
 
-    // update(newCommentEpisode);
-    // animeService
-    //     .likeCommentEpisode(
-    //   commentId: comment.id,
-    // )
-    //     .then((updatecomment) {}, onError: (error, trace) {
-    //   emit(CommentEpisodeErrorState(error, trace));
-    //   emit(stateBefore);
-    // });
+    update(newCommentEpisode);
+    episodeService
+        .likeCommentEpisode(
+      commentId: comment.id,
+    )
+        .then((updatecomment) {}, onError: (error, trace) {
+      emit(CommentEpisodeErrorState(error, trace));
+      emit(stateBefore);
+    });
   }
 
   void unLikeCommentEpisode() {
-    // final stateBefore = state;
-    // var newCommentEpisode = comment.copyWith(hasLiked: !comment.hasLiked);
-    // update(newCommentEpisode);
-    // animeService
-    //     .unLikeCommentEpisode(
-    //   commentId: comment.id,
-    // )
-    //     .then((updatecomment) {}, onError: (error, trace) {
-    //   emit(CommentEpisodeErrorState(error, trace));
-    //   emit(stateBefore);
-    // });
+    final stateBefore = state;
+    var newCommentEpisode = comment.copyWith(hasLiked: !comment.hasLiked);
+    update(newCommentEpisode);
+    episodeService
+        .unLikeCommentEpisode(
+      commentId: comment.id,
+    )
+        .then((updatecomment) {}, onError: (error, trace) {
+      emit(CommentEpisodeErrorState(error, trace));
+      emit(stateBefore);
+    });
   }
 
   reset() {
@@ -74,20 +76,20 @@ class CommentEpisodeCubit extends ObjectCubit<CommentEpisode, CommentEpisodeStat
   }
 
   void report({required String reason}) {
-    // if (state is InitializingCommentEpisodeState) {
-    //   final stateBefore = state;
-    //   emit(const SendCommentEpisodeRepportLoadingState());
-    //   animeService
-    //       .reportCommentEpisode(
-    //     commentId: comment.id,
-    //     reason: reason,
-    //   )
-    //       .then((_) {
-    //     emit(SuccessSendCommentEpisodeRepportState(comment));
-    //   }, onError: (error, trace) {
-    //     emit(CommentEpisodeErrorState(error, trace));
-    //     emit(stateBefore);
-    //   });
-    // }
+    if (state is InitializingCommentEpisodeState) {
+      final stateBefore = state;
+      emit(const SendCommentEpisodeRepportLoadingState());
+      episodeService
+          .reportCommentEpisode(
+        commentId: comment.id,
+        reason: reason,
+      )
+          .then((_) {
+        emit(SuccessSendCommentEpisodeRepportState(comment));
+      }, onError: (error, trace) {
+        emit(CommentEpisodeErrorState(error, trace));
+        emit(stateBefore);
+      });
+    }
   }
 }

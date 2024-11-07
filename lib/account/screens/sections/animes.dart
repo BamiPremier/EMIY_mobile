@@ -9,20 +9,34 @@ import 'package:umai/animes/widgets/item_anime.dart';
 import 'package:umai/common/bloc/person_cubit.dart';
 import 'package:umai/common/services/user_service.dart';
 
-class EAnimesTab extends StatefulWidget {
-  const EAnimesTab({super.key});
+class AnimesTab extends StatefulWidget {
+  final bool currentUser;
+  AnimesTab({super.key, this.currentUser = true});
 
   @override
-  State<EAnimesTab> createState() => _EAnimesTabState();
+  State<AnimesTab> createState() => _AnimesTabState();
 }
 
-class _EAnimesTabState extends State<EAnimesTab> with CompletableMixin {
-  late final personCubit = context.read<PersonCubit>();
-  late final userAnimeCubit = UserAnimeCubit(
-    cubitManager: context.read(),
-    userService: context.read(),
-    userId: personCubit.user.id,
-  );
+class _AnimesTabState extends State<AnimesTab> with CompletableMixin {
+  late final userAnimeCubit;
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.currentUser) {
+      userAnimeCubit = UserAnimeCubit(
+        cubitManager: context.read(),
+        userService: context.read(),
+      );
+    } else {
+      late final personCubit = context.read<PersonCubit>();
+      userAnimeCubit = UserAnimeCubit(
+        cubitManager: context.read(),
+        userService: context.read(),
+        userId: personCubit.user.id,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

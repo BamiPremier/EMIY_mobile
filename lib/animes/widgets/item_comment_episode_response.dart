@@ -10,7 +10,7 @@ import 'package:umai/animes/widgets/item_comment_episode.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/account/screens/person_account.dart';
- 
+
 import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
@@ -25,7 +25,8 @@ class ItemCommentEpisodeResponse extends StatefulWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-            create: (context) => CommentEpisodeCubit(context.read(), commentepisode)),
+            create: (context) =>
+                CommentEpisodeCubit(context.read(), commentepisode)),
       ],
       child: ItemCommentEpisodeResponse._(idEpisode: idEpisode),
     );
@@ -35,15 +36,18 @@ class ItemCommentEpisodeResponse extends StatefulWidget {
     required this.idEpisode,
   });
   @override
-  State<ItemCommentEpisodeResponse> createState() => _ItemCommentEpisodeResponseState();
+  State<ItemCommentEpisodeResponse> createState() =>
+      _ItemCommentEpisodeResponseState();
 }
 
-class _ItemCommentEpisodeResponseState extends State<ItemCommentEpisodeResponse> {
+class _ItemCommentEpisodeResponseState
+    extends State<ItemCommentEpisodeResponse> {
   late final commentepisodeCubit = context.read<CommentEpisodeCubit>();
   late final loadCommentEpisodeCubit = LoadCommentEpisodeCubit(
     context.read(),
     widget.idEpisode,
     commentepisode.id,
+    context.read(),
     context.read(),
   );
   late final commentepisode = commentepisodeCubit.comment;
@@ -56,7 +60,8 @@ class _ItemCommentEpisodeResponseState extends State<ItemCommentEpisodeResponse>
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CommentEpisodeCubit, CommentEpisodeState>(builder: (context, state) {
+    return BlocBuilder<CommentEpisodeCubit, CommentEpisodeState>(
+        builder: (context, state) {
       return BlocBuilder<LoadCommentEpisodeCubit, LoadCommentEpisodeState>(
           builder: (context, stateL) {
         return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -81,7 +86,8 @@ class _ItemCommentEpisodeResponseState extends State<ItemCommentEpisodeResponse>
                         onTap: () => Navigator.of(context).push(
                             MaterialPageRoute(
                                 builder: (context) => PersonAccountScreen.get(
-                                    context: context, user: commentepisode.user))))
+                                    context: context,
+                                    user: commentepisode.user))))
                   ]),
                 ),
                 title: Text(
@@ -166,8 +172,11 @@ class _ItemCommentEpisodeResponseState extends State<ItemCommentEpisodeResponse>
               padding: EdgeInsets.zero,
               physics: const NeverScrollableScrollPhysics(),
               cubit: loadCommentEpisodeCubit,
-              itemBuilder: (context, commentepisode) => ItemCommentEpisodeResponse.get(
-                  context: context, commentepisode: commentepisode, idEpisode: widget.idEpisode),
+              itemBuilder: (context, commentepisode) =>
+                  ItemCommentEpisodeResponse.get(
+                      context: context,
+                      commentepisode: commentepisode,
+                      idEpisode: widget.idEpisode),
               loadingBuilder: (context) => Container(
                   alignment: Alignment.center,
                   padding: const EdgeInsets.all(16),

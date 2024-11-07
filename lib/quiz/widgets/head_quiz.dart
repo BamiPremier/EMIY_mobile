@@ -11,7 +11,7 @@ import 'package:umai/quiz/bloc/quiz_cubit.dart';
 import 'package:umai/quiz/bloc/quiz_manage_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/screens/new/new_quiz.dart';
-import 'package:umai/account/screens/current_user_section/quiz/update_quiz_after_publish.dart';
+import 'package:umai/account/screens/sections/quiz/update_quiz_after_publish.dart';
 import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/themes.dart';

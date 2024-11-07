@@ -13,6 +13,8 @@ _$EpisodeImpl _$$EpisodeImplFromJson(Map<String, dynamic> json) =>
       timeUntilAiring: (json['timeUntilAiring'] as num).toInt(),
       episode: (json['episode'] as num).toInt(),
       anime: Anime.fromJson(json['anime'] as Map<String, dynamic>),
+      hasLiked: json['has_liked'] as bool? ?? false,
+      commentsCount: (json['comments_count'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$$EpisodeImplToJson(_$EpisodeImpl instance) =>
@@ -22,4 +24,6 @@ Map<String, dynamic> _$$EpisodeImplToJson(_$EpisodeImpl instance) =>
       'timeUntilAiring': instance.timeUntilAiring,
       'episode': instance.episode,
       'anime': instance.anime,
+      'has_liked': instance.hasLiked,
+      'comments_count': instance.commentsCount,
     };

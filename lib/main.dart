@@ -8,6 +8,8 @@ import 'package:potatoes/potatoes.dart' hide PreferencesService;
 import 'package:potatoes_secured_preferences/potatoes_secured_preferences.dart';
 import 'package:umai/animes/services/anime_cubit_manager.dart';
 import 'package:umai/animes/services/anime_service.dart';
+import 'package:umai/animes/services/episode_cubit_manager.dart';
+import 'package:umai/animes/services/episode_service.dart';
 import 'package:umai/auth/bloc/auth_cubit.dart';
 import 'package:umai/auth/screens/onboarding_screen.dart';
 import 'package:umai/auth/screens/registration/username.dart';
@@ -89,17 +91,20 @@ class MyApp extends StatelessWidget {
         RepositoryProvider(create: (_) => AuthService(dio)),
         RepositoryProvider(create: (_) => UserService(dio)),
         RepositoryProvider(create: (_) => SocialService(dio)),
-        RepositoryProvider(create: (_) => AnimeService(dio)),
         RepositoryProvider(
             create: (context) => PersonCubitManager(context.read())),
         RepositoryProvider(
             create: (context) =>
                 PostCubitManager(context.read(), context.read())),
+        RepositoryProvider(create: (_) => AnimeService(dio)),
+        RepositoryProvider(create: (_) => EpisodeService(dio)),
         RepositoryProvider(
             create: (context) => AnimeCubitManager(context.read())),
         RepositoryProvider(create: (context) => QuizService(dio)),
         RepositoryProvider(
             create: (context) => QuizManageCubitManager(context.read())),
+        RepositoryProvider(
+            create: (context) => EpisodeCubitManager(context.read())),
       ],
       child: MultiBlocProvider(
         providers: [

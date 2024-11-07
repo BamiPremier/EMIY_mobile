@@ -30,27 +30,31 @@ class _QuizAnimeScreenState extends State<QuizAnimeScreen>
   late final animeManipCubit = context.read<AnimeManipCubit>();
 
   late final anime = animeManipCubit.anime;
-  late final LoadQuizAnimeCubit cubit =
-      LoadQuizAnimeCubit(context.read(), context.read(), anime.id.toString());
+  late final LoadQuizAnimeCubit cubit = LoadQuizAnimeCubit(
+      context.read(), context.read(), context.read(), anime.id.toString());
 
   @override
   Widget build(BuildContext context) {
     return AutoListView.get<Quiz>(
-      cubit: cubit,
-      padding: EdgeInsets.zero,
-      autoManage: false,
-      itemBuilder: (context, quiz) =>
-          ItemQuiz.get(context: context, quiz: quiz),
-      errorBuilder: (context, retry) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Text("Une erreur s'est produite"),
-          TextButton(
-            onPressed: retry,
-            child: const Text("Réessayer"),
-          )
-        ],
-      ),
-    );
+        cubit: cubit,
+        padding: EdgeInsets.zero,
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemBuilder: (context, quiz) =>
+            ItemQuiz.get(context: context, quiz: quiz),
+        errorBuilder: (context, retry) => Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Text("An error occured"),
+                  TextButton(
+                    onPressed: retry,
+                    child: const Text("Retry"),
+                  )
+                ],
+              ),
+            ));
   }
 }

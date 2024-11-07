@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/common/widgets/loaders.dart';
 import 'package:potatoes/libs.dart';
-import 'package:umai/account/screens/external_user_section/activities.dart';
-import 'package:umai/account/screens/external_user_section/animes.dart';
-import 'package:umai/account/screens/external_user_section/posts.dart';
-import 'package:umai/account/screens/external_user_section/quiz_user.dart';
-import 'package:umai/account/screens/external_user_section/watchlist.dart';
 import 'package:umai/account/screens/follow.dart';
-import 'package:umai/account/screens/current_user_section/activities.dart';
-import 'package:umai/account/screens/current_user_section/animes.dart';
-import 'package:umai/account/screens/current_user_section/posts.dart';
-import 'package:umai/account/screens/current_user_section/quiz_user.dart';
-import 'package:umai/account/screens/current_user_section/watchlist.dart';
+import 'package:umai/account/screens/sections/activities.dart';
+import 'package:umai/account/screens/sections/animes.dart';
+import 'package:umai/account/screens/sections/posts.dart';
+import 'package:umai/account/screens/sections/quiz_user.dart';
+import 'package:umai/account/screens/sections/watchlist.dart';
 import 'package:umai/common/bloc/follow_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/services/person_cubit_manager.dart';
@@ -416,14 +411,22 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                       Tab(text: 'Quiz'),
                     ],
                   ),
-                  const Expanded(
+                  Expanded(
                     child: TabBarView(
                       children: [
-                        EActivityTab(),
-                        EAnimesTab(),
-                        EWatchList(),
-                        EPostTab(),
-                        EQuizUserScreen(),
+                        ActivityTab(),
+                        AnimesTab(
+                          currentUser: false,
+                        ),
+                        WatchList(
+                          currentUser: false,
+                        ),
+                        PostTab(
+                          currentUser: false,
+                        ),
+                        QuizUserScreen(
+                          currentUser: false,
+                        ),
                       ],
                     ),
                   ),

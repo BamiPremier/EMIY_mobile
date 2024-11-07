@@ -1,15 +1,18 @@
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
+import 'package:umai/animes/bloc/load_episode_anime_cubit.dart';
 import 'package:umai/animes/models/comment_episode.dart';
 import 'package:umai/animes/models/episode.dart';
-import 'package:umai/animes/services/anime_service.dart'; 
+import 'package:umai/animes/services/anime_service.dart';
+import 'package:umai/animes/services/episode_service.dart';
 
 part 'episode_state.dart';
 
 class EpisodeCubit extends ObjectCubit<Episode, EpisodeState> {
-  final AnimeService animeService;
+  final EpisodeService episodeService;
 
-  EpisodeCubit(this.animeService, Episode episode) : super(InitializingEpisodeState(episode));
+  EpisodeCubit(this.episodeService, Episode episode)
+      : super(InitializingEpisodeState(episode));
 
   @override
   Episode? getObject(EpisodeState state) {
@@ -38,52 +41,52 @@ class EpisodeCubit extends ObjectCubit<Episode, EpisodeState> {
 
   void likeEpisode() {
     if (state is InitializingEpisodeState) {
-      // final stateBefore = state;
-      // var newEpisode = episode.copyWith(hasLiked: !episode.hasLiked);
-      // update(newEpisode);
-      // animeService
-      //     .likeEpisode(
-      //   idEpisode: episode.id,
-      // )
-      //     .then((updateepisode) {}, onError: (error, trace) {
-      //   emit(EpisodeErrorState(error, trace));
-      //   emit(stateBefore);
-      // });
+      final stateBefore = state;
+      var newEpisode = episode.copyWith(hasLiked: !episode.hasLiked);
+      update(newEpisode);
+      episodeService
+          .likeEpisode(
+        idEpisode: episode.id,
+      )
+          .then((updateepisode) {}, onError: (error, trace) {
+        emit(EpisodeErrorState(error, trace));
+        emit(stateBefore);
+      });
     }
   }
 
   void unLikeEpisode() {
     if (state is InitializingEpisodeState) {
-      // final stateBefore = state;
-      // var newEpisode = episode.copyWith(hasLiked: !episode.hasLiked);
-      // update(newEpisode);
-      // animeService
-      //     .unLikeEpisode(
-      //   idEpisode: episode.id,
-      // )
-      //     .then((updateepisode) {}, onError: (error, trace) {
-      //   emit(EpisodeErrorState(error, trace));
-      //   emit(stateBefore);
-      // });
+      final stateBefore = state;
+      var newEpisode = episode.copyWith(hasLiked: !episode.hasLiked);
+      update(newEpisode);
+      episodeService
+          .unLikeEpisode(
+        idEpisode: episode.id,
+      )
+          .then((updateepisode) {}, onError: (error, trace) {
+        emit(EpisodeErrorState(error, trace));
+        emit(stateBefore);
+      });
     }
   }
 
   void shareEpisode() {
     if (state is InitializingEpisodeState) {
-      // final stateBefore = state;
+      final stateBefore = state;
 
-      // emit(const ShareEpisodeLoadingState());
-      // animeService
-      //     .shareEpisode(
-      //   idEpisode: episode.id,
-      // )
-      //     .then((reponse) {
-      //   emit(ShareEpisodeSuccesState(reponse['shareLink']));
-      //   emit(InitializingEpisodeState(episode));
-      // }, onError: (error, trace) {
-      //   emit(EpisodeErrorState(error, trace));
-      //   emit(stateBefore);
-      // });
+      emit(const ShareEpisodeLoadingState());
+      episodeService
+          .shareEpisode(
+        idEpisode: episode.id,
+      )
+          .then((reponse) {
+        emit(ShareEpisodeSuccesState(reponse['shareLink']));
+        emit(InitializingEpisodeState(episode));
+      }, onError: (error, trace) {
+        emit(EpisodeErrorState(error, trace));
+        emit(stateBefore);
+      });
     }
   }
 
@@ -91,13 +94,13 @@ class EpisodeCubit extends ObjectCubit<Episode, EpisodeState> {
     if (state is InitializingEpisodeState) {
       // final stateBefore = state;
       // emit(const SendRepportLoadingState());
-      // animeService
+      // episodeService
       //     .reportEpisode(
       //   idEpisode: episode.id,
       //   reason: reason,
       // )
       //     .then((_) {
-       
+
       //   emit(SuccessSendRepportEpisodeState(episode));
       // }, onError: (error, trace) {
       //   emit(EpisodeErrorState(error, trace));
@@ -110,7 +113,7 @@ class EpisodeCubit extends ObjectCubit<Episode, EpisodeState> {
     if (state is InitializingEpisodeState) {
       // final stateBefore = state;
 
-      // animeService
+      // episodeService
       //     .deleteEpisode(
       //   idEpisode: episode.id,
       // )
@@ -121,23 +124,29 @@ class EpisodeCubit extends ObjectCubit<Episode, EpisodeState> {
     }
   }
 
-  void commentEpisode({required String content, String? targetCommentId}) {
+  void commentEpisode({
+    required String content,
+    String? targetCommentId,
+    required LoadEpisodeAnimeCubit loadEpisodeAnimeCubit,
+  }) {
     if (state is InitializingEpisodeState) {
-      // final stateBefore = state;
+      final stateBefore = state;
 
-      // emit(const EpisodeLoadingState());
-      // animeService
-      //     .commentEpisode(
-      //         idEpisode: episode.id,
-      //         content: content.trim(),
-      //         target: targetCommentId)
-      //     .then((comment) {
-      //   emit(CommentEpisodeSuccesState(comment));
-      //   emit(stateBefore);
-      // }, onError: (error, trace) {
-      //   emit(EpisodeErrorState(error, trace));
-      //   emit(stateBefore);
-      // });
+      emit(const EpisodeLoadingState());
+      episodeService
+          .commentEpisode(
+              idEpisode: episode.id,
+              content: content.trim(),
+              target: targetCommentId)
+          .then((comment) {
+        emit(CommentEpisodeSuccesState(comment));
+        emit(stateBefore);
+        loadEpisodeAnimeCubit.updateCommentCount(
+            idEpisode: episode.id, isIncrement: true);
+      }, onError: (error, trace) {
+        emit(EpisodeErrorState(error, trace));
+        emit(stateBefore);
+      });
     }
   }
 }

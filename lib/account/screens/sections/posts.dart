@@ -3,21 +3,37 @@ import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/account/bloc/post_user_cubit.dart';
+import 'package:umai/common/bloc/person_cubit.dart';
 import 'package:umai/social/model/post.dart';
 import 'package:umai/social/widget/item_post.dart';
 
 class PostTab extends StatefulWidget {
-  const PostTab({super.key});
-
+  final bool currentUser;
+  PostTab({super.key, this.currentUser = true});
   @override
   State<PostTab> createState() => _PostTabState();
 }
 
 class _PostTabState extends State<PostTab> with CompletableMixin {
-  late final postUserCubit = PostUserCubit(
-    cubitManager: context.read(),
-    userService: context.read(),
-  );
+  late final postUserCubit;
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.currentUser) {
+      postUserCubit = PostUserCubit(
+        cubitManager: context.read(),
+        userService: context.read(),
+      );
+    } else {
+      late final personCubit = context.read<PersonCubit>();
+      postUserCubit = PostUserCubit(
+        cubitManager: context.read(),
+        userService: context.read(),
+        userId: personCubit.user.id,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -4,11 +4,11 @@ import 'package:potatoes/libs.dart';
 import 'package:umai/account/screens/edit_profile.dart';
 import 'package:umai/account/screens/follow.dart';
 import 'package:umai/account/screens/param/settings_screen.dart';
-import 'package:umai/account/screens/current_user_section/activities.dart';
-import 'package:umai/account/screens/current_user_section/animes.dart';
-import 'package:umai/account/screens/current_user_section/posts.dart';
-import 'package:umai/account/screens/current_user_section/quiz_user.dart';
-import 'package:umai/account/screens/current_user_section/watchlist.dart';
+import 'package:umai/account/screens/sections/activities.dart';
+import 'package:umai/account/screens/sections/animes.dart';
+import 'package:umai/account/screens/sections/posts.dart';
+import 'package:umai/account/screens/sections/quiz_user.dart';
+import 'package:umai/account/screens/sections/watchlist.dart';
 import 'package:umai/auth/screens/onboarding_screen.dart';
 import 'package:umai/common/bloc/follow_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
@@ -264,7 +264,7 @@ class _AccountScreenState extends State<AccountScreen>
                       Tab(text: 'Quiz'),
                     ],
                   ),
-                  const Expanded(
+                  Expanded(
                     child: TabBarView(
                       children: [
                         ActivityTab(),

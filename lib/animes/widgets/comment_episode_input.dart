@@ -3,7 +3,7 @@ import 'package:potatoes/libs.dart';
 import 'package:umai/animes/bloc/action_comment_episode_cubit.dart';
 import 'package:umai/animes/bloc/episode_cubit.dart';
 import 'package:umai/animes/models/comment_episode.dart';
-import 'package:umai/common/utils/validators.dart'; 
+import 'package:umai/common/utils/validators.dart';
 import 'package:umai/utils/themes.dart';
 
 class CommentEpisodeInput extends StatefulWidget {
@@ -11,7 +11,8 @@ class CommentEpisodeInput extends StatefulWidget {
 
   @override
   State<CommentEpisodeInput> createState() => _CommentEpisodeInputState();
-} 
+}
+
 class _CommentEpisodeInputState extends State<CommentEpisodeInput> {
   final TextEditingController _commentController = TextEditingController();
   late final episodeCubit = context.read<EpisodeCubit>();
@@ -89,6 +90,7 @@ class _CommentEpisodeInputState extends State<CommentEpisodeInput> {
                                     )
                                   : const Icon(Icons.arrow_upward)),
                           onPressed: () {
+                            print(_commentController.text);
                             if (Validators.empty(_commentController.text) ==
                                 null) {
                               context

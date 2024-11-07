@@ -12,7 +12,10 @@ class Episode with _$Episode {
     required int timeUntilAiring,
     required int episode,
     required Anime anime,
+    @JsonKey(name: 'has_liked') @Default(false) bool hasLiked,
+    @JsonKey(name: 'comments_count') @Default(0) int commentsCount,
   }) = _Episode;
 
-  factory Episode.fromJson(Map<String, dynamic> json) => _$EpisodeFromJson(json);
+  factory Episode.fromJson(Map<String, dynamic> json) =>
+      _$EpisodeFromJson(json);
 }

@@ -52,8 +52,9 @@ class _AnimeDetailScreenState extends State<AnimeDetailScreen>
         builder: (context, state) {
           final anime = animeManipCubit.anime;
           return Scaffold(
-            body: CustomScrollView(
-              slivers: [
+            body: NestedScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              headerSliverBuilder: (context, _) => [
                 SliverAppBar(
                   backgroundColor:
                       Theme.of(context).colorScheme.tertiaryContainer,
@@ -199,42 +200,38 @@ class _AnimeDetailScreenState extends State<AnimeDetailScreen>
                     ),
                   ),
                 ),
-                SliverFillRemaining(
-                  child: DefaultTabController(
-                    length: 3,
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 24),
-                        TabBar(
-                          unselectedLabelColor:
-                              Theme.of(context).colorScheme.onSurfaceVariant,
-                          labelStyle: Theme.of(context)
-                              .tabBarTheme
-                              .labelStyle!
-                              .copyWith(
-                                  color:
-                                      Theme.of(context).colorScheme.onSurface),
-                          tabs: const [
-                            Tab(text: "Épisodes"),
-                            Tab(text: "Recommandations"),
-                            Tab(text: "Quiz"),
-                          ],
-                        ),
-                        Expanded(
-                          child: TabBarView(
-                            children: [
-                              EpisodeScreen.get(context: context, anime: anime),
-                              SimilarScreen.get(context: context, anime: anime),
-                              QuizAnimeScreen.get(
-                                  context: context, anime: anime),
-                            ],
-                          ),
-                        ),
+              ],
+              body: DefaultTabController(
+                length: 3,
+                child: Column(
+                  children: [
+                    const SizedBox(height: 24),
+                    TabBar(
+                      unselectedLabelColor:
+                          Theme.of(context).colorScheme.onSurfaceVariant,
+                      labelStyle: Theme.of(context)
+                          .tabBarTheme
+                          .labelStyle!
+                          .copyWith(
+                              color: Theme.of(context).colorScheme.onSurface),
+                      tabs: const [
+                        Tab(text: "Épisodes"),
+                        Tab(text: "Recommandations"),
+                        Tab(text: "Quiz"),
                       ],
                     ),
-                  ),
+                    Expanded(
+                      child: TabBarView(
+                        children: [
+                          EpisodeScreen.get(context: context, anime: anime),
+                          SimilarScreen.get(context: context, anime: anime),
+                          QuizAnimeScreen.get(context: context, anime: anime),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           );
         });

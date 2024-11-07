@@ -6,27 +6,31 @@ import 'package:umai/account/screens/person_account.dart';
 import 'package:umai/animes/bloc/comment_episode_cubit.dart';
 import 'package:umai/animes/bloc/episode_cubit.dart';
 import 'package:umai/animes/bloc/load_comment_episode_cubit.dart';
+import 'package:umai/animes/bloc/load_episode_anime_cubit.dart';
 import 'package:umai/animes/models/comment_episode.dart';
 import 'package:umai/animes/widgets/action_comment.dart';
+import 'package:umai/animes/widgets/item_comment_episode_response.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/common/widgets/buttons.dart';
-import 'package:umai/common/widgets/profile_picture.dart'; 
+import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
 class ItemCommentEpisode extends StatefulWidget {
-  const ItemCommentEpisode._();
+  const ItemCommentEpisode._({required this.loadEpisodeAnimeCubit});
+  final LoadEpisodeAnimeCubit loadEpisodeAnimeCubit;
 
   static Widget get({
+    required LoadEpisodeAnimeCubit loadEpisodeAnimeCubit,
     required BuildContext context,
     required CommentEpisode comment,
     required int idEpisode,
   }) {
     return BlocProvider(
       create: (context) => CommentEpisodeCubit(context.read(), comment),
-      child: const ItemCommentEpisode._(),
+      child: ItemCommentEpisode._(loadEpisodeAnimeCubit: loadEpisodeAnimeCubit),
     );
   }
 
@@ -41,6 +45,7 @@ class _ItemCommentEpisodeState extends State<ItemCommentEpisode> {
     context.read(),
     episodeCubit.episode.id,
     comment.id,
+    widget.loadEpisodeAnimeCubit,
     context.read(),
   );
   late final comment = commentEpisodeCubit.comment;
@@ -159,9 +164,9 @@ class _ItemCommentEpisodeState extends State<ItemCommentEpisode> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               cubit: loadCommentEpisodeCubit,
-              itemBuilder: (context, comment) => ItemCommentEpisode.get(
+              itemBuilder: (context, comment) => ItemCommentEpisodeResponse.get(
                   context: context,
-                  comment: comment,
+                  commentepisode: comment,
                   idEpisode: episodeCubit.episode.id),
               loadingBuilder: (context) => Container(
                   alignment: Alignment.center,

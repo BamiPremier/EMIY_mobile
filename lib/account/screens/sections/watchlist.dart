@@ -6,20 +6,38 @@ import 'package:potatoes/potatoes.dart';
 import 'package:umai/account/bloc/user_watxhlist_cubit.dart';
 import 'package:umai/animes/models/anime.dart';
 import 'package:umai/animes/widgets/item_anime.dart';
+import 'package:umai/common/bloc/person_cubit.dart';
 import 'package:umai/common/services/user_service.dart';
 
 class WatchList extends StatefulWidget {
-  const WatchList({super.key});
+  final bool currentUser;
+  WatchList({super.key, this.currentUser = true});
 
   @override
   State<WatchList> createState() => _WatchListState();
 }
 
 class _WatchListState extends State<WatchList> with CompletableMixin {
-  late final userWatchlistCubit = UserWatchlistCubit(
-    cubitManager: context.read(),
-    userService: context.read(),
-  );
+  late final userWatchlistCubit;
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.currentUser) {
+      userWatchlistCubit = UserWatchlistCubit(
+        cubitManager: context.read(),
+        userService: context.read(),
+      );
+    } else {
+      late final personCubit = context.read<PersonCubit>();
+      userWatchlistCubit = UserWatchlistCubit(
+        cubitManager: context.read(),
+        userService: context.read(),
+        userId: personCubit.user.id,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return AutoListView.get<Anime>(

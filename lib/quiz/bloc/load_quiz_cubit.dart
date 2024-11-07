@@ -20,6 +20,7 @@ class LoadQuizCubit extends AutoListCubit<Quiz> {
   void onChange(Change<AutoListState<Quiz>> change) {
     super.onChange(change);
     if (change.nextState is AutoListReadyState<Quiz>) {
+      print('change.nextState is AutoListReadyState<Quiz>');
       cubitManager
           .addAll((change.nextState as AutoListReadyState<Quiz>).items.items);
       personCubitManager.addAll((change.nextState as AutoListReadyState<Quiz>)

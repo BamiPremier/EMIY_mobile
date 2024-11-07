@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/bloc/action_comment_episode_cubit.dart';
 import 'package:umai/animes/bloc/comment_episode_cubit.dart';
-import 'package:umai/social/bloc/comment_cubit.dart'; 
+import 'package:umai/social/bloc/comment_cubit.dart';
 import 'package:umai/utils/themes.dart';
 
 class ActionCommentEpisodeResponse extends StatefulWidget {
@@ -15,7 +15,7 @@ class ActionCommentEpisodeResponse extends StatefulWidget {
 
 class _ActionCommentEpisodeResponseState
     extends State<ActionCommentEpisodeResponse> {
-  late final commentEpisodeCubit = context.read<CommentEpisodeCubit>(); 
+  late final commentEpisodeCubit = context.read<CommentEpisodeCubit>();
   late final comment = commentEpisodeCubit.comment;
 
   @override
@@ -26,7 +26,8 @@ class _ActionCommentEpisodeResponseState
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CommentCubit, CommentState>(builder: (context, state) {
+    return BlocBuilder<CommentEpisodeCubit, CommentEpisodeState>(
+        builder: (context, state) {
       return Padding(
         padding: const EdgeInsets.only(right: 16.0),
         child: Row(
@@ -35,7 +36,8 @@ class _ActionCommentEpisodeResponseState
             Row(children: [
               commentEpisodeCubit.comment.hasLiked
                   ? TextButton(
-                      onPressed: () => commentEpisodeCubit.unLikeCommentEpisode(),
+                      onPressed: () =>
+                          commentEpisodeCubit.unLikeCommentEpisode(),
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.zero,
                         textStyle:

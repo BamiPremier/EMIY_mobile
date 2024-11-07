@@ -4,32 +4,44 @@ import 'package:potatoes/libs.dart';
 import 'package:umai/animes/bloc/action_comment_episode_cubit.dart';
 import 'package:umai/animes/bloc/episode_cubit.dart';
 import 'package:umai/animes/bloc/load_comment_episode_cubit.dart';
+import 'package:umai/animes/bloc/load_episode_anime_cubit.dart';
 import 'package:umai/animes/models/comment_episode.dart';
 import 'package:umai/animes/models/episode.dart';
-import 'package:umai/animes/services/anime_service.dart';
+import 'package:umai/animes/services/episode_cubit_manager.dart';
 import 'package:umai/animes/widgets/button_episode.dart';
 import 'package:umai/animes/widgets/comment_episode_input.dart';
 import 'package:umai/animes/widgets/episode_head.dart';
-import 'package:umai/animes/widgets/item_comment_episode.dart'; 
+import 'package:umai/animes/widgets/item_comment_episode.dart';
 
 class EpisodeDetailsScreen extends StatefulWidget {
   final Episode episode;
+  final LoadEpisodeAnimeCubit loadEpisodeAnimeCubit;
   static Widget from(
-      {required BuildContext context, required Episode episode}) {
-    return MultiBlocProvider(providers: [
-      BlocProvider(
-          create: (context) =>
-              EpisodeCubit(context.read<AnimeService>(), episode)),
-      BlocProvider(
-          create: (context) =>
-              ActionCommentEpisodeCubit(context.read<EpisodeCubit>())),
-      BlocProvider(
-          create: (context) => LoadCommentEpisodeCubit(
-              context.read(), episode.id, '', context.read())),
-    ], child: EpisodeDetailsScreen._(episode: episode));
+      {required LoadEpisodeAnimeCubit loadEpisodeAnimeCubit,
+      required BuildContext context,
+      required Episode episode}) {
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider.value(
+              value: context.read<EpisodeCubitManager>().get(episode)),
+          BlocProvider(
+              create: (context) => ActionCommentEpisodeCubit(
+                  context.read<EpisodeCubit>(), loadEpisodeAnimeCubit)),
+          BlocProvider(
+              create: (context) => LoadCommentEpisodeCubit(
+                    context.read(),
+                    episode.id,
+                    '',
+                    loadEpisodeAnimeCubit,
+                    context.read(),
+                  )),
+        ],
+        child: EpisodeDetailsScreen._(
+            episode: episode, loadEpisodeAnimeCubit: loadEpisodeAnimeCubit));
   }
 
-  const EpisodeDetailsScreen._({required this.episode});
+  const EpisodeDetailsScreen._(
+      {required this.episode, required this.loadEpisodeAnimeCubit});
 
   @override
   State<EpisodeDetailsScreen> createState() => _EpisodeDetailsScreenState();
@@ -38,6 +50,11 @@ class EpisodeDetailsScreen extends StatefulWidget {
 class _EpisodeDetailsScreenState extends State<EpisodeDetailsScreen> {
   late final loadCommentEpisodeCubit = context.read<LoadCommentEpisodeCubit>();
   late final episodeCubit = context.read<EpisodeCubit>();
+  @override
+  void dispose() {
+    loadCommentEpisodeCubit.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +95,8 @@ class _EpisodeDetailsScreenState extends State<EpisodeDetailsScreen> {
                                 idEpisode: episodeCubit.episode.id,
                                 context: context,
                                 comment: comment,
+                                loadEpisodeAnimeCubit:
+                                    widget.loadEpisodeAnimeCubit,
                               ),
                           emptyBuilder: (context) => const Center(
                                 child: Text("Aucun commentaire"),
@@ -106,7 +125,8 @@ class _EpisodeDetailsScreenState extends State<EpisodeDetailsScreen> {
                                     .tertiaryContainer,
                                 borderRadius: BorderRadius.circular(30),
                               )),
-                          errorBuilder: (context, retry) => Column(
+                          errorBuilder: (context, retry) => Center(
+                                  child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.min,
@@ -117,7 +137,7 @@ class _EpisodeDetailsScreenState extends State<EpisodeDetailsScreen> {
                                     child: const Text("Réessayer"),
                                   )
                                 ],
-                              ))
+                              )))
                     ],
                   ),
                 ),
