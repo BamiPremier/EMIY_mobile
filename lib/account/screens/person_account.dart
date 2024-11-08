@@ -68,370 +68,385 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
         builder: (context, state) {
           final user = personCubit.user;
           return Scaffold(
-              appBar: AppBar(
-                title: Text(user.username),
-                centerTitle: true,
-                actions: [
-                  IconButton(
-                      padding: EdgeInsets.zero,
-                      onPressed: onActionsPressed,
-                      icon: const Icon(Icons.more_vert))
-                ],
-              ),
               body: DefaultTabController(
-                length: 5,
-                child: Column(children: [
-                  const SizedBox(height: 16.0),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ProfilePicture(
-                            image: user.image, height: 80, width: 80),
-                        const SizedBox(width: 16.0),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '@${user.usertag}',
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                              const SizedBox(height: 4),
-                              (user.biography != null &&
-                                      user.biography!.isNotEmpty)
-                                  ? Text(
-                                      user.biography!,
-                                      maxLines: 3,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall!
-                                          .copyWith(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .surfaceTint),
-                                    )
-                                  : Text(
-                                      'Pas de bio',
-                                      maxLines: 3,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall!
-                                          .copyWith(
-                                              color: Theme.of(context)
-                                                  .disabledColor),
-                                    ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  personCubit.user.id == userCubit.user.id
-                      ? const SizedBox()
-                      : Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                          ).add(const EdgeInsets.only(top: 32, bottom: 28)),
-                          child: personCubit.user.hasBlocked
-                              ? FilledButton(
-                                  onPressed: () => personCubit.unBlockUser(),
-                                  style: FilledButton.styleFrom(
-                                    backgroundColor: AppTheme.mainText,
-                                    foregroundColor: AppTheme.white,
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 6, horizontal: 12),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      state is PersonLoadingBlockState
-                                          ? const SizedBox(
-                                              width: 16,
-                                              height: 16,
-                                              child: CircularProgressIndicator(
-                                                strokeWidth: 2,
-                                                color: AppTheme.white,
-                                              ),
-                                            )
-                                          : const Icon(
-                                              Icons.block_flipped,
-                                            ),
-                                      const SizedBox(width: 8),
-                                      Text(
-                                        'Débloquer',
+            length: 5,
+            child: NestedScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              headerSliverBuilder: (context, _) => [
+                SliverAppBar(
+                  title: Text(user.username),
+                  centerTitle: true,
+                  actions: [
+                    IconButton(
+                        padding: EdgeInsets.zero,
+                        onPressed: onActionsPressed,
+                        icon: const Icon(Icons.more_vert))
+                  ],
+                ),
+                SliverToBoxAdapter(
+                    child: Column(
+                  children: [
+                    const SizedBox(height: 16.0),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ProfilePicture(
+                              image: user.image, height: 80, width: 80),
+                          const SizedBox(width: 16.0),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '@${user.usertag}',
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                                const SizedBox(height: 4),
+                                (user.biography != null &&
+                                        user.biography!.isNotEmpty)
+                                    ? Text(
+                                        user.biography!,
+                                        maxLines: 3,
+                                        overflow: TextOverflow.ellipsis,
                                         style: Theme.of(context)
                                             .textTheme
-                                            .labelLarge!
+                                            .bodySmall!
                                             .copyWith(
-                                              color: AppTheme.white,
-                                            ),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              : !user.followed
-                                  ? FilledButton(
-                                      onPressed: () => personCubit.followUser(),
-                                      style: FilledButton.styleFrom(
-                                        backgroundColor: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                        textStyle: Theme.of(context)
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .surfaceTint),
+                                      )
+                                    : Text(
+                                        'Pas de bio',
+                                        maxLines: 3,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: Theme.of(context)
                                             .textTheme
-                                            .labelLarge!,
+                                            .bodySmall!
+                                            .copyWith(
+                                                color: Theme.of(context)
+                                                    .disabledColor),
                                       ),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          state is PersonLoadingState
-                                              ? const SizedBox(
-                                                  width: 16,
-                                                  height: 16,
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    strokeWidth: 2,
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    personCubit.user.id == userCubit.user.id
+                        ? const SizedBox()
+                        : Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                            ).add(const EdgeInsets.only(top: 32, bottom: 28)),
+                            child: personCubit.user.hasBlocked
+                                ? FilledButton(
+                                    onPressed: () => personCubit.unBlockUser(),
+                                    style: FilledButton.styleFrom(
+                                      backgroundColor: AppTheme.mainText,
+                                      foregroundColor: AppTheme.white,
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 6, horizontal: 12),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        state is PersonLoadingBlockState
+                                            ? const SizedBox(
+                                                width: 16,
+                                                height: 16,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  strokeWidth: 2,
+                                                  color: AppTheme.white,
+                                                ),
+                                              )
+                                            : const Icon(
+                                                Icons.block_flipped,
+                                              ),
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          'Débloquer',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelLarge!
+                                              .copyWith(
+                                                color: AppTheme.white,
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : !user.followed
+                                    ? FilledButton(
+                                        onPressed: () =>
+                                            personCubit.followUser(),
+                                        style: FilledButton.styleFrom(
+                                          backgroundColor: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                          textStyle: Theme.of(context)
+                                              .textTheme
+                                              .labelLarge!,
+                                        ),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            state is PersonLoadingState
+                                                ? const SizedBox(
+                                                    width: 16,
+                                                    height: 16,
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      strokeWidth: 2,
+                                                      color: AppTheme.black,
+                                                    ),
+                                                  )
+                                                : const Icon(
+                                                    Icons.add,
                                                     color: AppTheme.black,
                                                   ),
-                                                )
-                                              : const Icon(
-                                                  Icons.add,
-                                                  color: AppTheme.black,
-                                                ),
-                                          const SizedBox(width: 8),
-                                          Text(
-                                            'ajouter',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .labelLarge!,
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  : FilledButton(
-                                      onPressed: () =>
-                                          personCubit.unFollowUser(),
-                                      style: FilledButton.styleFrom(
-                                        backgroundColor: Theme.of(context)
-                                            .colorScheme
-                                            .tertiaryContainer,
-                                        textStyle: Theme.of(context)
-                                            .textTheme
-                                            .labelLarge!
-                                            .copyWith(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .onTertiaryContainer,
+                                            const SizedBox(width: 8),
+                                            Text(
+                                              'ajouter',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .labelLarge!,
                                             ),
-                                      ),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          state is PersonLoadingState
-                                              ? SizedBox(
-                                                  width: 16,
-                                                  height: 16,
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    strokeWidth: 2,
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .onTertiaryContainer,
-                                                  ),
-                                                )
-                                              : Icon(Icons.check,
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .onTertiaryContainer),
-                                          const SizedBox(width: 8),
-                                          Text(
-                                            'ajouté(e)',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .labelLarge!
-                                                .copyWith(
+                                          ],
+                                        ),
+                                      )
+                                    : FilledButton(
+                                        onPressed: () =>
+                                            personCubit.unFollowUser(),
+                                        style: FilledButton.styleFrom(
+                                          backgroundColor: Theme.of(context)
+                                              .colorScheme
+                                              .tertiaryContainer,
+                                          textStyle: Theme.of(context)
+                                              .textTheme
+                                              .labelLarge!
+                                              .copyWith(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onTertiaryContainer,
+                                              ),
+                                        ),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            state is PersonLoadingState
+                                                ? SizedBox(
+                                                    width: 16,
+                                                    height: 16,
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      strokeWidth: 2,
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .onTertiaryContainer,
+                                                    ),
+                                                  )
+                                                : Icon(Icons.check,
                                                     color: Theme.of(context)
                                                         .colorScheme
                                                         .onTertiaryContainer),
-                                          ),
-                                        ],
+                                            const SizedBox(width: 8),
+                                            Text(
+                                              'ajouté(e)',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .labelLarge!
+                                                  .copyWith(
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .onTertiaryContainer),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                        ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                    ).add(const EdgeInsets.only(bottom: 12)),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Theme.of(context).colorScheme.outlineVariant,
+                          ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                      ).add(const EdgeInsets.only(bottom: 12)),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Theme.of(context).colorScheme.outlineVariant,
+                          ),
                         ),
                       ),
-                    ),
-                    margin: const EdgeInsets.only(top: 32),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            const Icon(Icons.people_outline),
-                            const SizedBox(width: 16),
-                            GestureDetector(
-                              onTap: () => Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (context) => FollowScreen.get(
-                                          context: context,
-                                          title:
-                                              "M'ont ajouté (${user.followersCount})",
-                                          followCubit: followersCubit))),
-                              child: SizedBox(
-                                width: 76,
+                      margin: const EdgeInsets.only(top: 32),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              const Icon(Icons.people_outline),
+                              const SizedBox(width: 16),
+                              GestureDetector(
+                                onTap: () => Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                        builder: (context) => FollowScreen.get(
+                                            context: context,
+                                            title:
+                                                "M'ont ajouté (${user.followersCount})",
+                                            followCubit: followersCubit))),
+                                child: SizedBox(
+                                  width: 76,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        '${user.followersCount}',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelLarge,
+                                      ),
+                                      Text(
+                                        "M'ont ajouté",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              GestureDetector(
+                                onTap: () => Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                        builder: (context) => FollowScreen.get(
+                                            context: context,
+                                            title:
+                                                "Ajoutés (${user.followingCount})",
+                                            followCubit: followingCubit))),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Text(
-                                      '${user.followersCount}',
+                                      '${user.followingCount}',
                                       style: Theme.of(context)
                                           .textTheme
                                           .labelLarge,
                                     ),
                                     Text(
-                                      "M'ont ajouté",
+                                      "ajoutés",
                                       style:
                                           Theme.of(context).textTheme.bodySmall,
                                     ),
                                   ],
                                 ),
                               ),
-                            ),
-                            const SizedBox(width: 16),
-                            GestureDetector(
-                              onTap: () => Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (context) => FollowScreen.get(
-                                          context: context,
-                                          title:
-                                              "Ajoutés (${user.followingCount})",
-                                          followCubit: followingCubit))),
-                              child: Column(
+                            ],
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.only(right: 8),
+                            child: Icon(Icons.arrow_forward_ios, size: 16),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 8,
+                        left: 16,
+                        right: 16,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(Icons.people_outline),
+                              const SizedBox(width: 16),
+                              SizedBox(
+                                  width: 76,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        '${user.animesViewedCount}',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelLarge,
+                                      ),
+                                      Text(
+                                        "Vus",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall,
+                                      ),
+                                    ],
+                                  )),
+                              const SizedBox(width: 24),
+                              Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    '${user.followingCount}',
+                                    '${user.watchlistCount}',
                                     style:
                                         Theme.of(context).textTheme.labelLarge,
                                   ),
                                   Text(
-                                    "ajoutés",
+                                    "à voir",
                                     style:
                                         Theme.of(context).textTheme.bodySmall,
                                   ),
                                 ],
                               ),
-                            ),
-                          ],
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(right: 8),
-                          child: Icon(Icons.arrow_forward_ios, size: 16),
-                        ),
+                            ],
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.only(right: 8),
+                            child: Icon(Icons.arrow_forward_ios, size: 16),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 16.0),
+                    const TabBar(
+                      tabs: [
+                        Tab(text: 'Activité'),
+                        Tab(text: 'Animes'),
+                        Tab(text: 'Watchlist'),
+                        Tab(text: 'Social'),
+                        Tab(text: 'Quiz'),
                       ],
                     ),
+                  ],
+                ))
+              ],
+              body: TabBarView(
+                children: [
+                  const ActivityTab(),
+                  AnimesTab(
+                    currentUser: false,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 8,
-                      left: 16,
-                      right: 16,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            const Icon(Icons.people_outline),
-                            const SizedBox(width: 16),
-                            SizedBox(
-                                width: 76,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '${user.animesViewedCount}',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelLarge,
-                                    ),
-                                    Text(
-                                      "Vus",
-                                      style:
-                                          Theme.of(context).textTheme.bodySmall,
-                                    ),
-                                  ],
-                                )),
-                            const SizedBox(width: 24),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  '${user.watchlistCount}',
-                                  style: Theme.of(context).textTheme.labelLarge,
-                                ),
-                                Text(
-                                  "à voir",
-                                  style: Theme.of(context).textTheme.bodySmall,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(right: 8),
-                          child: Icon(Icons.arrow_forward_ios, size: 16),
-                        ),
-                      ],
-                    ),
+                  WatchList(
+                    currentUser: false,
                   ),
-                  const SizedBox(height: 16.0),
-                  const TabBar(
-                    tabs: [
-                      Tab(text: 'Activité'),
-                      Tab(text: 'Animes'),
-                      Tab(text: 'Watchlist'),
-                      Tab(text: 'Social'),
-                      Tab(text: 'Quiz'),
-                    ],
+                  PostTab(
+                    currentUser: false,
                   ),
-                  Expanded(
-                    child: TabBarView(
-                      children: [
-                        ActivityTab(),
-                        AnimesTab(
-                          currentUser: false,
-                        ),
-                        WatchList(
-                          currentUser: false,
-                        ),
-                        PostTab(
-                          currentUser: false,
-                        ),
-                        QuizUserScreen(
-                          currentUser: false,
-                        ),
-                      ],
-                    ),
+                  QuizUserScreen(
+                    currentUser: false,
                   ),
-                ]),
-              ));
+                ],
+              ),
+            ),
+          ));
         });
   }
 

@@ -42,7 +42,7 @@ class UnSeeCommentEpisodeResponseState extends CubitInformationState
   UnSeeCommentEpisodeResponseState();
 }
 
-class SelectCommentEpisodeState extends CubitLoadingState
+class SelectCommentEpisodeState extends CubitSuccessState
     with CommentEpisodeState {
   final CommentEpisode comment;
 

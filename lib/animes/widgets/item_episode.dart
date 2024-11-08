@@ -38,7 +38,9 @@ class EpisodeItem extends StatelessWidget {
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                         Text(
-                          "${DateTime.fromMicrosecondsSinceEpoch(episode.airingAt).elapsed()}.",
+                          DateTime.fromMillisecondsSinceEpoch(
+                                  episode.airingAt * 1000)
+                              .elapsed(),
                           style:
                               Theme.of(context).textTheme.bodySmall!.copyWith(
                                     color: AppTheme.disabledText,

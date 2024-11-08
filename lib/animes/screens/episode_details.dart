@@ -71,75 +71,68 @@ class _EpisodeDetailsScreenState extends State<EpisodeDetailsScreen> {
           body: Column(
             children: [
               Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                          height: kToolbarHeight +
-                              MediaQuery.of(context).viewPadding.top),
-                      EpisodeHead(episode: widget.episode),
-                      const SizedBox(height: 16),
-                      const Divider(),
-                      const ButtonEpisode(),
-                      const Divider(),
-                      AutoListView.get<CommentEpisode>(
-                          padding: EdgeInsets.zero,
-                          shrinkWrap: true,
-                          autoManage: false,
-                          physics: const NeverScrollableScrollPhysics(),
-                          cubit: loadCommentEpisodeCubit,
-                          itemBuilder: (context, comment) =>
-                              ItemCommentEpisode.get(
-                                idEpisode: episodeCubit.episode.id,
-                                context: context,
-                                comment: comment,
-                                loadEpisodeAnimeCubit:
-                                    widget.loadEpisodeAnimeCubit,
-                              ),
-                          emptyBuilder: (context) => const Center(
-                                child: Text("Aucun commentaire"),
-                              ),
-                          loadingBuilder: (context) => Container(
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.all(16),
-                              child: LinearProgressIndicator(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onTertiaryContainer,
-                                backgroundColor: Theme.of(context)
-                                    .colorScheme
-                                    .tertiaryContainer,
-                                borderRadius: BorderRadius.circular(30),
-                              )),
-                          loadingMoreBuilder: (context) => Container(
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.all(16),
-                              child: LinearProgressIndicator(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onTertiaryContainer,
-                                backgroundColor: Theme.of(context)
-                                    .colorScheme
-                                    .tertiaryContainer,
-                                borderRadius: BorderRadius.circular(30),
-                              )),
-                          errorBuilder: (context, retry) => Center(
-                                  child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const Text("Une erreur est survenue"),
-                                  TextButton(
-                                    onPressed: retry,
-                                    child: const Text("Réessayer"),
-                                  )
-                                ],
-                              )))
-                    ],
-                  ),
+                child: ListView(
+                  children: [
+                    const EpisodeHead(),
+                    const SizedBox(height: 16),
+                    const Divider(),
+                    const ButtonEpisode(),
+                    const Divider(),
+                    AutoListView.get<CommentEpisode>(
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        autoManage: false,
+                        physics: const NeverScrollableScrollPhysics(),
+                        cubit: loadCommentEpisodeCubit,
+                        itemBuilder: (context, comment) =>
+                            ItemCommentEpisode.get(
+                              idEpisode: episodeCubit.episode.id,
+                              context: context,
+                              comment: comment,
+                              loadEpisodeAnimeCubit:
+                                  widget.loadEpisodeAnimeCubit,
+                            ),
+                        emptyBuilder: (context) => const Center(
+                              child: Text("Aucun commentaire"),
+                            ),
+                        loadingBuilder: (context) => Container(
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.all(16),
+                            child: LinearProgressIndicator(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onTertiaryContainer,
+                              backgroundColor: Theme.of(context)
+                                  .colorScheme
+                                  .tertiaryContainer,
+                              borderRadius: BorderRadius.circular(30),
+                            )),
+                        loadingMoreBuilder: (context) => Container(
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.all(16),
+                            child: LinearProgressIndicator(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onTertiaryContainer,
+                              backgroundColor: Theme.of(context)
+                                  .colorScheme
+                                  .tertiaryContainer,
+                              borderRadius: BorderRadius.circular(30),
+                            )),
+                        errorBuilder: (context, retry) => Center(
+                                child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Text("Une erreur est survenue"),
+                                TextButton(
+                                  onPressed: retry,
+                                  child: const Text("Réessayer"),
+                                )
+                              ],
+                            )))
+                  ],
                 ),
               ),
               const CommentEpisodeInput()
