@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:potatoes/libs.dart';
 import 'package:umai/account/screens/account.dart';
 import 'package:umai/animes/screens/home.dart';
-import 'package:umai/common/bloc/home_cubit.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/quiz/screens/home.dart';
 import 'package:umai/social/screens/home.dart';
 import 'package:umai/utils/themes.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  static const int _mainPageIndex = 0;
   final pages = const [
     {'title': 'Social', 'page': SocialHomeScreen()},
     {'title': 'Évènements', 'page': SizedBox()},
@@ -16,13 +23,24 @@ class HomeScreen extends StatelessWidget {
     {'title': 'Animes', 'page': AnimeHomeScreen()},
     {'title': 'Quiz', 'page': QuizHomeScreen()},
   ];
+  final pageController = PageController(initialPage: _mainPageIndex);
+  int index = 0;
 
-  const HomeScreen({super.key});
+  void setPage([int value = _mainPageIndex]) {
+    setState(() {
+      pageController.jumpToPage(value);
+      index = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit, int>(builder: (context, index) {
-      return Scaffold(
+    return PopScope(
+      canPop: index == _mainPageIndex,
+      onPopInvokedWithResult: (bool didPop, dynamic result) {
+        if (!didPop) setPage();
+      },
+      child: Scaffold(
         appBar: AppBar(
           forceMaterialTransparency: true,
           title: Text(pages[index]['title'] as String),
@@ -47,9 +65,15 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(width: 16.0)
           ],
         ),
-        body: pages[index]['page'] as Widget,
+        body: PageView(
+          controller: pageController,
+          onPageChanged: (value) => setState(() => index = value),
+          children: pages.map((page) => page['page'] as Widget).toList(),
+        ),
         bottomNavigationBar: BottomNavigationBar(
-          onTap: context.read<HomeCubit>().set,
+          onTap: setPage,
+          currentIndex: index,
+          selectedItemColor: Colors.amber,
           useLegacyColorScheme: false,
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
@@ -78,11 +102,9 @@ class HomeScreen extends StatelessWidget {
               label: pages[4]['title'] as String,
             ),
           ],
-          currentIndex: index,
-          selectedItemColor: Colors.amber,
         ),
-      );
-    });
+      ),
+    );
   }
 
   Widget _buildIconWithDecoration({required icon, required bool selected}) {
@@ -96,5 +118,11 @@ class HomeScreen extends StatelessWidget {
         child: Icon(
           icon,
         ));
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
   }
 }

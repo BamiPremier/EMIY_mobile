@@ -12,7 +12,6 @@ import 'package:umai/auth/bloc/auth_cubit.dart';
 import 'package:umai/auth/screens/onboarding_screen.dart';
 import 'package:umai/auth/screens/registration/username.dart';
 import 'package:umai/auth/services/auth_service.dart';
-import 'package:umai/common/bloc/home_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/screens/home.dart';
 import 'package:umai/common/services/api_service.dart';
@@ -110,7 +109,6 @@ class MyApp extends StatelessWidget {
                   )),
           BlocProvider(
               create: (context) => AuthCubit(context.read(), context.read())),
-          BlocProvider(create: (_) => HomeCubit()),
           BlocProvider(
               create: (context) =>
                   NewPostCubit(context.read(), context.read())),
