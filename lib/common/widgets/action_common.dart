@@ -8,24 +8,23 @@ import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/social/bloc/post_cubit.dart';
-import 'package:umai/social/model/post.dart';
 import 'package:umai/utils/themes.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
-class PostAction extends StatelessWidget {
-  const PostAction({super.key});
+class PostCommon extends StatelessWidget {
+  const PostCommon({super.key});
 
   @override
   Widget build(BuildContext context) {
     final postCubit = context.read<PostCubit>();
-    final user = postCubit.x.itemUser!;
+    final user = postCubit.x.itemUser;
 
     return ListTile(
         contentPadding: const EdgeInsets.only(left: 16.0, right: 8.0),
         leading: GestureDetector(
           child: ProfilePicture(
-            image: user.image,
+            image: user!.image,
             height: 48.0,
             width: 48.0,
           ),

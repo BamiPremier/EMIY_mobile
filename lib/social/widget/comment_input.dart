@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
+import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/utils/validators.dart';
 import 'package:umai/social/bloc/post_cubit.dart';
 import 'package:umai/social/bloc/action_comment_cubit.dart';
@@ -31,9 +32,9 @@ class _CommentInputState extends State<CommentInput> {
         listener: (context, ystate) {
           FocusScope.of(context).requestFocus(focusNode);
         },
-        builder: (context, ystate) => BlocConsumer<PostCubit, PostState>(
+        builder: (context, ystate) => BlocConsumer<PostCubit, XCommonState>(
             listener: (context, state) {
-              if (state is CommentPostSuccesState) {
+              if (state is CommentItemSuccesState) {
                 setState(() {
                   _commentController.clear();
                 });
@@ -50,7 +51,7 @@ class _CommentInputState extends State<CommentInput> {
                           child: TextFormField(
                               style: Theme.of(context).textTheme.bodyMedium,
                               readOnly:
-                                  state is PostLoadingState ? true : false,
+                                  state is XLoadingState ? true : false,
                               controller: _commentController,
                               decoration: InputDecoration(
                                 hintText: (ystate != null)
@@ -79,7 +80,7 @@ class _CommentInputState extends State<CommentInput> {
                           icon: CircleAvatar(
                               backgroundColor: Theme.of(context).primaryColor,
                               radius: 24,
-                              child: state is PostLoadingState
+                              child: state is XLoadingState
                                   ? const SizedBox(
                                       width: 16,
                                       height: 16,

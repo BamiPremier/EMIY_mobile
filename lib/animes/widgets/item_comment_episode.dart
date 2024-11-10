@@ -7,7 +7,8 @@ import 'package:umai/animes/bloc/comment_episode_cubit.dart';
 import 'package:umai/animes/bloc/episode_cubit.dart';
 import 'package:umai/animes/bloc/load_comment_episode_cubit.dart';
 import 'package:umai/animes/bloc/load_episode_anime_cubit.dart';
-import 'package:umai/animes/models/comment_episode.dart';
+import 'package:umai/social/model/comment.dart';
+
 import 'package:umai/animes/widgets/action_comment.dart';
 import 'package:umai/animes/widgets/item_comment_episode_response.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
@@ -25,7 +26,7 @@ class ItemCommentEpisode extends StatefulWidget {
   static Widget get({
     required LoadEpisodeAnimeCubit loadEpisodeAnimeCubit,
     required BuildContext context,
-    required CommentEpisode comment,
+    required Comment comment,
     required int idEpisode,
   }) {
     return BlocProvider(
@@ -43,7 +44,7 @@ class _ItemCommentEpisodeState extends State<ItemCommentEpisode> {
   late final episodeCubit = context.read<EpisodeCubit>();
   late final loadCommentEpisodeCubit = LoadCommentEpisodeCubit(
     context.read(),
-    episodeCubit.episode.id,
+    int.parse(episodeCubit.x.itemId),
     comment.id,
     widget.loadEpisodeAnimeCubit,
     context.read(),
@@ -159,7 +160,7 @@ class _ItemCommentEpisodeState extends State<ItemCommentEpisode> {
           ),
           if (state is SeeCommentEpisodeResponseState) const Divider(),
           if (state is SeeCommentEpisodeResponseState)
-            AutoListView.get<CommentEpisode>(
+            AutoListView.get<Comment>(
               padding: EdgeInsets.zero,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -167,7 +168,7 @@ class _ItemCommentEpisodeState extends State<ItemCommentEpisode> {
               itemBuilder: (context, comment) => ItemCommentEpisodeResponse.get(
                   context: context,
                   commentepisode: comment,
-                  idEpisode: episodeCubit.episode.id),
+                  idEpisode: int.parse(  episodeCubit.x.itemId)),
               loadingBuilder: (context) => Container(
                   alignment: Alignment.center,
                   padding: const EdgeInsets.all(16),

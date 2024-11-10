@@ -2,12 +2,13 @@ import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
 import 'package:potatoes/auto_list/models/paginated_list.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/bloc/load_episode_anime_cubit.dart';
-import 'package:umai/animes/models/comment_episode.dart';
+import 'package:umai/social/model/comment.dart';
+
 import 'package:umai/animes/services/anime_service.dart';
 import 'package:umai/animes/services/episode_service.dart';
 import 'package:umai/common/services/person_cubit_manager.dart';
 
-class LoadCommentEpisodeCubit extends AutoListCubit<CommentEpisode> {
+class LoadCommentEpisodeCubit extends AutoListCubit<Comment> {
   final EpisodeService episodeService;
   final PersonCubitManager personCubitManager;
   final LoadEpisodeAnimeCubit loadEpisodeAnimeCubit;
@@ -17,17 +18,17 @@ class LoadCommentEpisodeCubit extends AutoListCubit<CommentEpisode> {
   LoadCommentEpisodeCubit(this.episodeService, this.idEpisode, this.target,
       this.loadEpisodeAnimeCubit, this.personCubitManager)
       : super(provider: ({int page = 1}) async {
-          final p = await episodeService.getCommentsEpisode(
-              idEpisode: idEpisode, target: target, page: page);
+          final p = await episodeService.getComments(
+              idItem: idEpisode.toString(), target: target, page: page);
           return p;
         });
 
   @override
-  void onChange(Change<AutoListState<CommentEpisode>> change) {
+  void onChange(Change<AutoListState<Comment>> change) {
     super.onChange(change);
-    if (change.nextState is AutoListReadyState<CommentEpisode>) {
+    if (change.nextState is AutoListReadyState<Comment>) {
       for (var comment
-          in (change.nextState as AutoListReadyState<CommentEpisode>)
+          in (change.nextState as AutoListReadyState<Comment>)
               .items
               .items) {
         personCubitManager.add(comment.user);
@@ -35,7 +36,7 @@ class LoadCommentEpisodeCubit extends AutoListCubit<CommentEpisode> {
     }
   }
 
-  void putFirst(CommentEpisode comment) {
+  void putFirst(Comment comment) {
     if (state is LoadLoadCommentEpisodeCubitReadyState) {
       final list = (state as LoadLoadCommentEpisodeCubitReadyState).items;
 
@@ -44,7 +45,7 @@ class LoadCommentEpisodeCubit extends AutoListCubit<CommentEpisode> {
     }
   }
 
-  void deleteCommentEpisode(CommentEpisode comment) {
+  void deleteCommentEpisode(Comment comment) {
     if (state is LoadLoadCommentEpisodeCubitReadyState) {
       final list = (state as LoadLoadCommentEpisodeCubitReadyState).items;
 
@@ -63,6 +64,6 @@ class LoadCommentEpisodeCubit extends AutoListCubit<CommentEpisode> {
   }
 }
 
-typedef LoadCommentEpisodeState = AutoListState<CommentEpisode>;
+typedef LoadCommentEpisodeState = AutoListState<Comment>;
 typedef LoadLoadCommentEpisodeCubitReadyState
-    = AutoListReadyState<CommentEpisode>;
+    = AutoListReadyState<Comment>;

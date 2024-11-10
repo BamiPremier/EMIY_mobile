@@ -1,11 +1,12 @@
 import 'package:potatoes/auto_list/models/paginated_list.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/models/anime.dart';
-import 'package:umai/animes/models/comment_episode.dart';
 import 'package:umai/animes/models/episode.dart';
+import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/services/api_service.dart';
+import 'package:umai/social/model/comment.dart';
 
-class EpisodeService extends ApiService {
+class EpisodeService extends ApiService with XService<Episode> {
   static const String _likeEpisode = '/episodes/:idEpisode/like';
   static const String _commentEpisode = '/episodes/:idEpisode/comment';
   static const String _shareEpisode = '/episodes/:idEpisode/share';
@@ -23,24 +24,25 @@ class EpisodeService extends ApiService {
       '/episodes/comment/:idComment/report';
 
   const EpisodeService(super._dio);
-
-  Future shareEpisode({required int idEpisode}) {
+  @override
+  Future shareItem({required String idItem}) {
     return compute(
       dio.post(
-        _shareEpisode.replaceAll(':idEpisode', idEpisode.toString()),
+        _shareEpisode.replaceAll(':idEpisode', idItem.toString()),
         options: Options(headers: withAuth()),
       ),
     );
   }
 
-  Future<PaginatedList<CommentEpisode>> getCommentsEpisode({
-    required int idEpisode,
+  @override
+  Future<PaginatedList<Comment>> getComments({
+    required String idItem,
     int page = 1,
     String? target,
   }) async {
     return compute(
       dio.get(
-        _listCommentEpisode.replaceAll(':idEpisode', idEpisode.toString()),
+        _listCommentEpisode.replaceAll(':idEpisode', idItem.toString()),
         options: Options(headers: withAuth()),
         queryParameters: {
           'page': page,
@@ -48,48 +50,52 @@ class EpisodeService extends ApiService {
           if (target != null && target != '') 'target': target
         },
       ),
-      mapper: (result) => toPaginatedList(result, CommentEpisode.fromJson),
+      mapper: (result) => toPaginatedList(result, Comment.fromJson),
     );
   }
 
-  Future<void> likeEpisode({
-    required int idEpisode,
+  @override
+  Future<Episode> likeItem({
+    required String idItem,
   }) async {
     return compute(
       dio.post(
-        _likeEpisode.replaceAll(':idEpisode', idEpisode.toString()),
+        _likeEpisode.replaceAll(':idEpisode', idItem.toString()),
         options: Options(headers: withAuth()),
       ),
     );
   }
 
-  Future<void> unLikeEpisode({
-    required int idEpisode,
+  @override
+  Future<Episode> unLikeItem({
+    required String idItem,
   }) async {
     return compute(
       dio.delete(
-        _likeEpisode.replaceAll(':idEpisode', idEpisode.toString()),
+        _likeEpisode.replaceAll(':idEpisode', idItem.toString()),
         options: Options(headers: withAuth()),
       ),
     );
   }
 
-  Future<CommentEpisode> commentEpisode({
-    required int idEpisode,
+  @override
+  Future<Comment> commentItem({
+    required String idItem,
     required String content,
     String? target,
   }) async {
     return compute(
       dio.post(
-        _commentEpisode.replaceAll(':idEpisode', idEpisode.toString()),
+        _commentEpisode.replaceAll(':idEpisode', idItem.toString()),
         options: Options(headers: withAuth()),
         data: {'content': content, if (target != null) 'target': target},
       ),
-      mapper: CommentEpisode.fromJson,
+      mapper: Comment.fromJson,
     );
   }
 
-  Future<PaginatedList<CommentEpisode>> getCommentsResponseEpisode({
+  @override
+  Future<PaginatedList<Comment>> getCommentsResponse({
     required String commentId,
     int page = 1,
   }) async {
@@ -102,11 +108,12 @@ class EpisodeService extends ApiService {
           'size': 10,
         },
       ),
-      mapper: (result) => toPaginatedList(result, CommentEpisode.fromJson),
+      mapper: (result) => toPaginatedList(result, Comment.fromJson),
     );
   }
 
-  Future<CommentEpisode> commentCommentEpisode({
+  @override
+  Future<Comment> commentComment({
     required String commentId,
   }) async {
     return compute(
@@ -114,11 +121,12 @@ class EpisodeService extends ApiService {
         _commentCommentEpisode.replaceAll(':commentId', commentId),
         options: Options(headers: withAuth()),
       ),
-      mapper: CommentEpisode.fromJson,
+      mapper: Comment.fromJson,
     );
   }
 
-  Future<CommentEpisode> likeCommentEpisode({
+  @override
+  Future<Comment> likeComment({
     required String commentId,
   }) async {
     return compute(
@@ -126,11 +134,12 @@ class EpisodeService extends ApiService {
         _likeCommentEpisode.replaceAll(':idComment', commentId),
         options: Options(headers: withAuth()),
       ),
-      mapper: CommentEpisode.fromJson,
+      mapper: Comment.fromJson,
     );
   }
 
-  Future unLikeCommentEpisode({
+  @override
+  Future unLikeComment({
     required String commentId,
   }) async {
     return compute(
@@ -138,11 +147,12 @@ class EpisodeService extends ApiService {
         _likeCommentEpisode.replaceAll(':idComment', commentId),
         options: Options(headers: withAuth()),
       ),
-      mapper: CommentEpisode.fromJson,
+      mapper: Comment.fromJson,
     );
   }
+  @override
 
-  Future<void> reportCommentEpisode({
+  Future<void> reportComment({
     required String commentId,
     required String reason,
   }) async {
@@ -155,7 +165,7 @@ class EpisodeService extends ApiService {
     );
   }
 
-  Future<CommentEpisode> deleteCommentEpisode({
+  Future<Comment> deleteCommentEpisode({
     required String commentId,
   }) async {
     return compute(
@@ -163,7 +173,7 @@ class EpisodeService extends ApiService {
         _deleteCommentEpisode.replaceAll(':idComment', commentId),
         options: Options(headers: withAuth()),
       ),
-      mapper: CommentEpisode.fromJson,
+      mapper: Comment.fromJson,
     );
   }
 }

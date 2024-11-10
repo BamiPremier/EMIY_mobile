@@ -4,7 +4,7 @@ mixin CommentEpisodeState on Equatable {}
 
 class InitializingCommentEpisodeState extends CubitSuccessState
     with CommentEpisodeState {
-  final CommentEpisode comment;
+  final Comment comment;
 
   const InitializingCommentEpisodeState(this.comment);
 
@@ -44,7 +44,7 @@ class UnSeeCommentEpisodeResponseState extends CubitInformationState
 
 class SelectCommentEpisodeState extends CubitSuccessState
     with CommentEpisodeState {
-  final CommentEpisode comment;
+  final Comment comment;
 
   const SelectCommentEpisodeState(this.comment);
 
@@ -59,7 +59,7 @@ class SendCommentEpisodeRepportLoadingState extends CubitLoadingState
 
 class SuccessSendCommentEpisodeRepportState extends CubitSuccessState
     with CommentEpisodeState {
-  final CommentEpisode comment;
+  final Comment comment;
 
   const SuccessSendCommentEpisodeRepportState(this.comment);
 

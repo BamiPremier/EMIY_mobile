@@ -1,61 +1,61 @@
-part of 'episode_cubit.dart';
+// part of 'episode_cubit.dart';
 
-mixin EpisodeState on Equatable {}
+// mixin EpisodeState on Equatable {}
 
-class InitializingEpisodeState extends CubitSuccessState with EpisodeState {
-  final Episode episode;
+// class InitializingXCommonState extends CubitSuccessState with EpisodeState {
+//   final Episode episode;
 
-  const InitializingEpisodeState(this.episode);
+//   const InitializingXCommonState(this.episode);
 
-  @override
-  List<Object?> get props => [episode];
-}
+//   @override
+//   List<Object?> get props => [episode];
+// }
 
-class EpisodeLoadingState extends CubitLoadingState with EpisodeState {
-  const EpisodeLoadingState() : super();
-}
+// class EpisodeLoadingState extends CubitLoadingState with EpisodeState {
+//   const EpisodeLoadingState() : super();
+// }
 
-class LikeEpisodeSuccesState extends CubitInformationState with EpisodeState {
-  LikeEpisodeSuccesState();
-}
+// class LikeEpisodeSuccesState extends CubitInformationState with EpisodeState {
+//   LikeEpisodeSuccesState();
+// }
 
-class ShareEpisodeLoadingState extends CubitLoadingState with EpisodeState {
-  const ShareEpisodeLoadingState() : super();
-}
+// class ShareEpisodeLoadingState extends CubitLoadingState with EpisodeState {
+//   const ShareEpisodeLoadingState() : super();
+// }
 
-class ShareEpisodeSuccesState extends CubitInformationState with EpisodeState {
-  final String link;
+// class ShareEpisodeSuccesState extends CubitInformationState with EpisodeState {
+//   final String link;
 
-  const ShareEpisodeSuccesState(this.link);
+//   const ShareEpisodeSuccesState(this.link);
 
-  @override
-  List<Object?> get props => [link];
-}
+//   @override
+//   List<Object?> get props => [link];
+// }
 
-class CommentEpisodeSuccesState extends CubitInformationState
-    with EpisodeState {
-  final CommentEpisode comment;
+// class CommentEpisodeSuccesState extends CubitInformationState
+//     with EpisodeState {
+//   final CommentEpisode comment;
 
-  const CommentEpisodeSuccesState(this.comment);
+//   const CommentEpisodeSuccesState(this.comment);
 
-  @override
-  List<Object?> get props => [comment];
-}
+//   @override
+//   List<Object?> get props => [comment];
+// }
 
-class SendRepportLoadingState extends CubitLoadingState with EpisodeState {
-  const SendRepportLoadingState() : super();
-}
+// class SendRepportLoadingState extends CubitLoadingState with EpisodeState {
+//   const SendRepportLoadingState() : super();
+// }
 
-class SuccessSendRepportEpisodeState extends CubitSuccessState
-    with EpisodeState {
-  final Episode episode;
+// class SuccessSendRepportEpisodeState extends CubitSuccessState
+//     with EpisodeState {
+//   final Episode episode;
 
-  const SuccessSendRepportEpisodeState(this.episode);
+//   const SuccessSendRepportEpisodeState(this.episode);
 
-  @override
-  List<Object?> get props => [episode];
-}
+//   @override
+//   List<Object?> get props => [episode];
+// }
 
-class EpisodeErrorState extends CubitErrorState with EpisodeState {
-  EpisodeErrorState(super.error, [super.trace]);
-}
+// class EpisodeErrorState extends CubitErrorState with EpisodeState {
+//   EpisodeErrorState(super.error, [super.trace]);
+// }

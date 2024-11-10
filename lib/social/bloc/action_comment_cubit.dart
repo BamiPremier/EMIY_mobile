@@ -10,6 +10,6 @@ class ActionCommentCubit extends ValueCubit<Comment?> {
   void commentPost({
     required String content,
   }) {
-    postCubit.commentPost(content: content, targetCommentId: state?.id);
+    postCubit.commentItem(content: content, targetCommentId: state?.id);
   }
 }

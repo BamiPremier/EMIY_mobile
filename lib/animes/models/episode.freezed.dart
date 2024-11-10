@@ -198,7 +198,7 @@ class __$$EpisodeImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$EpisodeImpl implements _Episode {
+class _$EpisodeImpl extends _Episode {
   const _$EpisodeImpl(
       {required this.id,
       required this.airingAt,
@@ -206,7 +206,8 @@ class _$EpisodeImpl implements _Episode {
       required this.episode,
       required this.anime,
       @JsonKey(name: 'has_liked') this.hasLiked = false,
-      @JsonKey(name: 'comments_count') this.commentsCount = 0});
+      @JsonKey(name: 'comments_count') this.commentsCount = 0})
+      : super._();
 
   factory _$EpisodeImpl.fromJson(Map<String, dynamic> json) =>
       _$$EpisodeImplFromJson(json);
@@ -272,7 +273,7 @@ class _$EpisodeImpl implements _Episode {
   }
 }
 
-abstract class _Episode implements Episode {
+abstract class _Episode extends Episode {
   const factory _Episode(
           {required final int id,
           required final int airingAt,
@@ -282,6 +283,7 @@ abstract class _Episode implements Episode {
           @JsonKey(name: 'has_liked') final bool hasLiked,
           @JsonKey(name: 'comments_count') final int commentsCount}) =
       _$EpisodeImpl;
+  const _Episode._() : super._();
 
   factory _Episode.fromJson(Map<String, dynamic> json) = _$EpisodeImpl.fromJson;
 

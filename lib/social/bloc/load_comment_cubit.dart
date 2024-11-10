@@ -14,7 +14,7 @@ class LoadCommentCubit extends AutoListCubit<Comment> {
       this.socialService, String idPost, String target, this.personCubitManager)
       : super(provider: ({int page = 1}) async {
           final p = await socialService.getComments(
-              idPost: idPost, target: target, page: page);
+              idItem: idPost, target: target, page: page);
           return p;
         });
 

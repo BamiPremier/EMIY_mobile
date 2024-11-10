@@ -1,59 +1,59 @@
-part of 'post_cubit.dart';
+// part of 'post_cubit.dart';
 
-mixin PostState on Equatable {}
+// mixin PostState on Equatable {}
 
-class InitializingPostState extends CubitSuccessState with PostState {
-  final Post post;
+// class InitializingPostState extends CubitSuccessState with PostState {
+//   final Post post;
 
-  const InitializingPostState(this.post);
+//   const InitializingPostState(this.post);
 
-  @override
-  List<Object?> get props => [post];
-}
+//   @override
+//   List<Object?> get props => [post];
+// }
 
-class PostLoadingState extends CubitLoadingState with PostState {
-  const PostLoadingState() : super();
-}
+// class PostLoadingState extends CubitLoadingState with PostState {
+//   const PostLoadingState() : super();
+// }
 
-class LikePostSuccesState extends CubitInformationState with PostState {
-  LikePostSuccesState();
-}
+// class LikePostSuccesState extends CubitInformationState with PostState {
+//   LikePostSuccesState();
+// }
 
-class SharePostLoadingState extends CubitLoadingState with PostState {
-  const SharePostLoadingState() : super();
-}
+// class SharePostLoadingState extends CubitLoadingState with PostState {
+//   const SharePostLoadingState() : super();
+// }
 
-class SharePostSuccesState extends CubitInformationState with PostState {
-  final String link;
+// class SharePostSuccesState extends CubitInformationState with PostState {
+//   final String link;
 
-  const SharePostSuccesState(this.link);
+//   const SharePostSuccesState(this.link);
 
-  @override
-  List<Object?> get props => [link];
-}
+//   @override
+//   List<Object?> get props => [link];
+// }
 
-class CommentPostSuccesState extends CubitInformationState with PostState {
-  final Comment comment;
+// class CommentPostSuccesState extends CubitInformationState with PostState {
+//   final Comment comment;
 
-  const CommentPostSuccesState(this.comment);
+//   const CommentPostSuccesState(this.comment);
 
-  @override
-  List<Object?> get props => [comment];
-}
+//   @override
+//   List<Object?> get props => [comment];
+// }
 
-class SendRepportLoadingState extends CubitLoadingState with PostState {
-  const SendRepportLoadingState() : super();
-}
+// class SendRepportLoadingState extends CubitLoadingState with PostState {
+//   const SendRepportLoadingState() : super();
+// }
 
-class SuccessSendRepportPostState extends CubitSuccessState with PostState {
-  final Post post;
+// class SuccessSendRepportPostState extends CubitSuccessState with PostState {
+//   final Post post;
 
-  const SuccessSendRepportPostState(this.post);
+//   const SuccessSendRepportPostState(this.post);
 
-  @override
-  List<Object?> get props => [post];
-}
+//   @override
+//   List<Object?> get props => [post];
+// }
 
-class PostErrorState extends CubitErrorState with PostState {
-  PostErrorState(super.error, [super.trace]);
-}
+// class PostErrorState extends CubitErrorState with PostState {
+//   PostErrorState(super.error, [super.trace]);
+// }

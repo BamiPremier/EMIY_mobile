@@ -3,6 +3,7 @@ import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:umai/animes/bloc/action_comment_episode_cubit.dart';
+import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/utils/dialogs.dart';
 import 'package:umai/animes/bloc/episode_cubit.dart';
 
@@ -20,17 +21,17 @@ class _ButtonEpisodeState extends State<ButtonEpisode> with CompletableMixin {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<EpisodeCubit, EpisodeState>(
+    return BlocConsumer<EpisodeCubit, XCommonState>(
       listener: onEventReceived,
-      buildWhen: (_, state) => state is InitializingEpisodeState,
+      buildWhen: (_, state) => state is InitializingXCommonState,
       builder: (context, state) {
-        final episode = episodeCubit.episode;
+        final episode = episodeCubit.x;
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               children: [
-                episode.hasLiked
+                episode.itemHasLiked
                     ? IconButton(
                         padding: EdgeInsets.zero,
                         icon: const Icon(
@@ -38,7 +39,7 @@ class _ButtonEpisodeState extends State<ButtonEpisode> with CompletableMixin {
                           color: Colors.red,
                         ),
                         onPressed: () {
-                          episodeCubit.unLikeEpisode();
+                          episodeCubit.unLikeItem();
                         },
                       )
                     : IconButton(
@@ -48,7 +49,7 @@ class _ButtonEpisodeState extends State<ButtonEpisode> with CompletableMixin {
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                         onPressed: () {
-                          episodeCubit.likeEpisode();
+                          episodeCubit.likeItem();
                         },
                       ),
                 IconButton(
@@ -70,7 +71,7 @@ class _ButtonEpisodeState extends State<ButtonEpisode> with CompletableMixin {
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
               onPressed: () {
-                episodeCubit.shareEpisode();
+                episodeCubit.shareItem();
               },
             ),
           ],
@@ -79,16 +80,16 @@ class _ButtonEpisodeState extends State<ButtonEpisode> with CompletableMixin {
     );
   }
 
-  void onEventReceived(BuildContext context, EpisodeState state) async {
+  void onEventReceived(BuildContext context, XCommonState state) async {
     await waitForDialog();
 
-    if (state is ShareEpisodeLoadingState) {
+    if (state is ShareItemLoadingState) {
       loadingDialogCompleter = showLoadingBarrier(
         context: context,
       );
-    } else if (state is ShareEpisodeSuccesState) {
-      await Share.share(state.link);
-    } else if (state is EpisodeErrorState) {
+    } else if (state is ShareItemSuccesState) {
+      await Share.share(state.shareLink);
+    } else if (state is XErrorState) {
       showErrorToast(content: state.error, context: context);
     }
   }

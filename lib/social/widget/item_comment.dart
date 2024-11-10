@@ -40,7 +40,7 @@ class _ItemCommentState extends State<ItemComment> {
   late final postCubit = context.read<PostCubit>();
   late final loadCommentCubit = LoadCommentCubit(
     context.read(),
-    postCubit.post.id,
+    postCubit.x.itemId,
     comment.id,
     context.read(),
   );
@@ -164,7 +164,7 @@ class _ItemCommentState extends State<ItemComment> {
               itemBuilder: (context, comment) => ItemCommentResponse.get(
                   context: context,
                   comment: comment,
-                  idPost: postCubit.post.id),
+                  idPost: postCubit.x.itemId),
               loadingBuilder: (context) => Container(
                   alignment: Alignment.center,
                   padding: const EdgeInsets.all(16),

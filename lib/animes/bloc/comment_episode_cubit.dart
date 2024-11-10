@@ -1,27 +1,27 @@
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
-import 'package:umai/animes/models/comment_episode.dart';
+import 'package:umai/social/model/comment.dart';
+
 import 'package:umai/animes/services/anime_service.dart';
 import 'package:umai/animes/services/episode_service.dart';
 
 part 'comment_episode_state.dart';
 
-class CommentEpisodeCubit
-    extends ObjectCubit<CommentEpisode, CommentEpisodeState> {
+class CommentEpisodeCubit extends ObjectCubit<Comment, CommentEpisodeState> {
   final EpisodeService episodeService;
 
-  CommentEpisodeCubit(this.episodeService, CommentEpisode comment)
+  CommentEpisodeCubit(this.episodeService, Comment comment)
       : super(InitializingCommentEpisodeState(comment));
 
   @override
-  CommentEpisode? getObject(CommentEpisodeState state) {
+  Comment? getObject(CommentEpisodeState state) {
     if (state is InitializingCommentEpisodeState) {
       return state.comment;
     }
     return null;
   }
 
-  CommentEpisode get comment {
+  Comment get comment {
     final comment = getObject(state) ?? object;
 
     if (comment != null) return comment;
@@ -30,7 +30,7 @@ class CommentEpisodeCubit
   }
 
   @override
-  void update(CommentEpisode object) {
+  void update(Comment object) {
     emit(InitializingCommentEpisodeState(object));
   }
 
@@ -42,13 +42,13 @@ class CommentEpisodeCubit
     }
   }
 
-  void likeCommentEpisode() {
+  void likeComment() {
     final stateBefore = state;
     var newCommentEpisode = comment.copyWith(hasLiked: !comment.hasLiked);
 
     update(newCommentEpisode);
     episodeService
-        .likeCommentEpisode(
+        .likeComment(
       commentId: comment.id,
     )
         .then((updatecomment) {}, onError: (error, trace) {
@@ -57,12 +57,12 @@ class CommentEpisodeCubit
     });
   }
 
-  void unLikeCommentEpisode() {
+  void unLikeComment() {
     final stateBefore = state;
     var newCommentEpisode = comment.copyWith(hasLiked: !comment.hasLiked);
     update(newCommentEpisode);
     episodeService
-        .unLikeCommentEpisode(
+        .unLikeComment(
       commentId: comment.id,
     )
         .then((updatecomment) {}, onError: (error, trace) {
@@ -80,7 +80,7 @@ class CommentEpisodeCubit
       final stateBefore = state;
       emit(const SendCommentEpisodeRepportLoadingState());
       episodeService
-          .reportCommentEpisode(
+          .reportComment(
         commentId: comment.id,
         reason: reason,
       )

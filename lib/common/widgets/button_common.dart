@@ -2,36 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:potatoes/common/widgets/loaders.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
-import 'package:umai/social/bloc/post_cubit.dart';
 import 'package:umai/social/bloc/action_comment_cubit.dart';
 import 'package:umai/utils/dialogs.dart';
 import 'package:share_plus/share_plus.dart';
 
-class ButtonPost extends StatefulWidget {
-  const ButtonPost({
+class ButtonCommon extends StatefulWidget {
+  const ButtonCommon({
     super.key,
   });
 
   @override
-  State<ButtonPost> createState() => _ButtonPostState();
+  State<ButtonCommon> createState() => _ButtonCommonState();
 }
 
-class _ButtonPostState extends State<ButtonPost> with CompletableMixin {
-  late final postCubit = context.read<PostCubit>();
+class _ButtonCommonState extends State<ButtonCommon> with CompletableMixin {
+  late final postCubit = context.read<XCommonCubit>();
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<PostCubit, XCommonState>(
+    return BlocConsumer<XCommonCubit, XCommonState>(
       listener: onEventReceived,
       buildWhen: (_, state) => state is InitializingXCommonState,
       builder: (context, state) {
-        final post = postCubit.x;
+        final item = postCubit.x;
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               children: [
-                post.itemHasLiked
+                item.itemHasLiked
                     ? IconButton(
                         padding: EdgeInsets.zero,
                         icon: const Icon(

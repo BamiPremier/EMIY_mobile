@@ -1,5 +1,5 @@
 import 'package:potatoes/common/bloc/cubit_manager.dart';
-import 'package:umai/common/services/person_cubit_manager.dart';
+import 'package:umai/common/services/person_cubit_manager.dart'; 
 import 'package:umai/social/bloc/post_cubit.dart';
 import 'package:umai/social/model/post.dart';
 import 'package:umai/social/services/social_service.dart';

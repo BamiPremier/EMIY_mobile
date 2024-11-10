@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
+import 'package:umai/common/screens/common_details.dart';
 import 'package:umai/social/bloc/new_post_cubit.dart';
 import 'package:umai/social/screens/post_details.dart';
+import 'package:umai/social/widget/head_post.dart';
 import 'package:umai/utils/themes.dart';
 
 class NewPostBanner extends StatefulWidget {
@@ -66,9 +68,11 @@ class _NewPostBannerState extends State<NewPostBanner> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => PostDetailsScreen.from(
+                                  builder: (context) =>
+                                      CommonDetailsScreen.fromPost(
                                     context: context,
                                     post: state.post,
+                                         head: (context) => HeadPost()
                                   ),
                                 ),
                               );

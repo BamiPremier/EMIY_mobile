@@ -37,7 +37,7 @@ class _ActionCommentEpisodeResponseState
               commentEpisodeCubit.comment.hasLiked
                   ? TextButton(
                       onPressed: () =>
-                          commentEpisodeCubit.unLikeCommentEpisode(),
+                          commentEpisodeCubit.  unLikeComment(),
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.zero,
                         textStyle:
@@ -53,7 +53,7 @@ class _ActionCommentEpisodeResponseState
                       ),
                     )
                   : TextButton(
-                      onPressed: () => commentEpisodeCubit.likeCommentEpisode(),
+                      onPressed: () => commentEpisodeCubit.likeComment(),
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.zero,
                       ),

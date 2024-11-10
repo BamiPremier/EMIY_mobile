@@ -1,14 +1,16 @@
 import 'package:potatoes/auto_list/models/paginated_list.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/models/anime.dart';
-import 'package:umai/animes/models/comment_episode.dart';
+import 'package:umai/social/model/comment.dart';
+
 import 'package:umai/animes/models/episode.dart';
-import 'package:umai/animes/models/comment_episode.dart';
+import 'package:umai/social/model/comment.dart';
+
 import 'package:umai/animes/models/episode.dart';
 import 'package:umai/common/services/api_service.dart';
 
 class AnimeService extends ApiService {
-  static const String _anime = '/animes'; 
+  static const String _anime = '/animes';
   static const String _animeFeed = '/animes/feed';
   static const String _episode = '/animes/:idAnime/episodes';
 

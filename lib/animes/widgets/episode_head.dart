@@ -13,7 +13,7 @@ class EpisodeHead extends StatelessWidget {
   Widget build(BuildContext context) {
     const double width = 72;
     const double height = 88;
-    final episode = context.read<EpisodeCubit>().episode;
+    final episode = context.read<EpisodeCubit>().x as Episode;
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
@@ -24,9 +24,8 @@ class EpisodeHead extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: Image(
-                    image: context
-                        .read<AppCacheManager>()
-                        .getImage(episode.anime.coverImage.extraLarge ?? ''),
+                    image: context.read<AppCacheManager>().getImage(
+                        episode.anime.coverImage.extraLarge ?? ''),
                     height: height,
                     width: width,
                     fit: BoxFit.cover,

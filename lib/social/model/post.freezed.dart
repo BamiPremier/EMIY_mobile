@@ -212,7 +212,7 @@ class __$$PostImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$PostImpl implements _Post {
+class _$PostImpl extends _Post {
   const _$PostImpl(
       {required this.id,
       required this.content,
@@ -223,7 +223,8 @@ class _$PostImpl implements _Post {
       this.reported = false,
       @JsonKey(name: 'created_at')
       @DateTimeConverter()
-      required this.createdAt});
+      required this.createdAt})
+      : super._();
 
   factory _$PostImpl.fromJson(Map<String, dynamic> json) =>
       _$$PostImplFromJson(json);
@@ -295,7 +296,7 @@ class _$PostImpl implements _Post {
   }
 }
 
-abstract class _Post implements Post {
+abstract class _Post extends Post {
   const factory _Post(
       {required final String id,
       required final String content,
@@ -307,6 +308,7 @@ abstract class _Post implements Post {
       @JsonKey(name: 'created_at')
       @DateTimeConverter()
       required final DateTime createdAt}) = _$PostImpl;
+  const _Post._() : super._();
 
   factory _Post.fromJson(Map<String, dynamic> json) = _$PostImpl.fromJson;
 

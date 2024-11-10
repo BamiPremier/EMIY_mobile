@@ -3,28 +3,29 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:potatoes/auto_list/models/paginated_list.dart';
 import 'package:potatoes/libs.dart';
+import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/services/api_service.dart';
 import 'package:umai/social/model/comment.dart';
 import 'package:umai/social/model/post.dart';
 
-class SocialService extends ApiService {
+class SocialService extends ApiService with XService<Post> {
   //Action post
 
   static const String _newPost = '/posts';
-  static const String _getPost = '/posts/:idPost';
-  static const String _deletePost = '/posts/:idPost';
-  static const String _reportPost = '/posts/:idPost/report';
-  static const String _sharePost = '/posts/:idPost/share';
+  static const String _getPost = '/posts/:idItem';
+  static const String _deletePost = '/posts/:idItem';
+  static const String _reportPost = '/posts/:idItem/report';
+  static const String _sharePost = '/posts/:idItem/share';
   static const String _feed = '/posts/feed';
-  static const String _likePost = '/posts/:idPost/like';
-  static const String _commentPost = '/posts/:idPost/comment';
+  static const String _likePost = '/posts/:idItem/like';
+  static const String _commentPost = '/posts/:idItem/comment';
 
 //Action comment
 
-  static const String _listComments = '/posts/:idPost/comments';
+  static const String _listComments = '/posts/:idItem/comments';
   static const String _likeComment = '/posts/comment/:idComment/like';
   static const String _commentComment = '/posts/comment/:idComment/comment';
-  static const String _listCommentResponse = '/posts/:idPost/comments';
+  static const String _listCommentResponse = '/posts/:idItem/comments';
 
   static const String _deleteComment = '/posts/comment/:idComment';
   static const String _signalerComment = '/posts/comment/:idComment/report';
@@ -50,29 +51,30 @@ class SocialService extends ApiService {
     );
   }
 
-  Future<void> reportPost({required String idPost, required String reason}) {
+  Future<void> reportItem({required String idItem, required String reason}) {
     return compute(
       dio.post(
-        _reportPost.replaceAll(':idPost', idPost),
+        _reportPost.replaceAll(':idItem', idItem),
         options: Options(headers: withAuth()),
         data: {'reason': reason},
       ),
     );
   }
 
-  Future sharePost({required String idPost}) {
+  @override
+  Future shareItem({required String idItem}) {
     return compute(
       dio.post(
-        _sharePost.replaceAll(':idPost', idPost),
+        _sharePost.replaceAll(':idItem', idItem),
         options: Options(headers: withAuth()),
       ),
     );
   }
 
-  Future deletePost({required String idPost}) {
+  Future<Post> deleteItem({required String idItem}) {
     return compute(
       dio.delete(
-        _deletePost.replaceAll(':idPost', idPost),
+        _deletePost.replaceAll(':idItem', idItem),
         options: Options(headers: withAuth()),
       ),
     );
@@ -100,47 +102,50 @@ class SocialService extends ApiService {
         mapper: (result) => toPaginatedList(result, Post.fromJson));
   }
 
-  Future<Post> getPost({required String idPost}) {
+  Future<Post> getPost({required String idItem}) {
     return compute(
       dio.get(
-        _getPost.replaceAll(':idPost', idPost),
+        _getPost.replaceAll(':idItem', idItem),
         options: Options(headers: withAuth()),
       ),
     );
   }
 
-  Future<Post> likePost({
-    required String idPost,
+  @override
+  Future<Post> likeItem({
+    required String idItem,
   }) async {
     return compute(
       dio.post(
-        _likePost.replaceAll(':idPost', idPost),
+        _likePost.replaceAll(':idItem', idItem),
         options: Options(headers: withAuth()),
       ),
       mapper: Post.fromJson,
     );
   }
 
-  Future<Post> unLikePost({
-    required String idPost,
+  @override
+  Future<Post> unLikeItem({
+    required String idItem,
   }) async {
     return compute(
       dio.delete(
-        _likePost.replaceAll(':idPost', idPost),
+        _likePost.replaceAll(':idItem', idItem),
         options: Options(headers: withAuth()),
       ),
       mapper: Post.fromJson,
     );
   }
 
-  Future<Comment> commentPost({
-    required String idPost,
+  @override
+  Future<Comment> commentItem({
+    required String idItem,
     required String content,
     String? target,
   }) async {
     return compute(
       dio.post(
-        _commentPost.replaceAll(':idPost', idPost),
+        _commentPost.replaceAll(':idItem', idItem),
         options: Options(headers: withAuth()),
         data: {'content': content, if (target != null) 'target': target},
       ),
@@ -148,14 +153,15 @@ class SocialService extends ApiService {
     );
   }
 
+  @override
   Future<PaginatedList<Comment>> getComments({
-    required String idPost,
+    required String idItem,
     int page = 1,
     String? target,
   }) async {
     return compute(
       dio.get(
-        _listComments.replaceAll(':idPost', idPost),
+        _listComments.replaceAll(':idItem', idItem),
         options: Options(headers: withAuth()),
         queryParameters: {
           'page': page,
@@ -167,6 +173,7 @@ class SocialService extends ApiService {
     );
   }
 
+  @override
   Future<PaginatedList<Comment>> getCommentsResponse({
     required String commentId,
     int page = 1,
@@ -184,6 +191,7 @@ class SocialService extends ApiService {
     );
   }
 
+  @override
   Future<Comment> commentComment({
     required String commentId,
   }) async {
@@ -196,6 +204,7 @@ class SocialService extends ApiService {
     );
   }
 
+  @override
   Future<Comment> likeComment({
     required String commentId,
   }) async {
@@ -208,6 +217,7 @@ class SocialService extends ApiService {
     );
   }
 
+  @override
   Future unLikeComment({
     required String commentId,
   }) async {
@@ -219,6 +229,7 @@ class SocialService extends ApiService {
       mapper: Comment.fromJson,
     );
   }
+  @override
 
   Future<void> reportComment({
     required String commentId,

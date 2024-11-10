@@ -4,7 +4,8 @@ import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/bloc/comment_episode_cubit.dart';
 import 'package:umai/animes/bloc/load_comment_episode_cubit.dart';
-import 'package:umai/animes/models/comment_episode.dart';
+import 'package:umai/social/model/comment.dart';
+
 import 'package:umai/animes/widgets/action_comment_response.dart';
 import 'package:umai/animes/widgets/item_comment_episode.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
@@ -20,7 +21,7 @@ class ItemCommentEpisodeResponse extends StatefulWidget {
   static Widget get({
     required BuildContext context,
     required int idEpisode,
-    required CommentEpisode commentepisode,
+    required Comment commentepisode,
   }) {
     return MultiBlocProvider(
       providers: [
@@ -167,7 +168,7 @@ class _ItemCommentEpisodeResponseState
             ],
           ),
           if (state is SeeCommentEpisodeResponseState)
-            AutoListView.get<CommentEpisode>(
+            AutoListView.get<Comment>(
               shrinkWrap: true,
               padding: EdgeInsets.zero,
               physics: const NeverScrollableScrollPhysics(),

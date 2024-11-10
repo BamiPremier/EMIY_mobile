@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/bloc/action_comment_episode_cubit.dart';
 import 'package:umai/animes/bloc/episode_cubit.dart';
-import 'package:umai/animes/models/comment_episode.dart';
+import 'package:umai/common/bloc/common_cubit.dart';
+import 'package:umai/social/model/comment.dart';
+
 import 'package:umai/common/utils/validators.dart';
 import 'package:umai/utils/themes.dart';
 
@@ -27,13 +29,13 @@ class _CommentEpisodeInputState extends State<CommentEpisodeInput> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ActionCommentEpisodeCubit, CommentEpisode?>(
+    return BlocConsumer<ActionCommentEpisodeCubit, Comment?>(
         listener: (context, ystate) {
           FocusScope.of(context).requestFocus(focusNode);
         },
-        builder: (context, ystate) => BlocConsumer<EpisodeCubit, EpisodeState>(
+        builder: (context, ystate) => BlocConsumer<EpisodeCubit, XCommonState>(
             listener: (context, state) {
-              if (state is CommentEpisodeSuccesState) {
+              if (state is CommentItemSuccesState) {
                 setState(() {
                   _commentController.clear();
                 });
@@ -49,8 +51,7 @@ class _CommentEpisodeInputState extends State<CommentEpisodeInput> {
                         Expanded(
                           child: TextFormField(
                               style: Theme.of(context).textTheme.bodyMedium,
-                              readOnly:
-                                  state is EpisodeLoadingState ? true : false,
+                              readOnly: state is XLoadingState ? true : false,
                               controller: _commentController,
                               decoration: InputDecoration(
                                 hintText: (ystate != null)
@@ -79,7 +80,7 @@ class _CommentEpisodeInputState extends State<CommentEpisodeInput> {
                           icon: CircleAvatar(
                               backgroundColor: Theme.of(context).primaryColor,
                               radius: 24,
-                              child: state is EpisodeLoadingState
+                              child: state is XLoadingState
                                   ? const SizedBox(
                                       width: 16,
                                       height: 16,

@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/bloc/action_comment_episode_cubit.dart';
-import 'package:umai/animes/bloc/comment_episode_cubit.dart';  
-import 'package:umai/utils/themes.dart'; 
+import 'package:umai/animes/bloc/comment_episode_cubit.dart';
+import 'package:umai/utils/themes.dart';
 
 class ActionCommentEpisode extends StatefulWidget {
   const ActionCommentEpisode({super.key});
@@ -13,7 +13,7 @@ class ActionCommentEpisode extends StatefulWidget {
 
 class _ActionCommentEpisodeState extends State<ActionCommentEpisode> {
   late final commentEpisodeCubit = context.read<CommentEpisodeCubit>();
- 
+
   late final comment = commentEpisodeCubit.comment;
 
   @override
@@ -25,7 +25,8 @@ class _ActionCommentEpisodeState extends State<ActionCommentEpisode> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CommentEpisodeCubit, CommentEpisodeState>(builder: (context, state) {
+    return BlocBuilder<CommentEpisodeCubit, CommentEpisodeState>(
+        builder: (context, state) {
       return Padding(
         padding: const EdgeInsets.only(right: 16.0),
         child: Row(
@@ -34,7 +35,7 @@ class _ActionCommentEpisodeState extends State<ActionCommentEpisode> {
             Row(children: [
               commentEpisodeCubit.comment.hasLiked
                   ? TextButton(
-                      onPressed: () => commentEpisodeCubit.unLikeCommentEpisode(),
+                      onPressed: () => commentEpisodeCubit.unLikeComment(),
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.zero,
                         textStyle:
@@ -50,7 +51,7 @@ class _ActionCommentEpisodeState extends State<ActionCommentEpisode> {
                       ),
                     )
                   : TextButton(
-                      onPressed: () => commentEpisodeCubit.likeCommentEpisode(),
+                      onPressed: () => commentEpisodeCubit.likeComment(),
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.zero,
                       ),
