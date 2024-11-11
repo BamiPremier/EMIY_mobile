@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
+import 'package:potatoes/potatoes.dart' hide PreferencesService;
 import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/utils/validators.dart';
-import 'package:umai/social/bloc/post_cubit.dart';
+import 'package:umai/animes/bloc/episode_cubit.dart';
+import 'package:umai/animes/bloc/load_episode_anime_cubit.dart';
 import 'package:umai/social/bloc/action_comment_cubit.dart';
+import 'package:umai/social/bloc/post_cubit.dart';
 import 'package:umai/social/model/comment.dart';
 import 'package:umai/utils/themes.dart';
 
-class CommentInput extends StatefulWidget {
+class CommentInput<C extends XCommonCubit, A extends ActionCommentBaseCubit<C>>
+    extends StatefulWidget {
   const CommentInput({super.key});
 
   @override
-  State<CommentInput> createState() => _CommentInputState();
+  State<CommentInput<C, A>> createState() => _CommentInputState<C, A>();
 }
 
-class _CommentInputState extends State<CommentInput> {
+class _CommentInputState<C extends XCommonCubit,
+    A extends ActionCommentBaseCubit<C>> extends State<CommentInput<C, A>> {
   final TextEditingController _commentController = TextEditingController();
-  late final postCubit = context.read<PostCubit>();
 
   final focusNode = FocusNode();
   @override
@@ -28,11 +32,11 @@ class _CommentInputState extends State<CommentInput> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ActionCommentCubit, Comment?>(
+    return BlocConsumer<A, Comment?>(
         listener: (context, ystate) {
           FocusScope.of(context).requestFocus(focusNode);
         },
-        builder: (context, ystate) => BlocConsumer<PostCubit, XCommonState>(
+        builder: (context, ystate) => BlocConsumer<C, XCommonState>(
             listener: (context, state) {
               if (state is CommentItemSuccesState) {
                 setState(() {
@@ -50,8 +54,7 @@ class _CommentInputState extends State<CommentInput> {
                         Expanded(
                           child: TextFormField(
                               style: Theme.of(context).textTheme.bodyMedium,
-                              readOnly:
-                                  state is XLoadingState ? true : false,
+                              readOnly: state is XLoadingState ? true : false,
                               controller: _commentController,
                               decoration: InputDecoration(
                                 hintText: (ystate != null)
@@ -93,7 +96,7 @@ class _CommentInputState extends State<CommentInput> {
                           onPressed: () {
                             if (Validators.empty(_commentController.text) ==
                                 null) {
-                              context.read<ActionCommentCubit>().commentPost(
+                              context.read<A>().comment(
                                     content: _commentController.text,
                                   );
                             }

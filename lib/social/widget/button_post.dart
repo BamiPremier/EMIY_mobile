@@ -2,30 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:potatoes/common/widgets/loaders.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
+import 'package:umai/common/screens/common_details.dart';
 import 'package:umai/social/bloc/post_cubit.dart';
 import 'package:umai/social/bloc/action_comment_cubit.dart';
 import 'package:umai/utils/dialogs.dart';
 import 'package:share_plus/share_plus.dart';
 
-class ButtonPost extends StatefulWidget {
-  const ButtonPost({
-    super.key,
-  });
-
+class ButtonPost<T extends XItem, C extends XCommonCubit<T>,
+    A extends ActionCommentBaseCubit<C>> extends StatefulWidget {
   @override
-  State<ButtonPost> createState() => _ButtonPostState();
+  State<ButtonPost<T, C, A>> createState() => _ButtonPostState<T, C, A>();
 }
 
-class _ButtonPostState extends State<ButtonPost> with CompletableMixin {
-  late final postCubit = context.read<PostCubit>();
+class _ButtonPostState<T extends XItem, C extends XCommonCubit<T>,
+        A extends ActionCommentBaseCubit<C>> extends State<ButtonPost<T, C, A>>
+    with CompletableMixin {
+  late final commonCubit = context.read<C>();
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<PostCubit, XCommonState>(
+    return BlocConsumer<C, XCommonState>(
       listener: onEventReceived,
       buildWhen: (_, state) => state is InitializingXCommonState,
       builder: (context, state) {
-        final post = postCubit.x;
+        final post = commonCubit.x;
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -39,7 +39,7 @@ class _ButtonPostState extends State<ButtonPost> with CompletableMixin {
                           color: Colors.red,
                         ),
                         onPressed: () {
-                          postCubit.unLikeItem();
+                          commonCubit.unLikeItem();
                         },
                       )
                     : IconButton(
@@ -49,7 +49,7 @@ class _ButtonPostState extends State<ButtonPost> with CompletableMixin {
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                         onPressed: () {
-                          postCubit.likeItem();
+                          commonCubit.likeItem();
                         },
                       ),
                 IconButton(
@@ -59,7 +59,7 @@ class _ButtonPostState extends State<ButtonPost> with CompletableMixin {
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                   onPressed: () {
-                    context.read<ActionCommentCubit>().set(null);
+                    context.read<A>().set(null);
                   },
                 ),
               ],
@@ -70,7 +70,7 @@ class _ButtonPostState extends State<ButtonPost> with CompletableMixin {
                 Icons.share,
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
-              onPressed: () => postCubit.shareItem(),
+              onPressed: () => commonCubit.shareItem(),
             ),
           ],
         );

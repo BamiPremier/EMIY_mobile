@@ -10,9 +10,9 @@ import 'package:umai/animes/services/episode_cubit_manager.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/models/user.dart';
 import 'package:umai/common/widgets/button_common.dart';
+import 'package:umai/social/bloc/comment_cubit.dart';
 import 'package:umai/social/bloc/load_comment_cubit.dart';
-import 'package:umai/social/bloc/post_cubit%20copy.dart';
-import 'package:umai/social/bloc/post_cubit.dart';
+import 'package:umai/social/bloc/post_cubit.dart'; // Removed incorrect import
 import 'package:umai/social/bloc/action_comment_cubit.dart';
 import 'package:umai/social/model/comment.dart';
 import 'package:umai/social/model/post.dart';
@@ -32,7 +32,7 @@ import 'package:umai/common/screens/common_details.dart';
 import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
-mixin XItem<T> {
+mixin XItem {
   String get itemId;
   bool get itemHasLiked;
 
@@ -43,14 +43,19 @@ mixin XItem<T> {
   bool? get itemReported;
 
   DateTime get itemCreatedAt;
-  T copyWithLike({bool? hasLiked});
+  copyWithLike({bool? hasLiked});
 }
 
-class CommonDetailsScreen<T extends XItem, C extends XCommonCubit>
-    extends StatefulWidget {
+class CommonDetailsScreen<
+    T extends XItem,
+    C extends XCommonCubit<T>,
+    L extends BaseLoadCommentCubit<T>,
+    A extends ActionCommentBaseCubit<C>> extends StatefulWidget {
   final WidgetBuilder head;
 
-  const CommonDetailsScreen._({required this.head});
+  CommonDetailsScreen({
+    required this.head,
+  });
 
   static Widget fromPost({
     required BuildContext context,
@@ -63,10 +68,11 @@ class CommonDetailsScreen<T extends XItem, C extends XCommonCubit>
         BlocProvider(
             create: (context) => ActionCommentCubit(context.read<PostCubit>())),
         BlocProvider(
-            create: (context) =>
-                LoadCommentCubit(context.read(), post.itemId, '', context.read())),
+            create: (context) => LoadCommentCubit(
+                context.read(), post.itemId, '', context.read())),
       ],
-      child: CommonDetailsScreen<Post, PostCubit>._(head: head),
+      child: CommonDetailsScreen<Post, PostCubit, LoadCommentCubit,
+          ActionCommentCubit>(head: head),
     );
   }
 
@@ -76,43 +82,37 @@ class CommonDetailsScreen<T extends XItem, C extends XCommonCubit>
     required Episode episode,
     required WidgetBuilder head,
   }) {
-    return MultiBlocProvider(providers: [
-      BlocProvider.value(
-          value: context.read<EpisodeCubitManager>().get(episode)),
-      BlocProvider(
-          create: (context) => ActionCommentEpisodeCubit(
-              context.read<EpisodeCubit>(), loadEpisodeAnimeCubit)),
-      BlocProvider(
-          create: (context) => LoadCommentEpisodeCubit(
-                context.read(),
-                episode.id,
-                '',
-                loadEpisodeAnimeCubit,
-                context.read(),
-              )),
-    ], child: CommonDetailsScreen<Episode, EpisodeCubit>._(head: head));
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider.value(
+              value: context.read<EpisodeCubitManager>().get(episode)),
+          BlocProvider(
+              create: (context) => ActionCommentEpisodeCubit(
+                  context.read<EpisodeCubit>(), loadEpisodeAnimeCubit)),
+          BlocProvider(
+              create: (context) => LoadCommentEpisodeCubit(
+                    context.read(),
+                    episode.id,
+                    '',
+                    loadEpisodeAnimeCubit,
+                    context.read(),
+                  )),
+        ],
+        child: CommonDetailsScreen<Episode, EpisodeCubit,
+            LoadCommentEpisodeCubit, ActionCommentEpisodeCubit>(head: head));
   }
 
   @override
-  _CommonDetailsScreenState<T, C> createState() =>
-      _CommonDetailsScreenState<T, C>();
+  State<CommonDetailsScreen<T, C, L, A>> createState() =>
+      _CommonDetailsScreenState<T, C, L, A>();
 }
 
-class _CommonDetailsScreenState<T extends XItem, C extends XCommonCubit>
-    extends State<CommonDetailsScreen<T, C>> {
-  late final LoadCommentCubit loadCommentCubit;
-  final TrimMode _trimMode = TrimMode.Line;
+class _CommonDetailsScreenState<T extends XItem, C extends XCommonCubit<T>,
+        L extends BaseLoadCommentCubit<T>, A extends ActionCommentBaseCubit<C>>
+    extends State<CommonDetailsScreen<T, C, L, A>> {
+  late final L loadCommentCubit = context.read<L>();
   final ValueNotifier<bool> isCollapsed = ValueNotifier<bool>(true);
-  late final PostCubit postCubit;
-  late final post;
-
-  @override
-  void initState() {
-    super.initState();
-    loadCommentCubit = context.read<LoadCommentCubit>();
-    postCubit = context.read<PostCubit>();
-    post = postCubit.x;
-  }
+  late final C itemCubit = context.read<C>();
 
   @override
   void dispose() {
@@ -145,7 +145,7 @@ class _CommonDetailsScreenState<T extends XItem, C extends XCommonCubit>
                           height: kToolbarHeight +
                               MediaQuery.of(context).viewPadding.top),
                       widget.head(context),
-                      const ButtonPost(),
+                      ButtonPost<T, C, A>(),
                       const Divider(),
                       AutoListView.get<Comment>(
                           padding: EdgeInsets.zero,
@@ -153,10 +153,11 @@ class _CommonDetailsScreenState<T extends XItem, C extends XCommonCubit>
                           autoManage: false,
                           physics: const NeverScrollableScrollPhysics(),
                           cubit: loadCommentCubit,
-                          itemBuilder: (context, comment) => ItemComment.get(
-                                idPost: postCubit.x.itemId,
+                          itemBuilder: (context, comment) =>
+                              ItemComment.get<T, C, A, L>(
                                 context: context,
                                 comment: comment,
+                                idItem: itemCubit.x.itemId,
                               ),
                           emptyBuilder: (context) => const Center(
                                 child: Text("Aucun commentaire"),
@@ -201,7 +202,7 @@ class _CommonDetailsScreenState<T extends XItem, C extends XCommonCubit>
                   ),
                 ),
               ),
-              const CommentInput()
+              CommentInput<C, A>()
             ],
           ));
     });

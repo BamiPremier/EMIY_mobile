@@ -63,6 +63,7 @@ class EpisodeService extends ApiService with XService<Episode> {
         _likeEpisode.replaceAll(':idEpisode', idItem.toString()),
         options: Options(headers: withAuth()),
       ),
+      mapper: Episode.fromJson,
     );
   }
 
@@ -75,6 +76,7 @@ class EpisodeService extends ApiService with XService<Episode> {
         _likeEpisode.replaceAll(':idEpisode', idItem.toString()),
         options: Options(headers: withAuth()),
       ),
+      mapper: Episode.fromJson,
     );
   }
 
@@ -150,8 +152,8 @@ class EpisodeService extends ApiService with XService<Episode> {
       mapper: Comment.fromJson,
     );
   }
-  @override
 
+  @override
   Future<void> reportComment({
     required String commentId,
     required String reason,
@@ -165,7 +167,7 @@ class EpisodeService extends ApiService with XService<Episode> {
     );
   }
 
-  Future<Comment> deleteCommentEpisode({
+  Future<Comment> deleteComment({
     required String commentId,
   }) async {
     return compute(

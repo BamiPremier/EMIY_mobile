@@ -1,14 +1,15 @@
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
+import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/social/model/comment.dart';
 import 'package:umai/social/services/social_service.dart';
 
 part 'comment_state.dart';
 
-class CommentCubit extends ObjectCubit<Comment, CommentState> {
-  final SocialService socialService;
+class CommentCubit<T> extends ObjectCubit<Comment, CommentState> {
+  final XService<T> service;
 
-  CommentCubit(this.socialService, Comment comment)
+  CommentCubit(this.service, Comment comment)
       : super(InitializingCommentState(comment));
 
   @override
@@ -45,7 +46,7 @@ class CommentCubit extends ObjectCubit<Comment, CommentState> {
     var newComment = comment.copyWith(hasLiked: !comment.hasLiked);
 
     update(newComment);
-    socialService
+    service
         .likeComment(
       commentId: comment.id,
     )
@@ -59,7 +60,7 @@ class CommentCubit extends ObjectCubit<Comment, CommentState> {
     final stateBefore = state;
     var newComment = comment.copyWith(hasLiked: !comment.hasLiked);
     update(newComment);
-    socialService
+    service
         .unLikeComment(
       commentId: comment.id,
     )
@@ -77,7 +78,7 @@ class CommentCubit extends ObjectCubit<Comment, CommentState> {
     if (state is InitializingCommentState) {
       final stateBefore = state;
       emit(const SendCommentRepportLoadingState());
-      socialService
+      service
           .reportComment(
         commentId: comment.id,
         reason: reason,

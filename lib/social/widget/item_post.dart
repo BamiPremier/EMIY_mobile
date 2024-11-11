@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/screens/common_details.dart';
+import 'package:umai/social/bloc/action_comment_cubit.dart';
+import 'package:umai/social/bloc/load_comment_cubit.dart';
 import 'package:umai/social/bloc/post_cubit%20copy.dart';
 import 'package:umai/social/bloc/post_cubit.dart';
 import 'package:umai/social/model/post.dart';
@@ -13,21 +15,23 @@ import 'package:readmore/readmore.dart';
 import 'package:umai/social/widget/head_post.dart';
 import 'package:umai/social/widget/post_image.dart';
 
-class PostItem extends StatefulWidget {
-  static Widget get({required BuildContext context, required Post post}) {
+class PostItem<T extends XItem, C extends XCommonCubit<T>,
+    A extends ActionCommentBaseCubit<C>> extends StatefulWidget {
+  static Widget get<T extends XItem, C extends XCommonCubit<T>,
+          A extends ActionCommentBaseCubit<C>>(
+      {required BuildContext context, required Post post}) {
     return BlocProvider.value(
       value: context.read<PostCubitManager>().get(post),
-      child: const PostItem._(),
+      child: PostItem<T, C, A>(),
     );
   }
 
-  const PostItem._();
-
   @override
-  State<PostItem> createState() => _PostItemState();
+  State<PostItem<T, C, A>> createState() => _PostItemState<T, C, A>();
 }
 
-class _PostItemState extends State<PostItem> {
+class _PostItemState<T extends XItem, C extends XCommonCubit<T>,
+    A extends ActionCommentBaseCubit<C>> extends State<PostItem<T, C, A>> {
   late final postCubit = context.read<PostCubit>();
   final isCollapsed = ValueNotifier<bool>(true);
   final _trimMode = TrimMode.Line;
@@ -37,6 +41,7 @@ class _PostItemState extends State<PostItem> {
       final post = postCubit.x as Post;
       return GestureDetector(
         onTap: () {
+          print([T, C, A]);
           Navigator.of(context).push(
             MaterialPageRoute(
                 builder: (context) => CommonDetailsScreen.fromPost(
@@ -68,7 +73,7 @@ class _PostItemState extends State<PostItem> {
                 )),
             const SizedBox(height: 8),
             if (post.image?.isNotEmpty ?? false) PostImage(url: post.image!),
-            const ButtonPost()
+            ButtonPost<T, C, A>()
           ],
         ),
       );

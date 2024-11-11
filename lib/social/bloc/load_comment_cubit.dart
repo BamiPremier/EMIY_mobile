@@ -1,21 +1,24 @@
 import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
 import 'package:potatoes/auto_list/models/paginated_list.dart';
 import 'package:potatoes/libs.dart';
+import 'package:umai/animes/bloc/load_episode_anime_cubit.dart';
+import 'package:umai/animes/models/episode.dart';
+import 'package:umai/animes/services/episode_service.dart';
+import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/services/person_cubit_manager.dart';
 import 'package:umai/social/model/comment.dart';
-
+import 'package:umai/social/model/post.dart';
 import 'package:umai/social/services/social_service.dart';
 
-class LoadCommentCubit extends AutoListCubit<Comment> {
-  final SocialService socialService;
+class BaseLoadCommentCubit<T> extends AutoListCubit<Comment> {
   final PersonCubitManager personCubitManager;
+  final XService<T> service;
 
-  LoadCommentCubit(
-      this.socialService, String idPost, String target, this.personCubitManager)
+  BaseLoadCommentCubit(
+      this.service, String idItem, String target, this.personCubitManager)
       : super(provider: ({int page = 1}) async {
-          final p = await socialService.getComments(
-              idItem: idPost, target: target, page: page);
-          return p;
+          return await service.getComments(
+              idItem: idItem, target: target, page: page);
         });
 
   @override
@@ -30,27 +33,50 @@ class LoadCommentCubit extends AutoListCubit<Comment> {
   }
 
   void putFirst(Comment comment) {
-    if (state is LoadCommentReadyState) {
-      final list = (state as LoadCommentReadyState).items;
-
-      emit(LoadCommentReadyState(list.prepend(others: [comment])));
+    if (state is AutoListReadyState<Comment>) {
+      final list = (state as AutoListReadyState<Comment>).items;
+      emit(AutoListReadyState(list.prepend(others: [comment])));
     }
   }
 
-  void deleteComment(Comment comment) {
-    if (state is LoadCommentReadyState) {
-      final list = (state as LoadCommentReadyState).items;
-
-      socialService.deleteComment(commentId: comment.id).then((_) {
-        emit(LoadCommentReadyState(PaginatedList(
+  deleteComment(Comment comment) {
+    if (state is AutoListReadyState<Comment>) {
+      final list = (state as AutoListReadyState<Comment>).items;
+      service.deleteComment(commentId: comment.id).then((_) {
+        emit(AutoListReadyState(PaginatedList(
           items: List.from(list.items)..removeWhere((c) => c.id == comment.id),
           total: list.total - 1,
           page: list.page,
         )));
-      }, onError: (error) {
-        // emit(LoadCommentErrorState(error));
       });
     }
+  }
+}
+
+class LoadCommentCubit extends BaseLoadCommentCubit<Post> {
+  final SocialService socialService;
+
+  LoadCommentCubit(this.socialService, String idPost, String target,
+      PersonCubitManager personCubitManager)
+      : super(socialService, idPost, target, personCubitManager);
+}
+
+class LoadCommentEpisodeCubit extends BaseLoadCommentCubit<Episode> {
+  final EpisodeService episodeService;
+  final LoadEpisodeAnimeCubit loadEpisodeAnimeCubit;
+  final int idEpisode;
+  final String target;
+
+  LoadCommentEpisodeCubit(this.episodeService, this.idEpisode, this.target,
+      this.loadEpisodeAnimeCubit, PersonCubitManager personCubitManager)
+      : super(episodeService, idEpisode.toString(), target, personCubitManager);
+
+  @override
+  void deleteComment(Comment comment) {
+    super.deleteComment(comment).then((_) {
+      loadEpisodeAnimeCubit.updateCommentCount(
+          idEpisode: idEpisode, isIncrement: false);
+    });
   }
 }
 

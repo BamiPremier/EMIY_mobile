@@ -4,6 +4,7 @@ import 'package:potatoes/potatoes.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:umai/animes/bloc/action_comment_episode_cubit.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
+import 'package:umai/social/bloc/action_comment_cubit.dart';
 import 'package:umai/utils/dialogs.dart';
 import 'package:umai/animes/bloc/episode_cubit.dart';
 

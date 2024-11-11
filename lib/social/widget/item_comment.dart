@@ -3,10 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/account/screens/person_account.dart';
+import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
+import 'package:umai/common/screens/common_details.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
+import 'package:umai/social/bloc/action_comment_cubit.dart';
 import 'package:umai/social/bloc/comment_cubit.dart';
 import 'package:umai/social/bloc/load_comment_cubit.dart';
 import 'package:umai/social/bloc/post_cubit.dart';
@@ -16,190 +19,215 @@ import 'package:umai/social/widget/item_comment_response.dart';
 import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
+import 'package:potatoes/libs.dart';
+import 'package:umai/account/screens/person_account.dart';
+import 'package:umai/common/bloc/common_cubit.dart';
+import 'package:umai/common/screens/common_details.dart';
+import 'package:umai/common/widgets/profile_picture.dart';
+import 'package:umai/social/bloc/action_comment_cubit.dart';
+import 'package:umai/social/bloc/comment_cubit.dart';
+import 'package:umai/social/bloc/load_comment_cubit.dart';
+import 'package:umai/social/model/comment.dart';
+import 'package:umai/utils/themes.dart';
 
-class ItemComment extends StatefulWidget {
+class ItemComment<
+    T extends XItem,
+    C extends XCommonCubit<T>,
+    A extends ActionCommentBaseCubit<C>,
+    L extends BaseLoadCommentCubit<T>> extends StatefulWidget {
   const ItemComment._();
 
-  static Widget get({
+  static Widget get<T extends XItem, C extends XCommonCubit<T>,
+      A extends ActionCommentBaseCubit<C>, L extends BaseLoadCommentCubit<T>>({
     required BuildContext context,
     required Comment comment,
-    required String idPost,
+    required String idItem,
   }) {
-    return BlocProvider(
-      create: (context) => CommentCubit(context.read(), comment),
-      child: const ItemComment._(),
-    );
+    return MultiBlocProvider(providers: [
+      BlocProvider(
+          create: (context) =>
+              CommentCubit<XItem>(context.read<XService<T>>(), comment)),
+      BlocProvider.value(
+        value: context.read<C>(),
+      )
+    ], child: ItemComment._());
   }
 
   @override
-  State<ItemComment> createState() => _ItemCommentState();
+  State<ItemComment<T, C, A, L>> createState() =>
+      _ItemCommentState<T, C, A, L>();
 }
 
-class _ItemCommentState extends State<ItemComment> {
-  late final commentCubit = context.read<CommentCubit>();
-  late final postCubit = context.read<PostCubit>();
-  late final loadCommentCubit = LoadCommentCubit(
+class _ItemCommentState<
+    T extends XItem,
+    C extends XCommonCubit<T>,
+    A extends ActionCommentBaseCubit<C>,
+    L extends BaseLoadCommentCubit<T>> extends State<ItemComment<T, C, A, L>> {
+  late final CommentCubit commentCubit = context.read<CommentCubit<T>>();
+  late final C postCubit = context.read<C>();
+  late final LoadCommentCubit loadCommentCubit = LoadCommentCubit(
     context.read(),
     postCubit.x.itemId,
-    comment.id,
+    commentCubit.comment.id,
     context.read(),
   );
-  late final comment = commentCubit.comment;
 
   @override
   void dispose() {
-    // loadCommentCubit.close();
-
+    loadCommentCubit.close();
     super.dispose();
   }
 
+  late final comment = commentCubit.comment;
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CommentCubit, CommentState>(builder: (context, state) {
-      return BlocBuilder<LoadCommentCubit, LoadCommentState>(
-          builder: (context, stateL) {
-        return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ListTile(
-                contentPadding: const EdgeInsets.only(top: 8.0, left: 16.0),
-                leading: GestureDetector(
-                  child: ProfilePicture(
-                    image: comment.user.image,
-                    height: 40,
-                    width: 40,
+    return BlocBuilder<CommentCubit<T>, CommentState>(
+        builder: (context, state) {
+      print(state);
+      return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ListTile(
+              contentPadding: const EdgeInsets.only(top: 8.0, left: 16.0),
+              leading: GestureDetector(
+                child: ProfilePicture(
+                  image: comment.user.image,
+                  height: 40,
+                  width: 40,
+                ),
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => PersonAccountScreen.get(
+                        context: context, user: comment.user))),
+              ),
+              title: GestureDetector(
+                  child: Text(
+                    comment.user.username,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   onTap: () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => PersonAccountScreen.get(
-                          context: context, user: comment.user))),
-                ),
-                title: GestureDetector(
-                    child: Text(
-                      comment.user.username,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => PersonAccountScreen.get(
-                            context: context, user: comment.user)))),
-                subtitle: null,
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      comment.createdAt.elapsed(),
-                      style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                            color: AppTheme.disabledText,
-                          ),
-                    ),
-                    const SizedBox(width: 8),
-                    PopupMenuButton<String>(
-                      onSelected: (value) {
-                        if (value == 'Signaler') {
-                          reportComment(context: context);
-                        } else if (value == 'Supprimer') {
-                          loadCommentCubit.deleteComment(comment);
-                        } else if (value == 'Copier') {
-                          Clipboard.setData(
-                                  ClipboardData(text: comment.content))
-                              .then((_) {
-                            showSuccessToast(
-                                context: context,
-                                content:
-                                    'Commentaire copié dans le presse-papiers');
-                          });
-                        }
-                      },
-                      padding: EdgeInsets.zero,
-                      itemBuilder: (BuildContext context) {
-                        List<String> options = ['Copier'];
+                          context: context, user: comment.user)))),
+              subtitle: null,
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    comment.createdAt.elapsed(),
+                    style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                          color: AppTheme.disabledText,
+                        ),
+                  ),
+                  const SizedBox(width: 8),
+                  PopupMenuButton<String>(
+                    onSelected: (value) {
+                      if (value == 'Signaler') {
+                        reportComment(context: context);
+                      } else if (value == 'Supprimer') {
+                        loadCommentCubit.deleteComment(comment);
+                      } else if (value == 'Copier') {
+                        Clipboard.setData(ClipboardData(text: comment.content))
+                            .then((_) {
+                          showSuccessToast(
+                              context: context,
+                              content:
+                                  'Commentaire copié dans le presse-papiers');
+                        });
+                      }
+                    },
+                    padding: EdgeInsets.zero,
+                    itemBuilder: (BuildContext context) {
+                      List<String> options = ['Copier'];
 
-                        if (comment.user.id ==
-                            context.read<UserCubit>().user.id) {
-                          options.add('Supprimer');
-                        } else {
-                          options.add('Signaler');
-                        }
-                        return options.map((String choice) {
-                          return PopupMenuItem<String>(
-                            padding:
-                                const EdgeInsets.only(right: 48.0, left: 16.0),
-                            textStyle: Theme.of(context)
-                                .textTheme
-                                .bodyLarge!
-                                .copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurface),
-                            value: choice,
-                            child: Text(choice),
-                          );
-                        }).toList();
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: Text(
-                  comment.content,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ),
-              const ActionComment()
-            ],
-          ),
-          if (state is SeeCommentResponseState) const Divider(),
-          if (state is SeeCommentResponseState)
-            AutoListView.get<Comment>(
-              padding: EdgeInsets.zero,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              cubit: loadCommentCubit,
-              itemBuilder: (context, comment) => ItemCommentResponse.get(
-                  context: context,
-                  comment: comment,
-                  idPost: postCubit.x.itemId),
-              loadingBuilder: (context) => Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.all(16),
-                  child: LinearProgressIndicator(
-                    color: Theme.of(context).colorScheme.onTertiaryContainer,
-                    backgroundColor:
-                        Theme.of(context).colorScheme.tertiaryContainer,
-                    borderRadius: BorderRadius.circular(30),
-                  )),
-              loadingMoreBuilder: (context) => Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.all(16),
-                  child: LinearProgressIndicator(
-                    color: Theme.of(context).colorScheme.onTertiaryContainer,
-                    backgroundColor:
-                        Theme.of(context).colorScheme.tertiaryContainer,
-                    borderRadius: BorderRadius.circular(30),
-                  )),
-              errorBuilder: (context, retry) => Align(
-                alignment: Alignment.center,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Text("Une erreur est survenue"),
-                    TextButton(
-                      onPressed: retry,
-                      child: const Text("Réessayer"),
-                    )
-                  ],
-                ),
+                      if (comment.user.id ==
+                          context.read<UserCubit>().user.id) {
+                        options.add('Supprimer');
+                      } else {
+                        options.add('Signaler');
+                      }
+                      return options.map((String choice) {
+                        return PopupMenuItem<String>(
+                          padding:
+                              const EdgeInsets.only(right: 48.0, left: 16.0),
+                          textStyle: Theme.of(context)
+                              .textTheme
+                              .bodyLarge!
+                              .copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface),
+                          value: choice,
+                          child: Text(choice),
+                        );
+                      }).toList();
+                    },
+                  ),
+                ],
               ),
             ),
-          if (state is SeeCommentResponseState) const Divider(),
-        ]);
-      });
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: Text(
+                comment.content,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ),
+            ActionComment<T, C, A>(),
+          ],
+        ),
+        if (state is SeeCommentResponseState) const Divider(),
+        if (state is SeeCommentResponseState)
+          AutoListView.get<Comment>(
+            padding: EdgeInsets.zero,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            cubit: loadCommentCubit,
+            itemBuilder: (context, comment) =>
+                ItemCommentResponse.get<T, C, A, L>(
+                    context: context,
+                    comment: comment,
+                    idItem: postCubit.x.itemId),
+            loadingBuilder: (context) => Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(16),
+                child: LinearProgressIndicator(
+                  color: Theme.of(context).colorScheme.onTertiaryContainer,
+                  backgroundColor:
+                      Theme.of(context).colorScheme.tertiaryContainer,
+                  borderRadius: BorderRadius.circular(30),
+                )),
+            loadingMoreBuilder: (context) => Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(16),
+                child: LinearProgressIndicator(
+                  color: Theme.of(context).colorScheme.onTertiaryContainer,
+                  backgroundColor:
+                      Theme.of(context).colorScheme.tertiaryContainer,
+                  borderRadius: BorderRadius.circular(30),
+                )),
+            errorBuilder: (context, retry) => Align(
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text("Une erreur est survenue"),
+                  TextButton(
+                    onPressed: retry,
+                    child: const Text("Réessayer"),
+                  )
+                ],
+              ),
+            ),
+          ),
+        if (state is SeeCommentResponseState) const Divider(),
+      ]);
     });
   }
 }

@@ -1,20 +1,24 @@
-import 'package:flutter/material.dart'; 
-import 'package:potatoes/libs.dart'; 
-import 'package:umai/social/bloc/comment_cubit.dart'; 
+import 'package:flutter/material.dart';
+import 'package:potatoes/libs.dart';
+import 'package:umai/common/bloc/common_cubit.dart';
+import 'package:umai/common/screens/common_details.dart';
+import 'package:umai/social/bloc/comment_cubit.dart';
 import 'package:umai/social/bloc/post_cubit.dart';
-import 'package:umai/social/bloc/action_comment_cubit.dart'; 
-import 'package:umai/utils/themes.dart'; 
+import 'package:umai/social/bloc/action_comment_cubit.dart';
+import 'package:umai/utils/themes.dart';
 
-class ActionComment extends StatefulWidget {
+class ActionComment<T extends XItem, C extends XCommonCubit<T>,
+    A extends ActionCommentBaseCubit<C>> extends StatefulWidget {
   const ActionComment({super.key});
 
   @override
-  State<ActionComment> createState() => _ActionCommentState();
+  State<ActionComment<T, C, A>> createState() => _ActionCommentState<T, C, A>();
 }
 
-class _ActionCommentState extends State<ActionComment> {
-  late final commentCubit = context.read<CommentCubit>();
-  late final postCubit = context.read<PostCubit>();
+class _ActionCommentState<T extends XItem, C extends XCommonCubit<T>,
+    A extends ActionCommentBaseCubit<C>> extends State<ActionComment<T, C, A>> {
+  late final commentCubit = context.read<CommentCubit<T>>();
+
   late final comment = commentCubit.comment;
 
   @override
@@ -26,7 +30,8 @@ class _ActionCommentState extends State<ActionComment> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CommentCubit, CommentState>(builder: (context, state) {
+    return BlocBuilder<CommentCubit<T>, CommentState>(
+        builder: (context, state) {
       return Padding(
         padding: const EdgeInsets.only(right: 16.0),
         child: Row(
@@ -60,7 +65,9 @@ class _ActionCommentState extends State<ActionComment> {
                     ),
               TextButton(
                 onPressed: () {
-                  context.read<ActionCommentCubit>().set(comment);
+                  print([T, C, A]);
+
+                  context.read<A>().set(comment);
                 },
                 style: TextButton.styleFrom(
                   padding: EdgeInsets.zero,

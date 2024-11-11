@@ -33,6 +33,9 @@ mixin XService<T> {
   Future<Comment> likeComment({
     required String commentId,
   });
+  Future deleteComment({
+    required String commentId,
+  });
   Future unLikeComment({
     required String commentId,
   });
