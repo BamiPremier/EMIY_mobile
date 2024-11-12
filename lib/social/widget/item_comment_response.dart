@@ -17,35 +17,24 @@ import 'package:umai/social/widget/item_comment.dart';
 import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
+// Start of Selection
 
 class ItemCommentResponse<
     T extends XItem,
     C extends XCommonCubit<T>,
     A extends ActionCommentBaseCubit<C>,
     L extends BaseLoadCommentCubit<T>> extends StatefulWidget {
+  final Comment comment;
   final String idItem;
-  static Widget get<T extends XItem, C extends XCommonCubit,
-      A extends ActionCommentBaseCubit<C>, L extends BaseLoadCommentCubit<T>>({
-    required BuildContext context,
-    required String idItem,
-    required Comment comment,
-  }) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-            create: (context) =>
-                CommentCubit<XItem>(context.read<XService<T>>(), comment)),
-        BlocProvider.value(
-          value: context.read<C>(),
-        )
-      ],
-      child: ItemCommentResponse._(idItem: idItem),
-    );
-  }
+  final ActionCommentBaseCubit<C> actionCommentBaseCubit;
 
-  const ItemCommentResponse._({
+  const ItemCommentResponse({
+    required this.comment,
     required this.idItem,
-  });
+    required this.actionCommentBaseCubit,
+    Key? key,
+  }) : super(key: key);
+
   @override
   State<ItemCommentResponse<T, C, A, L>> createState() =>
       _ItemCommentResponseState<T, C, A, L>();
@@ -54,24 +43,39 @@ class ItemCommentResponse<
 class _ItemCommentResponseState<T extends XItem, C extends XCommonCubit<T>,
         A extends ActionCommentBaseCubit<C>, L extends BaseLoadCommentCubit<T>>
     extends State<ItemCommentResponse<T, C, A, L>> {
-  late final CommentCubit commentCubit = context.read<CommentCubit<T>>();
-  late final loadCommentCubit = LoadCommentCubit(
-    context.read(),
-    widget.idItem,
-    comment.id,
-    context.read(),
-  );
-  late final comment = commentCubit.comment;
+  late final CommentCubit<T> commentCubit;
+  late final C objectDataCubit;
+  late final BaseLoadCommentCubit<T> loadCommentCubit;
+  late final Comment comment;
+
+  @override
+  void initState() {
+    super.initState();
+
+    commentCubit = context.read<CommentCubit<T>>();
+
+    objectDataCubit = context.read<C>();
+
+    loadCommentCubit = BaseLoadCommentCubit<T>(
+      context.read(),
+      widget.idItem,
+      commentCubit.comment.id,
+      context.read(),
+    );
+
+    comment = commentCubit.comment;
+  }
 
   @override
   void dispose() {
-    // loadCommentCubit.close();
+    loadCommentCubit.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CommentCubit, CommentState>(builder: (context, state) {
+    return BlocBuilder<CommentCubit<T>, CommentState>(
+        builder: (context, state) {
       return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -115,7 +119,8 @@ class _ItemCommentResponseState<T extends XItem, C extends XCommonCubit<T>,
                   PopupMenuButton<String>(
                     onSelected: (value) {
                       if (value == 'Signaler') {
-                        reportComment(context: context);
+                        reportComment(
+                            context: context, commentCubit: commentCubit);
                       } else if (value == 'Supprimer') {
                         context.read<LoadCommentCubit>().deleteComment(comment);
                       } else if (value == 'Copier') {
@@ -165,7 +170,8 @@ class _ItemCommentResponseState<T extends XItem, C extends XCommonCubit<T>,
                 style: Theme.of(context).textTheme.bodySmall,
               ),
             ),
-            const ActionCommentResponse()
+            ActionCommentResponse<T, C, A>(
+                actionCommentBaseCubit: widget.actionCommentBaseCubit)
           ],
         ),
         if (state is SeeCommentResponseState)
@@ -174,8 +180,25 @@ class _ItemCommentResponseState<T extends XItem, C extends XCommonCubit<T>,
             padding: EdgeInsets.zero,
             physics: const NeverScrollableScrollPhysics(),
             cubit: loadCommentCubit,
-            itemBuilder: (context, comment) => ItemCommentResponse.get(
-                context: context, comment: comment, idItem: widget.idItem),
+            itemBuilder: (context, comment) => MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                    create: (context) => CommentCubit<T>(
+                      context.read<XService<T>>(),
+                      comment,
+                    ),
+                  ),
+                  BlocProvider.value(
+                    value: context.read<C>(),
+                  ),
+                  BlocProvider.value(
+                    value: context.read<A>(),
+                  ),
+                ],
+                child: ItemCommentResponse<T, C, A, L>(
+                    comment: comment,
+                    idItem: widget.idItem,
+                    actionCommentBaseCubit: widget.actionCommentBaseCubit)),
             loadingBuilder: (context) => Container(
                 alignment: Alignment.center,
                 padding: const EdgeInsets.all(16),

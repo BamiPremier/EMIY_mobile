@@ -167,7 +167,7 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
 
   void onEventReceivedQuiz(BuildContext context, QuizState state) async {
     await waitForDialog();
-    print(state);
+   
     if (state is QuizUpdateState) {
       Navigator.push(
         context,

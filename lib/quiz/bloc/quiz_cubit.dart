@@ -16,7 +16,6 @@ class QuizCubit extends Cubit<QuizState> {
       : super(const QuizIdleState());
 
   void resetState() {
-    print('resetState======${state}');
     emit(const QuizIdleState());
   }
 
@@ -31,8 +30,6 @@ class QuizCubit extends Cubit<QuizState> {
   }
 
   void toUpdateThisQuiz({required Quiz quiz}) {
-    print('---');
-    print(state);
     emit(QuizUpdateState(
       anime: quiz.anime,
       quiz: quiz,

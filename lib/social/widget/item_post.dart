@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/screens/common_details.dart';
+import 'package:umai/common/services/person_cubit_manager.dart';
 import 'package:umai/social/bloc/action_comment_cubit.dart';
 import 'package:umai/social/bloc/load_comment_cubit.dart';
 import 'package:umai/social/bloc/post_cubit%20copy.dart';
@@ -41,7 +42,6 @@ class _PostItemState<T extends XItem, C extends XCommonCubit<T>,
       final post = postCubit.x as Post;
       return GestureDetector(
         onTap: () {
-          print([T, C, A]);
           Navigator.of(context).push(
             MaterialPageRoute(
                 builder: (context) => CommonDetailsScreen.fromPost(
@@ -53,7 +53,12 @@ class _PostItemState<T extends XItem, C extends XCommonCubit<T>,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const PostAction(),
+            MultiBlocProvider(providers: [
+              BlocProvider.value(
+                  value: context.read<PostCubitManager>().get(post)),
+              BlocProvider.value(
+                  value: context.read<PersonCubitManager>().get(post.user)),
+            ], child: const PostAction()),
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: AnimatedSize(
@@ -73,7 +78,7 @@ class _PostItemState<T extends XItem, C extends XCommonCubit<T>,
                 )),
             const SizedBox(height: 8),
             if (post.image?.isNotEmpty ?? false) PostImage(url: post.image!),
-            ButtonPost<T, C, A>()
+            ButtonPost<Post, PostCubit, ActionCommentCubit>()
           ],
         ),
       );

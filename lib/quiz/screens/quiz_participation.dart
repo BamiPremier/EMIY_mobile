@@ -184,22 +184,23 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen>
   Widget _buildTimer(BuildContext context) {
     return BlocProvider.value(
         value: quizParticipationCubit.timerCubit,
-        child:
-            BlocConsumer<TimerCubit, ATimerState>(listener: (context, state) {
-          print(state);
-        }, builder: (context, timerState) {
-          if (timerState is! TimerState) return const SizedBox.shrink();
+        child: BlocConsumer<TimerCubit, ATimerState>(
+            listener: (context, state) {},
+            builder: (context, timerState) {
+              if (timerState is! TimerState) return const SizedBox.shrink();
 
-          final timerCubit = context.read<QuizParticipationCubit>().timerCubit;
-          return LinearProgressIndicator(
-            value: 1.0 -
-                timerState.timer.inMicroseconds /
-                    timerCubit.maxDuration.inMicroseconds,
-            color: Theme.of(context).colorScheme.onTertiaryContainer,
-            backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
-            borderRadius: BorderRadius.circular(30),
-          );
-        }));
+              final timerCubit =
+                  context.read<QuizParticipationCubit>().timerCubit;
+              return LinearProgressIndicator(
+                value: 1.0 -
+                    timerState.timer.inMicroseconds /
+                        timerCubit.maxDuration.inMicroseconds,
+                color: Theme.of(context).colorScheme.onTertiaryContainer,
+                backgroundColor:
+                    Theme.of(context).colorScheme.tertiaryContainer,
+                borderRadius: BorderRadius.circular(30),
+              );
+            }));
   }
 
   Widget _buildResponsesList(

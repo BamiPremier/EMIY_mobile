@@ -5,31 +5,28 @@ import 'package:umai/common/screens/common_details.dart';
 import 'package:umai/social/bloc/comment_cubit.dart';
 import 'package:umai/social/bloc/post_cubit.dart';
 import 'package:umai/social/bloc/action_comment_cubit.dart';
+import 'package:umai/social/model/comment.dart';
+import 'package:umai/social/model/post.dart';
 import 'package:umai/utils/themes.dart';
 
 class ActionComment<T extends XItem, C extends XCommonCubit<T>,
     A extends ActionCommentBaseCubit<C>> extends StatefulWidget {
-  const ActionComment({super.key});
+  final ActionCommentBaseCubit actionCommentBaseCubit;
+
+  const ActionComment({super.key, required this.actionCommentBaseCubit});
 
   @override
-  State<ActionComment<T, C, A>> createState() => _ActionCommentState<T, C, A>();
+  _ActionCommentState<T, C, A> createState() => _ActionCommentState<T, C, A>();
 }
 
 class _ActionCommentState<T extends XItem, C extends XCommonCubit<T>,
     A extends ActionCommentBaseCubit<C>> extends State<ActionComment<T, C, A>> {
   late final commentCubit = context.read<CommentCubit<T>>();
 
-  late final comment = commentCubit.comment;
-
-  @override
-  void dispose() {
-    // loadCommentCubit.close();
-
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final comment = commentCubit.comment;
+
     return BlocBuilder<CommentCubit<T>, CommentState>(
         builder: (context, state) {
       return Padding(
@@ -65,9 +62,7 @@ class _ActionCommentState<T extends XItem, C extends XCommonCubit<T>,
                     ),
               TextButton(
                 onPressed: () {
-                  print([T, C, A]);
-
-                  context.read<A>().set(comment);
+                  widget.actionCommentBaseCubit.set(comment);
                 },
                 style: TextButton.styleFrom(
                   padding: EdgeInsets.zero,

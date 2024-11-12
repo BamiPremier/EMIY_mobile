@@ -17,6 +17,7 @@ import 'package:umai/social/bloc/action_comment_cubit.dart';
 import 'package:umai/social/model/comment.dart';
 import 'package:umai/social/model/post.dart';
 import 'package:umai/social/services/post_cubit_manager.dart';
+import 'package:umai/social/widget/action_comment.dart';
 import 'package:umai/social/widget/action_post.dart';
 import 'package:umai/social/widget/button_post.dart';
 import 'package:umai/social/widget/comment_input.dart';
@@ -113,6 +114,7 @@ class _CommonDetailsScreenState<T extends XItem, C extends XCommonCubit<T>,
   late final L loadCommentCubit = context.read<L>();
   final ValueNotifier<bool> isCollapsed = ValueNotifier<bool>(true);
   late final C itemCubit = context.read<C>();
+  late final A actionCommentCubit = context.read<A>();
 
   @override
   void dispose() {
@@ -146,6 +148,7 @@ class _CommonDetailsScreenState<T extends XItem, C extends XCommonCubit<T>,
                               MediaQuery.of(context).viewPadding.top),
                       widget.head(context),
                       ButtonPost<T, C, A>(),
+
                       const Divider(),
                       AutoListView.get<Comment>(
                           padding: EdgeInsets.zero,
@@ -153,11 +156,26 @@ class _CommonDetailsScreenState<T extends XItem, C extends XCommonCubit<T>,
                           autoManage: false,
                           physics: const NeverScrollableScrollPhysics(),
                           cubit: loadCommentCubit,
-                          itemBuilder: (context, comment) =>
-                              ItemComment.get<T, C, A, L>(
-                                context: context,
-                                comment: comment,
-                                idItem: itemCubit.x.itemId,
+                          itemBuilder: (context, comment) => MultiBlocProvider(
+                                providers: [
+                                  BlocProvider(
+                                    create: (context) => CommentCubit<T>(
+                                      context.read<XService<T>>(),
+                                      comment,
+                                    ),
+                                  ),
+                                  BlocProvider.value(
+                                    value: context.read<C>(),
+                                  ),
+                                  BlocProvider.value(
+                                    value: context.read<A>(),
+                                  ),
+                                ],
+                                child: ItemComment<T, C, A, L>(
+                                  comment: comment,
+                                  idItem: itemCubit.x.itemId,
+                                  actionCommentBaseCubit: actionCommentCubit,
+                                ),
                               ),
                           emptyBuilder: (context) => const Center(
                                 child: Text("Aucun commentaire"),

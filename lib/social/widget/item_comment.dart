@@ -38,23 +38,17 @@ class ItemComment<
     C extends XCommonCubit<T>,
     A extends ActionCommentBaseCubit<C>,
     L extends BaseLoadCommentCubit<T>> extends StatefulWidget {
-  const ItemComment._();
+  final Comment comment;
+  final String idItem;
+  final ActionCommentBaseCubit<C> actionCommentBaseCubit;
 
-  static Widget get<T extends XItem, C extends XCommonCubit<T>,
-      A extends ActionCommentBaseCubit<C>, L extends BaseLoadCommentCubit<T>>({
-    required BuildContext context,
-    required Comment comment,
-    required String idItem,
-  }) {
-    return MultiBlocProvider(providers: [
-      BlocProvider(
-          create: (context) =>
-              CommentCubit<XItem>(context.read<XService<T>>(), comment)),
-      BlocProvider.value(
-        value: context.read<C>(),
-      )
-    ], child: ItemComment._());
-  }
+  // Utilisez un constructeur normal au lieu d'une méthode statique
+  const ItemComment({
+    required this.comment,
+    required this.idItem,
+    required this.actionCommentBaseCubit,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<ItemComment<T, C, A, L>> createState() =>
@@ -66,14 +60,28 @@ class _ItemCommentState<
     C extends XCommonCubit<T>,
     A extends ActionCommentBaseCubit<C>,
     L extends BaseLoadCommentCubit<T>> extends State<ItemComment<T, C, A, L>> {
-  late final CommentCubit commentCubit = context.read<CommentCubit<T>>();
-  late final C postCubit = context.read<C>();
-  late final LoadCommentCubit loadCommentCubit = LoadCommentCubit(
-    context.read(),
-    postCubit.x.itemId,
-    commentCubit.comment.id,
-    context.read(),
-  );
+  late final CommentCubit<T> commentCubit = context.read<CommentCubit<T>>();
+  late final C objectDataCubit = context.read<C>();
+  late final BaseLoadCommentCubit<T> loadCommentCubit;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    loadCommentCubit = BaseLoadCommentCubit<T>(
+      context.read(),
+      objectDataCubit.x.itemId,
+      commentCubit.comment.id,
+      context.read(),
+    );
+
+    context.dependOnInheritedWidgetOfExactType();
+  }
 
   @override
   void dispose() {
@@ -87,7 +95,7 @@ class _ItemCommentState<
   Widget build(BuildContext context) {
     return BlocBuilder<CommentCubit<T>, CommentState>(
         builder: (context, state) {
-      print(state);
+      
       return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,16 +137,19 @@ class _ItemCommentState<
                   PopupMenuButton<String>(
                     onSelected: (value) {
                       if (value == 'Signaler') {
-                        reportComment(context: context);
+                        reportComment(
+                            context: context, commentCubit: commentCubit);
                       } else if (value == 'Supprimer') {
                         loadCommentCubit.deleteComment(comment);
                       } else if (value == 'Copier') {
                         Clipboard.setData(ClipboardData(text: comment.content))
                             .then((_) {
-                          showSuccessToast(
-                              context: context,
-                              content:
-                                  'Commentaire copié dans le presse-papiers');
+                          if (mounted) {
+                            showSuccessToast(
+                                context: context,
+                                content:
+                                    'Commentaire copié dans le presse-papiers');
+                          }
                         });
                       }
                     },
@@ -179,7 +190,8 @@ class _ItemCommentState<
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
-            ActionComment<T, C, A>(),
+            ActionComment<T, C, A>(
+                actionCommentBaseCubit: widget.actionCommentBaseCubit)
           ],
         ),
         if (state is SeeCommentResponseState) const Divider(),
@@ -189,11 +201,25 @@ class _ItemCommentState<
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             cubit: loadCommentCubit,
-            itemBuilder: (context, comment) =>
-                ItemCommentResponse.get<T, C, A, L>(
-                    context: context,
+            itemBuilder: (context, comment) => MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                    create: (context) => CommentCubit<T>(
+                      context.read<XService<T>>(),
+                      comment,
+                    ),
+                  ),
+                  BlocProvider.value(
+                    value: context.read<C>(),
+                  ),
+                  BlocProvider.value(
+                    value: context.read<A>(),
+                  ),
+                ],
+                child: ItemCommentResponse<T, C, A, L>(
                     comment: comment,
-                    idItem: postCubit.x.itemId),
+                    idItem: objectDataCubit.x.itemId,
+                    actionCommentBaseCubit: widget.actionCommentBaseCubit)),
             loadingBuilder: (context) => Container(
                 alignment: Alignment.center,
                 padding: const EdgeInsets.all(16),
@@ -232,8 +258,8 @@ class _ItemCommentState<
   }
 }
 
-Future reportComment({required BuildContext context}) {
-  late final commentCubit = context.read<CommentCubit>();
+Future reportComment<T>(
+    {required BuildContext context, required CommentCubit<T> commentCubit}) {
   String? selectedReason;
 
   return showAppBottomSheet(
@@ -243,7 +269,7 @@ Future reportComment({required BuildContext context}) {
           builder: (BuildContext context, StateSetter setState) {
             return BlocProvider.value(
               value: commentCubit,
-              child: BlocBuilder<CommentCubit, CommentState>(
+              child: BlocBuilder<CommentCubit<T>, CommentState>(
                 builder: (context, state) => Padding(
                   padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
                   child: Column(

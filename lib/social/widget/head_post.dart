@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/screens/common_details.dart';
+import 'package:umai/common/services/person_cubit_manager.dart';
 import 'package:umai/social/bloc/post_cubit%20copy.dart';
 import 'package:umai/social/bloc/post_cubit.dart';
 import 'package:umai/social/model/post.dart';
@@ -29,7 +30,15 @@ class _HeadPostState extends State<HeadPost> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const PostAction(),
+            MultiBlocProvider(
+              providers: [
+                BlocProvider.value(
+                    value: context.read<PostCubitManager>().get(post)),
+                BlocProvider.value(
+                    value: context.read<PersonCubitManager>().get(post.user)),
+              ],
+              child: const PostAction(),
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: AnimatedSize(

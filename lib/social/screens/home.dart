@@ -17,7 +17,8 @@ class SocialHomeScreen extends StatefulWidget {
 }
 
 class _SocialHomeScreenState extends State<SocialHomeScreen> {
-  late final postFeedCubit = PostFeedCubit(context.read(), context.read());
+  late final postFeedCubit =
+      PostFeedCubit(context.read(), context.read(), context.read());
 
   @override
   Widget build(BuildContext context) {

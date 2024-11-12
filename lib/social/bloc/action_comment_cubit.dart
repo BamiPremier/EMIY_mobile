@@ -15,9 +15,7 @@ abstract class ActionCommentBaseCubit<C> extends ValueCubit<Comment?> {
 class ActionCommentEpisodeCubit extends ActionCommentBaseCubit<EpisodeCubit> {
   final LoadEpisodeAnimeCubit loadEpisodeAnimeCubit;
 
-  ActionCommentEpisodeCubit(
-      EpisodeCubit episodeCubit, this.loadEpisodeAnimeCubit)
-      : super(episodeCubit);
+  ActionCommentEpisodeCubit(super.episodeCubit, this.loadEpisodeAnimeCubit);
 
   @override
   void comment({required String content}) {
@@ -30,7 +28,7 @@ class ActionCommentEpisodeCubit extends ActionCommentBaseCubit<EpisodeCubit> {
 }
 
 class ActionCommentCubit extends ActionCommentBaseCubit<PostCubit> {
-  ActionCommentCubit(PostCubit postCubit) : super(postCubit);
+  ActionCommentCubit(super.postCubit);
 
   @override
   void comment({required String content}) {

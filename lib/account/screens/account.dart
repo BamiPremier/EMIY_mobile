@@ -287,7 +287,6 @@ class _AccountScreenState extends State<AccountScreen>
                   WatchList(),
                   PostTab(),
                   QuizUserScreen(),
-                  QuizUserScreen(),
                 ],
               ),
             ),
