@@ -166,7 +166,7 @@ class _ItemCommentState<T extends XItem> extends State<ItemComment<T>> {
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
-            ActionComment<T, XCommonCubit<T>, ActionCommentBaseCubit<XCommonCubit<T>>>(
+            ActionComment<T>(
                 actionCommentBaseCubit: widget.actionCommentBaseCubit)
           ],
         ),
