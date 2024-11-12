@@ -34,7 +34,7 @@ class _CommentInputState<C extends XCommonCubit,
         },
         builder: (context, ystate) => BlocConsumer<C, XCommonState>(
             listener: (context, state) {
-              if (state is CommentItemSuccesState) {
+              if (state is CommentItemSuccessState) {
                 setState(() {
                   _commentController.clear();
                 });

@@ -82,7 +82,7 @@ class _ButtonPostState<T extends XItem> extends State<ButtonPost<T>>
       loadingDialogCompleter = showLoadingBarrier(
         context: context,
       );
-    } else if (state is ShareItemSuccesState) {
+    } else if (state is ShareItemSuccessState) {
       await Share.share(state.shareLink);
     } else if (state is XErrorState) {
       showErrorToast(content: state.error, context: context);

@@ -116,7 +116,7 @@ class XCommonCubit<T> extends ObjectCubit<XItem, XCommonState> {
         idItem: x.itemId,
       )
           .then((reponse) {
-        emit(ShareItemSuccesState(reponse['shareLink']));
+        emit(ShareItemSuccessState(reponse['shareLink']));
         emit(InitializingXCommonState(x));
       }, onError: (error, trace) {
         emit(XErrorState(error, trace));
@@ -136,7 +136,7 @@ class XCommonCubit<T> extends ObjectCubit<XItem, XCommonState> {
               content: content.trim(),
               target: targetCommentId)
           .then((comment) {
-        emit(CommentItemSuccesState(comment));
+        emit(CommentItemSuccessState(comment));
         emit(stateBefore);
       }, onError: (error, trace) {
         emit(XErrorState(error, trace));

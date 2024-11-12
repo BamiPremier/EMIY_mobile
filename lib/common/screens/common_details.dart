@@ -118,7 +118,7 @@ class _CommonDetailsScreenState<T extends XItem>
   Widget build(BuildContext context) {
     return BlocConsumer<XCommonCubit<T>, XCommonState>(
       listener: (context, state) {
-        if (state is CommentItemSuccesState) {
+        if (state is CommentItemSuccessState) {
           loadCommentCubit.putFirst(state.comment);
         }
       },

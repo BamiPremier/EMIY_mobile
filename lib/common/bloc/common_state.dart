@@ -19,19 +19,19 @@ class ShareItemLoadingState extends CubitLoadingState with XCommonState {
   const ShareItemLoadingState() : super();
 }
 
-class ShareItemSuccesState extends CubitInformationState with XCommonState {
+class ShareItemSuccessState extends CubitInformationState with XCommonState {
   final String shareLink;
 
-  const ShareItemSuccesState(this.shareLink);
+  const ShareItemSuccessState(this.shareLink);
 
   @override
   List<Object?> get props => [shareLink];
 }
 
-class CommentItemSuccesState extends CubitInformationState with XCommonState {
+class CommentItemSuccessState extends CubitInformationState with XCommonState {
   final dynamic comment;
 
-  const CommentItemSuccesState(this.comment);
+  const CommentItemSuccessState(this.comment);
 
   @override
   List<Object?> get props => [comment];
