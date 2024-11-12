@@ -1,8 +1,7 @@
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
-import 'package:umai/social/model/comment.dart';
-import 'package:umai/social/services/social_service.dart';
+import 'package:umai/common/models/comment.dart'; 
 
 part 'comment_state.dart';
 

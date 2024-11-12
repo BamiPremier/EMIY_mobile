@@ -2,7 +2,7 @@ import 'package:potatoes/potatoes.dart' hide PreferencesService;
 import 'package:umai/animes/bloc/episode_cubit.dart';
 import 'package:umai/animes/bloc/load_episode_anime_cubit.dart';
 import 'package:umai/social/bloc/post_cubit.dart';
-import 'package:umai/social/model/comment.dart';
+import 'package:umai/common/models/comment.dart';
 
 abstract class ActionCommentBaseCubit<C> extends ValueCubit<Comment?> {
   final C cubit;

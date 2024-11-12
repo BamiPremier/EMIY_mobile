@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:potatoes/common/widgets/loaders.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
-import 'package:umai/social/bloc/action_comment_cubit.dart';
+import 'package:umai/common/bloc/action_comment_cubit.dart';
 import 'package:umai/utils/dialogs.dart';
 import 'package:share_plus/share_plus.dart';
 

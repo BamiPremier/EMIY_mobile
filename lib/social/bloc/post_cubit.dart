@@ -1,8 +1,6 @@
-import 'package:potatoes/libs.dart';
-import 'package:potatoes/potatoes.dart';
-import 'package:umai/common/bloc/common_cubit.dart';
-import 'package:umai/social/model/comment.dart';
-import 'package:umai/social/model/post.dart';
+ 
+import 'package:umai/common/bloc/common_cubit.dart'; 
+import 'package:umai/social/models/post.dart';
 import 'package:umai/social/services/social_service.dart';
 
 class PostCubit extends XCommonCubit<Post> {

@@ -123,9 +123,7 @@ class SearchAnimeDelegate extends SearchDelegate<String> {
                 ),
                 child: Image(
                   fit: BoxFit.cover,
-                  image: context
-                      .read<AppCacheManager>()
-                      .getImage(anime.coverImage.extraLarge ?? ''),
+                  image: context.read<AppCacheManager>().getAnimeImage(anime),
                 ),
               ),
               const SizedBox(width: 16),

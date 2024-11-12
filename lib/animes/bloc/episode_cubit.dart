@@ -2,7 +2,7 @@ import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/animes/bloc/load_episode_anime_cubit.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
-import 'package:umai/social/model/comment.dart';
+import 'package:umai/common/models/comment.dart';
 
 import 'package:umai/animes/models/episode.dart';
 import 'package:umai/animes/services/anime_service.dart';

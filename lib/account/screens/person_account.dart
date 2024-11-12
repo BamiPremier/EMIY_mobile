@@ -16,7 +16,7 @@ import 'package:umai/common/services/user_service.dart';
 import 'package:umai/common/widgets/action_widget.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
-import 'package:umai/social/widget/action_post.dart';
+import 'package:umai/common/widgets/action_post.dart';
 import 'package:umai/utils/themes.dart';
 
 class PersonAccountScreen extends StatefulWidget {

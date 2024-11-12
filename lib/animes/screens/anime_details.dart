@@ -79,7 +79,7 @@ class _AnimeDetailScreenState extends State<AnimeDetailScreen>
                             fit: BoxFit.cover,
                             image: context
                                 .read<AppCacheManager>()
-                                .getImage(anime.coverImage.extraLarge ?? ''),
+                                .getAnimeImage(anime),
                             errorBuilder: (context, error, stackTrace) => Icon(
                               Icons.error,
                               color: Theme.of(context)
@@ -284,4 +284,3 @@ class _AnimeDetailScreenState extends State<AnimeDetailScreen>
     }
   }
 }
-  

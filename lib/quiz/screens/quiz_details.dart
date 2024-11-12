@@ -224,3 +224,9 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
     }
   }
 }
+
+
+
+    // C extends XCommonCubit<T>,
+    // L extends BaseLoadCommentCubit<T>,
+    // A extends ActionCommentBaseCubit<C>

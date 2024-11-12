@@ -5,8 +5,8 @@ import 'package:potatoes/auto_list/models/paginated_list.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/services/api_service.dart';
-import 'package:umai/social/model/comment.dart';
-import 'package:umai/social/model/post.dart';
+import 'package:umai/common/models/comment.dart';
+import 'package:umai/social/models/post.dart';
 
 class SocialService extends ApiService with XService<Post> {
   //Action post

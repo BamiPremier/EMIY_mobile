@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:potatoes/libs.dart';
-import 'package:potatoes/potatoes.dart' hide PreferencesService;
+import 'package:potatoes/libs.dart'; 
 import 'package:umai/common/bloc/common_cubit.dart';
-import 'package:umai/common/utils/validators.dart';
-import 'package:umai/animes/bloc/episode_cubit.dart';
-import 'package:umai/animes/bloc/load_episode_anime_cubit.dart';
-import 'package:umai/social/bloc/action_comment_cubit.dart';
-import 'package:umai/social/bloc/post_cubit.dart';
-import 'package:umai/social/model/comment.dart';
+import 'package:umai/common/utils/validators.dart'; 
+import 'package:umai/common/bloc/action_comment_cubit.dart'; 
+import 'package:umai/common/models/comment.dart';
 import 'package:umai/utils/themes.dart';
 
 class CommentInput<C extends XCommonCubit, A extends ActionCommentBaseCubit<C>>

@@ -7,7 +7,7 @@ import 'package:umai/animes/models/anime.dart';
 import 'package:umai/common/models/user.dart';
 import 'package:umai/common/services/api_service.dart';
 import 'package:umai/quiz/models/quiz.dart';
-import 'package:umai/social/model/post.dart';
+import 'package:umai/social/models/post.dart';
 
 class UserService extends ApiService {
   static const String _getMe = '/users/me';

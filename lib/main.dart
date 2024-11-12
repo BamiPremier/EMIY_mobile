@@ -33,7 +33,7 @@ import 'package:umai/quiz/bloc/timer_cubit.dart';
 import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/quiz/services/quiz_service.dart';
 import 'package:umai/social/bloc/new_post_cubit.dart';
-import 'package:umai/social/model/post.dart';
+import 'package:umai/social/models/post.dart';
 import 'package:umai/social/services/post_cubit_manager.dart';
 import 'package:umai/social/services/social_service.dart';
 import 'package:umai/utils/themes.dart';

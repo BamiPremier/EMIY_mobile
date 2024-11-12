@@ -1,37 +1,23 @@
 // Start of Selection
 import 'package:flutter/material.dart';
-import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
-import 'package:potatoes/common/bloc/object_cubit.dart';
+import 'package:potatoes/auto_list/widgets/auto_list_view.dart'; 
 import 'package:potatoes/libs.dart';
-import 'package:umai/animes/bloc/action_comment_episode_cubit.dart';
 import 'package:umai/animes/bloc/episode_cubit.dart';
-import 'package:umai/animes/bloc/load_comment_episode_cubit.dart';
 import 'package:umai/animes/services/episode_cubit_manager.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
-import 'package:umai/common/models/user.dart';
-import 'package:umai/common/widgets/button_common.dart';
-import 'package:umai/social/bloc/comment_cubit.dart';
-import 'package:umai/social/bloc/load_comment_cubit.dart';
+import 'package:umai/common/models/user.dart'; 
+import 'package:umai/common/bloc/comment_cubit.dart';
+import 'package:umai/common/bloc/load_comment_cubit.dart';
 import 'package:umai/social/bloc/post_cubit.dart'; // Removed incorrect import
-import 'package:umai/social/bloc/action_comment_cubit.dart';
-import 'package:umai/social/model/comment.dart';
-import 'package:umai/social/model/post.dart';
+import 'package:umai/common/bloc/action_comment_cubit.dart';
+import 'package:umai/common/models/comment.dart';
+import 'package:umai/social/models/post.dart';
 import 'package:umai/social/services/post_cubit_manager.dart';
-import 'package:umai/social/widget/action_comment.dart';
-import 'package:umai/social/widget/action_post.dart';
-import 'package:umai/social/widget/button_post.dart';
-import 'package:umai/social/widget/comment_input.dart';
-import 'package:umai/social/widget/item_comment.dart';
-import 'package:readmore/readmore.dart';
-import 'package:umai/social/widget/post_image.dart';
-import 'package:flutter/material.dart';
+import 'package:umai/common/widgets/button_post.dart';
+import 'package:umai/common/widgets/comment_input.dart';
+import 'package:umai/common/widgets/item_comment.dart';
 import 'package:umai/animes/bloc/load_episode_anime_cubit.dart';
 import 'package:umai/animes/models/episode.dart';
-import 'package:umai/animes/screens/episode_details.dart';
-import 'package:umai/animes/widgets/episode_head.dart';
-import 'package:umai/common/screens/common_details.dart';
-import 'package:umai/utils/themes.dart';
-import 'package:umai/utils/time_elapsed.dart';
 
 mixin XItem {
   String get itemId;
@@ -47,11 +33,7 @@ mixin XItem {
   copyWithLike({bool? hasLiked});
 }
 
-class CommonDetailsScreen<
-    T extends XItem,
-    C extends XCommonCubit<T>,
-    L extends BaseLoadCommentCubit<T>,
-    A extends ActionCommentBaseCubit<C>> extends StatefulWidget {
+class CommonDetailsScreen<T extends XItem> extends StatefulWidget {
   final WidgetBuilder head;
 
   CommonDetailsScreen({
@@ -65,15 +47,19 @@ class CommonDetailsScreen<
   }) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider.value(value: context.read<PostCubitManager>().get(post)),
+        BlocProvider.value(
+            value: context.read<PostCubitManager>().get(post)
+                as XCommonCubit<Post>),
         BlocProvider(
-            create: (context) => ActionCommentCubit(context.read<PostCubit>())),
+            create: (context) => ActionCommentCubit(
+                    context.read<XCommonCubit<Post>>() as PostCubit)
+                as ActionCommentBaseCubit<XCommonCubit<Post>>),
         BlocProvider(
             create: (context) => LoadCommentCubit(
-                context.read(), post.itemId, '', context.read())),
+                    context.read(), post.itemId, '', context.read())
+                as BaseLoadCommentCubit<Post>),
       ],
-      child: CommonDetailsScreen<Post, PostCubit, LoadCommentCubit,
-          ActionCommentCubit>(head: head),
+      child: CommonDetailsScreen<Post>(head: head),
     );
   }
 
@@ -83,38 +69,43 @@ class CommonDetailsScreen<
     required Episode episode,
     required WidgetBuilder head,
   }) {
-    return MultiBlocProvider(
-        providers: [
-          BlocProvider.value(
-              value: context.read<EpisodeCubitManager>().get(episode)),
-          BlocProvider(
-              create: (context) => ActionCommentEpisodeCubit(
-                  context.read<EpisodeCubit>(), loadEpisodeAnimeCubit)),
-          BlocProvider(
-              create: (context) => LoadCommentEpisodeCubit(
-                    context.read(),
-                    episode.id,
-                    '',
-                    loadEpisodeAnimeCubit,
-                    context.read(),
-                  )),
-        ],
-        child: CommonDetailsScreen<Episode, EpisodeCubit,
-            LoadCommentEpisodeCubit, ActionCommentEpisodeCubit>(head: head));
+    return MultiBlocProvider(providers: [
+      BlocProvider.value(
+          value: context.read<EpisodeCubitManager>().get(episode)
+              as XCommonCubit<Episode>),
+      BlocProvider(
+          create: (context) => ActionCommentEpisodeCubit(
+                  context.read<XCommonCubit<Episode>>() as EpisodeCubit,
+                  loadEpisodeAnimeCubit)
+              as ActionCommentBaseCubit<XCommonCubit<Episode>>),
+      BlocProvider(
+          create: (context) => LoadCommentEpisodeCubit(
+                context.read(),
+                episode.id,
+                '',
+                loadEpisodeAnimeCubit,
+                context.read(),
+              ) as BaseLoadCommentCubit<Episode>),
+    ], child: CommonDetailsScreen<Episode>(head: head));
   }
 
   @override
-  State<CommonDetailsScreen<T, C, L, A>> createState() =>
-      _CommonDetailsScreenState<T, C, L, A>();
+  State<CommonDetailsScreen<T>> createState() => _CommonDetailsScreenState<T>();
 }
 
-class _CommonDetailsScreenState<T extends XItem, C extends XCommonCubit<T>,
-        L extends BaseLoadCommentCubit<T>, A extends ActionCommentBaseCubit<C>>
-    extends State<CommonDetailsScreen<T, C, L, A>> {
-  late final L loadCommentCubit = context.read<L>();
+class _CommonDetailsScreenState<T extends XItem>
+    extends State<CommonDetailsScreen<T>> {
+  late final BaseLoadCommentCubit<T> loadCommentCubit =
+      context.read<BaseLoadCommentCubit<T>>();
   final ValueNotifier<bool> isCollapsed = ValueNotifier<bool>(true);
-  late final C itemCubit = context.read<C>();
-  late final A actionCommentCubit = context.read<A>();
+  late final XCommonCubit<T> itemCubit = context.read<XCommonCubit<T>>();
+  late final ActionCommentBaseCubit<XCommonCubit<T>> actionCommentCubit =
+      context.read<ActionCommentBaseCubit<XCommonCubit<T>>>();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -124,105 +115,112 @@ class _CommonDetailsScreenState<T extends XItem, C extends XCommonCubit<T>,
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<C, XCommonState>(listener: (context, state) {
-      if (state is CommentItemSuccesState) {
-        loadCommentCubit.putFirst(state.comment);
-      }
-    }, builder: (context, state) {
-      return Scaffold(
-          extendBodyBehindAppBar: true,
-          appBar: AppBar(
-            backgroundColor: Colors.white.withOpacity(0.6),
-          ),
-          body: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // if (T is Post)
-                      SizedBox(
-                          height: kToolbarHeight +
-                              MediaQuery.of(context).viewPadding.top),
-                      widget.head(context),
-                      ButtonPost<T, C, A>(),
+    return BlocConsumer<XCommonCubit<T>, XCommonState>(
+      listener: (context, state) {
+        if (state is CommentItemSuccesState) {
+          loadCommentCubit.putFirst(state.comment);
+        }
+      },
+      builder: (context, state) {
+        return Scaffold(
+            extendBodyBehindAppBar: true,
+            appBar: AppBar(
+              backgroundColor: Colors.white.withOpacity(0.6),
+            ),
+            body: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // if (T is Post)
+                        SizedBox(
+                            height: kToolbarHeight +
+                                MediaQuery.of(context).viewPadding.top),
+                        widget.head(context),
+                        ButtonPost<T>(),
 
-                      const Divider(),
-                      AutoListView.get<Comment>(
-                          padding: EdgeInsets.zero,
-                          shrinkWrap: true,
-                          autoManage: false,
-                          physics: const NeverScrollableScrollPhysics(),
-                          cubit: loadCommentCubit,
-                          itemBuilder: (context, comment) => MultiBlocProvider(
-                                providers: [
-                                  BlocProvider(
-                                    create: (context) => CommentCubit<T>(
-                                      context.read<XService<T>>(),
-                                      comment,
+                        const Divider(),
+                        AutoListView.get<Comment>(
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            autoManage: false,
+                            physics: const NeverScrollableScrollPhysics(),
+                            cubit: loadCommentCubit,
+                            itemBuilder: (context, comment) =>
+                                MultiBlocProvider(
+                                  providers: [
+                                    BlocProvider(
+                                      create: (context) => CommentCubit<T>(
+                                        context.read<XService<T>>(),
+                                        comment,
+                                      ),
                                     ),
+                                    BlocProvider.value(
+                                      value: context.read<XCommonCubit<T>>(),
+                                    ),
+                                    BlocProvider.value(
+                                      value: context.read<
+                                          ActionCommentBaseCubit<
+                                              XCommonCubit<T>>>(),
+                                    ),
+                                  ],
+                                  child: ItemComment<T>(
+                                    comment: comment,
+                                    idItem: itemCubit.x.itemId,
+                                    actionCommentBaseCubit: actionCommentCubit,
                                   ),
-                                  BlocProvider.value(
-                                    value: context.read<C>(),
-                                  ),
-                                  BlocProvider.value(
-                                    value: context.read<A>(),
-                                  ),
-                                ],
-                                child: ItemComment<T, C, A, L>(
-                                  comment: comment,
-                                  idItem: itemCubit.x.itemId,
-                                  actionCommentBaseCubit: actionCommentCubit,
                                 ),
-                              ),
-                          emptyBuilder: (context) => const Center(
-                                child: Text("Aucun commentaire"),
-                              ),
-                          loadingBuilder: (context) => Container(
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.all(16),
-                              child: LinearProgressIndicator(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onTertiaryContainer,
-                                backgroundColor: Theme.of(context)
-                                    .colorScheme
-                                    .tertiaryContainer,
-                                borderRadius: BorderRadius.circular(30),
-                              )),
-                          loadingMoreBuilder: (context) => Container(
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.all(16),
-                              child: LinearProgressIndicator(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onTertiaryContainer,
-                                backgroundColor: Theme.of(context)
-                                    .colorScheme
-                                    .tertiaryContainer,
-                                borderRadius: BorderRadius.circular(30),
-                              )),
-                          errorBuilder: (context, retry) => Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const Text("Une erreur est survenue"),
-                                  TextButton(
-                                    onPressed: retry,
-                                    child: const Text("Réessayer"),
-                                  )
-                                ],
-                              ))
-                    ],
+                            emptyBuilder: (context) => const Center(
+                                  child: Text("Aucun commentaire"),
+                                ),
+                            loadingBuilder: (context) => Container(
+                                alignment: Alignment.center,
+                                padding: const EdgeInsets.all(16),
+                                child: LinearProgressIndicator(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onTertiaryContainer,
+                                  backgroundColor: Theme.of(context)
+                                      .colorScheme
+                                      .tertiaryContainer,
+                                  borderRadius: BorderRadius.circular(30),
+                                )),
+                            loadingMoreBuilder: (context) => Container(
+                                alignment: Alignment.center,
+                                padding: const EdgeInsets.all(16),
+                                child: LinearProgressIndicator(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onTertiaryContainer,
+                                  backgroundColor: Theme.of(context)
+                                      .colorScheme
+                                      .tertiaryContainer,
+                                  borderRadius: BorderRadius.circular(30),
+                                )),
+                            errorBuilder: (context, retry) => Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Text("Une erreur est survenue"),
+                                    TextButton(
+                                      onPressed: retry,
+                                      child: const Text("Réessayer"),
+                                    )
+                                  ],
+                                ))
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              CommentInput<C, A>()
-            ],
-          ));
-    });
+                CommentInput<XCommonCubit<T>,
+                    ActionCommentBaseCubit<XCommonCubit<T>>>()
+              ],
+            ));
+      },
+    );
   }
 }

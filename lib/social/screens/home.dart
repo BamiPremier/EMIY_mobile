@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
-import 'package:umai/social/bloc/action_comment_cubit.dart';
+import 'package:umai/common/bloc/action_comment_cubit.dart';
 import 'package:umai/social/bloc/post_cubit.dart';
 import 'package:umai/social/bloc/post_feed_cubit.dart';
-import 'package:umai/social/model/post.dart';
+import 'package:umai/social/models/post.dart';
 import 'package:umai/social/screens/new_post_screen.dart';
-import 'package:umai/social/widget/item_post.dart';
-import 'package:umai/social/widget/new_post_banner.dart';
+import 'package:umai/social/widgets/item_post.dart';
+import 'package:umai/social/widgets/new_post_banner.dart';
 
 class SocialHomeScreen extends StatefulWidget {
   const SocialHomeScreen({super.key});
@@ -32,9 +32,8 @@ class _SocialHomeScreenState extends State<SocialHomeScreen> {
                   padding: EdgeInsets.only(
                       bottom: MediaQuery.of(context).viewInsets.bottom),
                   cubit: postFeedCubit,
-                  itemBuilder: (context, post) => PostItem.get<Post, PostCubit,
-                          ActionCommentBaseCubit<PostCubit>>(
-                      context: context, post: post),
+                  itemBuilder: (context, post) =>
+                      PostItem.get(context: context, post: post),
                   separatorBuilder: (_, __) => const Divider(height: 8),
                   errorBuilder: (context, retry) => Column(
                         mainAxisSize: MainAxisSize.min,

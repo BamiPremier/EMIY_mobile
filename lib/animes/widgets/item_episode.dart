@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:umai/animes/bloc/load_episode_anime_cubit.dart';
-import 'package:umai/animes/models/episode.dart';
-import 'package:umai/animes/screens/episode_details.dart';
+import 'package:umai/animes/models/episode.dart'; 
 import 'package:umai/animes/widgets/episode_head.dart';
 import 'package:umai/common/screens/common_details.dart';
 import 'package:umai/utils/themes.dart';

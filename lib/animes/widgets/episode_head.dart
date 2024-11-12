@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/bloc/episode_cubit.dart';
 import 'package:umai/animes/models/episode.dart';
+import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/services/cache_manager.dart';
 import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
@@ -13,7 +14,7 @@ class EpisodeHead extends StatelessWidget {
   Widget build(BuildContext context) {
     const double width = 72;
     const double height = 88;
-    final episode = context.read<EpisodeCubit>().x as Episode;
+    final episode = context.read<XCommonCubit<Episode>>().x as Episode;
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
@@ -24,8 +25,9 @@ class EpisodeHead extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: Image(
-                    image: context.read<AppCacheManager>().getImage(
-                        episode.anime.coverImage.extraLarge ?? ''),
+                    image: context
+                        .read<AppCacheManager>()
+                        .getAnimeImage(episode.anime),
                     height: height,
                     width: width,
                     fit: BoxFit.cover,

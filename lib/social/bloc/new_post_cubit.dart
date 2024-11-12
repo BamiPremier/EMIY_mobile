@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart' hide PreferencesService;
-import 'package:umai/social/model/post.dart';
+import 'package:umai/social/models/post.dart';
 import 'package:umai/social/services/post_cubit_manager.dart';
 import 'package:umai/social/services/social_service.dart';
 
