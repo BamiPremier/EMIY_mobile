@@ -36,7 +36,8 @@ mixin XItem {
 class CommonDetailsScreen<T extends XItem> extends StatefulWidget {
   final WidgetBuilder head;
 
-  CommonDetailsScreen({
+  const CommonDetailsScreen({
+    super.key,
     required this.head,
   });
 

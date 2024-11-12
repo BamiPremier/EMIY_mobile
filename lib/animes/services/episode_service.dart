@@ -1,10 +1,9 @@
 import 'package:potatoes/auto_list/models/paginated_list.dart';
 import 'package:potatoes/libs.dart';
-import 'package:umai/animes/models/anime.dart';
 import 'package:umai/animes/models/episode.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
-import 'package:umai/common/services/api_service.dart';
 import 'package:umai/common/models/comment.dart';
+import 'package:umai/common/services/api_service.dart';
 
 class EpisodeService extends ApiService with XService<Episode> {
   static const String _likeEpisode = '/episodes/:idEpisode/like';

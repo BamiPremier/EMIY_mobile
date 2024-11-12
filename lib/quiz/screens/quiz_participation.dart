@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
-
 import 'package:umai/common/widgets/buttons.dart';
-import 'package:umai/quiz/bloc/quiz_manage_cubit.dart';
 import 'package:umai/quiz/bloc/quiz_participation_cubit.dart';
 import 'package:umai/quiz/bloc/quiz_question_cubit.dart';
 import 'package:umai/quiz/bloc/timer_cubit.dart';
@@ -14,7 +11,6 @@ import 'package:umai/quiz/screens/quiz_details.dart';
 import 'package:umai/quiz/screens/quizz_finished.dart';
 import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/quiz/widgets/head_particiation.dart';
-import 'package:umai/quiz/widgets/head_quiz.dart';
 import 'package:umai/utils/themes.dart';
 
 class QuizParticipationScreen extends StatefulWidget {

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
-import 'package:umai/common/bloc/action_comment_cubit.dart';
-import 'package:umai/social/bloc/post_cubit.dart';
 import 'package:umai/social/bloc/post_feed_cubit.dart';
 import 'package:umai/social/models/post.dart';
 import 'package:umai/social/screens/new_post_screen.dart';

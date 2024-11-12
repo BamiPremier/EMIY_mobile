@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
-import 'package:umai/animes/bloc/episode_cubit.dart';
 import 'package:umai/animes/models/episode.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/services/cache_manager.dart';

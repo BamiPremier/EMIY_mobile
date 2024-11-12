@@ -1,11 +1,9 @@
-import 'package:flutter_cache_manager/file.dart';
 import 'package:potatoes/auto_list.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
-import 'package:umai/common/screens/common_details.dart';
 import 'package:umai/common/models/comment.dart';
-import 'package:umai/social/models/post.dart';
-import 'package:umai/social/services/social_service.dart';
+import 'package:umai/common/screens/common_details.dart';
+
 part 'common_state.dart';
 
 mixin XService<T> {
@@ -72,7 +70,7 @@ class XCommonCubit<T> extends ObjectCubit<XItem, XCommonState> {
     emit(InitializingXCommonState(object));
   }
 
-  reset() {
+  void reset() {
     update(x);
   }
 
@@ -127,25 +125,6 @@ class XCommonCubit<T> extends ObjectCubit<XItem, XCommonState> {
     }
   }
 
-  void commentEpisode({required String content, String? targetCommentId}) {
-    if (state is InitializingXCommonState) {
-      final stateBefore = state;
-
-      emit(const XLoadingState());
-      service
-          .commentItem(
-              idItem: x.itemId,
-              content: content.trim(),
-              target: targetCommentId)
-          .then((comment) {
-        emit(CommentItemSuccesState(comment));
-        emit(stateBefore);
-      }, onError: (error, trace) {
-        emit(XErrorState(error, trace));
-        emit(stateBefore);
-      });
-    }
-  }
   void commentItem({required String content, String? targetCommentId}) {
     if (state is InitializingXCommonState) {
       final stateBefore = state;

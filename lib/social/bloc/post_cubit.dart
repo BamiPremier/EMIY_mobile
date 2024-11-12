@@ -7,6 +7,7 @@ class PostCubit extends XCommonCubit<Post> {
   final SocialService socialService;
 
   PostCubit(this.socialService, Post post) : super(socialService, post);
+
   void report({required String reason}) {
     if (state is InitializingXCommonState) {
       final stateBefore = state;

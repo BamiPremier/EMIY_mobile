@@ -2,12 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/account/bloc/load_quiz_user_cubit.dart';
-import 'package:umai/animes/bloc/load_quiz_anime_cubit.dart';
-import 'package:umai/animes/models/anime.dart';
-import 'package:umai/animes/services/anime_cubit_manager.dart';
-import 'package:umai/common/bloc/anime_manip_cubit.dart';
 import 'package:umai/common/bloc/person_cubit.dart';
-import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/widgets/item_quiz.dart';
 

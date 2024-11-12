@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
+import 'package:umai/common/bloc/action_comment_cubit.dart';
+import 'package:umai/common/bloc/comment_cubit.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/screens/common_details.dart';
-import 'package:umai/common/bloc/comment_cubit.dart';
-import 'package:umai/common/bloc/action_comment_cubit.dart';
-import 'package:umai/social/bloc/post_cubit.dart';
 import 'package:umai/utils/themes.dart';
 
 class ActionCommentResponse<T extends XItem, C extends XCommonCubit<T>,

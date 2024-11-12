@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
+import 'package:readmore/readmore.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/screens/common_details.dart';
 import 'package:umai/common/services/person_cubit_manager.dart';
-import 'package:umai/common/bloc/action_comment_cubit.dart';
+import 'package:umai/common/widgets/action_post.dart';
+import 'package:umai/common/widgets/button_post.dart';
 import 'package:umai/social/bloc/post_cubit.dart';
 import 'package:umai/social/models/post.dart';
 import 'package:umai/social/services/post_cubit_manager.dart';
-import 'package:umai/common/widgets/action_post.dart';
-import 'package:umai/common/widgets/button_post.dart';
-import 'package:readmore/readmore.dart';
 import 'package:umai/social/widgets/head_post.dart';
 import 'package:umai/social/widgets/post_image.dart';
 

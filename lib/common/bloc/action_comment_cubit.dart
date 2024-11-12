@@ -19,8 +19,7 @@ class ActionCommentEpisodeCubit extends ActionCommentBaseCubit<EpisodeCubit> {
 
   @override
   void comment({required String content}) {
-    cubit.commentEpisode(
-      loadEpisodeAnimeCubit: loadEpisodeAnimeCubit,
+    cubit.commentItem(
       content: content,
       targetCommentId: state?.id,
     );

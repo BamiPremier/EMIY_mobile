@@ -9,8 +9,11 @@ import 'package:umai/utils/time_elapsed.dart';
 class EpisodeItem extends StatelessWidget {
   final Episode episode;
   final LoadEpisodeAnimeCubit loadEpisodeAnimeCubit;
-  const EpisodeItem(
-      {required this.episode, required this.loadEpisodeAnimeCubit});
+  const EpisodeItem({
+    super.key,
+    required this.episode,
+    required this.loadEpisodeAnimeCubit
+  });
 
   @override
   Widget build(BuildContext context) {

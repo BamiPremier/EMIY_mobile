@@ -4,9 +4,8 @@ import 'package:potatoes/libs.dart';
 import 'package:umai/animes/bloc/load_episode_anime_cubit.dart';
 import 'package:umai/animes/models/anime.dart';
 import 'package:umai/animes/models/episode.dart';
-import 'package:umai/animes/widgets/item_episode.dart';
 import 'package:umai/animes/services/anime_cubit_manager.dart';
-import 'package:umai/common/bloc/anime_manip_cubit.dart';
+import 'package:umai/animes/widgets/item_episode.dart';
 
 class EpisodeScreen extends StatefulWidget {
   static Widget get({
