@@ -39,25 +39,17 @@ class _HeadQuizState extends State<HeadQuiz> with CompletableMixin {
                 background: Stack(
                   fit: StackFit.expand,
                   children: [
-                    Image(
-                      fit: BoxFit.cover,
-                      image: context
-                          .read<AppCacheManager>()
-                          .getImage(quiz.anime?.coverImage.extraLarge ?? ''),
-                      color: quiz.anime == null
-                          ? Theme.of(context).colorScheme.onTertiaryContainer
-                          : null,
-                      errorBuilder: (context, error, stackTrace) =>
-                          quiz.anime != null
-                              ? Icon(
-                                  Icons.error,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onTertiaryContainer,
-                                  size: 32,
-                                )
-                              : Container(),
-                    ),
+                    if (quiz.anime != null)
+                      Image(
+                        fit: BoxFit.cover,
+                        image: context.read<AppCacheManager>()
+                          .getAnimeImage(quiz.anime!),
+                        errorBuilder: (context, error, stackTrace) => Icon(
+                          Icons.error,
+                          color: Theme.of(context).colorScheme.onTertiaryContainer,
+                          size: 32,
+                        ),
+                      ),
                     Align(
                       alignment: Alignment.topCenter,
                       child: Container(

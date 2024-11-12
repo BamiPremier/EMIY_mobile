@@ -40,9 +40,7 @@ class AnimeItem extends StatelessWidget {
               animeManipCubit: animeManipCubit,
             ),
             child: Image(
-              image: context
-                  .read<AppCacheManager>()
-                  .getImage(anime.coverImage.extraLarge ?? ''),
+              image: context.read<AppCacheManager>().getAnimeImage(anime),
               fit: BoxFit.cover,
               frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
                 if (frame != null) return child;
