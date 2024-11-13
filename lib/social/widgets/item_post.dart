@@ -13,10 +13,12 @@ import 'package:umai/social/widgets/head_post.dart';
 import 'package:umai/social/widgets/post_image.dart';
 
 class PostItem extends StatefulWidget {
+  const PostItem({super.key});
+
   static Widget get({required BuildContext context, required Post post}) {
     return BlocProvider.value(
       value: context.read<PostCubitManager>().get(post),
-      child: PostItem(),
+      child: const PostItem(),
     );
   }
 

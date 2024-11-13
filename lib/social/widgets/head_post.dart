@@ -9,6 +9,8 @@ import 'package:readmore/readmore.dart';
 import 'package:umai/social/widgets/post_image.dart';
 
 class HeadPost extends StatefulWidget {
+  const HeadPost({super.key});
+
   @override
   State<HeadPost> createState() => _HeadPostState();
 }

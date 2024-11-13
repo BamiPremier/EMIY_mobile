@@ -22,6 +22,7 @@ import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/screens/home.dart';
 import 'package:umai/common/services/api_service.dart';
 import 'package:umai/common/services/cache_manager.dart';
+import 'package:umai/common/services/link_service.dart';
 import 'package:umai/common/services/person_cubit_manager.dart';
 import 'package:umai/common/services/preferences_service.dart';
 import 'package:umai/common/services/user_service.dart';
@@ -113,11 +114,18 @@ class MyApp extends StatelessWidget {
               create: (context) => QuizManageCubitManager(context.read())),
           RepositoryProvider(
               create: (context) => EpisodeCubitManager(context.read())),
+          RepositoryProvider(create: (_) => LinkService(dio)),
         ],
         child: MultiBlocProvider(
             providers: [
               BlocProvider(
-                create: (_) => LinkCubit(),
+                create: (context) => LinkCubit(
+                    context.read(),
+                    context.read(),
+                    context.read(),
+                    context.read(),
+                    context.read(),
+                    context.read()),
               ),
               BlocProvider(
                   create: (context) => UserCubit(
@@ -151,24 +159,6 @@ class MyApp extends StatelessWidget {
             child: Builder(
               builder: (context) {
                 return MaterialApp(
-                  navigatorKey: context
-                      .read<LinkCubit>()
-                      .navigatorKey, // utilise le _navigatorKey
-                  onGenerateRoute: (settings) {
-                    final uri = Uri.parse(settings.name ?? '');
-                    // Définir les routes basées sur le fragment URI
-                    switch (uri.path) {
-                      case '/social':
-                        return MaterialPageRoute(builder: (_) => HomeScreen());
-                      case '/quiz':
-                        return MaterialPageRoute(builder: (_) => HomeScreen());
-                      case '/animes':
-                        return MaterialPageRoute(builder: (_) => HomeScreen());
-
-                      default:
-                        return MaterialPageRoute(builder: (_) => HomeScreen());
-                    }
-                  },
                   debugShowCheckedModeBanner: false,
                   title: 'Umai!',
                   theme: AppTheme.lightTheme(context),

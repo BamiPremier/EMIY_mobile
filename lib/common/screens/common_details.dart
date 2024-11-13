@@ -1,11 +1,11 @@
 // Start of Selection
 import 'package:flutter/material.dart';
-import 'package:potatoes/auto_list/widgets/auto_list_view.dart'; 
+import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/bloc/episode_cubit.dart';
 import 'package:umai/animes/services/episode_cubit_manager.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
-import 'package:umai/common/models/user.dart'; 
+import 'package:umai/common/models/user.dart';
 import 'package:umai/common/bloc/comment_cubit.dart';
 import 'package:umai/common/bloc/load_comment_cubit.dart';
 import 'package:umai/social/bloc/post_cubit.dart'; // Removed incorrect import

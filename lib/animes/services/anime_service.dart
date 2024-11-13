@@ -30,7 +30,7 @@ class AnimeService extends ApiService {
 
   Future shareAnime({required int idAnime}) {
     return compute(
-      dio.post(
+      dio.get(
         _shareAnime.replaceAll(':idAnime', idAnime.toString()),
         options: Options(headers: withAuth()),
       ),

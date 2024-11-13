@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
-import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/screens/common_details.dart';
 import 'package:umai/common/bloc/comment_cubit.dart';
 import 'package:umai/common/bloc/action_comment_cubit.dart';
@@ -10,9 +9,8 @@ class ActionComment<T extends XItem> extends StatefulWidget {
   final ActionCommentBaseCubit actionCommentBaseCubit;
 
   const ActionComment({super.key, required this.actionCommentBaseCubit});
-
   @override
-  _ActionCommentState<T> createState() => _ActionCommentState<T>();
+  State<ActionComment<T>> createState() => _ActionCommentState<T>();
 }
 
 class _ActionCommentState<T extends XItem> extends State<ActionComment<T>> {

@@ -12,9 +12,8 @@ class ActionCommentResponse<T extends XItem, C extends XCommonCubit<T>,
 
   const ActionCommentResponse(
       {super.key, required this.actionCommentBaseCubit});
-
   @override
-  _ActionCommentResponseState<T, C, A> createState() =>
+  State<ActionCommentResponse<T, C, A>> createState() =>
       _ActionCommentResponseState<T, C, A>();
 }
 

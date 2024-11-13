@@ -18,11 +18,11 @@ class HeadParticipation extends StatefulWidget {
   }) {
     return BlocProvider.value(
       value: context.read<QuizManageCubitManager>().get(quiz),
-      child: HeadParticipation._(),
+      child: const HeadParticipation._(),
     );
   }
 
-  HeadParticipation._();
+  const HeadParticipation._();
   @override
   State<HeadParticipation> createState() => _HeadParticipationState();
 }

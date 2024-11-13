@@ -64,7 +64,7 @@ class SocialService extends ApiService with XService<Post> {
   @override
   Future shareItem({required String idItem}) {
     return compute(
-      dio.post(
+      dio.get(
         _sharePost.replaceAll(':idItem', idItem),
         options: Options(headers: withAuth()),
       ),
@@ -229,8 +229,8 @@ class SocialService extends ApiService with XService<Post> {
       mapper: Comment.fromJson,
     );
   }
-  @override
 
+  @override
   Future<void> reportComment({
     required String commentId,
     required String reason,

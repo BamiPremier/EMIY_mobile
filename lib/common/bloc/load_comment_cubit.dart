@@ -63,7 +63,7 @@ class LoadCommentCubit extends BaseLoadCommentCubit<Post> {
 
 class LoadCommentEpisodeCubit extends BaseLoadCommentCubit<Episode> {
   final EpisodeService episodeService;
-  final LoadEpisodeAnimeCubit loadEpisodeAnimeCubit;
+  final LoadEpisodeAnimeCubit? loadEpisodeAnimeCubit;
   final int idEpisode;
   final String target;
 
@@ -74,8 +74,10 @@ class LoadCommentEpisodeCubit extends BaseLoadCommentCubit<Episode> {
   @override
   void deleteComment(Comment comment) {
     super.deleteComment(comment).then((_) {
-      loadEpisodeAnimeCubit.updateCommentCount(
-          idEpisode: idEpisode, isIncrement: false);
+      if (loadEpisodeAnimeCubit != null) {
+        loadEpisodeAnimeCubit!
+            .updateCommentCount(idEpisode: idEpisode, isIncrement: false);
+      }
     });
   }
 }

@@ -143,12 +143,12 @@ class _EditingQuizScreenState extends State<EditingQuizScreen>
             BlocBuilder<QuizCubit, QuizState>(
               builder: (context, state) {
                 return UmaiButton.primary(
-                  onPressed: (state is QuizCreatedState &&
-                          !(state as QuizCreatedState).questions.isEmpty)
-                      ? () {
-                          quizCubit.publishQuiz();
-                        }
-                      : null,
+                  onPressed:
+                      (state is QuizCreatedState && state.questions.isNotEmpty)
+                          ? () {
+                              quizCubit.publishQuiz();
+                            }
+                          : null,
                   text: "Publier",
                 );
               },

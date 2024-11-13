@@ -33,7 +33,7 @@ class QuizCubit extends Cubit<QuizState> {
     emit(QuizUpdateState(
       anime: quiz.anime,
       quiz: quiz,
-      questions: [],
+      questions: const [],
     ));
   }
 

@@ -293,9 +293,7 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen>
                 stateParticipation is! QuizParticipationSubmittedState)
             ? null
             : (stateParticipation is QuizParticipationIdleState &&
-                    (stateParticipation as QuizParticipationIdleState)
-                            .userResponse ==
-                        null)
+                    stateParticipation.userResponse == null)
                 ? null
                 : () => quizParticipationCubit.submit());
   }

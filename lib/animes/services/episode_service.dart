@@ -26,7 +26,7 @@ class EpisodeService extends ApiService with XService<Episode> {
   @override
   Future shareItem({required String idItem}) {
     return compute(
-      dio.post(
+      dio.get(
         _shareEpisode.replaceAll(':idEpisode', idItem.toString()),
         options: Options(headers: withAuth()),
       ),
