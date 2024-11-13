@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
 import 'package:potatoes/libs.dart';
-import 'package:umai/animes/models/anime.dart';
+import 'package:potatoes/potatoes.dart';
 import 'package:umai/quiz/models/question_quiz.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/quiz/services/quiz_service.dart';
-import 'package:path/path.dart';
-import 'package:potatoes/potatoes.dart';
+
 part 'create_quiz_question_state.dart';
 
 class CreateQuizQuestionCubit extends Cubit<CreateQuizQuestionState> {

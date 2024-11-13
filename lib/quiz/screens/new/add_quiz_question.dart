@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:potatoes/libs.dart';
@@ -11,8 +10,6 @@ import 'package:umai/common/utils/validators.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/quiz/bloc/create_quiz_question_cubit.dart';
 import 'package:umai/quiz/bloc/quiz_cubit.dart';
-import 'package:umai/quiz/bloc/quiz_manage_cubit.dart';
-import 'package:umai/quiz/models/question_quiz.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/dialogs.dart';
 

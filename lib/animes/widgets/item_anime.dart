@@ -31,6 +31,7 @@ class AnimeItem extends StatelessWidget {
           final animeManipCubit = context.read<AnimeManipCubit>();
           final anime = animeManipCubit.anime;
           return GestureDetector(
+            behavior: HitTestBehavior.opaque,
             onTapUp: (details) => showContextMenu(
               context: context,
               position: details.globalPosition,
@@ -39,9 +40,7 @@ class AnimeItem extends StatelessWidget {
               animeManipCubit: animeManipCubit,
             ),
             child: Image(
-              image: context
-                  .read<AppCacheManager>()
-                  .getImage(anime.coverImage.extraLarge ?? ''),
+              image: context.read<AppCacheManager>().getAnimeImage(anime),
               fit: BoxFit.cover,
               frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
                 if (frame != null) return child;

@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:potatoes/libs.dart';
 import 'package:umai/common/widgets/buttons.dart';
-import 'package:umai/common/screens/home.dart';
-import 'package:umai/quiz/bloc/quiz_manage_cubit.dart';
-import 'package:umai/quiz/bloc/quiz_participation_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/screens/quiz_details.dart';
 import 'package:umai/utils/themes.dart';

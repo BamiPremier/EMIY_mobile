@@ -31,3 +31,18 @@ class SuccessBlockPersonState extends CubitSuccessState with PersonState {
 class PersonErrorState extends CubitErrorState with PersonState {
   PersonErrorState(super.error, [super.trace]);
 }
+
+class SharePersonLoadingState extends CubitLoadingState with PersonState {
+  const SharePersonLoadingState() : super();
+}
+
+class SharePersonSuccessState extends CubitInformationState with PersonState {
+  final String shareLink;
+
+  const SharePersonSuccessState(this.shareLink);
+
+  @override
+  List<Object?> get props => [shareLink];
+}
+
+

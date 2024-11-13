@@ -12,7 +12,6 @@ class QuizService extends ApiService {
   static const String _quizQuestions = '/quiz/:id/questions';
   static const String _quizQuestionsUpdate = '/quiz/:id/question/:questionId';
   static const String _quizPublished = '/quiz/:id/publish';
-  static const String _quizFeedByUser = '/quiz/user';
   static const String _quizRanking = '/quiz/:id/ranking';
   static const String _quizAnimes = '/quiz/animes/:id';
   static const String _shareQuiz = '/quiz/:id/share';
@@ -22,7 +21,7 @@ class QuizService extends ApiService {
 
   Future shareQuiz({required String idQuiz}) {
     return compute(
-      dio.post(
+      dio.get(
         _shareQuiz.replaceAll(':id', idQuiz),
         options: Options(headers: withAuth()),
       ),

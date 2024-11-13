@@ -25,6 +25,10 @@ mixin _$Episode {
   int get timeUntilAiring => throw _privateConstructorUsedError;
   int get episode => throw _privateConstructorUsedError;
   Anime get anime => throw _privateConstructorUsedError;
+  @JsonKey(name: 'has_liked')
+  bool get hasLiked => throw _privateConstructorUsedError;
+  @JsonKey(name: 'comments_count')
+  int get commentsCount => throw _privateConstructorUsedError;
 
   /// Serializes this Episode to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -41,7 +45,13 @@ abstract class $EpisodeCopyWith<$Res> {
       _$EpisodeCopyWithImpl<$Res, Episode>;
   @useResult
   $Res call(
-      {int id, int airingAt, int timeUntilAiring, int episode, Anime anime});
+      {int id,
+      int airingAt,
+      int timeUntilAiring,
+      int episode,
+      Anime anime,
+      @JsonKey(name: 'has_liked') bool hasLiked,
+      @JsonKey(name: 'comments_count') int commentsCount});
 
   $AnimeCopyWith<$Res> get anime;
 }
@@ -66,6 +76,8 @@ class _$EpisodeCopyWithImpl<$Res, $Val extends Episode>
     Object? timeUntilAiring = null,
     Object? episode = null,
     Object? anime = null,
+    Object? hasLiked = null,
+    Object? commentsCount = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -88,6 +100,14 @@ class _$EpisodeCopyWithImpl<$Res, $Val extends Episode>
           ? _value.anime
           : anime // ignore: cast_nullable_to_non_nullable
               as Anime,
+      hasLiked: null == hasLiked
+          ? _value.hasLiked
+          : hasLiked // ignore: cast_nullable_to_non_nullable
+              as bool,
+      commentsCount: null == commentsCount
+          ? _value.commentsCount
+          : commentsCount // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 
@@ -110,7 +130,13 @@ abstract class _$$EpisodeImplCopyWith<$Res> implements $EpisodeCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {int id, int airingAt, int timeUntilAiring, int episode, Anime anime});
+      {int id,
+      int airingAt,
+      int timeUntilAiring,
+      int episode,
+      Anime anime,
+      @JsonKey(name: 'has_liked') bool hasLiked,
+      @JsonKey(name: 'comments_count') int commentsCount});
 
   @override
   $AnimeCopyWith<$Res> get anime;
@@ -134,6 +160,8 @@ class __$$EpisodeImplCopyWithImpl<$Res>
     Object? timeUntilAiring = null,
     Object? episode = null,
     Object? anime = null,
+    Object? hasLiked = null,
+    Object? commentsCount = null,
   }) {
     return _then(_$EpisodeImpl(
       id: null == id
@@ -156,19 +184,30 @@ class __$$EpisodeImplCopyWithImpl<$Res>
           ? _value.anime
           : anime // ignore: cast_nullable_to_non_nullable
               as Anime,
+      hasLiked: null == hasLiked
+          ? _value.hasLiked
+          : hasLiked // ignore: cast_nullable_to_non_nullable
+              as bool,
+      commentsCount: null == commentsCount
+          ? _value.commentsCount
+          : commentsCount // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$EpisodeImpl implements _Episode {
+class _$EpisodeImpl extends _Episode {
   const _$EpisodeImpl(
       {required this.id,
       required this.airingAt,
       required this.timeUntilAiring,
       required this.episode,
-      required this.anime});
+      required this.anime,
+      @JsonKey(name: 'has_liked') this.hasLiked = false,
+      @JsonKey(name: 'comments_count') this.commentsCount = 0})
+      : super._();
 
   factory _$EpisodeImpl.fromJson(Map<String, dynamic> json) =>
       _$$EpisodeImplFromJson(json);
@@ -183,10 +222,16 @@ class _$EpisodeImpl implements _Episode {
   final int episode;
   @override
   final Anime anime;
+  @override
+  @JsonKey(name: 'has_liked')
+  final bool hasLiked;
+  @override
+  @JsonKey(name: 'comments_count')
+  final int commentsCount;
 
   @override
   String toString() {
-    return 'Episode(id: $id, airingAt: $airingAt, timeUntilAiring: $timeUntilAiring, episode: $episode, anime: $anime)';
+    return 'Episode(id: $id, airingAt: $airingAt, timeUntilAiring: $timeUntilAiring, episode: $episode, anime: $anime, hasLiked: $hasLiked, commentsCount: $commentsCount)';
   }
 
   @override
@@ -200,13 +245,17 @@ class _$EpisodeImpl implements _Episode {
             (identical(other.timeUntilAiring, timeUntilAiring) ||
                 other.timeUntilAiring == timeUntilAiring) &&
             (identical(other.episode, episode) || other.episode == episode) &&
-            (identical(other.anime, anime) || other.anime == anime));
+            (identical(other.anime, anime) || other.anime == anime) &&
+            (identical(other.hasLiked, hasLiked) ||
+                other.hasLiked == hasLiked) &&
+            (identical(other.commentsCount, commentsCount) ||
+                other.commentsCount == commentsCount));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, airingAt, timeUntilAiring, episode, anime);
+  int get hashCode => Object.hash(runtimeType, id, airingAt, timeUntilAiring,
+      episode, anime, hasLiked, commentsCount);
 
   /// Create a copy of Episode
   /// with the given fields replaced by the non-null parameter values.
@@ -224,13 +273,17 @@ class _$EpisodeImpl implements _Episode {
   }
 }
 
-abstract class _Episode implements Episode {
+abstract class _Episode extends Episode {
   const factory _Episode(
-      {required final int id,
-      required final int airingAt,
-      required final int timeUntilAiring,
-      required final int episode,
-      required final Anime anime}) = _$EpisodeImpl;
+          {required final int id,
+          required final int airingAt,
+          required final int timeUntilAiring,
+          required final int episode,
+          required final Anime anime,
+          @JsonKey(name: 'has_liked') final bool hasLiked,
+          @JsonKey(name: 'comments_count') final int commentsCount}) =
+      _$EpisodeImpl;
+  const _Episode._() : super._();
 
   factory _Episode.fromJson(Map<String, dynamic> json) = _$EpisodeImpl.fromJson;
 
@@ -244,6 +297,12 @@ abstract class _Episode implements Episode {
   int get episode;
   @override
   Anime get anime;
+  @override
+  @JsonKey(name: 'has_liked')
+  bool get hasLiked;
+  @override
+  @JsonKey(name: 'comments_count')
+  int get commentsCount;
 
   /// Create a copy of Episode
   /// with the given fields replaced by the non-null parameter values.

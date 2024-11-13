@@ -6,16 +6,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:potatoes/potatoes.dart' hide PreferencesService;
 import 'package:potatoes_secured_preferences/potatoes_secured_preferences.dart';
+import 'package:umai/animes/models/episode.dart';
 import 'package:umai/animes/services/anime_cubit_manager.dart';
 import 'package:umai/animes/services/anime_service.dart';
+import 'package:umai/animes/services/episode_cubit_manager.dart';
+import 'package:umai/animes/services/episode_service.dart';
 import 'package:umai/auth/bloc/auth_cubit.dart';
 import 'package:umai/auth/screens/onboarding_screen.dart';
 import 'package:umai/auth/screens/registration/username.dart';
 import 'package:umai/auth/services/auth_service.dart';
+import 'package:umai/common/bloc/common_cubit.dart';
+import 'package:umai/common/bloc/link_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/screens/home.dart';
 import 'package:umai/common/services/api_service.dart';
 import 'package:umai/common/services/cache_manager.dart';
+import 'package:umai/common/services/link_service.dart';
 import 'package:umai/common/services/person_cubit_manager.dart';
 import 'package:umai/common/services/preferences_service.dart';
 import 'package:umai/common/services/user_service.dart';
@@ -27,6 +33,7 @@ import 'package:umai/quiz/bloc/timer_cubit.dart';
 import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/quiz/services/quiz_service.dart';
 import 'package:umai/social/bloc/new_post_cubit.dart';
+import 'package:umai/social/models/post.dart';
 import 'package:umai/social/services/post_cubit_manager.dart';
 import 'package:umai/social/services/social_service.dart';
 import 'package:umai/utils/themes.dart';
@@ -88,89 +95,114 @@ class MyApp extends StatelessWidget {
         RepositoryProvider(create: (_) => AuthService(dio)),
         RepositoryProvider(create: (_) => UserService(dio)),
         RepositoryProvider(create: (_) => SocialService(dio)),
-        RepositoryProvider(create: (_) => AnimeService(dio)),
+        RepositoryProvider<XService<Post>>(
+            create: (context) => context.read<SocialService>()),
         RepositoryProvider(
             create: (context) => PersonCubitManager(context.read())),
         RepositoryProvider(
             create: (context) =>
                 PostCubitManager(context.read(), context.read())),
+        RepositoryProvider(create: (_) => AnimeService(dio)),
+        RepositoryProvider(create: (_) => EpisodeService(dio)),
+        RepositoryProvider<XService<Episode>>(
+            create: (context) => context.read<EpisodeService>()),
         RepositoryProvider(
             create: (context) => AnimeCubitManager(context.read())),
         RepositoryProvider(create: (context) => QuizService(dio)),
         RepositoryProvider(
             create: (context) => QuizManageCubitManager(context.read())),
+        RepositoryProvider(
+            create: (context) => EpisodeCubitManager(context.read())),
+        RepositoryProvider(create: (_) => LinkService(dio)),
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
-              create: (context) => UserCubit(
-                    context.read(),
-                    preferencesService,
-                  )),
+            create: (context) => LinkCubit(
+                context.read(),
+                context.read(),
+                context.read(),
+                context.read(),
+                context.read(),
+                context.read()),
+          ),
           BlocProvider(
-              create: (context) => AuthCubit(context.read(), context.read())),
+            create: (context) => UserCubit(
+                context.read(),
+                preferencesService,
+              )),
+          BlocProvider(
+              create: (context) =>
+                  AuthCubit(context.read(), context.read())),
           BlocProvider(
               create: (context) =>
                   NewPostCubit(context.read(), context.read())),
           BlocProvider(
-              create: (context) => QuizCubit(context.read(), context.read())),
+              create: (context) =>
+                  QuizCubit(context.read(), context.read())),
           BlocProvider(
             create: (context) =>
-                TimerCubit.duration(const Duration(seconds: 30)),
+              TimerCubit.duration(const Duration(seconds: 30)),
           ),
           BlocProvider(
-              create: (context) => QuizQuestionCubit(
-                    context.read(),
-                  )),
+            create: (context) => QuizQuestionCubit(
+              context.read(),
+            )),
           BlocProvider(
-              create: (context) => CreateQuizQuestionCubit(
-                    context.read(),
-                    context.read(),
-                  )),
+            create: (context) => CreateQuizQuestionCubit(
+              context.read(),
+              context.read(),
+            )),
         ],
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Umai!',
-          theme: AppTheme.lightTheme(context),
-          themeMode: ThemeMode.light,
-          locale: const Locale.fromSubtags(languageCode: 'fr'),
-          supportedLocales: const [Locale.fromSubtags(languageCode: 'fr')],
-          localizationsDelegates: const [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          builder: (context, child) => BlocListener<UserCubit, UserState>(
-            listenWhen: (previous, state) =>
-                previous is UserLoggingOut && state is UserNotLoggedState,
-            listener: (_, state) {
-              // recharge l'app quelque soit l'étape dans l'appli
-              if (state is UserNotLoggedState) {
-                Future.delayed(
+        child: Builder(builder: (context) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Umai!',
+            theme: AppTheme.lightTheme(context),
+            themeMode: ThemeMode.light,
+            locale: const Locale.fromSubtags(languageCode: 'fr'),
+            supportedLocales: const [
+              Locale.fromSubtags(languageCode: 'fr')
+            ],
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            builder: (context, child) =>
+                BlocListener<UserCubit, UserState>(
+              listenWhen: (previous, state) =>
+                  previous is UserLoggingOut &&
+                  state is UserNotLoggedState,
+              listener: (_, state) {
+                // recharge l'app quelque soit l'étape dans l'appli
+                if (state is UserNotLoggedState) {
+                  Future.delayed(
                     const Duration(milliseconds: 100),
                     // ignore: use_build_context_synchronously
                     () => Phoenix.rebirth(context));
-              }
-            },
-            child: child,
-          ),
-          home: Builder(builder: (context) {
-            return BlocBuilder<UserCubit, UserState>(
-              buildWhen: (previous, _) => previous is InitializingUserState,
-              builder: (context, state) {
-                if (state is InitializingUserState) return const SizedBox();
-                if (state is UserNotLoggedState)
-                  return const OnboardingScreen();
-                if (state is CompleteUserProfileState) {
-                  return const RegistrationUsername();
                 }
-                if (state is UserLoggedState) return const HomeScreen();
-                return const OnboardingScreen();
               },
-            );
-          }),
-        ),
-      ),
+              child: child,
+            ),
+            home: Builder(builder: (context) {
+              return BlocBuilder<UserCubit, UserState>(
+                buildWhen: (previous, _) =>
+                    previous is InitializingUserState,
+                builder: (context, state) {
+                  if (state is InitializingUserState) return const SizedBox();
+                  if (state is UserNotLoggedState) return const OnboardingScreen();
+                  if (state is CompleteUserProfileState) {
+                    return const RegistrationUsername();
+                  }
+                  if (state is UserLoggedState) return const HomeScreen();
+                  return const OnboardingScreen();
+                },
+              );
+            }),
+          );
+        })
+      )
     );
   }
 }

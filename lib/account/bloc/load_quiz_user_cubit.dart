@@ -3,7 +3,6 @@ import 'package:potatoes/libs.dart';
 import 'package:umai/common/services/user_service.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/services/quiz_cubit_manager.dart';
-import 'package:umai/quiz/services/quiz_service.dart';
 
 class LoadQuizUserCubit extends AutoListCubit<Quiz> {
   final QuizManageCubitManager cubitManager;

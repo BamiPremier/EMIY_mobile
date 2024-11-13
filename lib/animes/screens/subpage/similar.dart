@@ -38,38 +38,40 @@ class _SimilarScreenState extends State<SimilarScreen>
     return BlocBuilder<AnimeManipCubit, AnimeManipState>(
         builder: (context, state) {
       return AutoListView.get<Anime>(
-        padding: const EdgeInsets.only(top: 4),
-        cubit: cubit,
-        autoManage: false,
-        viewType: ViewType.grid,
-        itemBuilder: (context, anime) =>
-            AnimeItem.get(context: context, anime: anime, withAction: false),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            crossAxisSpacing: 2.0,
-            mainAxisSpacing: 2.0,
-            childAspectRatio: .65),
-
-        shrinkWrap: true,
-        errorBuilder: (context, retry) => Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text("Une erreur s'est produite"),
-            TextButton(
-              onPressed: retry,
-              child: const Text("Réessayer"),
-            )
-          ],
-        ),
-        // loadingBuilder: (context) => Container(
-        //     padding: const EdgeInsets.only(top: 16, bottom: 28)
-        //         .add(const EdgeInsets.symmetric(horizontal: 16)),
-        //     child: LinearProgressIndicator(
-        //       color: Theme.of(context).colorScheme.onTertiaryContainer,
-        //       backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
-        //       borderRadius: BorderRadius.circular(30),
-        //     )),
-      );
+          padding: const EdgeInsets.only(top: 4),
+          cubit: cubit,
+          autoManage: false,
+          viewType: ViewType.grid,
+          itemBuilder: (context, anime) =>
+              AnimeItem.get(context: context, anime: anime, withAction: false),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 2.0,
+              mainAxisSpacing: 2.0,
+              childAspectRatio: .65),
+          errorBuilder: (context, retry) => Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text("An error occured"),
+                    TextButton(
+                      onPressed: retry,
+                      child: const Text("Retry"),
+                    )
+                  ],
+                ),
+              )
+          // loadingBuilder: (context) => Container(
+          //     padding: const EdgeInsets.only(top: 16, bottom: 28)
+          //         .add(const EdgeInsets.symmetric(horizontal: 16)),
+          //     child: LinearProgressIndicator(
+          //       color: Theme.of(context).colorScheme.onTertiaryContainer,
+          //       backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
+          //       borderRadius: BorderRadius.circular(30),
+          //     )),
+          );
     });
   }
 }

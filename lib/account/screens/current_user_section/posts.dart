@@ -3,8 +3,8 @@ import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/account/bloc/post_user_cubit.dart';
-import 'package:umai/social/model/post.dart';
-import 'package:umai/social/widget/item_post.dart';
+import 'package:umai/social/models/post.dart';
+import 'package:umai/social/widgets/item_post.dart';
 
 class PostTab extends StatefulWidget {
   const PostTab({super.key});
