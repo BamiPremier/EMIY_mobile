@@ -79,14 +79,6 @@ class _HeadParticipationState extends State<HeadParticipation>
             leading: const BackButton(
               color: AppTheme.white,
             ),
-            actions: [
-              IconButton(
-                padding: EdgeInsets.zero,
-                onPressed: () => actionsOptions(),
-                color: AppTheme.white,
-                icon: const Icon(Icons.more_vert),
-              ),
-            ],
           );
         }
         final state = stateParticipation;
@@ -125,14 +117,6 @@ class _HeadParticipationState extends State<HeadParticipation>
             leading: const BackButton(
               color: AppTheme.white,
             ),
-            actions: [
-              IconButton(
-                padding: EdgeInsets.zero,
-                onPressed: () => actionsOptions(),
-                color: AppTheme.white,
-                icon: const Icon(Icons.more_vert),
-              ),
-            ],
           );
         }
 
@@ -190,36 +174,8 @@ class _HeadParticipationState extends State<HeadParticipation>
           leading: const BackButton(
             color: AppTheme.white,
           ),
-          actions: [
-            IconButton(
-              padding: EdgeInsets.zero,
-              onPressed: () => actionsOptions(),
-              color: AppTheme.white,
-              icon: const Icon(Icons.more_vert),
-            ),
-          ],
         );
       });
     });
   }
-
-  void actionsOptions() => showAppBottomSheet(
-      context: context,
-      horizontalPadding: 16.0,
-      builder: (_) => Padding(
-          padding: const EdgeInsets.only(top: 24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ActionWidget(
-                title: 'Partager...',
-                icon: Icons.share_outlined,
-                onTap: () => quizManageCubit.shareQuiz(),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-            ],
-          )));
 }

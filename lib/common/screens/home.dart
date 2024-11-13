@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:potatoes/common/widgets/loaders.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/account/screens/account.dart';
+import 'package:umai/account/screens/person_account.dart';
 import 'package:umai/animes/bloc/load_episode_anime_cubit.dart';
 import 'package:umai/animes/screens/home.dart';
 import 'package:umai/common/bloc/home_cubit.dart';
@@ -140,6 +141,10 @@ class _HomeScreenState extends State<HomeScreen> with CompletableMixin {
           settings: const RouteSettings(name: quizRouteName),
         ),
       );
+    } else if (state is UserLinkLoaded) {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) =>
+              PersonAccountScreen.get(context: context, user: state.user)));
     } else if (state is LinkError) {
       showErrorToast(content: state.error, context: context);
     }

@@ -79,6 +79,23 @@ class PersonCubit extends ObjectCubit<User, PersonState> {
     update(user);
   }
 
+  void shareUser() {
+    final stateBefore = state;
+
+    emit(const SharePersonLoadingState());
+    userService
+        .shareUser(
+      idUser: user.id,
+    )
+        .then((reponse) {
+      emit(SharePersonSuccessState(reponse['shareLink']));
+      emit(stateBefore);
+    }, onError: (error, trace) {
+      emit(PersonErrorState(error, trace));
+      emit(stateBefore);
+    });
+  }
+
   void blockUser() {
     if (state is InitializingPersonState) {
       final stateBefore = state;

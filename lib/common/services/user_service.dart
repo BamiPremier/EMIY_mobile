@@ -26,6 +26,7 @@ class UserService extends ApiService {
   static const String _animeWatchlist = '/users/animes-watchlist';
   static const String _posts = '/posts';
   static const String _quizUser = '/quiz';
+  static const String _shareUser = '/users/:idUser/share';
 
   const UserService(super._dio);
 
@@ -36,6 +37,15 @@ class UserService extends ApiService {
           options: Options(headers: withAuth()),
         ),
         mapper: User.fromJson);
+  }
+
+  Future shareUser({required String idUser}) {
+    return compute(
+      dio.get(
+        _shareUser.replaceAll(':idUser', idUser),
+        options: Options(headers: withAuth()),
+      ),
+    );
   }
 
   Future<User> follow({required user}) async {
@@ -127,7 +137,8 @@ class UserService extends ApiService {
     );
   }
 
-  Future<PaginatedList<Anime>> getAnimeViewed({int page = 1, String? userId}) async {
+  Future<PaginatedList<Anime>> getAnimeViewed(
+      {int page = 1, String? userId}) async {
     return compute(
         dio.get(_animeView,
             options: Options(headers: withAuth()),
@@ -139,7 +150,8 @@ class UserService extends ApiService {
         mapper: (result) => toPaginatedList(result, Anime.fromJson));
   }
 
-  Future<PaginatedList<Anime>> getWatchList({int page = 1, String? userId}) async {
+  Future<PaginatedList<Anime>> getWatchList(
+      {int page = 1, String? userId}) async {
     return compute(
         dio.get(_animeWatchlist,
             options: Options(headers: withAuth()),
@@ -194,7 +206,7 @@ class UserService extends ApiService {
     return compute(
         dio.get(_posts,
             options: Options(headers: withAuth()),
-              queryParameters: {
+            queryParameters: {
               'page': page,
               if (userId != null) 'userId': userId,
             }),

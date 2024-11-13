@@ -16,6 +16,7 @@ import 'package:umai/common/services/user_service.dart';
 import 'package:umai/common/widgets/action_widget.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:umai/common/widgets/action_post.dart';
 import 'package:umai/utils/themes.dart';
 
@@ -452,7 +453,14 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
 
   void onEventReceived(BuildContext context, PersonState state) async {
     await waitForDialog();
-    if (state is InitializingPersonState) {}
+
+    if (state is SharePersonLoadingState) {
+      loadingDialogCompleter = showLoadingBarrier(
+        context: context,
+      );
+    } else if (state is SharePersonSuccessState) {
+      await Share.share(state.shareLink);
+    }
   }
 
   void onActionsPressed() => showAppBottomSheet(
@@ -466,7 +474,11 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                 ActionWidget(
                   title: 'Partager...',
                   icon: Icons.share,
-                  onTap: () => Navigator.pop(context),
+                  onTap: () {
+                    Navigator.pop(context);
+
+                    personCubit.shareUser();
+                  },
                 ),
                 const SizedBox(height: 16),
                 ActionWidget(

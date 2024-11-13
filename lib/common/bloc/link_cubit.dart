@@ -11,6 +11,7 @@ import 'package:umai/common/services/person_cubit_manager.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/social/models/post.dart';
+import 'package:umai/common/models/user.dart';
 import 'package:umai/social/services/post_cubit_manager.dart';
 
 part 'link_state.dart';
@@ -75,6 +76,13 @@ class LinkCubit extends Cubit<LinkState> {
           await fetchQuiz(id: id);
         } else {
           emit(LinkError("ID manquant pour le quiz"));
+        }
+        break;
+      case 'us':
+        if (id.isNotEmpty) {
+          await fetchUser(id: id);
+        } else {
+          emit(LinkError("ID manquant pour l'utilisateur"));
         }
         break;
       default:
@@ -150,6 +158,24 @@ class LinkCubit extends Cubit<LinkState> {
       quizCubitManager.add(data);
       personCubitManager.add(data.user);
       emit(QuizLinkLoaded(data));
+      emit(stateBefore);
+    }, onError: (error, trace) {
+      emit(LinkError(error, trace));
+      emit(stateBefore);
+    });
+  }
+
+  fetchUser({required String id}) async {
+    final stateBefore = state;
+
+    emit(LinkLoading());
+    linkService
+        .getUser(
+      idUser: id,
+    )
+        .then((data) {
+      personCubitManager.add(data);
+      emit(UserLinkLoaded(data));
       emit(stateBefore);
     }, onError: (error, trace) {
       emit(LinkError(error, trace));

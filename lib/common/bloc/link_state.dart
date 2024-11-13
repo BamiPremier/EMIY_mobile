@@ -35,6 +35,10 @@ class QuizLinkLoaded extends CubitInformationState with LinkState {
   final Quiz quiz;
   QuizLinkLoaded(this.quiz);
 }
+class UserLinkLoaded extends CubitInformationState with LinkState {
+  final User user;
+  UserLinkLoaded(this.user);
+}
 
 class LinkError extends CubitErrorState with LinkState {
   LinkError(super.error, [super.trace]);

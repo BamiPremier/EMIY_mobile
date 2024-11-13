@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/common/widgets/loaders.dart';
 import 'package:potatoes/libs.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:umai/account/screens/edit_profile.dart';
 import 'package:umai/account/screens/follow.dart';
 import 'package:umai/account/screens/param/settings_screen.dart';
@@ -303,6 +304,13 @@ class _AccountScreenState extends State<AccountScreen>
         MaterialPageRoute(builder: (context) => const OnboardingScreen()),
         (route) => false,
       );
+    }
+    if (state is ShareUserLoadingState) {
+      loadingDialogCompleter = showLoadingBarrier(
+        context: context,
+      );
+    } else if (state is ShareUserSuccessState) {
+      await Share.share(state.shareLink);
     } else if (state is UserErrorState) {
       showErrorToast(content: state.error, context: context);
     }
@@ -320,7 +328,9 @@ class _AccountScreenState extends State<AccountScreen>
                   title: 'Partager...',
                   icon: Icons.share,
                   onTap: () {
-                    Navigator.of(innerContext).pop();
+                    Navigator.pop(innerContext);
+
+                    userCubit.shareUser();
                   },
                 ),
                 const SizedBox(height: 16),
