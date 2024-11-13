@@ -7,6 +7,7 @@ import 'package:umai/animes/bloc/load_episode_anime_cubit.dart';
 import 'package:umai/animes/screens/home.dart';
 import 'package:umai/common/bloc/home_cubit.dart';
 import 'package:umai/common/bloc/link_cubit.dart';
+import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/quiz/screens/home.dart';
 import 'package:umai/social/screens/home.dart';
@@ -142,9 +143,11 @@ class _HomeScreenState extends State<HomeScreen> with CompletableMixin {
         ),
       );
     } else if (state is UserLinkLoaded) {
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) =>
-              PersonAccountScreen.get(context: context, user: state.user)));
+      if (state.user.id != context.read<UserCubit>().user.id) {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) =>
+                PersonAccountScreen.get(context: context, user: state.user)));
+      }
     } else if (state is LinkError) {
       showErrorToast(content: state.error, context: context);
     }
