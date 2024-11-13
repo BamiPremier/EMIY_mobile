@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/common/widgets/loaders.dart';
 import 'package:potatoes/libs.dart';
+import 'package:potatoes/potatoes.dart';
 import 'package:umai/account/screens/account.dart';
 import 'package:umai/account/screens/person_account.dart';
 import 'package:umai/animes/bloc/load_episode_anime_cubit.dart';
+import 'package:umai/animes/screens/anime_details.dart';
 import 'package:umai/animes/screens/home.dart';
+import 'package:umai/animes/widgets/episode_head.dart';
 import 'package:umai/common/bloc/home_cubit.dart';
 import 'package:umai/common/bloc/link_cubit.dart';
-import 'package:umai/common/bloc/user_cubit.dart';
+import 'package:umai/common/screens/common_details.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/quiz/screens/home.dart';
-import 'package:umai/social/screens/home.dart';
-import 'package:umai/utils/themes.dart';
-import 'package:potatoes/potatoes.dart';
-import 'package:umai/animes/screens/anime_details.dart';
-import 'package:umai/animes/widgets/episode_head.dart';
-import 'package:umai/common/screens/common_details.dart';
 import 'package:umai/quiz/screens/quiz_details.dart';
+import 'package:umai/social/screens/home.dart';
 import 'package:umai/social/widgets/head_post.dart';
-import 'package:umai/utils/dialogs.dart';
+import 'package:umai/utils/themes.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen();
@@ -108,17 +106,22 @@ class _HomeScreenState extends State<HomeScreen> with CompletableMixin {
 
   void onEventReceived(BuildContext context, LinkState state) async {
     await waitForDialog();
-    print("state $state");
     if (state is LinkLoading) {
-      print("state loo");
       loadingDialogCompleter = showLoadingBarrier(context: context);
+    } else if (state is PersonLinkLoaded) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+            builder: (context) => PersonAccountScreen.get(
+                context: context,
+                user: state.user))
+      );
     } else if (state is PostLinkLoaded) {
       Navigator.of(context).push(
         MaterialPageRoute(
             builder: (context) => CommonDetailsScreen.fromPost(
                 context: context,
                 post: state.post,
-                head: (context) => HeadPost())),
+                head: (context) => const HeadPost())),
       );
     } else if (state is AnimeLinkLoaded) {
       Navigator.of(context).push(MaterialPageRoute(
@@ -142,14 +145,6 @@ class _HomeScreenState extends State<HomeScreen> with CompletableMixin {
           settings: const RouteSettings(name: quizRouteName),
         ),
       );
-    } else if (state is UserLinkLoaded) {
-      if (state.user.id != context.read<UserCubit>().user.id) {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) =>
-                PersonAccountScreen.get(context: context, user: state.user)));
-      }
-    } else if (state is LinkError) {
-      showErrorToast(content: state.error, context: context);
     }
   }
 

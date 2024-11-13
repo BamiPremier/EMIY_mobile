@@ -1,14 +1,14 @@
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/models/anime.dart';
 import 'package:umai/animes/models/episode.dart';
+import 'package:umai/common/models/user.dart';
 import 'package:umai/common/services/api_service.dart';
 import 'package:umai/quiz/models/quiz.dart';
-import 'package:umai/common/models/user.dart';
 import 'package:umai/social/models/post.dart';
 
 class LinkService extends ApiService {
-  static const String _getPost = '/posts/:idPost';
   static const String _getUserByUsertag = '/users/:usertag';
+  static const String _getPost = '/posts/:idPost';
   static const String _getAnime = '/animes/:idAnime';
   static const String _getEpisode = '/episodes/:idEpisode';
   static const String _getQuiz = '/quiz/:idQuiz';

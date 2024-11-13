@@ -15,6 +15,11 @@ class DetectedLink extends CubitInformationState with LinkState {
   DetectedLink();
 }
 
+class PersonLinkLoaded extends CubitInformationState with LinkState {
+  final User user;
+  PersonLinkLoaded(this.user);
+}
+
 class PostLinkLoaded extends CubitInformationState with LinkState {
   final Post post;
   PostLinkLoaded(this.post);
