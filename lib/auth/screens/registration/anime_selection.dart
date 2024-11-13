@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/models/anime.dart';
 import 'package:umai/animes/widgets/item_anime.dart';
 import 'package:umai/auth/bloc/anime_by_genre_cubit.dart';
 import 'package:umai/auth/screens/registration/people.dart';
-import 'package:umai/auth/services/auth_service.dart';
 import 'package:umai/common/widgets/buttons.dart';
 
 class RegistrationAnimeSelection extends StatefulWidget {

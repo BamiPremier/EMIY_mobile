@@ -4,8 +4,8 @@ import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/account/bloc/post_user_cubit.dart';
 import 'package:umai/common/bloc/person_cubit.dart'; 
-import 'package:umai/social/model/post.dart';
-import 'package:umai/social/widget/item_post.dart';
+import 'package:umai/social/models/post.dart';
+import 'package:umai/social/widgets/item_post.dart';
 
 class EPostTab extends StatefulWidget {
   const EPostTab({super.key});

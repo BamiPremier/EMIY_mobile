@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/social/bloc/post_feed_cubit.dart';
-import 'package:umai/social/model/post.dart';
+import 'package:umai/social/models/post.dart';
 import 'package:umai/social/screens/new_post_screen.dart';
-import 'package:umai/social/widget/item_post.dart';
-import 'package:umai/social/widget/new_post_banner.dart';
+import 'package:umai/social/widgets/item_post.dart';
+import 'package:umai/social/widgets/new_post_banner.dart';
 
 class SocialHomeScreen extends StatefulWidget {
   const SocialHomeScreen({super.key});
@@ -15,7 +15,8 @@ class SocialHomeScreen extends StatefulWidget {
 }
 
 class _SocialHomeScreenState extends State<SocialHomeScreen> {
-  late final postFeedCubit = PostFeedCubit(context.read(), context.read());
+  late final postFeedCubit =
+      PostFeedCubit(context.read(), context.read(), context.read());
 
   @override
   Widget build(BuildContext context) {

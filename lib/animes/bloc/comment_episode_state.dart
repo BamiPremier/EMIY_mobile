@@ -1,68 +1,68 @@
-part of 'comment_episode_cubit.dart';
+// part of 'comment_episode_cubit.dart';
  
-mixin CommentEpisodeState on Equatable {}
+// mixin CommentEpisodeState on Equatable {}
 
-class InitializingCommentEpisodeState extends CubitSuccessState
-    with CommentEpisodeState {
-  final CommentEpisode comment;
+// class InitializingCommentEpisodeState extends CubitSuccessState
+//     with CommentEpisodeState {
+//   final Comment comment;
 
-  const InitializingCommentEpisodeState(this.comment);
+//   const InitializingCommentEpisodeState(this.comment);
 
-  @override
-  List<Object?> get props => [comment];
-}
+//   @override
+//   List<Object?> get props => [comment];
+// }
 
-class CommentEpisodeLoadingState extends CubitLoadingState
-    with CommentEpisodeState {
-  const CommentEpisodeLoadingState() : super();
-}
+// class CommentEpisodeLoadingState extends CubitLoadingState
+//     with CommentEpisodeState {
+//   const CommentEpisodeLoadingState() : super();
+// }
 
-class LikeCommentEpisodeSuccesState extends CubitInformationState
-    with CommentEpisodeState {
-  LikeCommentEpisodeSuccesState();
-}
+// class LikeCommentEpisodeSuccesState extends CubitInformationState
+//     with CommentEpisodeState {
+//   LikeCommentEpisodeSuccesState();
+// }
 
-class CommentEpisodeCommentEpisodeSuccesState extends CubitInformationState
-    with CommentEpisodeState {
-  CommentEpisodeCommentEpisodeSuccesState();
-}
+// class CommentEpisodeCommentEpisodeSuccesState extends CubitInformationState
+//     with CommentEpisodeState {
+//   CommentEpisodeCommentEpisodeSuccesState();
+// }
 
-class CommentEpisodeErrorState extends CubitErrorState
-    with CommentEpisodeState {
-  CommentEpisodeErrorState(super.error, [super.trace]);
-}
+// class CommentEpisodeErrorState extends CubitErrorState
+//     with CommentEpisodeState {
+//   CommentEpisodeErrorState(super.error, [super.trace]);
+// }
 
-class SeeCommentEpisodeResponseState extends CubitLoadingState
-    with CommentEpisodeState {
-  SeeCommentEpisodeResponseState();
-}
+// class SeeCommentEpisodeResponseState extends CubitLoadingState
+//     with CommentEpisodeState {
+//   SeeCommentEpisodeResponseState();
+// }
 
-class UnSeeCommentEpisodeResponseState extends CubitInformationState
-    with CommentEpisodeState {
-  UnSeeCommentEpisodeResponseState();
-}
+// class UnSeeCommentEpisodeResponseState extends CubitInformationState
+//     with CommentEpisodeState {
+//   UnSeeCommentEpisodeResponseState();
+// }
 
-class SelectCommentEpisodeState extends CubitLoadingState
-    with CommentEpisodeState {
-  final CommentEpisode comment;
+// class SelectCommentEpisodeState extends CubitSuccessState
+//     with CommentEpisodeState {
+//   final Comment comment;
 
-  const SelectCommentEpisodeState(this.comment);
+//   const SelectCommentEpisodeState(this.comment);
 
-  @override
-  List<Object?> get props => [comment];
-}
+//   @override
+//   List<Object?> get props => [comment];
+// }
 
-class SendCommentEpisodeRepportLoadingState extends CubitLoadingState
-    with CommentEpisodeState {
-  const SendCommentEpisodeRepportLoadingState() : super();
-}
+// class SendCommentEpisodeRepportLoadingState extends CubitLoadingState
+//     with CommentEpisodeState {
+//   const SendCommentEpisodeRepportLoadingState() : super();
+// }
 
-class SuccessSendCommentEpisodeRepportState extends CubitSuccessState
-    with CommentEpisodeState {
-  final CommentEpisode comment;
+// class SuccessSendCommentEpisodeRepportState extends CubitSuccessState
+//     with CommentEpisodeState {
+//   final Comment comment;
 
-  const SuccessSendCommentEpisodeRepportState(this.comment);
+//   const SuccessSendCommentEpisodeRepportState(this.comment);
 
-  @override
-  List<Object?> get props => [comment];
-}
+//   @override
+//   List<Object?> get props => [comment];
+// }

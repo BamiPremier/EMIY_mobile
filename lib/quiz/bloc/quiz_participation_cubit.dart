@@ -78,10 +78,10 @@ class QuizParticipationCubit extends Cubit<QuizParticipationState> {
         score = score + 1;
       }
       emit(stateBefore.toSubmited());
-      print("============close timer");
+     
       timerCubit.close();
 
-      print("============close timer 00");
+  
     }
   }
 

@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/models/episode.dart';
+import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/services/cache_manager.dart';
 import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
 class EpisodeHead extends StatelessWidget {
-  final Episode episode;
-
-  const EpisodeHead({super.key, required this.episode});
+  const EpisodeHead({super.key});
 
   @override
   Widget build(BuildContext context) {
     const double width = 72;
     const double height = 88;
-
+    final episode = context.read<XCommonCubit<Episode>>().x as Episode;
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
@@ -27,7 +26,7 @@ class EpisodeHead extends StatelessWidget {
                   child: Image(
                     image: context
                         .read<AppCacheManager>()
-                        .getImage(episode.anime.coverImage.extraLarge ?? ''),
+                        .getAnimeImage(episode.anime),
                     height: height,
                     width: width,
                     fit: BoxFit.cover,
@@ -80,31 +79,26 @@ class EpisodeHead extends StatelessWidget {
                     },
                   ),
                 ),
-                Padding(
-                    padding: const EdgeInsets.only(left: 16),
+                const SizedBox(width: 16),
+                Expanded(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: MediaQuery.of(context).size.width * .7,
-                          child: Text(
-                            episode.anime.title.romaji,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.titleMedium,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      episode.anime.title.romaji,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    Text(
+                      episode.anime.title.english ?? '',
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
-                        ),
-                        Text(
-                          episode.anime.season ?? '',
-                          style:
-                              Theme.of(context).textTheme.bodySmall!.copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurfaceVariant,
-                                  ),
-                        ),
-                      ],
-                    ))
+                    ),
+                  ],
+                ))
               ],
             ),
             Padding(
@@ -125,7 +119,7 @@ class EpisodeHead extends StatelessWidget {
                                 ),
                                 Text(
                                   DateTime.fromMillisecondsSinceEpoch(
-                                          episode.timeUntilAiring * 1000)
+                                          episode.airingAt * 1000)
                                       .elapsed(),
                                   style: Theme.of(context)
                                       .textTheme
@@ -136,7 +130,7 @@ class EpisodeHead extends StatelessWidget {
                                 ),
                               ]),
                           Text(
-                            '${episode.airingAt} commentaires',
+                            '${episode.commentsCount} commentaires',
                             style: Theme.of(context)
                                 .textTheme
                                 .labelMedium!

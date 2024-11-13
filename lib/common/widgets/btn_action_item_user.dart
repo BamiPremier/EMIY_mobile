@@ -4,8 +4,8 @@ import 'package:umai/common/bloc/person_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/utils/themes.dart';
 
-class BtnActionItemUser extends StatelessWidget {
-  const BtnActionItemUser({super.key});
+class BtnActionitemUser extends StatelessWidget {
+  const BtnActionitemUser({super.key});
 
   @override
   Widget build(BuildContext context) {

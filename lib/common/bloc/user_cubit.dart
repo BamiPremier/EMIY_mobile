@@ -66,6 +66,23 @@ class UserCubit extends ObjectCubit<User, UserState> {
     });
   }
 
+  void shareUser() {
+    final stateBefore = state;
+
+    emit(const ShareUserLoadingState());
+    userService
+        .shareUser(
+      idUser: user.id,
+    )
+        .then((reponse) {
+      emit(ShareUserSuccessState(reponse['shareLink']));
+      emit(UserLoggedState(user));
+    }, onError: (error, trace) {
+      emit(UserErrorState(error, trace));
+      emit(stateBefore);
+    });
+  }
+
   void updateUser({
     String? username,
     String? biography,

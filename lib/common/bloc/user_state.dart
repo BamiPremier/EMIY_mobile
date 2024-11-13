@@ -49,3 +49,16 @@ class UserUpdatedState extends CubitInformationState with UserState {
 class UserErrorState extends CubitErrorState with UserState {
   UserErrorState(super.error, [super.trace]);
 }
+
+class ShareUserLoadingState extends CubitLoadingState with UserState {
+  const ShareUserLoadingState() : super();
+}
+
+class ShareUserSuccessState extends CubitInformationState with UserState {
+  final String shareLink;
+
+  const ShareUserSuccessState(this.shareLink);
+
+  @override
+  List<Object?> get props => [shareLink];
+}

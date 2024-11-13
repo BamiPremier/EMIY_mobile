@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/account/bloc/user_watxhlist_cubit.dart';
 import 'package:umai/animes/models/anime.dart';
 import 'package:umai/animes/widgets/item_anime.dart';
-import 'package:umai/common/services/user_service.dart';
 
 class WatchList extends StatefulWidget {
   const WatchList({super.key});

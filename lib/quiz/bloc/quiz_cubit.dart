@@ -1,11 +1,11 @@
 import 'package:potatoes/libs.dart';
+import 'package:potatoes/potatoes.dart';
 import 'package:umai/animes/models/anime.dart';
 import 'package:umai/quiz/models/question_quiz.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/quiz/services/quiz_service.dart';
-import 'package:path/path.dart';
-import 'package:potatoes/potatoes.dart';
+
 part 'quiz_state.dart';
 
 class QuizCubit extends Cubit<QuizState> {
@@ -16,7 +16,6 @@ class QuizCubit extends Cubit<QuizState> {
       : super(const QuizIdleState());
 
   void resetState() {
-    print('resetState======${state}');
     emit(const QuizIdleState());
   }
 
@@ -31,12 +30,10 @@ class QuizCubit extends Cubit<QuizState> {
   }
 
   void toUpdateThisQuiz({required Quiz quiz}) {
-    print('---');
-    print(state);
     emit(QuizUpdateState(
       anime: quiz.anime,
       quiz: quiz,
-      questions: [],
+      questions: const [],
     ));
   }
 

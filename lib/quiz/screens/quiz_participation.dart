@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
-
 import 'package:umai/common/widgets/buttons.dart';
-import 'package:umai/quiz/bloc/quiz_manage_cubit.dart';
 import 'package:umai/quiz/bloc/quiz_participation_cubit.dart';
 import 'package:umai/quiz/bloc/quiz_question_cubit.dart';
 import 'package:umai/quiz/bloc/timer_cubit.dart';
@@ -14,7 +11,6 @@ import 'package:umai/quiz/screens/quiz_details.dart';
 import 'package:umai/quiz/screens/quizz_finished.dart';
 import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/quiz/widgets/head_particiation.dart';
-import 'package:umai/quiz/widgets/head_quiz.dart';
 import 'package:umai/utils/themes.dart';
 
 class QuizParticipationScreen extends StatefulWidget {
@@ -184,22 +180,23 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen>
   Widget _buildTimer(BuildContext context) {
     return BlocProvider.value(
         value: quizParticipationCubit.timerCubit,
-        child:
-            BlocConsumer<TimerCubit, ATimerState>(listener: (context, state) {
-          print(state);
-        }, builder: (context, timerState) {
-          if (timerState is! TimerState) return const SizedBox.shrink();
+        child: BlocConsumer<TimerCubit, ATimerState>(
+            listener: (context, state) {},
+            builder: (context, timerState) {
+              if (timerState is! TimerState) return const SizedBox.shrink();
 
-          final timerCubit = context.read<QuizParticipationCubit>().timerCubit;
-          return LinearProgressIndicator(
-            value: 1.0 -
-                timerState.timer.inMicroseconds /
-                    timerCubit.maxDuration.inMicroseconds,
-            color: Theme.of(context).colorScheme.onTertiaryContainer,
-            backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
-            borderRadius: BorderRadius.circular(30),
-          );
-        }));
+              final timerCubit =
+                  context.read<QuizParticipationCubit>().timerCubit;
+              return LinearProgressIndicator(
+                value: 1.0 -
+                    timerState.timer.inMicroseconds /
+                        timerCubit.maxDuration.inMicroseconds,
+                color: Theme.of(context).colorScheme.onTertiaryContainer,
+                backgroundColor:
+                    Theme.of(context).colorScheme.tertiaryContainer,
+                borderRadius: BorderRadius.circular(30),
+              );
+            }));
   }
 
   Widget _buildResponsesList(
@@ -296,9 +293,7 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen>
                 stateParticipation is! QuizParticipationSubmittedState)
             ? null
             : (stateParticipation is QuizParticipationIdleState &&
-                    (stateParticipation as QuizParticipationIdleState)
-                            .userResponse ==
-                        null)
+                    stateParticipation.userResponse == null)
                 ? null
                 : () => quizParticipationCubit.submit());
   }
