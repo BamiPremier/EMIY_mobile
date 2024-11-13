@@ -78,9 +78,9 @@ class LinkCubit extends Cubit<LinkState> {
           emit(LinkError("ID manquant pour le quiz"));
         }
         break;
-      case 'us':
+      case 'u':
         if (id.isNotEmpty) {
-          await fetchUser(id: id);
+          await fetchUser(userName: id);
         } else {
           emit(LinkError("ID manquant pour l'utilisateur"));
         }
@@ -165,13 +165,13 @@ class LinkCubit extends Cubit<LinkState> {
     });
   }
 
-  fetchUser({required String id}) async {
+  fetchUser({required String userName}) async {
     final stateBefore = state;
 
     emit(LinkLoading());
     linkService
-        .getUser(
-      idUser: id,
+        .getUserByUserName(
+      userName: userName,
     )
         .then((data) {
       personCubitManager.add(data);

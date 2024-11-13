@@ -1,7 +1,6 @@
- 
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/models/anime.dart';
-import 'package:umai/animes/models/episode.dart'; 
+import 'package:umai/animes/models/episode.dart';
 import 'package:umai/common/services/api_service.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/common/models/user.dart';
@@ -9,17 +8,17 @@ import 'package:umai/social/models/post.dart';
 
 class LinkService extends ApiService {
   static const String _getPost = '/posts/:idPost';
-  static const String _getUser = '/users/:idUser';
+  static const String _getUserByUserName = '/users/:username';
   static const String _getAnime = '/animes/:idAnime';
   static const String _getEpisode = '/episodes/:idEpisode';
   static const String _getQuiz = '/quiz/:idQuiz';
 
   const LinkService(super._dio);
 
-  Future<User> getUser({required String idUser}) {
+  Future<User> getUserByUserName({required String userName}) {
     return compute(
         dio.get(
-          _getUser.replaceAll(':idUser', idUser),
+          _getUserByUserName.replaceAll(':userName', userName),
           options: Options(headers: withAuth()),
         ),
         mapper: User.fromJson);
@@ -33,6 +32,7 @@ class LinkService extends ApiService {
         ),
         mapper: Post.fromJson);
   }
+
   Future<Anime> getAnime({required String idAnime}) {
     return compute(
         dio.get(
