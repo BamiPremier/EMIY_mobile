@@ -8,17 +8,17 @@ import 'package:umai/social/models/post.dart';
 
 class LinkService extends ApiService {
   static const String _getPost = '/posts/:idPost';
-  static const String _getUserByUserName = '/users/:username';
+  static const String _getUserByUsertag = '/users/:usertag';
   static const String _getAnime = '/animes/:idAnime';
   static const String _getEpisode = '/episodes/:idEpisode';
   static const String _getQuiz = '/quiz/:idQuiz';
 
   const LinkService(super._dio);
 
-  Future<User> getUserByUserName({required String userName}) {
+  Future<User> getUserByUsertag({required String usertag}) {
     return compute(
         dio.get(
-          _getUserByUserName.replaceAll(':userName', userName),
+          _getUserByUsertag.replaceAll(':usertag', usertag),
           options: Options(headers: withAuth()),
         ),
         mapper: User.fromJson);
