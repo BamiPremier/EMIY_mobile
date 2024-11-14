@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,6 +10,7 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:umai/auth/services/auth_service.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/models/user.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 part 'auth_state.dart';
 
@@ -69,9 +71,22 @@ class AuthCubit extends Cubit<AuthState> {
   void _socialLogin() async {
     emit(const AuthLoadingState());
 
-    final email = FirebaseAuth.instance.currentUser!.email!;
     final idToken = await FirebaseAuth.instance.currentUser!.getIdToken();
-    authService.authUser(email: email, token: idToken!).then((response) async {
+
+    final deviceInfo = userCubit.preferencesService.deviceInfo;
+    final appVersion = userCubit.preferencesService.appVersion;
+    final timezone = userCubit.preferencesService.timezone;
+
+    log(DateTime.now().timeZoneName);
+    authService
+        .authUser(
+      deviceId: deviceInfo!.id,
+      deviceName: deviceInfo.name,
+      token: idToken!,
+      timezone: timezone,
+      appVersion:  appVersion,
+    )
+        .then((response) async {
       await userCubit.preferencesService.saveUser(response.user);
       await userCubit.preferencesService.saveAuthToken(response.accessToken);
       userCubit.reset();

@@ -16,8 +16,11 @@ class PostItem extends StatefulWidget {
   const PostItem({super.key});
 
   static Widget get({required BuildContext context, required Post post}) {
-    return BlocProvider.value(
-      value: context.read<PostCubitManager>().get(post),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: context.read<PostCubitManager>().get(post)),
+        BlocProvider<XCommonCubit<Post>>(create: (context) => context.read<PostCubit>())
+      ],
       child: const PostItem(),
     );
   }
@@ -72,11 +75,7 @@ class _PostItemState extends State<PostItem> {
                 )),
             const SizedBox(height: 8),
             if (post.image?.isNotEmpty ?? false) PostImage(url: post.image!),
-            BlocProvider.value(
-              value: context.read<PostCubitManager>().get(post)
-                  as XCommonCubit<Post>,
-              child: ButtonPost<Post>(),
-            ),
+            const ButtonPost<Post>(canComment: false),
           ],
         ),
       );
