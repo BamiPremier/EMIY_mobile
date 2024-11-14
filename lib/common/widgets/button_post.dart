@@ -8,6 +8,10 @@ import 'package:umai/utils/dialogs.dart';
 import 'package:share_plus/share_plus.dart';
 
 class ButtonPost<T extends XItem> extends StatefulWidget {
+  final bool canComment;
+
+  const ButtonPost({super.key, this.canComment = true});
+
   @override
   State<ButtonPost<T>> createState() => _ButtonPostState<T>();
 }
@@ -55,9 +59,10 @@ class _ButtonPostState<T extends XItem> extends State<ButtonPost<T>>
                     Icons.chat_bubble_outline,
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
-                  onPressed: () {
-                    context.read<ActionCommentBaseCubit<XCommonCubit<T>>>().set(null);
-                  },
+                  onPressed: widget.canComment
+                    ? () => context
+                      .read<ActionCommentBaseCubit<XCommonCubit<T>>>().set(null)
+                    : null,
                 ),
               ],
             ),
