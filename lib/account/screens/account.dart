@@ -373,7 +373,7 @@ class _AccountScreenState extends State<AccountScreen>
       context: context,
       builder: (BuildContext context) {
         return Padding(
-            padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
+            padding: const EdgeInsets.only(top: 24.0),
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
