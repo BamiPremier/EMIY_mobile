@@ -24,6 +24,7 @@ import 'package:umai/common/screens/home.dart';
 import 'package:umai/common/services/api_service.dart';
 import 'package:umai/common/services/cache_manager.dart';
 import 'package:umai/common/services/link_service.dart';
+import 'package:umai/common/services/notification.dart';
 import 'package:umai/common/services/person_cubit_manager.dart';
 import 'package:umai/common/services/preferences_service.dart';
 import 'package:umai/common/services/user_service.dart';
@@ -60,6 +61,7 @@ void main() async {
   };
   final deviceInfo = await DeviceInfo.get();
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
+  final NotificationService notificationService = NotificationService();
   
   final appVersion = packageInfo.buildNumber;
   final timezone = await FlutterTimezone.getLocalTimezone();
@@ -71,6 +73,7 @@ void main() async {
       cacheOptions: cacheOptions,
       deviceInfo: deviceInfo,
       appVersion: appVersion,
+      notificationService: notificationService,
       timezone: timezone,
     ),
   ));
@@ -81,6 +84,7 @@ class MyApp extends StatelessWidget {
   final SharedPreferences preferences;
   final FlutterSecureStorage secureStorage;
   final CacheOptions cacheOptions;
+  final NotificationService notificationService;
   final DeviceInfo deviceInfo;
   final String appVersion;
   final String timezone;
@@ -88,6 +92,7 @@ class MyApp extends StatelessWidget {
       {required this.navigatorKey,
       required this.preferences,
       required this.secureStorage,
+    required this.notificationService,
       required this.cacheOptions,
       required this.deviceInfo,
       required this.appVersion,
@@ -108,6 +113,7 @@ class MyApp extends StatelessWidget {
     return MultiRepositoryProvider(
         providers: [
           RepositoryProvider(create: (_) => AppCacheManager()),
+        RepositoryProvider(create: (_) => notificationService),
           RepositoryProvider(create: (_) => AuthService(dio)),
           RepositoryProvider(create: (_) => UserService(dio)),
           RepositoryProvider(create: (_) => SocialService(dio)),
