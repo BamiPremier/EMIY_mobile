@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:potatoes/auto_list/models/paginated_list.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/models/anime.dart';
@@ -12,17 +14,32 @@ class AuthService extends ApiService {
   static const String _animes = '/auth/animes-by-genres';
   static const String _people = '/auth/list-to-follow';
 
-
   const AuthService(super._dio);
 
   Future<AuthResponse> authUser(
-      {required String email, required String token}) {
+      {required String token,
+      required String deviceId,
+      required String deviceName,
+      required String timezone,
+      required String appVersion}) {
+    log(
+      {
+        "verify_token": token,
+        "device_id": deviceId,
+        "device_name": deviceName,
+        "app_version": int.parse(appVersion),
+        "timezone": timezone,
+      }.toString(),
+    );
     return compute(
       dio.post(
         _auth,
         data: {
-          'email': email,
-          'verify_token': token,
+          "verify_token": token,
+          "device_id": deviceId,
+          "device_name": deviceName,
+          "app_version": int.parse(appVersion),
+          "timezone": timezone,
         },
       ),
       mapper: AuthResponse.fromJson,
@@ -78,6 +95,4 @@ class AuthService extends ApiService {
             queryParameters: {'page': page}),
         mapper: (result) => toPaginatedList(result, User.fromJson));
   }
- 
- 
 }

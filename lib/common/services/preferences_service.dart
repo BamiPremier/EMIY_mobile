@@ -3,14 +3,18 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:potatoes_secured_preferences/potatoes_secured_preferences.dart';
+import 'package:umai/common/models/device_info.dart';
 import 'package:umai/common/models/user.dart';
 
 class PreferencesService extends SecuredPreferencesService {
   static const String _keyUser = 'user';
   static const String _keyUserUID = 'user_id';
   static const String _keyAuthToken = 'auth_token';
-
-  const PreferencesService(super.preferences, super.secureStorage);
+  final String appVersion;
+  final DeviceInfo deviceInfo;
+  final String timezone;
+  PreferencesService(super.preferences, super.secureStorage, this.appVersion,
+      this.deviceInfo, this.timezone);
 
   User? get user {
     final value = preferences.getString(_keyUser);
@@ -43,6 +47,10 @@ class PreferencesService extends SecuredPreferencesService {
       "timestamp": dateTime.millisecondsSinceEpoch.toString(),
       "id": userId,
       "hash": digest.toString(),
+      "device_id": deviceInfo.id,
+      "device_name": deviceInfo.name,
+      "app_version": appVersion,
+      "timezone": timezone,
     };
   }
 }
