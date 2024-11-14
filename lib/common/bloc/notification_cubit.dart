@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:app_links/app_links.dart';
 import 'package:potatoes/libs.dart';
-import 'package:potatoes/potatoes.dart';
+import 'package:potatoes/potatoes.dart' hide PreferencesService;
 import 'package:umai/animes/models/anime.dart';
 import 'package:umai/animes/models/episode.dart';
 import 'package:umai/animes/services/anime_cubit_manager.dart';
@@ -10,7 +10,11 @@ import 'package:umai/animes/services/episode_cubit_manager.dart';
 import 'package:umai/common/models/notification.dart';
 import 'package:umai/common/models/user.dart';
 import 'package:umai/common/services/link_service.dart';
+import 'package:umai/common/services/user_service.dart';
+import 'package:umai/common/services/notification_service.dart';
+
 import 'package:umai/common/services/person_cubit_manager.dart';
+import 'package:umai/common/services/preferences_service.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/social/models/post.dart';
@@ -24,16 +28,34 @@ class NotificationCubit extends Cubit<NotificationState> {
   final AnimeCubitManager animeCubitManager;
   final PostCubitManager postCubitManager;
   final PersonCubitManager personCubitManager;
-
+  final PreferencesService preferencesService;
+  final NotificationService notificationService;
   final LinkService linkService;
+  final UserService userService;
   NotificationCubit(
+      this.preferencesService,
       this.linkService,
       this.quizCubitManager,
       this.personCubitManager,
       this.animeCubitManager,
       this.episodeCubitManager,
+      this.notificationService,
+      this.userService,
       this.postCubitManager)
       : super(const NotificationInitial());
+
+  Future<void> requestNotificationPermission() {
+    return notificationService.requestPermission((token) {
+      preferencesService.deviceToken.then((oldToken) {
+        // ne vérifie pas le token car on ne fait pas confiance au serveur
+        userService
+            .sendFCMToken(user: preferencesService.user!.id, token: token)
+            .then((_) {
+          preferencesService.saveDeviceToken(token);
+        });
+      });
+    });
+  }
 
   Future<void> onNotification({required Notification notification}) async {
     final id = notification.target.isNotEmpty ? notification.target : '';
@@ -75,7 +97,6 @@ class NotificationCubit extends Cubit<NotificationState> {
         emit(const NotificationInitial());
     }
   }
-
 
   fetchUserById({required String id}) async {
     final stateBefore = state;

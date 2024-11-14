@@ -44,6 +44,12 @@ class _HomeScreenState extends State<HomeScreen> with CompletableMixin {
     });
   }
 
+@override
+void initState() { 
+    super.initState();
+    context.read<NotificationCubit>().requestNotificationPermission();
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(

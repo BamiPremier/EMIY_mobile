@@ -120,6 +120,8 @@ class UserCubit extends ObjectCubit<User, UserState> {
       final stateBefore = state;
       emit(const UserLoggingOut());
 
+       
+
       Future.wait([
         GoogleSignIn().signOut(),
         preferencesService.clear(),
@@ -128,8 +130,9 @@ class UserCubit extends ObjectCubit<User, UserState> {
           onError: (error, trace) {
         emit(UserErrorState(error, trace));
         emit(stateBefore);
-      });
-    } else {}
+        });
+     
+    }
   }
 
   @override

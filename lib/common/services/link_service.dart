@@ -16,6 +16,7 @@ class LinkService extends ApiService {
 
   const LinkService(super._dio);
 
+
   Future<User> getUserById({required String id}) {
     return compute(
         dio.get(

@@ -9,6 +9,7 @@ import 'package:umai/common/models/user.dart';
 class PreferencesService extends SecuredPreferencesService {
   static const String _keyUser = 'user';
   static const String _keyUserUID = 'user_id';
+  static const String _keyDeviceToken = 'device-token';
   static const String _keyAuthToken = 'auth_token';
   final String appVersion;
   final DeviceInfo deviceInfo;
@@ -30,6 +31,13 @@ class PreferencesService extends SecuredPreferencesService {
     ]);
   }
 
+  Future<void> saveDeviceToken(String token) {
+    return secureStorage.write(key: _keyDeviceToken, value: token);
+  }
+
+  Future<String?> get deviceToken {
+    return secureStorage.read(key: _keyDeviceToken);
+  }
   Future<void> saveAuthToken(String token) {
     return secureStorage.write(key: _keyAuthToken, value: token);
   }

@@ -27,10 +27,11 @@ class NotificationService {
   set context(BuildContext context) => _context = context;
 
   Future<void> requestPermission(ValueChanged<String> sendToken) async {
-    final messaging = FirebaseMessaging.instance;
-    if (Platform.isIOS) {
-      final settings = await messaging.requestPermission();
+   
 
+    final messaging = FirebaseMessaging.instance;
+    final settings = await messaging.requestPermission();
+    if (Platform.isIOS) {
       if (settings.authorizationStatus == AuthorizationStatus.authorized) {
         messaging.setForegroundNotificationPresentationOptions(
           alert: true,
@@ -89,8 +90,9 @@ class NotificationService {
   bool _onNotificationOnAppOpened(Map<String, dynamic> payload) {
     try {
       if (_context == null) return false;
-      _context!.read<NotificationCubit>().onNotification(
-          notification: _parse(payload));
+      _context!
+          .read<NotificationCubit>()
+          .onNotification(notification: _parse(payload));
     } catch (e, t) {
       CubitErrorState.record(e, t);
     }
@@ -127,7 +129,7 @@ class NotificationService {
         ));
     await localNotifications.initialize(
       const InitializationSettings(
-        android: AndroidInitializationSettings('@drawable/ic_notification'),
+        android: AndroidInitializationSettings('@mipmap/ic_launcher'),
         iOS: DarwinInitializationSettings(
             requestAlertPermission: false,
             requestBadgePermission: false,

@@ -19,12 +19,13 @@ import 'package:umai/auth/screens/registration/username.dart';
 import 'package:umai/auth/services/auth_service.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/bloc/link_cubit.dart';
+import 'package:umai/common/bloc/notification_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/screens/home.dart';
 import 'package:umai/common/services/api_service.dart';
 import 'package:umai/common/services/cache_manager.dart';
 import 'package:umai/common/services/link_service.dart';
-import 'package:umai/common/services/notification.dart';
+import 'package:umai/common/services/notification_service.dart';
 import 'package:umai/common/services/person_cubit_manager.dart';
 import 'package:umai/common/services/preferences_service.dart';
 import 'package:umai/common/services/user_service.dart';
@@ -62,7 +63,7 @@ void main() async {
   final deviceInfo = await DeviceInfo.get();
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
   final NotificationService notificationService = NotificationService();
-  
+
   final appVersion = packageInfo.buildNumber;
   final timezone = await FlutterTimezone.getLocalTimezone();
   runApp(Phoenix(
@@ -92,7 +93,7 @@ class MyApp extends StatelessWidget {
       {required this.navigatorKey,
       required this.preferences,
       required this.secureStorage,
-    required this.notificationService,
+      required this.notificationService,
       required this.cacheOptions,
       required this.deviceInfo,
       required this.appVersion,
@@ -113,7 +114,7 @@ class MyApp extends StatelessWidget {
     return MultiRepositoryProvider(
         providers: [
           RepositoryProvider(create: (_) => AppCacheManager()),
-        RepositoryProvider(create: (_) => notificationService),
+          RepositoryProvider(create: (_) => notificationService),
           RepositoryProvider(create: (_) => AuthService(dio)),
           RepositoryProvider(create: (_) => UserService(dio)),
           RepositoryProvider(create: (_) => SocialService(dio)),
@@ -141,6 +142,18 @@ class MyApp extends StatelessWidget {
             providers: [
               BlocProvider(
                 create: (context) => LinkCubit(
+                    context.read(),
+                    context.read(),
+                    context.read(),
+                    context.read(),
+                    context.read(),
+                    context.read()),
+              ),
+              BlocProvider(
+                create: (context) => NotificationCubit(
+                    preferencesService,
+                    context.read(),
+                    context.read(),
                     context.read(),
                     context.read(),
                     context.read(),
