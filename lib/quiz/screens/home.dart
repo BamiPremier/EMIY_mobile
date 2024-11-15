@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:umai/quiz/screens/new/new_quiz.dart';
 import 'package:umai/quiz/widgets/quiz_block.dart';
+import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 
 class QuizHomeScreen extends StatefulWidget {
   const QuizHomeScreen({super.key});
@@ -34,7 +36,9 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
           context,
           MaterialPageRoute(builder: (context) => NewQuizScreen()),
         ),
-        child: const Icon(Icons.add),
+        child: toSvgIcon(
+          icon: Assets.iconsMore,
+        ),
       ),
     );
   }

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
+import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/auth/bloc/people_follows_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
@@ -39,6 +42,13 @@ class _PeopleToFollowScreenState extends State<PeopleToFollowScreen> {
                   cubit: peopleFollowsCubit,
                   itemBuilder: (context, user) => UserItem.get(
                       context: context, user: user, canNavigate: false),
+                  emptyBuilder: (ctx) => Center(
+                        child: toSvgIcon(
+                          icon: Assets.iconsEmpty,
+                          height: 56,
+                          width: 56,
+                        ),
+                      ),
                   errorBuilder: (context, retry) => Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [

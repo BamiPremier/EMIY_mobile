@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
+import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/account/screens/person_account.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
@@ -215,6 +218,13 @@ class _ItemCommentState<T extends XItem> extends State<ItemComment<T>> {
                       Theme.of(context).colorScheme.tertiaryContainer,
                   borderRadius: BorderRadius.circular(30),
                 )),
+            emptyBuilder: (ctx) => Center(
+              child: toSvgIcon(
+                icon: Assets.iconsEmpty,
+                height: 56,
+                width: 56,
+              ),
+            ),
             errorBuilder: (context, retry) => Align(
               alignment: Alignment.center,
               child: Column(

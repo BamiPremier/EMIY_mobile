@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/anime_manip_cubit.dart';
+import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 import 'package:umai/utils/themes.dart';
 
 class BtnWatchView extends StatefulWidget {
@@ -46,11 +48,13 @@ class _BtnWatchViewState extends State<BtnWatchView> {
                             ),
                           )
                         else
-                          Icon(
-                            Icons.check,
+                          toSvgIcon(
+                            icon: Assets.iconsTick,
                             color: Theme.of(context)
                                 .colorScheme
                                 .onTertiaryContainer,
+                            height: 16,
+                            width: 16,
                           ),
                         const SizedBox(width: 8),
                         Text(
@@ -84,9 +88,11 @@ class _BtnWatchViewState extends State<BtnWatchView> {
                                 child: CircularProgressIndicator(
                                     color: AppTheme.black, strokeWidth: 2),
                               )
-                            : const Icon(
-                                Icons.add,
-                                color: AppTheme.black,
+                            : toSvgIcon(
+                                icon: Assets.iconsMore,
+                                color: AppTheme.mainText,
+                                height: 16,
+                                width: 16,
                               ),
                         const SizedBox(width: 8),
                         Text(
@@ -128,10 +134,12 @@ class _BtnWatchViewState extends State<BtnWatchView> {
                             ),
                           )
                         else
-                          Icon(
-                            Icons.check,
+                           toSvgIcon(
+                            icon: Assets.iconsTick,
                             color:
                                 Theme.of(context).colorScheme.onSurfaceVariant,
+                            height: 16,
+                            width: 16,
                           ),
                         const SizedBox(width: 8),
                         Text(
@@ -161,9 +169,11 @@ class _BtnWatchViewState extends State<BtnWatchView> {
                                 child: CircularProgressIndicator(
                                     color: AppTheme.white, strokeWidth: 2),
                               )
-                            : const Icon(
-                                Icons.add,
+                            : toSvgIcon(
+                                icon: Assets.iconsMore,
                                 color: AppTheme.white,
+                                height: 16,
+                                width: 16,
                               ),
                         const SizedBox(width: 8),
                         Text(

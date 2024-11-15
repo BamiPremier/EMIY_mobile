@@ -9,7 +9,9 @@ import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/quiz/bloc/quiz_cubit.dart';
 import 'package:umai/quiz/bloc/quiz_manage_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
+import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/dialogs.dart';
+import 'package:umai/utils/svg_utils.dart';
 import 'package:umai/utils/themes.dart';
 
 class HeadQuiz extends StatefulWidget {
@@ -42,12 +44,14 @@ class _HeadQuizState extends State<HeadQuiz> with CompletableMixin {
                     if (quiz.anime != null)
                       Image(
                         fit: BoxFit.cover,
-                        image: context.read<AppCacheManager>()
-                          .getAnimeImage(quiz.anime!),
-                        errorBuilder: (context, error, stackTrace) => Icon(
-                          Icons.error,
-                          color: Theme.of(context).colorScheme.onTertiaryContainer,
-                          size: 32,
+                        image: context
+                            .read<AppCacheManager>()
+                            .getAnimeImage(quiz.anime!),
+                        errorBuilder: (context, error, stackTrace) => toSvgIcon(
+                          icon: Assets.iconsError,
+                          color:
+                              Theme.of(context).colorScheme.onTertiaryContainer,
+                          // size: 32,
                         ),
                       ),
                     Align(
@@ -84,7 +88,6 @@ class _HeadQuizState extends State<HeadQuiz> with CompletableMixin {
             ));
   }
 
-
   void onEventReceived(BuildContext context, QuizManageState state) async {
     await waitForDialog();
 
@@ -108,18 +111,21 @@ class _HeadQuizState extends State<HeadQuiz> with CompletableMixin {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              ActionWidget(
+             ActionWidget(
                 title: 'Partager...',
-                icon: Icons.share_outlined,
+                icon: toSvgIcon(
+                  icon: Assets.iconsShare,
+                ),
                 onTap: () => quizManageCubit.shareQuiz(),
               ),
-              
               const SizedBox(
                 height: 16,
               ),
-              ActionWidget(
+               ActionWidget(
                 title: 'Signaler',
-                icon: Icons.report_gmailerrorred_rounded,
+                icon: toSvgIcon(
+                  icon: Assets.iconsSignal,
+                ),
                 onTap: () => reportQuiz(context: context),
               ),
             ],

@@ -4,8 +4,10 @@ import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/screens/common_details.dart'; 
 import 'package:umai/common/bloc/action_comment_cubit.dart';
+import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/dialogs.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:umai/utils/svg_utils.dart';
 
 class ButtonPost<T extends XItem> extends StatefulWidget {
   @override
@@ -31,8 +33,8 @@ class _ButtonPostState<T extends XItem> extends State<ButtonPost<T>>
                 post.itemHasLiked
                     ? IconButton(
                         padding: EdgeInsets.zero,
-                        icon: const Icon(
-                          Icons.favorite,
+                          icon: toSvgIcon(
+                          icon: Assets.iconsLike,
                           color: Colors.red,
                         ),
                         onPressed: () {
@@ -41,8 +43,8 @@ class _ButtonPostState<T extends XItem> extends State<ButtonPost<T>>
                       )
                     : IconButton(
                         padding: EdgeInsets.zero,
-                        icon: Icon(
-                          Icons.favorite_border_outlined,
+                       icon: toSvgIcon(
+                          icon: Assets.iconsLike,
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                         onPressed: () {

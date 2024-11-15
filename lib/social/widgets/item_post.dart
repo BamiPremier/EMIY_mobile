@@ -5,6 +5,7 @@ import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/screens/common_details.dart';
 import 'package:umai/common/services/person_cubit_manager.dart';
 import 'package:umai/common/widgets/action_post.dart';
+import 'package:umai/common/widgets/button_common.dart';
 import 'package:umai/common/widgets/button_post.dart';
 import 'package:umai/social/bloc/post_cubit.dart';
 import 'package:umai/social/models/post.dart';
@@ -19,7 +20,8 @@ class PostItem extends StatefulWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(value: context.read<PostCubitManager>().get(post)),
-        BlocProvider<XCommonCubit<Post>>(create: (context) => context.read<PostCubit>())
+        BlocProvider<XCommonCubit<Post>>(
+            create: (context) => context.read<PostCubit>())
       ],
       child: const PostItem(),
     );
@@ -75,7 +77,7 @@ class _PostItemState extends State<PostItem> {
                 )),
             const SizedBox(height: 8),
             if (post.image?.isNotEmpty ?? false) PostImage(url: post.image!),
-            const ButtonPost<Post>(canComment: false),
+            const ButtonCommon<Post>(canComment: false),
           ],
         ),
       );

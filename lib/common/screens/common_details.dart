@@ -1,6 +1,10 @@
 // Start of Selection
 import 'package:flutter/material.dart';
+
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
+import 'package:umai/common/widgets/button_common.dart';
+import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/bloc/episode_cubit.dart';
 import 'package:umai/animes/services/episode_cubit_manager.dart';
@@ -141,7 +145,7 @@ class _CommonDetailsScreenState<T extends XItem>
                             height: kToolbarHeight +
                                 MediaQuery.of(context).viewPadding.top),
                         widget.head(context),
-                        ButtonPost<T>(),
+                        ButtonCommon<T>(canComment: true),
 
                         const Divider(),
                         AutoListView.get<Comment>(
@@ -174,9 +178,6 @@ class _CommonDetailsScreenState<T extends XItem>
                                     actionCommentBaseCubit: actionCommentCubit,
                                   ),
                                 ),
-                            emptyBuilder: (context) => const Center(
-                                  child: Text("Aucun commentaire"),
-                                ),
                             loadingBuilder: (context) => Container(
                                 alignment: Alignment.center,
                                 padding: const EdgeInsets.all(16),
@@ -201,6 +202,13 @@ class _CommonDetailsScreenState<T extends XItem>
                                       .tertiaryContainer,
                                   borderRadius: BorderRadius.circular(30),
                                 )),
+                            emptyBuilder: (ctx) => Center(
+                                  child: toSvgIcon(
+                                    icon: Assets.iconsEmpty,
+                                    height: 56,
+                                    width: 56,
+                                  ),
+                                ),
                             errorBuilder: (context, retry) => Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
