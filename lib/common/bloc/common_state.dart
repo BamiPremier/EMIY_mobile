@@ -52,12 +52,4 @@ class SuccessSendReportItemState extends CubitSuccessState with XCommonState {
 
 class XErrorState extends CubitErrorState with XCommonState {
   XErrorState(super.error, [super.trace]);
-
-  @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
-
-  @override
-  // TODO: implement stringify
-  bool? get stringify => throw UnimplementedError();
 }

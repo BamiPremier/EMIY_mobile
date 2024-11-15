@@ -5,7 +5,7 @@ import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/screens/common_details.dart';
 import 'package:umai/common/services/person_cubit_manager.dart';
 import 'package:umai/common/widgets/action_post.dart';
-import 'package:umai/common/widgets/button_post.dart';
+import 'package:umai/common/widgets/button_common.dart';
 import 'package:umai/social/bloc/post_cubit.dart';
 import 'package:umai/social/models/post.dart';
 import 'package:umai/social/services/post_cubit_manager.dart';
@@ -19,7 +19,10 @@ class PostItem extends StatefulWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(value: context.read<PostCubitManager>().get(post)),
-        BlocProvider<XCommonCubit<Post>>(create: (context) => context.read<PostCubit>())
+        BlocProvider<XCommonCubit<Post>>(
+            create: (context) => context.read<PostCubit>()),
+        BlocProvider.value(
+            value: context.read<PersonCubitManager>().get(post.user)),
       ],
       child: const PostItem(),
     );
@@ -44,18 +47,13 @@ class _PostItemState extends State<PostItem> {
                 builder: (context) => CommonDetailsScreen.fromPost(
                     context: context,
                     post: post,
-                    head: (context) => HeadPost())),
+                    head: (context) => const HeadPost())),
           );
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            MultiBlocProvider(providers: [
-              BlocProvider.value(
-                  value: context.read<PostCubitManager>().get(post)),
-              BlocProvider.value(
-                  value: context.read<PersonCubitManager>().get(post.user)),
-            ], child: const PostAction()),
+            const PostAction(),
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: AnimatedSize(
@@ -75,7 +73,7 @@ class _PostItemState extends State<PostItem> {
                 )),
             const SizedBox(height: 8),
             if (post.image?.isNotEmpty ?? false) PostImage(url: post.image!),
-            const ButtonPost<Post>(canComment: false),
+            const ButtonCommon<Post>(canComment: false),
           ],
         ),
       );

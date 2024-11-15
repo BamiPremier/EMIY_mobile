@@ -7,13 +7,24 @@ import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/social/models/post.dart';
 
 class LinkService extends ApiService {
-  static const String _getUserByUsertag = '/users/:usertag';
+  static const String _getUserById = '/users/:id';
+  static const String _getUserByUsertag = '/users/usertag/:usertag';
   static const String _getPost = '/posts/:idPost';
   static const String _getAnime = '/animes/:idAnime';
   static const String _getEpisode = '/episodes/:idEpisode';
   static const String _getQuiz = '/quiz/:idQuiz';
 
   const LinkService(super._dio);
+
+
+  Future<User> getUserById({required String id}) {
+    return compute(
+        dio.get(
+          _getUserById.replaceAll(':id', id),
+          options: Options(headers: withAuth()),
+        ),
+        mapper: User.fromJson);
+  }
 
   Future<User> getUserByUsertag({required String usertag}) {
     return compute(

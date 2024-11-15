@@ -11,7 +11,7 @@ abstract class AppTheme {
   static const Color black = Colors.black;
   static const Color lightGrey = Color(0xFFF5F5F5);
   static const Color disabledText = Color(0xFF9F9F9F);
-  static const Color surfacegrey = Color(0xFFD9D9D9);
+  static const Color surfaceGrey = Color(0xFFD9D9D9);
   static const Color errorRed = Color(0xFFFF0717);
   static const Color green = Color(0xFF00F57A);
   static const Color onHighGreen = Color(0xFF002914);
@@ -131,25 +131,13 @@ abstract class AppTheme {
       bottomNavigationBarTheme: theme.bottomNavigationBarTheme.copyWith(
         backgroundColor: colorScheme.surface,
         selectedItemColor: black,
-        unselectedItemColor: Colors.grey,
-        type: BottomNavigationBarType.fixed,
-        selectedLabelStyle: const TextStyle(
-          fontSize: 16,
-          color: black,
-        ),
-        unselectedLabelStyle: const TextStyle(fontSize: 0),
-        showSelectedLabels: true,
+        unselectedItemColor: colorScheme.onSurfaceVariant,
+        type: BottomNavigationBarType.shifting,
         showUnselectedLabels: false,
-        landscapeLayout: BottomNavigationBarLandscapeLayout.centered,
-        enableFeedback: true,
-        mouseCursor: WidgetStateProperty.all(MouseCursor.defer),
-        selectedIconTheme: const IconThemeData(
+        selectedLabelStyle: const TextStyle(
           color: black,
-          size: 24,
-        ),
-        unselectedIconTheme: const IconThemeData(
-          color: Color(0xFF4C4639),
-          size: 24,
+          fontSize: 12.0,
+          letterSpacing: 0.4
         ),
       ),
       textSelectionTheme: const TextSelectionThemeData(

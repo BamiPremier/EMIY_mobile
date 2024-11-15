@@ -3,6 +3,7 @@ import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/common/widgets/loaders.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/account/screens/sections/quiz/update_quiz_after_publish.dart';
+import 'package:umai/animes/services/anime_cubit_manager.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/common/widgets/buttons.dart';
@@ -17,7 +18,9 @@ import 'package:umai/quiz/services/quiz_service.dart';
 import 'package:umai/quiz/widgets/head_quiz.dart';
 import 'package:umai/quiz/widgets/item_user_quiz.dart';
 import 'package:umai/quiz/widgets/quiz_info.dart';
+import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/dialogs.dart';
+import 'package:umai/utils/svg_utils.dart';
 
 const quizRouteName = 'quiz_details';
 
@@ -26,8 +29,12 @@ class QuizDetailScreen extends StatefulWidget {
     required BuildContext context,
     required Quiz quiz,
   }) {
-    return BlocProvider.value(
-      value: context.read<QuizManageCubitManager>().get(quiz),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: context.read<QuizManageCubitManager>().get(quiz)),
+        if (quiz.anime != null)
+          BlocProvider.value(value: context.read<AnimeCubitManager>().get(quiz.anime!))
+      ],
       child: const QuizDetailScreen._(),
     );
   }
@@ -122,6 +129,12 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
                             Theme.of(context).colorScheme.tertiaryContainer,
                         borderRadius: BorderRadius.circular(30),
                       )),
+                  emptyBuilder: (ctx) => Center(
+                    child: toSvgIcon(
+                      icon: Assets.iconsEmpty,
+                      size: 56,
+                    ),
+                  ),
                   errorBuilder: (context, retry) => Align(
                     alignment: Alignment.center,
                     child: Column(
@@ -167,7 +180,7 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
 
   void onEventReceivedQuiz(BuildContext context, QuizState state) async {
     await waitForDialog();
-   
+
     if (state is QuizUpdateState) {
       Navigator.push(
         context,

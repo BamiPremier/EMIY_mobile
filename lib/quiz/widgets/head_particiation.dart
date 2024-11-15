@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/services/cache_manager.dart';
-import 'package:umai/common/widgets/action_widget.dart';
-import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/quiz/bloc/quiz_manage_cubit.dart';
 import 'package:umai/quiz/bloc/quiz_participation_cubit.dart';
 import 'package:umai/quiz/bloc/quiz_question_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/services/quiz_cubit_manager.dart';
+import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 import 'package:umai/utils/themes.dart';
 
 class HeadParticipation extends StatefulWidget {
@@ -142,12 +142,12 @@ class _HeadParticipationState extends State<HeadParticipation>
                       : null,
                   errorBuilder: (context, error, stackTrace) =>
                       quiz.anime != null
-                          ? Icon(
-                              Icons.error,
+                          ? toSvgIcon(
+                              icon: Assets.iconsError,
                               color: Theme.of(context)
                                   .colorScheme
                                   .onTertiaryContainer,
-                              size: 32,
+                              // size: 32,
                             )
                           : Container(),
                 ),

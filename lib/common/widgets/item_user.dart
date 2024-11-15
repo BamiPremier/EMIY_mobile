@@ -37,8 +37,7 @@ class UserItem extends StatelessWidget {
                   const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
               leading: ProfilePicture(
                 image: personCubit.user.imageFull ?? '',
-                height: 48.0,
-                width: 48.0,
+                size: 48.0,
               ),
               title: Text(personCubit.user.username,
                   maxLines: 1,

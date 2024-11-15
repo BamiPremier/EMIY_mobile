@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:umai/account/screens/param/blocked_user.dart';
+import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -47,7 +49,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   'Utilisateurs bloqués',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
-                trailing: const Icon(Icons.arrow_right),
+                trailing: toSvgIcon(icon: Assets.iconsDirectionRight, size: 16.0),
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => const BlockedUserScreen()));
@@ -62,7 +64,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   'Voir la politique de confidentialité',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
-                trailing: const Icon(Icons.arrow_right),
+                trailing: toSvgIcon(icon: Assets.iconsDirectionRight, size: 16.0),
                 onTap: () {},
               ),
               ListTile(
@@ -70,7 +72,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   'Version',
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
-                trailing: const Icon(Icons.arrow_right),
+                trailing: toSvgIcon(icon: Assets.iconsDirectionRight, size: 16.0),
                 subtitle: Text(
                   '1.0.0',
                   style: Theme.of(context).textTheme.bodyMedium,

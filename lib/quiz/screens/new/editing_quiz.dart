@@ -10,7 +10,9 @@ import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/screens/new/add_quiz_question.dart';
 import 'package:umai/quiz/screens/new/list_quiz_questions.dart';
 import 'package:umai/quiz/screens/new/new_quiz.dart';
+import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/dialogs.dart';
+import 'package:umai/utils/svg_utils.dart';
 import 'package:umai/utils/themes.dart';
 
 class EditingQuizScreen extends StatefulWidget {
@@ -112,12 +114,13 @@ class _EditingQuizScreenState extends State<EditingQuizScreen>
                                       .read<AppCacheManager>()
                                       .getImage(
                                           quiz.anime!.coverImage.large ?? ''),
-                                  errorBuilder: (context, url, error) => Icon(
-                                    Icons.error,
+                                  errorBuilder: (context, url, error) =>
+                                      toSvgIcon(
+                                    icon: Assets.iconsError,
                                     color: Theme.of(context)
                                         .colorScheme
                                         .onTertiaryContainer,
-                                    size: 32,
+                                    // size: 32,
                                   ),
                                 ),
                               ),
@@ -137,7 +140,9 @@ class _EditingQuizScreenState extends State<EditingQuizScreen>
                                       ),
                                     ),
                                     IconButton(
-                                      icon: const Icon(Icons.edit_outlined),
+                                      icon: toSvgIcon(
+                                        icon: Assets.iconsEdit,
+                                      ),
                                       onPressed: () {
                                         quizCubit.toUpdate();
                                       },
@@ -172,7 +177,9 @@ class _EditingQuizScreenState extends State<EditingQuizScreen>
             context,
             MaterialPageRoute(builder: (context) => AddQuizQuestionScreen()),
           ),
-          child: const Icon(Icons.add),
+          child: toSvgIcon(
+            icon: Assets.iconsMore,
+          ),
         ),
         bottomNavigationBar: SafeArea(
           minimum: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),

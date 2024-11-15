@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
+import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/account/bloc/load_quiz_user_cubit.dart';
 import 'package:umai/common/bloc/person_cubit.dart';
@@ -43,6 +46,12 @@ class _QuizUserScreenState extends State<QuizUserScreen>
       autoManage: false,
       itemBuilder: (context, quiz) =>
           ItemQuiz.get(context: context, quiz: quiz),
+      emptyBuilder: (ctx) => Center(
+        child: toSvgIcon(
+          icon: Assets.iconsEmpty,
+          size: 56,
+        ),
+      ),
       errorBuilder: (context, retry) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [

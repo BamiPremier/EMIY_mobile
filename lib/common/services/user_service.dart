@@ -27,9 +27,13 @@ class UserService extends ApiService {
   static const String _posts = '/posts';
   static const String _quizUser = '/quiz';
   static const String _shareUser = '/users/:idUser/share';
-
+  static const String _sendFCMToken = '/users/notification'; 
   const UserService(super._dio);
 
+  Future<void> sendFCMToken({required String user, required String token}) {
+    return compute(dio.patch(_sendFCMToken,
+        options: Options(headers: withAuth()), data: {"token": token}));
+  } 
   Future<User> getMe() {
     return compute(
         dio.get(

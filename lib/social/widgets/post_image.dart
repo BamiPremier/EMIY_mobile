@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/services/cache_manager.dart';
+import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 
 class PostImage extends StatelessWidget {
   final String url;
@@ -45,10 +47,10 @@ class PostImage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.error,
+                   toSvgIcon(
+                  icon: Assets.iconsError,
                   color: Theme.of(context).colorScheme.onTertiaryContainer,
-                  size: 48
+                  // size: 48
                 ),
                 const SizedBox(height: 16),
                 Text(
