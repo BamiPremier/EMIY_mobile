@@ -7,6 +7,7 @@ import 'package:potatoes/potatoes.dart';
 import 'package:umai/common/utils/validators.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/quiz/bloc/quiz_cubit.dart';
+import 'package:umai/quiz/screens/new/editing_quiz.dart';
 import 'package:umai/quiz/screens/new/search_anime_delegate.dart';
 import 'package:umai/utils/dialogs.dart';
 
@@ -209,7 +210,10 @@ class _UpdateQuizAfterPublishScreenState
     if (state is QuizLoadingState) {
       loadingDialogCompleter = showLoadingBarrier(context: context);
     } else if (state is QuizCreatedState) {
-      Navigator.pop(context);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => EditingQuizScreen(state.quiz)),
+      );
     } else if (state is QuizErrorState) {
       showErrorToast(content: state.error, context: context);
     }

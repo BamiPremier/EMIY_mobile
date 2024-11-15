@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:potatoes/common/widgets/loaders.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/account/screens/follow.dart';
@@ -18,6 +19,8 @@ import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:umai/common/widgets/action_post.dart';
+import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 import 'package:umai/utils/themes.dart';
 
 class PersonAccountScreen extends StatefulWidget {
@@ -62,6 +65,32 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
       context.read<UserService>().getUserFollowing(userId: personCubit.user.id),
       context.read());
   late final userCubit = context.read<UserCubit>();
+
+  Widget counter({
+    required int count,
+    required String label,
+    VoidCallback? onTap
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: SizedBox(
+        width: 80.0,
+        child: Column(
+          children: [
+            Text(
+              NumberFormat.compact().format(count),
+              style: Theme.of(context).textTheme.labelLarge,
+            ),
+            Text(
+              label,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<PersonCubit, PersonState>(
@@ -79,9 +108,12 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                   centerTitle: true,
                   actions: [
                     IconButton(
-                        padding: EdgeInsets.zero,
-                        onPressed: onActionsPressed,
-                        icon: const Icon(Icons.more_vert))
+                      padding: EdgeInsets.zero,
+                      onPressed: onActionsPressed,
+                      icon: toSvgIcon(
+                        icon: Assets.iconsOptions,
+                      ),
+                    )
                   ],
                 ),
                 SliverToBoxAdapter(
@@ -94,7 +126,7 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ProfilePicture(
-                              image: user.image, height: 80, width: 80),
+                              image: user.image, size: 80),
                           const SizedBox(width: 16.0),
                           Expanded(
                             child: Column(
@@ -207,9 +239,10 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                                                       color: AppTheme.black,
                                                     ),
                                                   )
-                                                : const Icon(
-                                                    Icons.add,
+                                                : toSvgIcon(
+                                                    icon: Assets.iconsMore,
                                                     color: AppTheme.black,
+                                                    size: 16,
                                                   ),
                                             const SizedBox(width: 8),
                                             Text(
@@ -254,10 +287,12 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                                                           .onTertiaryContainer,
                                                     ),
                                                   )
-                                                : Icon(Icons.check,
+                                                :toSvgIcon(
+                                                    icon: Assets.iconsTick,
                                                     color: Theme.of(context)
                                                         .colorScheme
-                                                        .onTertiaryContainer),
+                                                        .onTertiaryContainer,
+                                                    size: 16),
                                             const SizedBox(width: 8),
                                             Text(
                                               'ajouté(e)',
@@ -273,145 +308,65 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                                         ),
                                       ),
                           ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                      ).add(const EdgeInsets.only(bottom: 12)),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Theme.of(context).colorScheme.outlineVariant,
-                          ),
-                        ),
-                      ),
-                      margin: const EdgeInsets.only(top: 32),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              const Icon(Icons.people_outline),
-                              const SizedBox(width: 16),
-                              GestureDetector(
-                                onTap: () => Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                        builder: (context) => FollowScreen.get(
-                                            context: context,
-                                            title:
-                                                "M'ont ajouté (${user.followersCount})",
-                                            followCubit: followersCubit))),
-                                child: SizedBox(
-                                  width: 76,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        '${user.followersCount}',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelLarge,
-                                      ),
-                                      Text(
-                                        "M'ont ajouté",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              GestureDetector(
-                                onTap: () => Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                        builder: (context) => FollowScreen.get(
-                                            context: context,
-                                            title:
-                                                "Ajoutés (${user.followingCount})",
-                                            followCubit: followingCubit))),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '${user.followingCount}',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelLarge,
-                                    ),
-                                    Text(
-                                      "ajoutés",
-                                      style:
-                                          Theme.of(context).textTheme.bodySmall,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                          toSvgIcon(icon: Assets.iconsTrending, size: 16.0),
+                          const SizedBox(width: 16),
+                          counter(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => FollowScreen.get(
+                                    context: context,
+                                    title:
+                                    "M'ont ajouté (${user.followersCount})",
+                                    followCubit: followersCubit)));
+                            },
+                            count: user.followersCount,
+                            label: "m'ont ajouté",
                           ),
-                          const Padding(
-                            padding: EdgeInsets.only(right: 8),
-                            child: Icon(Icons.arrow_forward_ios, size: 16),
+                          counter(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => FollowScreen.get(
+                                    context: context,
+                                    title:
+                                    "Ajoutés (${user.followingCount})",
+                                    followCubit: followingCubit)));
+                            },
+                            count: user.followingCount,
+                            label: "ajoutés",
+                          ),
+                          const Spacer(),
+                          toSvgIcon(
+                            icon: Assets.iconsDirectionRight,
+                            size: 16.0
                           ),
                         ],
                       ),
                     ),
+                    const Divider(thickness: 0.7),
                     Padding(
-                      padding: const EdgeInsets.only(
-                        top: 8,
-                        left: 16,
-                        right: 16,
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            children: [
-                              const Icon(Icons.people_outline),
-                              const SizedBox(width: 16),
-                              SizedBox(
-                                  width: 76,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        '${user.animesViewedCount}',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelLarge,
-                                      ),
-                                      Text(
-                                        "Vus",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall,
-                                      ),
-                                    ],
-                                  )),
-                              const SizedBox(width: 24),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    '${user.watchlistCount}',
-                                    style:
-                                        Theme.of(context).textTheme.labelLarge,
-                                  ),
-                                  Text(
-                                    "à voir",
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall,
-                                  ),
-                                ],
-                              ),
-                            ],
+                          toSvgIcon(icon: Assets.iconsTrending, size: 16.0),
+                          const SizedBox(width: 16),
+                          counter(
+                            count: user.animesViewedCount,
+                            label: "vus"
                           ),
-                          const Padding(
-                            padding: EdgeInsets.only(right: 8),
-                            child: Icon(Icons.arrow_forward_ios, size: 16),
+                          counter(
+                            count: user.watchlistCount,
+                            label: "à voir"
+                          ),
+                          const Spacer(),
+                          toSvgIcon(
+                            icon: Assets.iconsDirectionRight,
+                            size: 16.0
                           ),
                         ],
                       ),
@@ -473,7 +428,9 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
               children: [
                 ActionWidget(
                   title: 'Partager...',
-                  icon: Icons.share,
+                  icon:toSvgIcon(
+                    icon: Assets.iconsShare,
+                  ),
                   onTap: () {
                     Navigator.pop(context);
 
@@ -483,7 +440,7 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                 const SizedBox(height: 16),
                 ActionWidget(
                   title: 'Bloquer',
-                  icon: Icons.block_flipped,
+                  icon: const Icon(Icons.block_flipped),
                   onTap: () => blockUser(context: context),
                 ),
               ],

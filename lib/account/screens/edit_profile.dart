@@ -65,8 +65,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                                       const EditProfilePictureScreen())),
                           child: ProfilePicture(
                             image: userCubit.user.imageFull,
-                            height: 56,
-                            width: 56,
+                            size: 56,
                           ),
                         ),
                         const SizedBox(width: 16.0),

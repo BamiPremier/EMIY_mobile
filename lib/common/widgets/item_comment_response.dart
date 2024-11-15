@@ -2,18 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
-import 'package:umai/common/bloc/common_cubit.dart';
-import 'package:umai/common/bloc/user_cubit.dart';
-import 'package:umai/common/screens/common_details.dart';
-import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/account/screens/person_account.dart';
 import 'package:umai/common/bloc/action_comment_cubit.dart';
 import 'package:umai/common/bloc/comment_cubit.dart';
+import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/bloc/load_comment_cubit.dart';
-import 'package:umai/common/models/comment.dart'; 
+import 'package:umai/common/bloc/user_cubit.dart';
+import 'package:umai/common/models/comment.dart';
+import 'package:umai/common/screens/common_details.dart';
 import 'package:umai/common/widgets/action_comment_response.dart';
 import 'package:umai/common/widgets/item_comment.dart';
+import 'package:umai/common/widgets/profile_picture.dart';
+import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/dialogs.dart';
+import 'package:umai/utils/svg_utils.dart';
 import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 // Start of Selection
@@ -24,11 +26,11 @@ class ItemCommentResponse<T extends XItem> extends StatefulWidget {
   final ActionCommentBaseCubit<XCommonCubit<T>> actionCommentBaseCubit;
 
   const ItemCommentResponse({
+    super.key,
     required this.comment,
     required this.idItem,
     required this.actionCommentBaseCubit,
-    Key? key,
-  }) : super(key: key);
+  });
 
   @override
   State<ItemCommentResponse<T>> createState() => _ItemCommentResponseState<T>();
@@ -77,16 +79,16 @@ class _ItemCommentResponseState<T extends XItem>
               contentPadding: const EdgeInsets.only(top: 8.0, left: 8.0),
               leading: SizedBox(
                 child: Row(mainAxisSize: MainAxisSize.min, children: [
-                  const Icon(
-                    Icons.subdirectory_arrow_right,
-                    color: Color(0xFF5F6368),
-                    size: 24,
+                  toSvgIcon(
+                    icon: Assets.iconsDirectionRight,
+                    color: AppTheme.surfaceGrey,
+                    size: 16
                   ),
+                  const SizedBox(width: 8.0),
                   GestureDetector(
                       child: ProfilePicture(
                         image: comment.user.image,
-                        height: 32,
-                        width: 32,
+                        size: 32,
                       ),
                       onTap: () => Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => PersonAccountScreen.get(
@@ -212,6 +214,12 @@ class _ItemCommentResponseState<T extends XItem>
                       Theme.of(context).colorScheme.tertiaryContainer,
                   borderRadius: BorderRadius.circular(30),
                 )),
+            emptyBuilder: (ctx) => Center(
+              child: toSvgIcon(
+                icon: Assets.iconsEmpty,
+                size: 56
+              ),
+            ),
             errorBuilder: (context, retry) => Align(
               alignment: Alignment.center,
               child: Column(

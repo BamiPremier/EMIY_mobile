@@ -10,7 +10,6 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:umai/auth/services/auth_service.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/models/user.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 part 'auth_state.dart';
 
@@ -80,7 +79,7 @@ class AuthCubit extends Cubit<AuthState> {
     log(DateTime.now().timeZoneName);
     authService
         .authUser(
-      deviceId: deviceInfo!.id,
+      deviceId: deviceInfo.id,
       deviceName: deviceInfo.name,
       token: idToken!,
       timezone: timezone,

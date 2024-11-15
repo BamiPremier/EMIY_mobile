@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
+import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/models/anime.dart';
 import 'package:umai/animes/widgets/item_anime.dart';
@@ -56,6 +59,12 @@ class _RegistrationAnimeSelectionState
                   crossAxisSpacing: 2.0,
                   mainAxisSpacing: 2.0,
                   childAspectRatio: .65),
+              emptyBuilder: (ctx) => Center(
+                child: toSvgIcon(
+                  icon: Assets.iconsEmpty,
+                  size: 56,
+                ),
+              ),
               errorBuilder: (context, retry) => Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [

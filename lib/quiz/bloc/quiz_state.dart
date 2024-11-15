@@ -17,14 +17,6 @@ class QuizLoadingPublishState extends CubitLoadingState with QuizState {
   const QuizLoadingPublishState();
 }
 
-class QuizCreationState extends CubitSuccessState with QuizState {
-  const QuizCreationState();
-
-  @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
-}
-
 class QuizCreatedState extends CubitSuccessState with QuizState {
   final Anime? anime;
   final Quiz quiz;

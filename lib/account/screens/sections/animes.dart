@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
+import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/account/bloc/user_anime_cubit.dart';
@@ -9,7 +12,8 @@ import 'package:umai/common/bloc/person_cubit.dart';
 
 class AnimesTab extends StatefulWidget {
   final bool currentUser;
-  AnimesTab({super.key, this.currentUser = true});
+
+  const AnimesTab({super.key, this.currentUser = true});
 
   @override
   State<AnimesTab> createState() => _AnimesTabState();
@@ -51,8 +55,11 @@ class _AnimesTabState extends State<AnimesTab> with CompletableMixin {
             crossAxisSpacing: 2.0,
             mainAxisSpacing: 2.0,
             childAspectRatio: .65),
-        emptyBuilder: (context) => const Center(
-              child: Text("Empty list"),
+          emptyBuilder: (ctx) => Center(
+              child: toSvgIcon(
+                icon: Assets.iconsEmpty,
+                size: 56,
+              ),
             ),
         errorBuilder: (context, retry) => Column(
               mainAxisSize: MainAxisSize.min,

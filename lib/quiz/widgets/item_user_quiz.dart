@@ -43,8 +43,7 @@ class UserItemQuiz extends StatelessWidget {
             ),
             leading: ProfilePicture(
               image: quizParticipation.user.image,
-              height: 48.0,
-              width: 48.0,
+              size: 48.0,
             ),
             title: Text(quizParticipation.user.username,
                 maxLines: 1,

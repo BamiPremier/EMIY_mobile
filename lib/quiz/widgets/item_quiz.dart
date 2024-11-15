@@ -4,6 +4,8 @@ import 'package:umai/quiz/bloc/quiz_manage_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/screens/quiz_details.dart';
 import 'package:umai/quiz/services/quiz_cubit_manager.dart';
+import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 import 'package:umai/utils/themes.dart';
 
 class ItemQuiz extends StatefulWidget {
@@ -75,7 +77,9 @@ class _ItemQuizState extends State<ItemQuiz>
                               ),
                       );
                     },
-                    errorBuilder: (_, __, ___) => const Icon(Icons.error),
+                    errorBuilder: (_, __, ___) => toSvgIcon(
+                      icon: Assets.iconsError,
+                    ),
                   ),
                 ),
               if (quiz.anime != null) const SizedBox(width: 12),

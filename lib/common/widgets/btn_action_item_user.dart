@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/person_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
+import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 import 'package:umai/utils/themes.dart';
 
 class BtnActionitemUser extends StatelessWidget {
@@ -62,7 +64,11 @@ class BtnActionitemUser extends StatelessWidget {
                   ),
                 );
               } else
-                icon = const Icon(Icons.check);
+                icon = toSvgIcon(
+                  icon: Assets.iconsTick,
+                  size: 16,
+                  color: Theme.of(context).colorScheme.onTertiaryContainer,
+                );
             } else {
               onPressed = personCubit.followUser;
               backgroundColor = null;
@@ -81,7 +87,11 @@ class BtnActionitemUser extends StatelessWidget {
                   ),
                 );
               } else
-                icon = const Icon(Icons.add);
+                 icon = toSvgIcon(
+                  icon: Assets.iconsMore,
+                  size: 16,
+                  color: Theme.of(context).textTheme.labelLarge?.color,
+                );
             }
 
             return FilledButton(

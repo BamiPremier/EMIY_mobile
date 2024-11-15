@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
@@ -12,6 +11,7 @@ import 'package:umai/quiz/bloc/create_quiz_question_cubit.dart';
 import 'package:umai/quiz/bloc/quiz_cubit.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/dialogs.dart';
+import 'package:umai/utils/svg_utils.dart';
 
 class AddQuizQuestionScreen extends StatefulWidget {
   @override
@@ -58,7 +58,7 @@ class _AddQuizQuestionScreenState extends State<AddQuizQuestionScreen>
                       color: Theme.of(context).colorScheme.tertiaryContainer,
                       child: Center(
                         child: state.imagePath == null
-                            ? SvgPicture.asset(Assets.iconPictureAdd)
+                            ? toSvgIcon(icon: Assets.iconPictureAdd)
                             : Image.file(
                                 File(state.imagePath!),
                                 width: double.infinity,
@@ -154,9 +154,8 @@ class _AddQuizQuestionScreenState extends State<AddQuizQuestionScreen>
                                     state.propositionControllers
                                         .indexOf(controller),
                                   ),
-                                  child: Icon(
-                                    Icons.check_circle_outline,
-                                    size: 24,
+                                  child: toSvgIcon(
+                                    icon: Assets.iconsTick,
                                     color: state.correctAnswerIndex ==
                                             state.propositionControllers
                                                 .indexOf(controller)
@@ -214,7 +213,7 @@ class _AddQuizQuestionScreenState extends State<AddQuizQuestionScreen>
                       color: Theme.of(context).colorScheme.tertiaryContainer,
                       child: Center(
                         child: state.imagePath == null
-                            ? SvgPicture.asset(Assets.iconPictureAdd)
+                            ? toSvgIcon(icon: Assets.iconPictureAdd)
                             : (state.imagePath!.contains('cloudfront'))
                                 ? Image(
                                     fit: BoxFit.cover,
@@ -222,12 +221,13 @@ class _AddQuizQuestionScreenState extends State<AddQuizQuestionScreen>
                                     image: context
                                         .read<AppCacheManager>()
                                         .getImage((state).imagePath ?? ''),
-                                    errorBuilder: (context, url, error) => Icon(
-                                      Icons.error,
+                                    errorBuilder: (context, url, error) =>
+                                        toSvgIcon(
+                                      icon: Assets.iconsError,
                                       color: Theme.of(context)
                                           .colorScheme
                                           .onTertiaryContainer,
-                                      size: 32,
+                                      // size: 32,
                                     ),
                                   )
                                 : Image.file(
@@ -325,9 +325,8 @@ class _AddQuizQuestionScreenState extends State<AddQuizQuestionScreen>
                                     state.propositionControllers
                                         .indexOf(controller),
                                   ),
-                                  child: Icon(
-                                    Icons.check_circle_outline,
-                                    size: 24,
+                                  child: toSvgIcon(
+                                    icon: Assets.iconsTick,
                                     color: state.correctAnswerIndex ==
                                             state.propositionControllers
                                                 .indexOf(controller)

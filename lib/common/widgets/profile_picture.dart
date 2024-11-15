@@ -1,34 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/services/cache_manager.dart';
 import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 
 class ProfilePicture extends StatelessWidget {
   final String? image;
-  final double height;
-  final double width;
+  final double size;
 
   const ProfilePicture({
     super.key,
     required this.image,
-    this.height = 80,
-    this.width = 80,
+    this.size = 80,
   });
 
   @override
   Widget build(BuildContext context) {
-    final defaultImage = SvgPicture.asset(
-      Assets.defaultAvatar,
-      height: height,
-      width: width,
+    final defaultImage = toSvgIcon(
+      icon: Assets.defaultAvatar,
+      size: size
     );
-
     if (image == null) return defaultImage;
     return Container(
-      height: height,
-      width: width,
+      height: size,
+      width: size,
       clipBehavior: Clip.hardEdge,
       decoration: const BoxDecoration(shape: BoxShape.circle),
       child: Image(
@@ -41,13 +37,11 @@ class ProfilePicture extends StatelessWidget {
 }
 
 class UserProfilePicture extends StatelessWidget {
-  final double height;
-  final double width;
+  final double size;
 
   const UserProfilePicture({
     super.key,
-    this.height = 40.0,
-    this.width = 40.0,
+    this.size = 40.0,
   });
 
   @override
@@ -58,8 +52,7 @@ class UserProfilePicture extends StatelessWidget {
         image: state is! CompleteUserProfileState
             ? context.read<UserCubit>().user.image
             : null,
-        height: height,
-        width: width,
+        size: size,
       ),
     );
   }
