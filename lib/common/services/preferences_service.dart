@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:potatoes_secured_preferences/potatoes_secured_preferences.dart';
 import 'package:umai/common/models/device_info.dart';
 import 'package:umai/common/models/user.dart';

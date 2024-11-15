@@ -86,7 +86,7 @@ class MyApp extends StatelessWidget {
   final CacheOptions cacheOptions;
   final NotificationService notificationService;
   final DeviceInfo deviceInfo;
-  final String packageInfo;
+  final PackageInfo packageInfo;
   final String timezone;
   const MyApp(
       {required this.navigatorKey,
