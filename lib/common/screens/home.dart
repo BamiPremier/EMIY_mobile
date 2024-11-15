@@ -11,6 +11,7 @@ import 'package:umai/animes/widgets/episode_head.dart';
 import 'package:umai/common/bloc/link_cubit.dart';
 import 'package:umai/common/bloc/notification_cubit.dart';
 import 'package:umai/common/screens/common_details.dart';
+import 'package:umai/common/services/notification_service.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/quiz/screens/home.dart';
 import 'package:umai/quiz/screens/quiz_details.dart';
@@ -44,9 +45,10 @@ class _HomeScreenState extends State<HomeScreen> with CompletableMixin {
     });
   }
 
-@override
-void initState() { 
+  @override
+  void initState() {
     super.initState();
+    context.read<NotificationService>().context = context;
     context.read<NotificationCubit>().requestNotificationPermission();
   }
 

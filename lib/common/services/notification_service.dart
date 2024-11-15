@@ -27,8 +27,6 @@ class NotificationService {
   set context(BuildContext context) => _context = context;
 
   Future<void> requestPermission(ValueChanged<String> sendToken) async {
-   
-
     final messaging = FirebaseMessaging.instance;
     final settings = await messaging.requestPermission();
     if (Platform.isIOS) {
@@ -89,7 +87,10 @@ class NotificationService {
 
   bool _onNotificationOnAppOpened(Map<String, dynamic> payload) {
     try {
+      log('payload: $payload');
+      log('context: $_context');
       if (_context == null) return false;
+      log('payload: $payload');
       _context!
           .read<NotificationCubit>()
           .onNotification(notification: _parse(payload));

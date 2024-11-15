@@ -13,7 +13,7 @@ class Notification with _$Notification {
 
   const factory Notification({
     required String target,
-    @JsonKey(name: "notificationtype") required String type,
+    @JsonKey(name: "type") required String type,
   }) = _Notification;
 
   factory Notification.fromJson(Map<String, dynamic> json) =>

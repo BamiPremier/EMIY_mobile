@@ -21,7 +21,7 @@ Notification _$NotificationFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Notification {
   String get target => throw _privateConstructorUsedError;
-  @JsonKey(name: "notificationtype")
+  @JsonKey(name: "type")
   String get type => throw _privateConstructorUsedError;
 
   /// Serializes this Notification to a JSON map.
@@ -40,7 +40,7 @@ abstract class $NotificationCopyWith<$Res> {
           Notification value, $Res Function(Notification) then) =
       _$NotificationCopyWithImpl<$Res, Notification>;
   @useResult
-  $Res call({String target, @JsonKey(name: "notificationtype") String type});
+  $Res call({String target, @JsonKey(name: "type") String type});
 }
 
 /// @nodoc
@@ -82,7 +82,7 @@ abstract class _$$NotificationImplCopyWith<$Res>
       __$$NotificationImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String target, @JsonKey(name: "notificationtype") String type});
+  $Res call({String target, @JsonKey(name: "type") String type});
 }
 
 /// @nodoc
@@ -118,8 +118,7 @@ class __$$NotificationImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$NotificationImpl extends _Notification {
   const _$NotificationImpl(
-      {required this.target,
-      @JsonKey(name: "notificationtype") required this.type})
+      {required this.target, @JsonKey(name: "type") required this.type})
       : super._();
 
   factory _$NotificationImpl.fromJson(Map<String, dynamic> json) =>
@@ -128,7 +127,7 @@ class _$NotificationImpl extends _Notification {
   @override
   final String target;
   @override
-  @JsonKey(name: "notificationtype")
+  @JsonKey(name: "type")
   final String type;
 
   @override
@@ -167,9 +166,8 @@ class _$NotificationImpl extends _Notification {
 
 abstract class _Notification extends Notification {
   const factory _Notification(
-          {required final String target,
-          @JsonKey(name: "notificationtype") required final String type}) =
-      _$NotificationImpl;
+      {required final String target,
+      @JsonKey(name: "type") required final String type}) = _$NotificationImpl;
   const _Notification._() : super._();
 
   factory _Notification.fromJson(Map<String, dynamic> json) =
@@ -178,7 +176,7 @@ abstract class _Notification extends Notification {
   @override
   String get target;
   @override
-  @JsonKey(name: "notificationtype")
+  @JsonKey(name: "type")
   String get type;
 
   /// Create a copy of Notification

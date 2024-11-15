@@ -198,16 +198,6 @@ class _NewQuizScreenState extends State<NewQuizScreen> with CompletableMixin {
                       title: _titreController.text,
                       description: _descriptionController.text,
                     );
-
-                    // widget.isEdit
-                    //     ? quizCubit.updateQuiz(
-                    //         title: _titreController.text,
-                    //         description: _descriptionController.text,
-                    //       )
-                    //     : quizCubit.createQuiz(
-                    //         title: _titreController.text,
-                    //         description: _descriptionController.text,
-                    //       );
                   }
                 },
                 text: "Suivant",
