@@ -18,7 +18,6 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen>
     with WidgetsBindingObserver {
-  NotificationSettings? _settings;
   @override
   void initState() {
     super.initState();
@@ -28,9 +27,7 @@ class _SettingsScreenState extends State<SettingsScreen>
 
   Future<void> _fetchNotificationSettings() async {
     final settings = await FirebaseMessaging.instance.getNotificationSettings();
-    setState(() {
-      _settings = settings;
-    });
+    setState(() {});
   }
 
   @override
@@ -55,11 +52,9 @@ class _SettingsScreenState extends State<SettingsScreen>
   late final preferencesService = notificationCubit.preferencesService;
   void _openNotificationSettings() {
     if (Platform.isAndroid) {
-      OpenSettings
-          .openNotificationSetting(); // Redirige vers les paramètres Android.
+      OpenSettings.openNotificationSetting();
     } else if (Platform.isIOS) {
-      OpenSettings
-          .openAppNotificationSetting(); // Redirige vers les paramètres iOS.
+      OpenSettings.openAppNotificationSetting();
     }
   }
 
@@ -82,8 +77,8 @@ class _SettingsScreenState extends State<SettingsScreen>
                   final settings = snapshot.data;
                   final isAuthorized = settings?.authorizationStatus ==
                       AuthorizationStatus.authorized;
-
-                  return SwitchListTile.adaptive(
+                  return SwitchListTile(
+                    
                     title: Text(
                       'Notifications générales',
                       style: Theme.of(context).textTheme.bodyLarge,

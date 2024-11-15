@@ -283,8 +283,14 @@ abstract class AppTheme {
           labelTextStyle: WidgetStatePropertyAll(textTheme.titleMedium),
           textStyle: textTheme.titleMedium),
       switchTheme: theme.switchTheme.copyWith(
+        trackColor: WidgetStateProperty.resolveWith((states) =>
+            states.contains(WidgetState.selected)
+                ? theme.colorScheme.outline
+                : theme.colorScheme.surfaceContainer),
         thumbColor: WidgetStateProperty.resolveWith((states) =>
-            states.contains(WidgetState.selected) ? primaryYellow : null),
+            states.contains(WidgetState.selected)
+                ? white
+                : theme.colorScheme.outline),
       ),
       textTheme: textTheme,
     );

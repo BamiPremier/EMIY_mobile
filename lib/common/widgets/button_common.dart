@@ -18,7 +18,7 @@ class ButtonCommon<T extends XItem> extends StatefulWidget {
   });
 
   @override
-  State<ButtonCommon  <T>> createState() => _ButtonCommonState<T>();
+  State<ButtonCommon<T>> createState() => _ButtonCommonState<T>();
 }
 
 class _ButtonCommonState<T extends XItem> extends State<ButtonCommon<T>>
@@ -65,7 +65,9 @@ class _ButtonCommonState<T extends XItem> extends State<ButtonCommon<T>>
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                   onPressed: widget.canComment
-                      ? () => context.read<ActionCommentCubit>().set(null)
+                      ? () => context
+                          .read<ActionCommentBaseCubit<XCommonCubit<T>>>()
+                          .set(null)
                       : null,
                 ),
               ],
