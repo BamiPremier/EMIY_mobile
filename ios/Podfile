@@ -45,7 +45,7 @@ post_install do |installer|
         '$(inherited)',
         'PERMISSION_PHOTOS=1',
         'PERMISSION_CAMERA=1',
-        #'PERMISSION_NOTIFICATIONS=1'
+        'PERMISSION_NOTIFICATIONS=1'
       ]
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
       if target.respond_to?(:product_type) and target.product_type == "com.apple.product-type.bundle"
