@@ -10,7 +10,6 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:umai/auth/services/auth_service.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/models/user.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 part 'auth_state.dart';
 
@@ -74,7 +73,7 @@ class AuthCubit extends Cubit<AuthState> {
     final idToken = await FirebaseAuth.instance.currentUser!.getIdToken();
 
     final deviceInfo = userCubit.preferencesService.deviceInfo;
-    final appVersion = userCubit.preferencesService.appVersion;
+    final appVersion = userCubit.preferencesService.packageInfo.buildNumber;
     final timezone = userCubit.preferencesService.timezone;
 
     log(DateTime.now().timeZoneName);

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:umai/account/screens/param/blocked_user.dart';
+import 'package:umai/common/services/preferences_service.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -39,7 +40,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 },
               ),
               ListTile(
-              title: Text(
+                title: Text(
                   'Confidentialité',
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
@@ -72,7 +73,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 trailing: const Icon(Icons.arrow_right),
                 subtitle: Text(
-                  '1.0.0',
+                  '${context.read<PreferencesService>().packageInfo.buildNumber}',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ),
