@@ -51,7 +51,7 @@ dependencies:
   permission_handler: ^11.3.1
   photo_manager: ^3.5.1
   photo_manager_image_provider: ^2.2.0
-  potatoes: ^3.0.2
+  potatoes: ^3.0.4
   potatoes_secured_preferences: ^1.0.0
   readmore: ^3.0.0
   flutter_sticky_header: ^0.7.0

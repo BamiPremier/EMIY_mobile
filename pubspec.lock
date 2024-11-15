@@ -1238,10 +1238,10 @@ packages:
     dependency: "direct main"
     description:
       name: potatoes
-      sha256: "286615b1ff83c044ed3f2b88d27205ed1a3c85c11e758c86671d5307a12db674"
+      sha256: "189ff1eb8502a2ea1e6642b24e86f34ab2b775d0caa924de45bbc3dffb3d6b1f"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.3+1"
+    version: "3.0.4"
   potatoes_secured_preferences:
     dependency: "direct main"
     description:
