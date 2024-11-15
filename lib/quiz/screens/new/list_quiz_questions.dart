@@ -4,6 +4,8 @@ import 'package:umai/common/services/cache_manager.dart';
 import 'package:umai/quiz/bloc/create_quiz_question_cubit.dart';
 import 'package:umai/quiz/bloc/quiz_cubit.dart';
 import 'package:umai/quiz/screens/new/add_quiz_question.dart';
+import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 import 'package:umai/utils/themes.dart';
 
 class ListQuizQuestionsScreen extends StatelessWidget {
@@ -68,12 +70,13 @@ class ListQuizQuestionsScreen extends StatelessWidget {
                                       .read<AppCacheManager>()
                                       .getImage(
                                           (state).questions[index].image ?? ''),
-                                  errorBuilder: (context, url, error) => Icon(
-                                    Icons.error,
+                                   errorBuilder: (context, url, error) =>
+                                      toSvgIcon(
+                                    icon: Assets.iconsError,
                                     color: Theme.of(context)
                                         .colorScheme
                                         .onTertiaryContainer,
-                                    size: 32,
+                                    // size: 32,
                                   ),
                                 ),
                               ),

@@ -3,28 +3,35 @@ import 'package:potatoes/common/widgets/loaders.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/bloc/action_comment_cubit.dart';
+import 'package:umai/common/screens/common_details.dart';
+import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/dialogs.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:umai/utils/svg_utils.dart';
 
-class ButtonCommon extends StatefulWidget {
+class ButtonCommon<T extends XItem> extends StatefulWidget {
+  final bool canComment;
+
   const ButtonCommon({
     super.key,
+    this.canComment = true,
   });
 
   @override
-  State<ButtonCommon> createState() => _ButtonCommonState();
+  State<ButtonCommon  <T>> createState() => _ButtonCommonState<T>();
 }
 
-class _ButtonCommonState extends State<ButtonCommon> with CompletableMixin {
-  late final postCubit = context.read<XCommonCubit>();
+class _ButtonCommonState<T extends XItem> extends State<ButtonCommon<T>>
+    with CompletableMixin {
+  late final commonCubit = context.read<XCommonCubit<T>>();
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<XCommonCubit, XCommonState>(
+    return BlocConsumer<XCommonCubit<T>, XCommonState>(
       listener: onEventReceived,
       buildWhen: (_, state) => state is InitializingXCommonState,
       builder: (context, state) {
-        final item = postCubit.x;
+        final item = commonCubit.x;
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -33,43 +40,43 @@ class _ButtonCommonState extends State<ButtonCommon> with CompletableMixin {
                 item.itemHasLiked
                     ? IconButton(
                         padding: EdgeInsets.zero,
-                        icon: const Icon(
-                          Icons.favorite,
+                        icon: toSvgIcon(
+                          icon: Assets.iconsLike,
                           color: Colors.red,
                         ),
                         onPressed: () {
-                          postCubit.unLikeItem();
+                          commonCubit.unLikeItem();
                         },
                       )
                     : IconButton(
                         padding: EdgeInsets.zero,
-                        icon: Icon(
-                          Icons.favorite_border_outlined,
+                        icon: toSvgIcon(
+                          icon: Assets.iconsLike,
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                         onPressed: () {
-                          postCubit.likeItem();
+                          commonCubit.likeItem();
                         },
                       ),
                 IconButton(
                   padding: EdgeInsets.zero,
-                  icon: Icon(
-                    Icons.chat_bubble_outline,
+                  icon: toSvgIcon(
+                    icon: Assets.iconsComment,
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
-                  onPressed: () {
-                    context.read<ActionCommentCubit>().set(null);
-                  },
+                  onPressed: widget.canComment
+                      ? () => context.read<ActionCommentCubit>().set(null)
+                      : null,
                 ),
               ],
             ),
             IconButton(
               padding: EdgeInsets.zero,
-              icon: Icon(
-                Icons.share,
+              icon: toSvgIcon(
+                icon: Assets.iconsShare,
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
-              onPressed: () => postCubit.shareItem(),
+              onPressed: () => commonCubit.shareItem(),
             ),
           ],
         );

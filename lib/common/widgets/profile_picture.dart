@@ -4,6 +4,7 @@ import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/services/cache_manager.dart';
 import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 
 class ProfilePicture extends StatelessWidget {
   final String? image;
@@ -19,12 +20,11 @@ class ProfilePicture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final defaultImage = SvgPicture.asset(
-      Assets.defaultAvatar,
+    final defaultImage = toSvgIcon(
+      icon: Assets.defaultAvatar,
       height: height,
       width: width,
     );
-
     if (image == null) return defaultImage;
     return Container(
       height: height,

@@ -10,6 +10,7 @@ import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/social/bloc/new_post_cubit.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/dialogs.dart';
+import 'package:umai/utils/svg_utils.dart';
 
 class NewPostCompleteScreen extends StatefulWidget {
   const NewPostCompleteScreen({super.key, required this.file});
@@ -84,8 +85,8 @@ class _NewPostCompleteScreenState extends State<NewPostCompleteScreen>
                     onTap: () => Navigator.pop(context),
                     child: widget.file == null
                         ? Row(children: [
-                            SvgPicture.asset(
-                              Assets.iconsCamera,
+                            toSvgIcon(
+                              icon: Assets.iconsCamera,
                               width: 100,
                               height: 100,
                             ),

@@ -18,6 +18,8 @@ import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:umai/common/widgets/action_post.dart';
+import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 import 'package:umai/utils/themes.dart';
 
 class PersonAccountScreen extends StatefulWidget {
@@ -79,9 +81,12 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                   centerTitle: true,
                   actions: [
                     IconButton(
-                        padding: EdgeInsets.zero,
-                        onPressed: onActionsPressed,
-                        icon: const Icon(Icons.more_vert))
+                      padding: EdgeInsets.zero,
+                      onPressed: onActionsPressed,
+                      icon: toSvgIcon(
+                        icon: Assets.iconsOptions,
+                      ),
+                    )
                   ],
                 ),
                 SliverToBoxAdapter(
@@ -207,9 +212,10 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                                                       color: AppTheme.black,
                                                     ),
                                                   )
-                                                : const Icon(
-                                                    Icons.add,
-                                                    color: AppTheme.black,
+                                                : toSvgIcon(
+                                                    icon: Assets.iconsMore,
+                                                    width: 16,
+                                                    height: 16,
                                                   ),
                                             const SizedBox(width: 8),
                                             Text(
@@ -254,10 +260,13 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                                                           .onTertiaryContainer,
                                                     ),
                                                   )
-                                                : Icon(Icons.check,
+                                                :toSvgIcon(
+                                                    icon: Assets.iconsTick,
                                                     color: Theme.of(context)
                                                         .colorScheme
-                                                        .onTertiaryContainer),
+                                                        .onTertiaryContainer,
+                                                    height: 16,
+                                                    width: 16),
                                             const SizedBox(width: 8),
                                             Text(
                                               'ajouté(e)',
@@ -473,7 +482,9 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
               children: [
                 ActionWidget(
                   title: 'Partager...',
-                  icon: Icons.share,
+                  icon:toSvgIcon(
+                    icon: Assets.iconsShare,
+                  ),
                   onTap: () {
                     Navigator.pop(context);
 
@@ -483,7 +494,7 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                 const SizedBox(height: 16),
                 ActionWidget(
                   title: 'Bloquer',
-                  icon: Icons.block_flipped,
+                  icon: const Icon(Icons.block_flipped),
                   onTap: () => blockUser(context: context),
                 ),
               ],

@@ -3,7 +3,7 @@ import 'package:umai/utils/themes.dart';
 
 class ActionWidget extends StatelessWidget {
   final String title;
-  final IconData icon;
+  final Widget icon;
   final VoidCallback onTap;
 
   const ActionWidget(
@@ -20,7 +20,7 @@ class ActionWidget extends StatelessWidget {
         children: [
           CircleAvatar(
             backgroundColor: AppTheme.lightGrey,
-            child: Icon(icon),
+            child: icon,
           ),
           const SizedBox(width: 16),
           Text(

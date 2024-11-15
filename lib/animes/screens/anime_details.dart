@@ -15,7 +15,9 @@ import 'package:umai/common/bloc/anime_manip_cubit.dart';
 import 'package:umai/common/services/cache_manager.dart';
 import 'package:umai/common/widgets/action_widget.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
+import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/dialogs.dart';
+import 'package:umai/utils/svg_utils.dart';
 import 'package:umai/utils/themes.dart';
 
 class AnimeDetailScreen extends StatefulWidget {
@@ -105,9 +107,11 @@ class _AnimeDetailScreenState extends State<AnimeDetailScreen>
                     ),
                     actions: [
                       IconButton(
-                        onPressed: actionsOptions,
-                        icon: const Icon(Icons.more_vert),
-                      ),
+                          onPressed: actionsOptions,
+                          icon: toSvgIcon(
+                            icon: Assets.iconsOptions,
+                            color: AppTheme.white,
+                          )),
                     ],
                     systemOverlayStyle: Theme.of(context)
                         .appBarTheme
@@ -254,7 +258,9 @@ class _AnimeDetailScreenState extends State<AnimeDetailScreen>
             children: [
               ActionWidget(
                 title: 'Partager...',
-                icon: Icons.share_outlined,
+                icon: toSvgIcon(
+                  icon: Assets.iconsShare,
+                ),
                 onTap: () => animeManipCubit.shareAnime(),
               ),
               const SizedBox(

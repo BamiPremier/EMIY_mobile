@@ -6,6 +6,7 @@ import 'package:umai/animes/screens/anime_details.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/quiz/bloc/quiz_manage_cubit.dart';
 import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 import 'package:umai/utils/themes.dart';
 import 'package:umai/quiz/models/quiz.dart';
 
@@ -51,8 +52,8 @@ class _QuizInfoState extends State<QuizInfo>
                       context: context, anime: quiz.anime!))),
               child: Row(
                 children: [
-                  SvgPicture.asset(
-                    Assets.iconStar,
+                  toSvgIcon(
+                    icon: Assets.iconStar,
                   ),
                   const SizedBox(width: 8),
                   Flexible(
@@ -65,8 +66,8 @@ class _QuizInfoState extends State<QuizInfo>
                   ),
                   const SizedBox(width: 8),
                   if (quiz.anime!.isInWatchlist || quiz.anime!.isViewed)
-                    SvgPicture.asset(
-                      Assets.iconBookmark,
+                    toSvgIcon(
+                      icon: Assets.iconBookmark,
                     ),
                 ],
               ),

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
+import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/social/bloc/post_feed_cubit.dart';
 import 'package:umai/social/models/post.dart';
@@ -21,34 +24,41 @@ class _SocialHomeScreenState extends State<SocialHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      primary: false,
-      body: Column(
-        children: [
-          const NewPostBanner(),
-          Expanded(
-              child: AutoListView.get<Post>(
-                  padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom),
-                  cubit: postFeedCubit,
-                  itemBuilder: (context, post) =>
-                      PostItem.get(context: context, post: post),
-                  separatorBuilder: (_, __) => const Divider(height: 8),
-                  errorBuilder: (context, retry) => Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Text("An error occured"),
-                          TextButton(
-                            onPressed: retry,
-                            child: const Text("Retry"),
-                          )
-                        ],
-                      ))),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => NewPostScreen.show(context: context),
-        child: const Icon(Icons.add),
-      ),
-    );
+        primary: false,
+        body: Column(
+          children: [
+            const NewPostBanner(),
+            Expanded(
+                child: AutoListView.get<Post>(
+                    padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom),
+                    cubit: postFeedCubit,
+                    itemBuilder: (context, post) =>
+                        PostItem.get(context: context, post: post),
+                    separatorBuilder: (_, __) => const Divider(height: 8),
+                    emptyBuilder: (ctx) => Center(
+                          child: toSvgIcon(
+                            icon: Assets.iconsEmpty,
+                            height: 56,
+                            width: 56,
+                          ),
+                        ),
+                    errorBuilder: (context, retry) => Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Text("An error occured"),
+                            TextButton(
+                              onPressed: retry,
+                              child: const Text("Retry"),
+                            )
+                          ],
+                        ))),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+            onPressed: () => NewPostScreen.show(context: context),
+            child: toSvgIcon(
+              icon: Assets.iconsMore,
+            )));
   }
 }

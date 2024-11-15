@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
+import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/account/bloc/post_user_cubit.dart';
@@ -43,6 +46,13 @@ class _PostTabState extends State<PostTab> with CompletableMixin {
         cubit: postUserCubit,
         itemBuilder: (context, post) =>
             PostItem.get(context: context, post: post),
+        emptyBuilder: (ctx) => Center(
+              child: toSvgIcon(
+                icon: Assets.iconsEmpty,
+                height: 56,
+                width: 56,
+              ),
+            ),
         errorBuilder: (context, retry) => Column(
               mainAxisSize: MainAxisSize.min,
               children: [

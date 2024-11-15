@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:umai/utils/svg_utils.dart';
 import 'package:potatoes/common/widgets/loaders.dart';
 import 'package:potatoes/libs.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:umai/account/screens/edit_profile.dart';
 import 'package:umai/account/screens/follow.dart';
 import 'package:umai/account/screens/param/settings_screen.dart';
@@ -18,7 +19,9 @@ import 'package:umai/common/widgets/action_widget.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
+import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/dialogs.dart';
+import 'package:umai/utils/svg_utils.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
@@ -68,9 +71,12 @@ class _AccountScreenState extends State<AccountScreen>
                   centerTitle: true,
                   actions: [
                     IconButton(
-                        padding: EdgeInsets.zero,
-                        onPressed: onActionsPressed,
-                        icon: const Icon(Icons.more_vert))
+                      padding: EdgeInsets.zero,
+                      onPressed: onActionsPressed,
+                      icon: toSvgIcon(
+                        icon: Assets.iconsOptions,
+                      ),
+                    )
                   ],
                 ),
                 SliverToBoxAdapter(
@@ -304,13 +310,6 @@ class _AccountScreenState extends State<AccountScreen>
         MaterialPageRoute(builder: (context) => const OnboardingScreen()),
         (route) => false,
       );
-    }
-    if (state is ShareUserLoadingState) {
-      loadingDialogCompleter = showLoadingBarrier(
-        context: context,
-      );
-    } else if (state is ShareUserSuccessState) {
-      await Share.share(state.shareLink);
     } else if (state is UserErrorState) {
       showErrorToast(content: state.error, context: context);
     }
@@ -319,24 +318,26 @@ class _AccountScreenState extends State<AccountScreen>
   void onActionsPressed() => showAppBottomSheet(
       context: context,
       builder: (innerContext) => Padding(
-            padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
+            padding: const EdgeInsets.only(top: 24.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
                 ActionWidget(
                   title: 'Partager...',
-                  icon: Icons.share,
+                  icon: toSvgIcon(
+                    icon: Assets.iconsShare,
+                  ),
                   onTap: () {
-                    Navigator.pop(innerContext);
-
-                    userCubit.shareUser();
+                    Navigator.of(innerContext).pop();
                   },
                 ),
                 const SizedBox(height: 16),
                 ActionWidget(
                   title: 'Éditer mon profil',
-                  icon: Icons.edit_outlined,
+                  icon: toSvgIcon(
+                    icon: Assets.iconsEdit,
+                  ),
                   onTap: () {
                     Navigator.of(innerContext).pop();
                     Navigator.of(context).push(MaterialPageRoute(
@@ -346,7 +347,9 @@ class _AccountScreenState extends State<AccountScreen>
                 const SizedBox(height: 16),
                 ActionWidget(
                   title: 'Paramètres',
-                  icon: Icons.settings,
+                  icon: toSvgIcon(
+                    icon: Assets.iconsSetting,
+                  ),
                   onTap: () {
                     Navigator.of(innerContext).pop();
                     Navigator.of(context).push(
@@ -358,7 +361,7 @@ class _AccountScreenState extends State<AccountScreen>
                 const SizedBox(height: 16),
                 ActionWidget(
                   title: 'Déconnexion',
-                  icon: Icons.logout,
+                  icon: Icon(Icons.logout),
                   onTap: () async {
                     Navigator.pop(innerContext);
                     await disconnect(context: context);
@@ -373,7 +376,7 @@ class _AccountScreenState extends State<AccountScreen>
       context: context,
       builder: (BuildContext context) {
         return Padding(
-            padding: const EdgeInsets.only(top: 24.0),
+            padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
+
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
+import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/quiz/bloc/load_quiz_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
@@ -86,6 +89,13 @@ class _QuizBlockState extends State<QuizBlock> {
                   ItemQuiz.get(context: context, quiz: quiz),
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
+              emptyBuilder: (ctx) => Center(
+                child: toSvgIcon(
+                  icon: Assets.iconsEmpty,
+                  height: 56,
+                  width: 56,
+                ),
+              ),
               errorBuilder: (context, retry) => Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -133,6 +143,13 @@ class _QuizBlockState extends State<QuizBlock> {
           autoManage: false,
           itemBuilder: (context, quiz) =>
               ItemQuiz.get(context: context, quiz: quiz),
+          emptyBuilder: (ctx) => Center(
+            child: toSvgIcon(
+              icon: Assets.iconsEmpty,
+              height: 56,
+              width: 56,
+            ),
+          ),
           errorBuilder: (context, retry) => Column(
             mainAxisSize: MainAxisSize.min,
             children: [

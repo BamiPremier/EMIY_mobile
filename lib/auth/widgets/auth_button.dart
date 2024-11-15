@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 
 enum AuthProvider { apple, google }
 
@@ -52,9 +53,10 @@ class AuthButton extends StatelessWidget {
       case AuthProvider.apple:
         return UmaiButton.white(
           onPressed: onPressed,
-          icon: SvgPicture.asset(
-            provider.asset,
+          icon: toSvgIcon(
+            icon: provider.asset,
             height: 24.0,
+            width: 24.0,
           ),
           text: provider.name,
           large: true,
@@ -62,9 +64,10 @@ class AuthButton extends StatelessWidget {
       case AuthProvider.google:
         return UmaiButton.black(
           onPressed: onPressed,
-          icon: SvgPicture.asset(
-            provider.asset,
+          icon: toSvgIcon(
+            icon: provider.asset,
             height: 24.0,
+            width: 24.0,
           ),
           text: provider.name,
           large: true,

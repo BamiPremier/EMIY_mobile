@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
+
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
+import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/bloc/category_anime_cubit.dart';
 import 'package:umai/animes/models/anime.dart';
@@ -31,7 +34,7 @@ class AnimeBlock extends StatefulWidget {
 }
 
 class _AnimeBlockState extends State<AnimeBlock> {
-   late final cubit = CategoryAnimeCubit(
+  late final cubit = CategoryAnimeCubit(
       context.read(),
       context.read(),
       widget.filter?.name ?? '',
@@ -87,6 +90,13 @@ class _AnimeBlockState extends State<AnimeBlock> {
               gridDelegate: gridDelegate,
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
+              emptyBuilder: (ctx) => Center(
+                child: toSvgIcon(
+                  icon: Assets.iconsEmpty,
+                  height: 56,
+                  width: 56,
+                ),
+              ),
               errorBuilder: (context, retry) => Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -129,13 +139,20 @@ class _AnimeBlockState extends State<AnimeBlock> {
           builder: headerBuilder,
         );
       case AnimeBlockType.skinless:
-        return  AutoListView.get<Anime>(
+        return AutoListView.get<Anime>(
           cubit: cubit,
           autoManage: false,
           viewType: ViewType.grid,
           itemBuilder: (context, anime) =>
               AnimeItem.get(context: context, anime: anime, withAction: false),
           gridDelegate: gridDelegate,
+          emptyBuilder: (ctx) => Center(
+            child: toSvgIcon(
+              icon: Assets.iconsEmpty,
+              height: 56,
+              width: 56,
+            ),
+          ),
           errorBuilder: (context, retry) => Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -207,9 +224,12 @@ enum AnimeBlockFilter { trending, nextSeason, all }
 extension AnimeBlockFilterExtension on AnimeBlockFilter {
   String get name {
     switch (this) {
-      case AnimeBlockFilter.trending: return 'TRENDING';
-      case AnimeBlockFilter.nextSeason: return 'NEXT_SEASON';
-      case AnimeBlockFilter.all: return 'ALL';
+      case AnimeBlockFilter.trending:
+        return 'TRENDING';
+      case AnimeBlockFilter.nextSeason:
+        return 'NEXT_SEASON';
+      case AnimeBlockFilter.all:
+        return 'ALL';
     }
   }
 }

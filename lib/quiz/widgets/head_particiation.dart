@@ -8,6 +8,8 @@ import 'package:umai/quiz/bloc/quiz_participation_cubit.dart';
 import 'package:umai/quiz/bloc/quiz_question_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/services/quiz_cubit_manager.dart';
+import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 import 'package:umai/utils/themes.dart';
 
 class HeadParticipation extends StatefulWidget {
@@ -142,12 +144,12 @@ class _HeadParticipationState extends State<HeadParticipation>
                       : null,
                   errorBuilder: (context, error, stackTrace) =>
                       quiz.anime != null
-                          ? Icon(
-                              Icons.error,
+                          ? toSvgIcon(
+                              icon: Assets.iconsError,
                               color: Theme.of(context)
                                   .colorScheme
                                   .onTertiaryContainer,
-                              size: 32,
+                              // size: 32,
                             )
                           : Container(),
                 ),
