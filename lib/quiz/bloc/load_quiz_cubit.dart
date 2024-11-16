@@ -13,7 +13,7 @@ class LoadQuizCubit extends AutoListCubit<Quiz> {
   LoadQuizCubit(this.quizService, this.cubitManager, this.personCubitManager,
       this.selectedFilter, [int? size])
       : super(
-            provider: ({page = 1}) => quizService.getQuizsFeed(
+            provider: ({page = 1}) => quizService.getQuizFeed(
                 page: page, size: size, selectedFilter: selectedFilter));
 
   @override

@@ -39,7 +39,7 @@ class _QuizBlockState extends State<QuizBlock> {
       context.read(),
       context.read(),
       widget.filter?.name ?? '',
-      widget.type == QuizBlockType.skinless ? 9 : null);
+      widget.type == QuizBlockType.skinless ? 10 : null);
 
   final gridDelegate = const SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: 3,

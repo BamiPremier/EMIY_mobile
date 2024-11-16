@@ -27,7 +27,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
             title: "Animes Favoris",
             filter: QuizBlockFilter.favorites,
           ),
-          QuizBlock.empty(title: "Les plus recents"),
+          QuizBlock.empty(title: "Les plus récents"),
         ],
         body: const QuizBlock.skinless(filter: QuizBlockFilter.recent),
       ),

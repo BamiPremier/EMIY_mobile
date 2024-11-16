@@ -97,33 +97,42 @@ class _HomeScreenState extends State<HomeScreen> with CompletableMixin {
             bottomNavigationBar: BottomNavigationBar(
               onTap: setPage,
               currentIndex: index,
-              selectedItemColor: Colors.amber,
               useLegacyColorScheme: false,
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
                   icon: _buildIconWithDecoration(
                       icon: Assets.iconsNotification, selected: index == 0),
                   label: pages[0]['title'] as String,
+                  backgroundColor: Theme.of(context)
+                    .bottomNavigationBarTheme.backgroundColor
                 ),
                 BottomNavigationBarItem(
                   icon: _buildIconWithDecoration(
                       icon: Assets.iconsCalendar, selected: index == 1),
                   label: pages[1]['title'] as String,
+                  backgroundColor: Theme.of(context)
+                    .bottomNavigationBarTheme.backgroundColor
                 ),
                 BottomNavigationBarItem(
                   icon: _buildIconWithDecoration(
                       icon: Assets.iconsUmai, selected: index == 2),
                   label: pages[2]['title'] as String,
+                  backgroundColor: Theme.of(context)
+                    .bottomNavigationBarTheme.backgroundColor
                 ),
                 BottomNavigationBarItem(
                   icon: _buildIconWithDecoration(
                       icon: Assets.iconsTrending, selected: index == 3),
                   label: pages[3]['title'] as String,
+                  backgroundColor: Theme.of(context)
+                    .bottomNavigationBarTheme.backgroundColor
                 ),
                 BottomNavigationBarItem(
                   icon: _buildIconWithDecoration(
                       icon: Assets.iconsQuiz, selected: index == 4),
                   label: pages[4]['title'] as String,
+                  backgroundColor: Theme.of(context)
+                    .bottomNavigationBarTheme.backgroundColor
                 ),
               ],
             ),

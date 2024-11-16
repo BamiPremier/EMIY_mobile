@@ -112,14 +112,14 @@ class QuizService extends ApiService {
         mapper: (result) => toPaginatedList(result, Quiz.fromJson));
   }
 
-  Future<PaginatedList<Quiz>> getQuizsFeed(
+  Future<PaginatedList<Quiz>> getQuizFeed(
       {int page = 1, int? size, String? selectedFilter}) async {
     return compute(
         dio.get(_quizFeed,
             options: Options(headers: withAuth()),
             queryParameters: {
               'page': page,
-              'size': size ?? 6,
+              'size': size ?? 3,
               'selectedFilter': selectedFilter,
             }),
         mapper: (result) => toPaginatedList(result, Quiz.fromJson));
