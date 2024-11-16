@@ -148,4 +148,29 @@ class NotificationService {
   }
 }
 
-Future<void> onBackgroundMessage(RemoteMessage message) async {}
+Future<void> onBackgroundMessage(RemoteMessage message) async {
+  if (message.notification != null) {
+    print("Message reçu en arrière-plan : ${message.data.toString()}");
+
+    final FlutterLocalNotificationsPlugin localNotifications =
+        FlutterLocalNotificationsPlugin();
+    const androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        androidChannelId, androidChannelName,
+        priority: Priority.max,
+        color: AppTheme.primaryYellow,
+        enableLights: true);
+    const iOSPlatformChannelSpecifics = DarwinNotificationDetails();
+    const platformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
+
+    await localNotifications.show(
+      0,
+      message.notification?.title,
+      message.notification?.body,
+      platformChannelSpecifics,
+      payload:
+          jsonEncode(message.data), // Optionnel, utile pour des actions futures
+    );
+  }
+}

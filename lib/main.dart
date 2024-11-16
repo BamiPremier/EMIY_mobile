@@ -64,7 +64,6 @@ void main() async {
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
   final NotificationService notificationService = NotificationService();
 
-  final appVersion = packageInfo.buildNumber;
   final timezone = await FlutterTimezone.getLocalTimezone();
   runApp(Phoenix(
     child: MyApp(
@@ -73,7 +72,7 @@ void main() async {
       secureStorage: secureStorage,
       cacheOptions: cacheOptions,
       deviceInfo: deviceInfo,
-      appVersion: appVersion,
+      packageInfo: packageInfo,
       notificationService: notificationService,
       timezone: timezone,
     ),
@@ -87,7 +86,7 @@ class MyApp extends StatelessWidget {
   final CacheOptions cacheOptions;
   final NotificationService notificationService;
   final DeviceInfo deviceInfo;
-  final String appVersion;
+  final PackageInfo packageInfo;
   final String timezone;
   const MyApp(
       {required this.navigatorKey,
@@ -96,14 +95,14 @@ class MyApp extends StatelessWidget {
       required this.notificationService,
       required this.cacheOptions,
       required this.deviceInfo,
-      required this.appVersion,
+      required this.packageInfo,
       required this.timezone,
       super.key});
 
   @override
   Widget build(BuildContext context) {
     final preferencesService = PreferencesService(
-        preferences, secureStorage, appVersion, deviceInfo, timezone);
+        preferences, secureStorage, packageInfo, deviceInfo, timezone);
 
     final Dio dio = DioClient.instance(
       preferencesService,
@@ -154,7 +153,7 @@ class MyApp extends StatelessWidget {
               ),
               BlocProvider(
                 create: (context) => NotificationCubit(
-              
+
                     preferencesService,
                     context.read(),
                     context.read(),

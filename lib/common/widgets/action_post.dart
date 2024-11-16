@@ -61,7 +61,7 @@ class PostAction extends StatelessWidget {
             color: Theme.of(context).colorScheme.onSurfaceVariant,
             size: 16
           ),
-  
+
           itemBuilder: (BuildContext context) {
             List<String> options = [];
 

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:potatoes_secured_preferences/potatoes_secured_preferences.dart';
 import 'package:umai/common/models/device_info.dart';
 import 'package:umai/common/models/user.dart';
@@ -11,10 +12,10 @@ class PreferencesService extends SecuredPreferencesService {
   static const String _keyUserUID = 'user_id';
   static const String _keyDeviceToken = 'device-token';
   static const String _keyAuthToken = 'auth_token';
-  final String appVersion;
+  final PackageInfo packageInfo;
   final DeviceInfo deviceInfo;
   final String timezone;
-  PreferencesService(super.preferences, super.secureStorage, this.appVersion,
+  PreferencesService(super.preferences, super.secureStorage, this.packageInfo,
       this.deviceInfo, this.timezone);
 
   User? get user {
@@ -57,7 +58,7 @@ class PreferencesService extends SecuredPreferencesService {
       "hash": digest.toString(),
       "device_id": deviceInfo.id,
       "device_name": deviceInfo.name,
-      "app_version": appVersion,
+      "app_version": packageInfo.buildNumber ,
       "timezone": timezone,
     };
   }

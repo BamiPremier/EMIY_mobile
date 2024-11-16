@@ -18,7 +18,7 @@ class ButtonCommon<T extends XItem> extends StatefulWidget {
   });
 
   @override
-  State<ButtonCommon  <T>> createState() => _ButtonCommonState<T>();
+  State<ButtonCommon<T>> createState() => _ButtonCommonState<T>();
 }
 
 class _ButtonCommonState<T extends XItem> extends State<ButtonCommon<T>>
