@@ -12,7 +12,8 @@ import 'package:umai/social/widgets/item_post.dart';
 
 class PostTab extends StatefulWidget {
   final bool currentUser;
-  PostTab({super.key, this.currentUser = true});
+  const PostTab({super.key, this.currentUser = true});
+
   @override
   State<PostTab> createState() => _PostTabState();
 }
@@ -49,8 +50,7 @@ class _PostTabState extends State<PostTab> with CompletableMixin {
         emptyBuilder: (ctx) => Center(
               child: toSvgIcon(
                 icon: Assets.iconsEmpty,
-                height: 56,
-                width: 56,
+                size: 56,
               ),
             ),
         errorBuilder: (context, retry) => Column(

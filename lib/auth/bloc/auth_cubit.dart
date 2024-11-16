@@ -79,7 +79,7 @@ class AuthCubit extends Cubit<AuthState> {
     log(DateTime.now().timeZoneName);
     authService
         .authUser(
-      deviceId: deviceInfo!.id,
+      deviceId: deviceInfo.id,
       deviceName: deviceInfo.name,
       token: idToken!,
       timezone: timezone,

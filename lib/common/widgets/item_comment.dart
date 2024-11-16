@@ -29,11 +29,11 @@ class ItemComment<T extends XItem> extends StatefulWidget {
 
   // Utilisez un constructeur normal au lieu d'une méthode statique
   const ItemComment({
+    super.key,
     required this.comment,
     required this.idItem,
     required this.actionCommentBaseCubit,
-    Key? key,
-  }) : super(key: key);
+  });
 
   @override
   State<ItemComment<T>> createState() => _ItemCommentState<T>();
@@ -84,8 +84,7 @@ class _ItemCommentState<T extends XItem> extends State<ItemComment<T>> {
               leading: GestureDetector(
                 child: ProfilePicture(
                   image: comment.user.image,
-                  height: 40,
-                  width: 40,
+                  size: 40,
                 ),
                 onTap: () => Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => PersonAccountScreen.get(
@@ -221,8 +220,7 @@ class _ItemCommentState<T extends XItem> extends State<ItemComment<T>> {
             emptyBuilder: (ctx) => Center(
               child: toSvgIcon(
                 icon: Assets.iconsEmpty,
-                height: 56,
-                width: 56,
+                size: 56
               ),
             ),
             errorBuilder: (context, retry) => Align(

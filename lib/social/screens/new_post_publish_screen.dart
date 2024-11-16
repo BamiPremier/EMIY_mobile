@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/common/utils/validators.dart';
@@ -87,8 +86,7 @@ class _NewPostCompleteScreenState extends State<NewPostCompleteScreen>
                         ? Row(children: [
                             toSvgIcon(
                               icon: Assets.iconsCamera,
-                              width: 100,
-                              height: 100,
+                              size: 96
                             ),
                             const SizedBox(width: 16.0),
                             Text('Prendre une photo',

@@ -12,14 +12,6 @@ class InitializingQuizManageState extends CubitSuccessState
   List<Object?> get props => [quiz];
 }
 
-class QuizManageIdleState extends CubitSuccessState with QuizManageState {
-  const QuizManageIdleState();
-
-  @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
-}
-
 class QuizManageLoadingState extends CubitLoadingState with QuizManageState {
   const QuizManageLoadingState();
 }

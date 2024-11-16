@@ -1,6 +1,3 @@
-import 'dart:async';
-
-import 'package:app_links/app_links.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart' hide PreferencesService;
 import 'package:umai/animes/models/anime.dart';
@@ -10,11 +7,10 @@ import 'package:umai/animes/services/episode_cubit_manager.dart';
 import 'package:umai/common/models/notification.dart';
 import 'package:umai/common/models/user.dart';
 import 'package:umai/common/services/link_service.dart';
-import 'package:umai/common/services/user_service.dart';
 import 'package:umai/common/services/notification_service.dart';
-
 import 'package:umai/common/services/person_cubit_manager.dart';
 import 'package:umai/common/services/preferences_service.dart';
+import 'package:umai/common/services/user_service.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/social/models/post.dart';

@@ -4,6 +4,8 @@ import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/utils/validators.dart'; 
 import 'package:umai/common/bloc/action_comment_cubit.dart'; 
 import 'package:umai/common/models/comment.dart';
+import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 import 'package:umai/utils/themes.dart';
 
 class CommentInput<C extends XCommonCubit, A extends ActionCommentBaseCubit<C>>
@@ -80,21 +82,24 @@ class _CommentInputState<C extends XCommonCubit,
                               backgroundColor: Theme.of(context).primaryColor,
                               radius: 24,
                               child: state is XLoadingState
-                                  ? const SizedBox(
-                                      width: 16,
-                                      height: 16,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        color: AppTheme.black,
-                                      ),
-                                    )
-                                  : const Icon(Icons.arrow_upward)),
+                                ? const SizedBox(
+                                    width: 16,
+                                    height: 16,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: AppTheme.black,
+                                    ),
+                                  )
+                                : toSvgIcon(
+                                    icon: Assets.iconsDirectionUp,
+                                    size: 16.0
+                                  )
+                          ),
                           onPressed: () {
                             if (Validators.empty(_commentController.text) ==
                                 null) {
-                              context.read<A>().comment(
-                                    content: _commentController.text,
-                                  );
+                              context.read<A>()
+                                .comment(content: _commentController.text);
                             }
                           },
                         ),

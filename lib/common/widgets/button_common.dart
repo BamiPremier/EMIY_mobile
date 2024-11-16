@@ -33,45 +33,32 @@ class _ButtonCommonState<T extends XItem> extends State<ButtonCommon<T>>
       builder: (context, state) {
         final item = commonCubit.x;
         return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
+            IconButton(
+              padding: EdgeInsets.zero,
+              icon: toSvgIcon(
+                icon: Assets.iconsLike,
+                color: item.itemHasLiked
+                  ? Theme.of(context).colorScheme.tertiary
+                  : Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+              onPressed: () {
                 item.itemHasLiked
-                    ? IconButton(
-                        padding: EdgeInsets.zero,
-                        icon: toSvgIcon(
-                          icon: Assets.iconsLike,
-                          color: Colors.red,
-                        ),
-                        onPressed: () {
-                          commonCubit.unLikeItem();
-                        },
-                      )
-                    : IconButton(
-                        padding: EdgeInsets.zero,
-                        icon: toSvgIcon(
-                          icon: Assets.iconsLike,
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        ),
-                        onPressed: () {
-                          commonCubit.likeItem();
-                        },
-                      ),
-                IconButton(
-                  padding: EdgeInsets.zero,
-                  icon: toSvgIcon(
-                    icon: Assets.iconsComment,
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
-                  onPressed: widget.canComment
-                      ? () => context
-                          .read<ActionCommentBaseCubit<XCommonCubit<T>>>()
-                          .set(null)
-                      : null,
-                ),
-              ],
+                  ? commonCubit.unLikeItem()
+                  : commonCubit.likeItem();
+              },
             ),
+            IconButton(
+              padding: EdgeInsets.zero,
+              icon: toSvgIcon(
+                icon: Assets.iconsComment,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+              onPressed: widget.canComment
+                  ? () => context.read<ActionCommentCubit>().set(null)
+                  : null,
+            ),
+            const Spacer(),
             IconButton(
               padding: EdgeInsets.zero,
               icon: toSvgIcon(
@@ -80,6 +67,7 @@ class _ButtonCommonState<T extends XItem> extends State<ButtonCommon<T>>
               ),
               onPressed: () => commonCubit.shareItem(),
             ),
+            const SizedBox(width: 8.0)
           ],
         );
       },

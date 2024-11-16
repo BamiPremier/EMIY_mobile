@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/svg_utils.dart';
@@ -9,6 +8,8 @@ import 'package:umai/social/models/post.dart';
 import 'package:umai/social/screens/new_post_screen.dart';
 import 'package:umai/social/widgets/item_post.dart';
 import 'package:umai/social/widgets/new_post_banner.dart';
+import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 
 class SocialHomeScreen extends StatefulWidget {
   const SocialHomeScreen({super.key});
@@ -39,8 +40,7 @@ class _SocialHomeScreenState extends State<SocialHomeScreen> {
                     emptyBuilder: (ctx) => Center(
                           child: toSvgIcon(
                             icon: Assets.iconsEmpty,
-                            height: 56,
-                            width: 56,
+                            size: 56
                           ),
                         ),
                     errorBuilder: (context, retry) => Column(

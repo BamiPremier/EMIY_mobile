@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/svg_utils.dart';
@@ -56,8 +55,7 @@ class _WatchListState extends State<WatchList> with CompletableMixin {
         emptyBuilder: (ctx) => Center(
               child: toSvgIcon(
                 icon: Assets.iconsEmpty,
-                height: 56,
-                width: 56,
+                size: 56,
               ),
             ),
         errorBuilder: (context, retry) => Column(

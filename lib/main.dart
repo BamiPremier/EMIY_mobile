@@ -21,6 +21,7 @@ import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/bloc/link_cubit.dart';
 import 'package:umai/common/bloc/notification_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
+import 'package:umai/common/models/device_info.dart';
 import 'package:umai/common/screens/home.dart';
 import 'package:umai/common/services/api_service.dart';
 import 'package:umai/common/services/cache_manager.dart';
@@ -41,7 +42,6 @@ import 'package:umai/social/models/post.dart';
 import 'package:umai/social/services/post_cubit_manager.dart';
 import 'package:umai/social/services/social_service.dart';
 import 'package:umai/utils/themes.dart';
-import 'package:umai/common/models/device_info.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -63,7 +63,7 @@ void main() async {
   final deviceInfo = await DeviceInfo.get();
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
   final NotificationService notificationService = NotificationService();
- 
+
   final timezone = await FlutterTimezone.getLocalTimezone();
   runApp(Phoenix(
     child: MyApp(
@@ -132,7 +132,10 @@ class MyApp extends StatelessWidget {
               create: (context) => AnimeCubitManager(context.read())),
           RepositoryProvider(create: (context) => QuizService(dio)),
           RepositoryProvider(
-              create: (context) => QuizManageCubitManager(context.read())),
+            create: (context) => QuizManageCubitManager(
+              context.read(),
+              context.read()
+            )),
           RepositoryProvider(
               create: (context) => EpisodeCubitManager(context.read())),
           RepositoryProvider(create: (_) => LinkService(dio)),
@@ -150,7 +153,7 @@ class MyApp extends StatelessWidget {
               ),
               BlocProvider(
                 create: (context) => NotificationCubit(
-              
+
                     preferencesService,
                     context.read(),
                     context.read(),

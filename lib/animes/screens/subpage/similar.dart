@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
-import 'package:umai/utils/assets.dart';
-import 'package:umai/utils/svg_utils.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/bloc/similar_anime_cubit.dart';
 import 'package:umai/animes/models/anime.dart';
-import 'package:umai/animes/widgets/item_anime.dart';
 import 'package:umai/animes/services/anime_cubit_manager.dart';
+import 'package:umai/animes/widgets/item_anime.dart';
 import 'package:umai/common/bloc/anime_manip_cubit.dart';
+import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 
 class SimilarScreen extends StatefulWidget {
   static Widget get({
@@ -55,8 +54,7 @@ class _SimilarScreenState extends State<SimilarScreen>
           emptyBuilder: (ctx) => Center(
                 child: toSvgIcon(
                   icon: Assets.iconsEmpty,
-                  height: 56,
-                  width: 56,
+                  size: 56,
                 ),
               ),
           errorBuilder: (context, retry) => Center(

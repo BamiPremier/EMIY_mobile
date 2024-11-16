@@ -12,7 +12,8 @@ import 'package:umai/common/bloc/person_cubit.dart';
 
 class AnimesTab extends StatefulWidget {
   final bool currentUser;
-  AnimesTab({super.key, this.currentUser = true});
+
+  const AnimesTab({super.key, this.currentUser = true});
 
   @override
   State<AnimesTab> createState() => _AnimesTabState();
@@ -57,8 +58,7 @@ class _AnimesTabState extends State<AnimesTab> with CompletableMixin {
           emptyBuilder: (ctx) => Center(
               child: toSvgIcon(
                 icon: Assets.iconsEmpty,
-                height: 56,
-                width: 56,
+                size: 56,
               ),
             ),
         errorBuilder: (context, retry) => Column(

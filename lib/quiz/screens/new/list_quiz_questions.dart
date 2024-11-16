@@ -61,7 +61,7 @@ class ListQuizQuestionsScreen extends StatelessWidget {
                                 height: 60,
                                 clipBehavior: Clip.hardEdge,
                                 decoration: BoxDecoration(
-                                  color: AppTheme.surfacegrey,
+                                  color: AppTheme.surfaceGrey,
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Image(

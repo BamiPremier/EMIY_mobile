@@ -18,8 +18,6 @@ import 'package:umai/quiz/screens/quiz_details.dart';
 import 'package:umai/social/screens/home.dart';
 import 'package:umai/social/widgets/head_post.dart';
 import 'package:umai/utils/assets.dart';
-import 'package:umai/utils/svg_utils.dart';
-import 'package:umai/utils/themes.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -33,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> with CompletableMixin {
   final pages = const [
     {'title': 'Social', 'page': SocialHomeScreen()},
     {'title': 'Évènements', 'page': SizedBox()},
-    {'title': 'Pour toi', 'page': SizedBox()},
+    {'title': 'Actu', 'page': SizedBox()},
     {'title': 'Animes', 'page': AnimeHomeScreen()},
     {'title': 'Quiz', 'page': QuizHomeScreen()},
   ];
@@ -219,13 +217,21 @@ class _HomeScreenState extends State<HomeScreen> with CompletableMixin {
 
   Widget _buildIconWithDecoration({required icon, required bool selected}) {
     return Container(
-        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 20),
-        decoration: selected
-            ? BoxDecoration(
-                color: AppTheme.primaryYellow,
-                borderRadius: BorderRadius.circular(16))
-            : null,
-        child: toSvgIcon(icon: icon));
+      margin: const EdgeInsets.only(bottom: 4.0),
+      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 20),
+      decoration: selected
+        ? BoxDecoration(
+            color: Theme.of(context).colorScheme.primary,
+            borderRadius: BorderRadius.circular(16))
+        : null,
+      child: toSvgIcon(
+        icon: icon,
+        color: selected
+          ? Theme.of(context).bottomNavigationBarTheme.selectedItemColor
+          : Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
+        size: 24,
+      )
+    );
   }
 
   @override

@@ -6,6 +6,8 @@ import 'package:umai/utils/svg_utils.dart';
 import 'package:umai/utils/themes.dart';
 
 class BtnWatchView extends StatefulWidget {
+  const BtnWatchView({super.key});
+
   @override
   State<BtnWatchView> createState() => _BtnWatchViewState();
 }
@@ -17,173 +19,98 @@ class _BtnWatchViewState extends State<BtnWatchView> {
   Widget build(BuildContext context) {
     return BlocBuilder<AnimeManipCubit, AnimeManipState>(
         builder: (context, state) {
+      final anime = animeManipCubit.anime;
+      final viewedForegroundColor = anime.isViewed
+        ? Theme.of(context).colorScheme.onTertiaryContainer
+        : Theme.of(context).colorScheme.onPrimary;
+      final watchlistForegroundColor = anime.isInWatchlist
+        ? Theme.of(context).colorScheme.onSurfaceVariant
+        : AppTheme.white;
       return Row(
         children: [
-          animeManipCubit.anime.isViewed
-              ? Expanded(
-                  child: FilledButton(
-                      onPressed: () => animeManipCubit.removeFromViewed(),
-                      style: FilledButton.styleFrom(
-                        backgroundColor:
-                            Theme.of(context).colorScheme.tertiaryContainer,
-                        textStyle:
-                            Theme.of(context).textTheme.labelLarge!.copyWith(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onTertiaryContainer,
-                                ),
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 6, horizontal: 12),
+          Expanded(
+            child: FilledButton(
+              onPressed: () {
+                anime.isViewed
+                  ? animeManipCubit.removeFromViewed()
+                  : animeManipCubit.addToViewed();
+              },
+              style: FilledButton.styleFrom(
+                backgroundColor: anime.isViewed
+                  ? Theme.of(context).colorScheme.tertiaryContainer
+                  : Theme.of(context).colorScheme.primary,
+                foregroundColor: viewedForegroundColor,
+                textStyle: Theme.of(context).textTheme.labelLarge,
+                padding: const EdgeInsets.symmetric(
+                  vertical: 6,
+                  horizontal: 12
+                ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (state is AnimeManipViewedLoadingState)
+                    SizedBox(
+                      width: 14,
+                      height: 14,
+                      child: CircularProgressIndicator(
+                        color: viewedForegroundColor,
+                        strokeWidth: 2,
                       ),
-                      child: Row(mainAxisSize: MainAxisSize.min, children: [
-                        if (state is AnimeManipViewedLoadingState)
-                          SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onTertiaryContainer,
-                              strokeWidth: 2,
-                            ),
-                          )
-                        else
-                          toSvgIcon(
-                            icon: Assets.iconsTick,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onTertiaryContainer,
-                            height: 16,
-                            width: 16,
-                          ),
-                        const SizedBox(width: 8),
-                        Text(
-                          "J'ai vu",
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelLarge!
-                              .copyWith(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onTertiaryContainer),
-                        ),
-                      ])))
-              : Expanded(
-                  child: FilledButton(
-                      onPressed: () => animeManipCubit.addToViewed(),
-                      style: FilledButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        textStyle:
-                            Theme.of(context).textTheme.labelLarge!.copyWith(
-                                  color: AppTheme.mainText,
-                                ),
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 6, horizontal: 12),
+                    )
+                  else
+                    toSvgIcon(
+                      icon: Assets.iconsTick,
+                      color: viewedForegroundColor,
+                      size: 14,
+                    ),
+                  const SizedBox(width: 8),
+                  const Text("J'ai vu"),
+                ])),
+          ),
+          const SizedBox(width: 8.0),
+          Expanded(
+            child: FilledButton(
+              onPressed: () {
+                anime.isInWatchlist
+                  ? animeManipCubit.removeFromWatchlist()
+                  : animeManipCubit.addToWatchlist();
+              },
+              style: FilledButton.styleFrom(
+                backgroundColor: anime.isInWatchlist
+                  ? Theme.of(context).colorScheme.surfaceContainerHighest
+                  : AppTheme.black,
+                foregroundColor: watchlistForegroundColor,
+                textStyle: Theme.of(context).textTheme.labelLarge,
+                padding: const EdgeInsets.symmetric(
+                  vertical: 6,
+                  horizontal: 12
+                ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (state is AnimeManipWatchlistLoadingState)
+                    SizedBox(
+                      width: 14,
+                      height: 14,
+                      child: CircularProgressIndicator(
+                        color: watchlistForegroundColor,
+                        strokeWidth: 2,
                       ),
-                      child: Row(mainAxisSize: MainAxisSize.min, children: [
-                        state is AnimeManipViewedLoadingState
-                            ? const SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                    color: AppTheme.black, strokeWidth: 2),
-                              )
-                            : toSvgIcon(
-                                icon: Assets.iconsMore,
-                                color: AppTheme.mainText,
-                                height: 16,
-                                width: 16,
-                              ),
-                        const SizedBox(width: 8),
-                        Text(
-                          "J'ai vu",
-                          style:
-                              Theme.of(context).textTheme.labelLarge!.copyWith(
-                                    color: AppTheme.mainText,
-                                  ),
-                        )
-                      ]))),
-          const SizedBox(width: 8),
-          animeManipCubit.anime.isInWatchlist
-              ? Expanded(
-                  child: FilledButton(
-                      onPressed: () => animeManipCubit.removeFromWatchlist(),
-                      style: FilledButton.styleFrom(
-                        backgroundColor: Theme.of(context)
-                            .colorScheme
-                            .surfaceContainerHighest,
-                        textStyle:
-                            Theme.of(context).textTheme.labelLarge!.copyWith(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSurfaceVariant,
-                                ),
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 6, horizontal: 12),
-                      ),
-                      child: Row(mainAxisSize: MainAxisSize.min, children: [
-                        if (state is AnimeManipWatchlistLoadingState)
-                          SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurfaceVariant,
-                              strokeWidth: 2,
-                            ),
-                          )
-                        else
-                           toSvgIcon(
-                            icon: Assets.iconsTick,
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
-                            height: 16,
-                            width: 16,
-                          ),
-                        const SizedBox(width: 8),
-                        Text(
-                          'A voir',
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelLarge!
-                              .copyWith(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSurfaceVariant),
-                        ),
-                      ])))
-              : Expanded(
-                  child: FilledButton(
-                      onPressed: () => animeManipCubit.addToWatchlist(),
-                      style: FilledButton.styleFrom(
-                        backgroundColor: AppTheme.mainText,
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 6, horizontal: 12),
-                      ),
-                      child: Row(mainAxisSize: MainAxisSize.min, children: [
-                        state is AnimeManipWatchlistLoadingState
-                            ? const SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                    color: AppTheme.white, strokeWidth: 2),
-                              )
-                            : toSvgIcon(
-                                icon: Assets.iconsMore,
-                                color: AppTheme.white,
-                                height: 16,
-                                width: 16,
-                              ),
-                        const SizedBox(width: 8),
-                        Text(
-                          'A voir',
-                          style:
-                              Theme.of(context).textTheme.labelLarge!.copyWith(
-                                    color: AppTheme.white,
-                                  ),
-                        )
-                      ]))),
+                    )
+                  else
+                    toSvgIcon(
+                      icon: Assets.iconsBookmark,
+                      color: watchlistForegroundColor,
+                      size: 14,
+                    ),
+                  const SizedBox(width: 8),
+                  const Text('À voir')
+                ]
+              )
+            ),
+          )
         ],
       );
     });

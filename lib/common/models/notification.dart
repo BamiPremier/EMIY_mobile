@@ -1,8 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:umai/common/models/comment.dart';
-import 'package:umai/quiz/models/quiz.dart';
-import 'package:umai/social/models/post.dart';
-import 'package:umai/utils/datetime_converter.dart';
 
 part 'notification.freezed.dart';
 part 'notification.g.dart';

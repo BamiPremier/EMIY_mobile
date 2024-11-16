@@ -9,8 +9,8 @@ import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/social/bloc/post_cubit.dart';
 import 'package:umai/utils/assets.dart';
-import 'package:umai/utils/svg_utils.dart'; 
-import 'package:umai/utils/themes.dart'; 
+import 'package:umai/utils/svg_utils.dart';
+import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
 class PostAction extends StatelessWidget {
@@ -26,8 +26,7 @@ class PostAction extends StatelessWidget {
         leading: GestureDetector(
           child: ProfilePicture(
             image: user.image,
-            height: 48.0,
-            width: 48.0,
+            size: 48.0,
           ),
           onTap: () => Navigator.of(context).push(MaterialPageRoute(
               builder: (context) =>
@@ -57,8 +56,12 @@ class PostAction extends StatelessWidget {
               postCubit.delete();
             }
           },
-          icon: toSvgIcon(icon: Assets.iconsOptions),
-  
+          icon: toSvgIcon(
+            icon: Assets.iconsOptions,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+            size: 16
+          ),
+
           itemBuilder: (BuildContext context) {
             List<String> options = [];
 
@@ -86,6 +89,7 @@ Future reportPost({required BuildContext context}) {
 
   return showAppBottomSheet(
       context: context,
+      maxHeight: 450,
       builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
@@ -95,129 +99,114 @@ Future reportPost({required BuildContext context}) {
                 builder: (context, state) => Padding(
                   padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       Text('Signaler ce contenu ?',
                           style: Theme.of(context).textTheme.titleLarge!),
-                      (state is SendReportLoadingState)
-                          ? const Padding(
-                              padding: EdgeInsets.only(top: 118.0, bottom: 130),
-                              child: Center(
-                                child: CircularProgressIndicator(),
-                              ))
-                          : (state is SuccessSendReportItemState)
-                              ? Center(
-                                  child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                              horizontal: 16.0)
-                                          .copyWith(top: 80, bottom: 100),
-                                      child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: <Widget>[
-                                            const Text(
-                                              'Merci d’avoir signalé ce contenu. Nous allons prendre les mesures nécessaires en cas de contenu inapproprié avéré.',
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            const SizedBox(height: 40.0),
-                                            Icon(
-                                              Icons.check_box_outlined,
-                                              size: 40.0,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .onSurfaceVariant,
-                                            ),
-                                          ])))
-                              : Padding(
-                                  padding: const EdgeInsets.only(top: 24),
-                                  child: Column(
-                                    children: [
-                                      RadioListTile<String>(
-                                        title: const Text(
-                                            'Haine / Discrimination'),
-                                        value: 'Haine / Discrimination',
-                                        groupValue: selectedReason,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            selectedReason = value;
-                                          });
-                                        },
-                                        controlAffinity:
-                                            ListTileControlAffinity.trailing,
-                                      ),
-                                      RadioListTile<String>(
-                                        title: const Text('Contenu sexuel'),
-                                        value: 'Contenu sexuel',
-                                        groupValue: selectedReason,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            selectedReason = value;
-                                          });
-                                        },
-                                        controlAffinity:
-                                            ListTileControlAffinity.trailing,
-                                      ),
-                                      RadioListTile<String>(
-                                        title: const Text('Harcèlement'),
-                                        value: 'Harcèlement',
-                                        groupValue: selectedReason,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            selectedReason = value;
-                                          });
-                                        },
-                                        controlAffinity:
-                                            ListTileControlAffinity.trailing,
-                                      ),
-                                      RadioListTile<String>(
-                                        title: const Text(
-                                            'Divulgation d\'informations privées'),
-                                        value:
-                                            'Divulgation d\'informations privées',
-                                        groupValue: selectedReason,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            selectedReason = value;
-                                          });
-                                        },
-                                        controlAffinity:
-                                            ListTileControlAffinity.trailing,
-                                      ),
-                                      RadioListTile<String>(
-                                        title: const Text('Autre'),
-                                        value: 'Autre',
-                                        groupValue: selectedReason,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            selectedReason = value;
-                                          });
-                                        },
-                                        controlAffinity:
-                                            ListTileControlAffinity.trailing,
-                                      ),
-                                    ],
-                                  ),
+                      if (state is InitializingXCommonState)
+                        Expanded(
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 16.0),
+                              RadioListTile<String>(
+                                title: const Text(
+                                    'Haine / Discrimination'),
+                                value: 'Haine / Discrimination',
+                                groupValue: selectedReason,
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedReason = value;
+                                  });
+                                },
+                                controlAffinity:
+                                ListTileControlAffinity.trailing,
+                              ),
+                              RadioListTile<String>(
+                                title: const Text('Contenu sexuel'),
+                                value: 'Contenu sexuel',
+                                groupValue: selectedReason,
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedReason = value;
+                                  });
+                                },
+                                controlAffinity:
+                                ListTileControlAffinity.trailing,
+                              ),
+                              RadioListTile<String>(
+                                title: const Text('Harcèlement'),
+                                value: 'Harcèlement',
+                                groupValue: selectedReason,
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedReason = value;
+                                  });
+                                },
+                                controlAffinity:
+                                ListTileControlAffinity.trailing,
+                              ),
+                              RadioListTile<String>(
+                                title: const Text(
+                                    'Divulgation d\'informations privées'),
+                                value:
+                                'Divulgation d\'informations privées',
+                                groupValue: selectedReason,
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedReason = value;
+                                  });
+                                },
+                                controlAffinity:
+                                ListTileControlAffinity.trailing,
+                              ),
+                              RadioListTile<String>(
+                                title: const Text('Autre'),
+                                value: 'Autre',
+                                groupValue: selectedReason,
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedReason = value;
+                                  });
+                                },
+                                controlAffinity:
+                                ListTileControlAffinity.trailing,
+                              ),
+                            ],
+                          ),
+                        ),
+                      if (state is SendReportLoadingState)
+                        const Expanded(
+                          child: Center(child: CircularProgressIndicator())
+                        ),
+                      if (state is SuccessSendReportItemState)
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                const Text(
+                                  'Merci d’avoir signalé ce contenu. Nous allons prendre les mesures nécessaires en cas de contenu inapproprié avéré.',
+                                  textAlign: TextAlign.center,
                                 ),
-                      const SizedBox(
-                        height: 24,
-                      ),
+                                const SizedBox(height: 40.0),
+                                toSvgIcon(
+                                  icon: Assets.iconsTick,
+                                  size: 24
+                                ),
+                              ])),
+                        ),
                       UmaiButton.primary(
-                        onPressed: selectedReason != null &&
-                                state is InitializingXCommonState
+                        onPressed: selectedReason != null && state is InitializingXCommonState
+                          ? () => postCubit.report(reason: selectedReason!)
+                          : (state is SuccessSendReportItemState)
                             ? () {
-                                postCubit.report(reason: selectedReason!);
+                                Navigator.of(context).pop();
+                                postCubit.reset();
                               }
-                            : (state is SuccessSendReportItemState)
-                                ? () {
-                                    Navigator.of(context).pop();
-                                    postCubit.reset();
-                                  }
-                                : null,
+                            : null,
                         text: state is SuccessSendReportItemState
-                            ? "Fermer"
-                            : "Signaler",
+                          ? "Fermer"
+                          : "Signaler",
                       ),
                     ],
                   ),
@@ -234,6 +223,7 @@ Future blockUser({required BuildContext context}) {
 
   return showAppBottomSheet(
       context: context,
+      maxHeight: 320,
       builder: (BuildContext context) {
         return BlocProvider.value(
           value: personCubit,
@@ -247,83 +237,87 @@ Future blockUser({required BuildContext context}) {
                   Text('BLOQUER ${personCubit.user.username} ?',
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.titleLarge!),
-                  (state is PersonLoadingBlockState)
-                      ? const Padding(
-                          padding: EdgeInsets.only(top: 60.0),
-                          child: Center(
-                            child: CircularProgressIndicator(),
-                          ))
-                      : (state is SuccessBlockPersonState)
-                          ? Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0)
-                                      .add(
-                                const EdgeInsets.only(top: 24.0),
+                  if (state is InitializingPersonState)
+                    Expanded(
+                      child: Padding(
+                        padding:
+                        const EdgeInsets.symmetric(horizontal: 16.0)
+                          .add(const EdgeInsets.only(top: 8.0)),
+                        child: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            style: Theme.of(context).textTheme.bodyMedium,
+                            children: <TextSpan>[
+                              const TextSpan(
+                                  text:
+                                  'Tu ne verras plus les contenus de cette personne dans tes fils d\'actualité. '),
+                              TextSpan(
+                                text: personCubit.user.username,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(
+                                    fontWeight: FontWeight.bold),
                               ),
-                              child: RichText(
-                                  textAlign: TextAlign.center,
-                                  text: TextSpan(
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium,
-                                    children: <TextSpan>[
-                                      const TextSpan(text: 'Tu as bloqué '),
-                                      TextSpan(
-                                        text: 'Hari Randoll',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium!
-                                            .copyWith(
-                                                fontWeight: FontWeight.bold),
-                                      ),
-                                      const TextSpan(
-                                          text:
-                                              '. Pour annuler cette décision, rends-toi dans les paramètres de ton compte.'),
-                                    ],
-                                  )))
-                          : Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0)
-                                      .add(
-                                const EdgeInsets.only(top: 4.0),
-                              ),
-                              child: RichText(
-                                textAlign: TextAlign.center,
-                                text: TextSpan(
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                  children: <TextSpan>[
-                                    const TextSpan(
-                                        text:
-                                            'Tu ne verras plus les contenus de cette personne dans tes fils d\'actualité. '),
-                                    TextSpan(
-                                      text: personCubit.user.username,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(
-                                              fontWeight: FontWeight.bold),
-                                    ),
-                                    const TextSpan(
-                                        text:
-                                            ' ne pourra plus interagir avec ton contenu non plus. Veux-tu vraiment continuer?'),
-                                  ],
-                                ),
+                              const TextSpan(
+                                  text:
+                                  ' ne pourra plus interagir avec ton contenu non plus. Veux-tu vraiment continuer?'),
+                            ],
+                          ),
+                        )),
+                    ),
+                  if (state is PersonLoadingBlockState)
+                    const Expanded(
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
+                  if (state is SuccessBlockPersonState)
+                    Expanded(
+                      child: Padding(
+                        padding:
+                        const EdgeInsets.symmetric(horizontal: 16.0)
+                          .add(const EdgeInsets.only(top: 8.0)),
+                        child: Column(
+                          children: [
+                            RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(
+                                style:
+                                Theme.of(context).textTheme.bodyMedium,
+                                children: <TextSpan>[
+                                  const TextSpan(text: 'Tu as bloqué '),
+                                  TextSpan(
+                                    text: personCubit.user.username,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium!
+                                        .copyWith(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  const TextSpan(
+                                      text:
+                                      '. Pour annuler cette décision, rends-toi dans les paramètres de ton compte.'),
+                                ],
                               )),
-                  const SizedBox(
-                    height: 80,
-                  ),
+                            const SizedBox(height: 40.0),
+                            toSvgIcon(
+                              icon: Assets.iconsTick,
+                              size: 24
+                            ),
+                          ],
+                        )),
+                    ),
                   UmaiButton.primary(
                     onPressed: state is InitializingPersonState
-                        ? () {
-                            personCubit.blockUser();
-                          }
-                        : (state is SuccessBlockPersonState)
-                            ? () {
-                                Navigator.of(context).pop();
-                                personCubit.reset();
-                              }
-                            : null,
-                    text:
-                        state is InitializingPersonState ? "Bloquer" : "Fermer",
+                      ? personCubit.blockUser
+                      : (state is SuccessBlockPersonState)
+                          ? () {
+                              Navigator.of(context).pop();
+                              personCubit.reset();
+                            }
+                          : null,
+                    text: state is InitializingPersonState
+                      ? "Bloquer"
+                      : "Fermer",
                   ),
                 ],
               ),

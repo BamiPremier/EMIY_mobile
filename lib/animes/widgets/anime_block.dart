@@ -93,8 +93,7 @@ class _AnimeBlockState extends State<AnimeBlock> {
               emptyBuilder: (ctx) => Center(
                 child: toSvgIcon(
                   icon: Assets.iconsEmpty,
-                  height: 56,
-                  width: 56,
+                  size: 56,
                 ),
               ),
               errorBuilder: (context, retry) => Column(
@@ -118,7 +117,7 @@ class _AnimeBlockState extends State<AnimeBlock> {
                     textStyle: Theme.of(context).textTheme.labelMedium,
                   ),
                   onPressed: loadMore,
-                  icon: const Icon(Icons.keyboard_arrow_down_outlined),
+                  icon: toSvgIcon(icon: Assets.iconsDirectionDown, size: 12.0),
                   label: const Text("Voir plus"),
                 ),
               ),
@@ -149,8 +148,7 @@ class _AnimeBlockState extends State<AnimeBlock> {
           emptyBuilder: (ctx) => Center(
             child: toSvgIcon(
               icon: Assets.iconsEmpty,
-              height: 56,
-              width: 56,
+              size: 56,
             ),
           ),
           errorBuilder: (context, retry) => Column(
@@ -209,7 +207,7 @@ class _AnimeBlockState extends State<AnimeBlock> {
                   textStyle: Theme.of(context).textTheme.labelMedium,
                 ),
                 onPressed: null,
-                icon: const Icon(Icons.keyboard_arrow_down_outlined),
+                icon: toSvgIcon(icon: Assets.iconsDirectionDown, size: 12.0),
                 label: const Text("Voir plus"),
               ),
             ),

@@ -2,12 +2,12 @@ import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:open_settings/open_settings.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/account/screens/param/blocked_user.dart';
 import 'package:umai/common/bloc/notification_cubit.dart';
-import 'package:umai/common/bloc/user_cubit.dart';
-import 'package:umai/common/services/preferences_service.dart';
-import 'package:open_settings/open_settings.dart';
+import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -78,7 +78,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                   final isAuthorized = settings?.authorizationStatus ==
                       AuthorizationStatus.authorized;
                   return SwitchListTile(
-                    
+
                     title: Text(
                       'Notifications générales',
                       style: Theme.of(context).textTheme.bodyLarge,
@@ -112,7 +112,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                   'Utilisateurs bloqués',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
-                trailing: const Icon(Icons.arrow_right),
+                trailing: toSvgIcon(icon: Assets.iconsDirectionRight, size: 16.0),
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => const BlockedUserScreen()));
@@ -127,7 +127,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                   'Voir la politique de confidentialité',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
-                trailing: const Icon(Icons.arrow_right),
+                trailing: toSvgIcon(icon: Assets.iconsDirectionRight, size: 16.0),
                 onTap: () {},
               ),
               ListTile(
@@ -135,7 +135,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                   'Version',
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
-                trailing: const Icon(Icons.arrow_right),
+                trailing: toSvgIcon(icon: Assets.iconsDirectionRight, size: 16.0),
                 subtitle: Text(
                   preferencesService.packageInfo.version,
                   style: Theme.of(context).textTheme.bodyMedium,

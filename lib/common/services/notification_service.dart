@@ -4,13 +4,11 @@ import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/widgets.dart' hide Notification;
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:potatoes/common/bloc/cubit_state.dart';
 import 'package:potatoes/libs.dart';
-import 'package:umai/common/bloc/link_cubit.dart';
 import 'package:umai/common/bloc/notification_cubit.dart';
 import 'package:umai/common/models/notification.dart';
-import 'package:umai/common/services/item_notification.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:umai/utils/themes.dart';
 
 const androidChannelId = "HIGH_IMPORTANCE_CHANNEL_ID";

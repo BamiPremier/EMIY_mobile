@@ -1,26 +1,26 @@
 // Start of Selection
 import 'package:flutter/material.dart';
-
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
-import 'package:umai/common/widgets/button_common.dart';
-import 'package:umai/utils/assets.dart';
-import 'package:umai/utils/svg_utils.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/bloc/episode_cubit.dart';
-import 'package:umai/animes/services/episode_cubit_manager.dart';
-import 'package:umai/common/bloc/common_cubit.dart';
-import 'package:umai/common/models/user.dart';
-import 'package:umai/common/bloc/comment_cubit.dart';
-import 'package:umai/common/bloc/load_comment_cubit.dart';
-import 'package:umai/social/bloc/post_cubit.dart'; // Removed incorrect import
-import 'package:umai/common/bloc/action_comment_cubit.dart';
-import 'package:umai/common/models/comment.dart';
-import 'package:umai/social/models/post.dart';
-import 'package:umai/social/services/post_cubit_manager.dart'; 
-import 'package:umai/common/widgets/comment_input.dart';
-import 'package:umai/common/widgets/item_comment.dart';
 import 'package:umai/animes/bloc/load_episode_anime_cubit.dart';
 import 'package:umai/animes/models/episode.dart';
+import 'package:umai/animes/services/episode_cubit_manager.dart';
+import 'package:umai/common/bloc/action_comment_cubit.dart';
+import 'package:umai/common/bloc/comment_cubit.dart';
+import 'package:umai/common/bloc/common_cubit.dart';
+import 'package:umai/common/bloc/load_comment_cubit.dart';
+import 'package:umai/common/models/comment.dart';
+import 'package:umai/common/models/user.dart';
+import 'package:umai/common/widgets/button_common.dart';
+import 'package:umai/common/widgets/button_post.dart';
+import 'package:umai/common/widgets/comment_input.dart';
+import 'package:umai/common/widgets/item_comment.dart';
+import 'package:umai/social/bloc/post_cubit.dart'; // Removed incorrect import
+import 'package:umai/social/models/post.dart';
+import 'package:umai/social/services/post_cubit_manager.dart';
+import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 
 mixin XItem {
   String get itemId;
@@ -204,8 +204,7 @@ class _CommonDetailsScreenState<T extends XItem>
                             emptyBuilder: (ctx) => Center(
                                   child: toSvgIcon(
                                     icon: Assets.iconsEmpty,
-                                    height: 56,
-                                    width: 56,
+                                    size: 56,
                                   ),
                                 ),
                             errorBuilder: (context, retry) => Column(

@@ -81,8 +81,10 @@ class _HeadQuizState extends State<HeadQuiz> with CompletableMixin {
                 IconButton(
                   padding: EdgeInsets.zero,
                   onPressed: () => actionsOptions(),
-                  color: AppTheme.white,
-                  icon: const Icon(Icons.more_vert),
+                  icon: toSvgIcon(
+                    icon: Assets.iconsOptions,
+                    color: AppTheme.white,
+                  ),
                 ),
               ],
             ));

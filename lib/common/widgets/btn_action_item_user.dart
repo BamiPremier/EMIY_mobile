@@ -66,8 +66,7 @@ class BtnActionitemUser extends StatelessWidget {
               } else
                 icon = toSvgIcon(
                   icon: Assets.iconsTick,
-                  height: 16,
-                  width: 16,
+                  size: 16,
                   color: Theme.of(context).colorScheme.onTertiaryContainer,
                 );
             } else {
@@ -90,8 +89,7 @@ class BtnActionitemUser extends StatelessWidget {
               } else
                  icon = toSvgIcon(
                   icon: Assets.iconsMore,
-                  height: 16,
-                  width: 16,
+                  size: 16,
                   color: Theme.of(context).textTheme.labelLarge?.color,
                 );
             }

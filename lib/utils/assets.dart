@@ -7,7 +7,10 @@ abstract class Assets {
   static const String iconsBookmark = '${_iconsDir}Bookmark.svg';
   static const String iconsCalendar = '${_iconsDir}Calendar.svg';
   static const String iconsComment = '${_iconsDir}Comment.svg';
-  static const String iconsDirection = '${_iconsDir}Arrow.svg';
+  static const String iconsDirectionLeft = '${_iconsDir}DirectionLeft.svg';
+  static const String iconsDirectionRight = '${_iconsDir}DirectionRight.svg';
+  static const String iconsDirectionUp = '${_iconsDir}DirectionUp.svg';
+  static const String iconsDirectionDown = '${_iconsDir}DirectionDown.svg';
   static const String iconsEdit = '${_iconsDir}Edit.svg';
   static const String iconsEmpty = '${_iconsDir}Empty.svg';
   static const String iconsError = '${_iconsDir}Error.svg';
@@ -29,9 +32,6 @@ abstract class Assets {
 
   static const String _imagesDir = 'assets/images/';
   static const String defaultAvatar = '${_imagesDir}default_avatar.svg';
-  static const String iconStar = '${_imagesDir}Icon_star.svg';
-  static const String iconPen = '${_imagesDir}Icon_pen.svg';
-  static const String iconBookmark = '${_imagesDir}Icon_bookmark.svg';
   static const String iconMedalFirst = '${_imagesDir}icon_medal_first.png';
   static const String iconMedalSecond = '${_imagesDir}icon_medal_second.png';
   static const String iconMedalThird = '${_imagesDir}icon_medal_third.png';

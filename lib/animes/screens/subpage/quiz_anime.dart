@@ -48,8 +48,7 @@ class _QuizAnimeScreenState extends State<QuizAnimeScreen>
         emptyBuilder: (ctx) => Center(
               child: toSvgIcon(
                 icon: Assets.iconsEmpty,
-                height: 56,
-                width: 56,
+                size: 56,
               ),
             ),
         errorBuilder: (context, retry) => Center(

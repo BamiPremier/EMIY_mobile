@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/svg_utils.dart';
@@ -55,8 +54,7 @@ class AuthButton extends StatelessWidget {
           onPressed: onPressed,
           icon: toSvgIcon(
             icon: provider.asset,
-            height: 24.0,
-            width: 24.0,
+            size: 24.0,
           ),
           text: provider.name,
           large: true,
@@ -66,8 +64,7 @@ class AuthButton extends StatelessWidget {
           onPressed: onPressed,
           icon: toSvgIcon(
             icon: provider.asset,
-            height: 24.0,
-            width: 24.0,
+            size: 24.0,
           ),
           text: provider.name,
           large: true,

@@ -147,7 +147,7 @@ class _AnimeDetailScreenState extends State<AnimeDetailScreen>
                           const SizedBox(height: 16),
                           const PrimaryInfo(),
                           const SizedBox(height: 32),
-                          BtnWatchView(),
+                          const BtnWatchView(),
                           const SizedBox(height: 32),
                           Text(
                             "Synopsis",

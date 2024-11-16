@@ -45,8 +45,7 @@ class _PeopleToFollowScreenState extends State<PeopleToFollowScreen> {
                   emptyBuilder: (ctx) => Center(
                         child: toSvgIcon(
                           icon: Assets.iconsEmpty,
-                          height: 56,
-                          width: 56,
+                          size: 56,
                         ),
                       ),
                   errorBuilder: (context, retry) => Column(
