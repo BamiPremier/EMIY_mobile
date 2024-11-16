@@ -18,6 +18,7 @@ import 'package:umai/quiz/screens/quiz_details.dart';
 import 'package:umai/social/screens/home.dart';
 import 'package:umai/social/widgets/head_post.dart';
 import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
