@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/svg_utils.dart';

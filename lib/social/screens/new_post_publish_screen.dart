@@ -86,7 +86,7 @@ class _NewPostCompleteScreenState extends State<NewPostCompleteScreen>
                         ? Row(children: [
                             toSvgIcon(
                               icon: Assets.iconsCamera,
-                              size: 100
+                              size: 96
                             ),
                             const SizedBox(width: 16.0),
                             Text('Prendre une photo',

@@ -73,7 +73,7 @@ class AuthCubit extends Cubit<AuthState> {
     final idToken = await FirebaseAuth.instance.currentUser!.getIdToken();
 
     final deviceInfo = userCubit.preferencesService.deviceInfo;
-    final appVersion = userCubit.preferencesService.appVersion;
+    final appVersion = userCubit.preferencesService.packageInfo.buildNumber;
     final timezone = userCubit.preferencesService.timezone;
 
     log(DateTime.now().timeZoneName);

@@ -51,7 +51,7 @@ class _FollowScreenState extends State<FollowScreen> {
               size: 56,
             ),
           ),
-         
+
           errorBuilder: (context, retry) => Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,

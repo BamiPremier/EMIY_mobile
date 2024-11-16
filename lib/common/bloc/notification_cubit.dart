@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart' hide PreferencesService;
 import 'package:umai/animes/models/anime.dart';
