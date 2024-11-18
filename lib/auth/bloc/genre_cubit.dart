@@ -6,6 +6,7 @@ class GenresListCubit extends AutoContentCubit<List<String>> {
 
   GenresListCubit(this.service) : super(provider: service.getGenres);
 
+
   void selectGenre(String genre) {
     if (state is GenreReadyWithSelectionState) {
       var stateBefore = state as GenreReadyWithSelectionState;

@@ -15,6 +15,7 @@ import 'package:umai/animes/services/episode_cubit_manager.dart';
 import 'package:umai/animes/services/episode_service.dart';
 import 'package:umai/auth/bloc/auth_cubit.dart';
 import 'package:umai/auth/screens/onboarding_screen.dart';
+import 'package:umai/auth/screens/registration/genres_selection.dart';
 import 'package:umai/auth/screens/registration/username.dart';
 import 'package:umai/auth/services/auth_service.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
@@ -132,10 +133,8 @@ class MyApp extends StatelessWidget {
               create: (context) => AnimeCubitManager(context.read())),
           RepositoryProvider(create: (context) => QuizService(dio)),
           RepositoryProvider(
-            create: (context) => QuizManageCubitManager(
-              context.read(),
-              context.read()
-            )),
+              create: (context) =>
+                  QuizManageCubitManager(context.read(), context.read())),
           RepositoryProvider(
               create: (context) => EpisodeCubitManager(context.read())),
           RepositoryProvider(create: (_) => LinkService(dio)),
@@ -153,7 +152,6 @@ class MyApp extends StatelessWidget {
               ),
               BlocProvider(
                 create: (context) => NotificationCubit(
-
                     preferencesService,
                     context.read(),
                     context.read(),
@@ -226,6 +224,8 @@ class MyApp extends StatelessWidget {
                     buildWhen: (previous, _) =>
                         previous is InitializingUserState,
                     builder: (context, state) {
+                      return const RegistrationGenresSelection();
+
                       if (state is InitializingUserState)
                         return const SizedBox();
                       if (state is UserNotLoggedState)

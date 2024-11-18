@@ -10,8 +10,7 @@ class AuthIdleState extends CubitSuccessState with AuthState {
   final TextEditingController userNameController;
   final TextEditingController userTagController;
   @override
-  List<Object?> get props =>
-      [userNameController, userTagController];
+  List<Object?> get props => [userNameController, userTagController];
 }
 
 class AuthLoadingState extends CubitLoadingState with AuthState {
@@ -34,4 +33,27 @@ class CompleteUserSuccessUserState extends CubitInformationState
 
 class AuthErrorState extends CubitErrorState with AuthState {
   AuthErrorState(super.error, [super.trace]);
+}
+
+class AuthAddListAnimeToWatchlistLoadingState extends CubitLoadingState
+    with AuthState {
+  const AuthAddListAnimeToWatchlistLoadingState();
+}
+
+class AuthAddListAnimeToWatchlistSuccesState extends CubitInformationState
+    with AuthState {
+  const AuthAddListAnimeToWatchlistSuccesState();
+}
+
+
+
+
+class AuthAddListAnimeToViewedLoadingState extends CubitLoadingState
+    with AuthState {
+  const AuthAddListAnimeToViewedLoadingState();
+}
+
+class AuthAddListAnimeToViewedSuccesState extends CubitInformationState
+    with AuthState {
+  const AuthAddListAnimeToViewedSuccesState();
 }
