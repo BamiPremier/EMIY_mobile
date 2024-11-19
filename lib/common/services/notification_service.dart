@@ -103,7 +103,7 @@ class NotificationService {
     const androidPlatformChannelSpecifics = AndroidNotificationDetails(
         androidChannelId, androidChannelName,
         priority: Priority.max,
-        color: AppTheme.primaryYellow,
+        color: AppTheme.primaryRed,
         enableLights: true);
     const iOSPlatformChannelSpecifics = DarwinNotificationDetails();
     const platformChannelSpecifics = NotificationDetails(
@@ -122,7 +122,7 @@ class NotificationService {
           androidChannelId,
           androidChannelName,
           importance: Importance.max,
-          ledColor: AppTheme.primaryYellow,
+          ledColor: AppTheme.primaryRed,
           enableLights: true,
           playSound: false,
         ));
@@ -157,7 +157,7 @@ Future<void> onBackgroundMessage(RemoteMessage message) async {
     const androidPlatformChannelSpecifics = AndroidNotificationDetails(
         androidChannelId, androidChannelName,
         priority: Priority.max,
-        color: AppTheme.primaryYellow,
+        color: AppTheme.primaryRed,
         enableLights: true);
     const iOSPlatformChannelSpecifics = DarwinNotificationDetails();
     const platformChannelSpecifics = NotificationDetails(
