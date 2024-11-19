@@ -152,7 +152,6 @@ class MyApp extends StatelessWidget {
               ),
               BlocProvider(
                 create: (context) => NotificationCubit(
-
                     preferencesService,
                     context.read(),
                     context.read(),
@@ -225,8 +224,6 @@ class MyApp extends StatelessWidget {
                     buildWhen: (previous, _) =>
                         previous is InitializingUserState,
                     builder: (context, state) {
-                      return const RegistrationGenresSelection();
-
                       if (state is InitializingUserState)
                         return const SizedBox();
                       if (state is UserNotLoggedState)

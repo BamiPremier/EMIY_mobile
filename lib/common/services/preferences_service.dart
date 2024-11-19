@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:crypto/crypto.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -51,7 +52,15 @@ class PreferencesService extends SecuredPreferencesService {
 
     String rawSign = "$userId\$${dateTime.millisecondsSinceEpoch}\$$authToken";
     Digest digest = sha1.convert(utf8.encode(rawSign));
-
+log({
+      "timestamp": dateTime.millisecondsSinceEpoch.toString(),
+      "id": userId,
+      "hash": digest.toString(),
+      "device_id": deviceInfo.id,
+      "device_name": deviceInfo.name,
+      "app_version": packageInfo.buildNumber ,
+      "timezone": timezone,
+    }.toString());
     return {
       "timestamp": dateTime.millisecondsSinceEpoch.toString(),
       "id": userId,
