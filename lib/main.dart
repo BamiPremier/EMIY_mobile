@@ -224,6 +224,8 @@ class MyApp extends StatelessWidget {
                     buildWhen: (previous, _) =>
                         previous is InitializingUserState,
                     builder: (context, state) {
+                      return RegistrationGenresSelection();
+
                       if (state is InitializingUserState)
                         return const SizedBox();
                       if (state is UserNotLoggedState)

@@ -20,13 +20,7 @@ void showSuccessToast({
   required String content,
 }) {
   _showToast(textColor: null, bgColor: null, content: content, context: context);
-
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-        margin: const EdgeInsets.symmetric(horizontal: 32)
-            .add(const EdgeInsets.only(bottom: 12)),
-        content: Center(child: Text(content))),
-  );
+ 
 }
 
 void showBlackErrorToast(

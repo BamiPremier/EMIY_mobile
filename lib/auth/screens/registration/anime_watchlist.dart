@@ -25,14 +25,14 @@ class RegistrationAnimeWatchList extends StatefulWidget {
           create: (context) => AnimeByGenreCubit(
             cubitManager: context.read(),
             authService: context.read(),
-            selectedTarget: AvailableValues.viewed,
+            selectedTarget: AvailableValues.watchlist,
           ),
         ),
         BlocProvider(
           create: (context) => SelectAnimeCubit(),
         ),
       ],
-      child: RegistrationAnimeWatchList._(),
+      child: const RegistrationAnimeWatchList._(),
     );
   }
 
@@ -73,10 +73,10 @@ class _RegistrationAnimeWatchListState extends State<RegistrationAnimeWatchList>
                 cubit: animeByGenreCubit,
                 viewType: ViewType.grid,
                 itemBuilder: (context, anime) => AnimeItem.get(
-                    context: context,
-                    anime: anime,
-                    withSelect: true,
-                    isViewedList: true),
+                  context: context,
+                  anime: anime,
+                  withSelect: true,
+                ),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     crossAxisSpacing: 2.0,

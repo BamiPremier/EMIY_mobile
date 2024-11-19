@@ -3,14 +3,11 @@ import 'package:potatoes/libs.dart';
 import 'package:umai/animes/models/anime.dart';
 import 'package:umai/animes/screens/anime_details.dart';
 import 'package:umai/animes/services/anime_cubit_manager.dart';
-import 'package:umai/auth/bloc/anime_by_genre_cubit.dart';
 import 'package:umai/auth/bloc/select_anime_cubitt.dart';
 import 'package:umai/common/bloc/anime_manip_cubit.dart';
 import 'package:umai/common/services/cache_manager.dart';
 import 'package:umai/utils/assets.dart';
-import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/svg_utils.dart';
-import 'package:umai/utils/themes.dart';
 
 class AnimeItem extends StatelessWidget {
   final bool withSelect;
@@ -59,7 +56,7 @@ class AnimeItem extends StatelessWidget {
                               color: Colors.black.withOpacity(0.7),
                               child: Center(
                                   child: toSvgIcon(
-                                      icon: Assets.iconsBookmark,
+                                      icon: Assets.iconsTick,
                                       size: 32.0,
                                       color: Theme.of(context)
                                           .colorScheme
@@ -71,7 +68,7 @@ class AnimeItem extends StatelessWidget {
                               color: Colors.black.withOpacity(0.7),
                               child: Center(
                                   child: toSvgIcon(
-                                      icon: Assets.iconsTick,
+                                      icon: Assets.iconsBookmark,
                                       size: 32.0,
                                       color: Theme.of(context)
                                           .colorScheme

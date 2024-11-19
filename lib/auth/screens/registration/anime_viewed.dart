@@ -17,9 +17,7 @@ import 'package:umai/auth/screens/registration/people.dart';
 import 'package:umai/common/widgets/buttons.dart';
 
 class RegistrationAnimeViewed extends StatefulWidget {
-  const RegistrationAnimeViewed._({
-    super.key,
-  });
+  const RegistrationAnimeViewed._();
 
   static Widget init({
     required BuildContext context,
@@ -30,7 +28,7 @@ class RegistrationAnimeViewed extends StatefulWidget {
           create: (context) => AnimeByGenreCubit(
             cubitManager: context.read(),
             authService: context.read(),
-            selectedTarget: AvailableValues.watchlist,
+            selectedTarget: AvailableValues.viewed,
           ),
         ),
         BlocProvider(
@@ -75,7 +73,10 @@ class _RegistrationAnimeViewedlistState extends State<RegistrationAnimeViewed>
                 cubit: animeByGenreCubit,
                 viewType: ViewType.grid,
                 itemBuilder: (context, anime) => AnimeItem.get(
-                    context: context, anime: anime, withSelect: true),
+                    context: context,
+                    anime: anime,
+                    withSelect: true,
+                    isViewedList: true),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     crossAxisSpacing: 2.0,
