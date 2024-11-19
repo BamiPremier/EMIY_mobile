@@ -27,6 +27,21 @@ void showSuccessToast({
   );
 }
 
+
+void showBlackErrorToast(
+    {required dynamic content, required BuildContext context}) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+        backgroundColor: Colors.black,
+        margin: const EdgeInsets.symmetric(horizontal: 32)
+            .add(const EdgeInsets.only(bottom: 12)),
+        content: Center(
+            child: Text(
+          _translateError(content),
+          style: const TextStyle(color: Colors.white),
+        ))),
+  );
+}
 void showErrorToast({required dynamic content, required BuildContext context}) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(

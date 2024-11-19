@@ -17,23 +17,18 @@ class SearchWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () => onTap(context: context, index: index),
-        child: Row(
-          children: [
-            Container(
-              height: 40,
-              width: 40,
-              clipBehavior: Clip.hardEdge,
-              padding: const EdgeInsets.all(8),
-              decoration: const BoxDecoration(
-                  shape: BoxShape.circle, color: AppTheme.errorRed),
-              child: toSvgIcon(
-                icon: Assets.iconsSearch,
-                size: 24,
-                color: AppTheme.white,
-              ),
-            ),
-            const SizedBox(width: 16.0)
-          ],
+        child: Container(
+          height: 40,
+          width: 40,
+          margin: const EdgeInsets.only(right: 16),
+          padding: const EdgeInsets.all(8),
+          decoration: const BoxDecoration(
+              shape: BoxShape.circle, color: AppTheme.primaryRed),
+          child: toSvgIcon(
+            icon: Assets.iconsSearch,
+            size: 24,
+            color: AppTheme.white,
+          ),
         ));
   }
 

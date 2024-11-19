@@ -84,8 +84,9 @@ class _HomeScreenState extends State<HomeScreen> with CompletableMixin {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => const AccountScreen()));
                 },
-                child: const Row(
-                    children: [SizedBox(width: 16.0), UserProfilePicture()]),
+                child: Container(
+                    margin: const EdgeInsets.only(left: 16),
+                    child: const UserProfilePicture()),
               ),
               actions: [SearchWidget(index: index)],
             ),

@@ -138,13 +138,11 @@ class _CommonDetailsScreenState<T extends XItem>
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // if (T is Post)
                         SizedBox(
                             height: kToolbarHeight +
                                 MediaQuery.of(context).viewPadding.top),
                         widget.head(context),
                         ButtonCommon<T>(canComment: true),
-
                         const Divider(),
                         AutoListView.get<Comment>(
                             padding: EdgeInsets.zero,

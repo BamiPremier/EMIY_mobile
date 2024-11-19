@@ -53,7 +53,9 @@ class _RegistrationAnimeWatchlistState extends State<RegistrationAnimeWatchlist>
     return BlocListener<AuthCubit, AuthState>(
       listener: onEventReceived,
       child: Scaffold(
-        appBar: AppBar(title: const Text("J'ai trop aimé!")),
+        appBar: AppBar(
+            forceMaterialTransparency: true,
+            title: const Text("J'ai trop aimé!")),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -67,8 +69,8 @@ class _RegistrationAnimeWatchlistState extends State<RegistrationAnimeWatchlist>
             const SizedBox(height: 16.0),
             Expanded(
               child: AutoListView.get<Anime>(
-                padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                // padding: EdgeInsets.only(
+                //     bottom: MediaQuery.of(context).viewInsets.bottom),
                 cubit: animeByGenreCubit,
                 viewType: ViewType.grid,
                 itemBuilder: (context, anime) => AnimeItem.get(
@@ -77,7 +79,7 @@ class _RegistrationAnimeWatchlistState extends State<RegistrationAnimeWatchlist>
                     crossAxisCount: 3,
                     crossAxisSpacing: 2.0,
                     mainAxisSpacing: 2.0,
-                    childAspectRatio: .65),
+                    childAspectRatio: .70),
                 emptyBuilder: (ctx) => Center(
                   child: toSvgIcon(
                     icon: Assets.iconsEmpty,
@@ -120,7 +122,8 @@ class _RegistrationAnimeWatchlistState extends State<RegistrationAnimeWatchlist>
         selectAnimeCubit.state.length >= 3) {
       context.read<AuthCubit>().addToListAnimeWatchlist(selectAnimeCubit.state);
     } else {
-      showErrorToast(content: "Choisis au moins 3 animes", context: context);
+      showBlackErrorToast(
+          content: "Choisis au moins 3 animes", context: context);
     }
     return null;
   }

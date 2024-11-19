@@ -51,16 +51,7 @@ class PreferencesService extends SecuredPreferencesService {
     final DateTime dateTime = DateTime.now();
 
     String rawSign = "$userId\$${dateTime.millisecondsSinceEpoch}\$$authToken";
-    Digest digest = sha1.convert(utf8.encode(rawSign));
-log({
-      "timestamp": dateTime.millisecondsSinceEpoch.toString(),
-      "id": userId,
-      "hash": digest.toString(),
-      "device_id": deviceInfo.id,
-      "device_name": deviceInfo.name,
-      "app_version": packageInfo.buildNumber ,
-      "timezone": timezone,
-    }.toString());
+    Digest digest = sha1.convert(utf8.encode(rawSign)); 
     return {
       "timestamp": dateTime.millisecondsSinceEpoch.toString(),
       "id": userId,

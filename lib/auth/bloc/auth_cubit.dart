@@ -186,8 +186,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   String generateUserTag(String username) {
-    // Convertir en minuscules
-    String tag = username.toLowerCase();
+      String tag = username.toLowerCase();
 
     // Remplacer les espaces par des tirets
     tag = tag.replaceAll(' ', '-');

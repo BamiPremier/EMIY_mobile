@@ -51,45 +51,33 @@ class AnimeItem extends StatelessWidget {
               ),
               child: Stack(
                 children: [
-                  Image(
-                    image: context.read<AppCacheManager>().getAnimeImage(anime),
-                    fit: BoxFit.cover,
-                    frameBuilder:
-                        (context, child, frame, wasSynchronouslyLoaded) {
-                      if (frame != null) return child;
-                      return Container(
-                        color: Theme.of(context).colorScheme.tertiaryContainer,
-                        height: 368,
-                        width: double.infinity,
-                        child: wasSynchronouslyLoaded
-                            ? child
-                            : Center(
-                                child: SizedBox(
-                                  height: 16.0,
-                                  width: 16.0,
-                                  child: CircularProgressIndicator(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onTertiaryContainer,
-                                    strokeWidth: 2.0,
-                                  ),
-                                ),
-                              ),
-                      );
-                    },
-                    errorBuilder: (_, __, ___) => const Icon(Icons.error),
-                  ),
+                  animeItemImage(anime: anime, context: context),
                   if (context.read<SelectAnimeCubit>().isSelected(anime))
-                    Positioned.fill(
-                      child: Container(
-                        color: Colors.black.withOpacity(0.8),
-                        child: Center(
-                            child: toSvgIcon(
-                                icon: Assets.iconsBookmark,
-                                size: 32.0,
-                                color: AppTheme.disabledText)),
-                      ),
-                    ),
+                    isViewedList
+                        ? Positioned.fill(
+                            child: Container(
+                              color: Colors.black.withOpacity(0.7),
+                              child: Center(
+                                  child: toSvgIcon(
+                                      icon: Assets.iconsBookmark,
+                                      size: 32.0,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .surface)),
+                            ),
+                          )
+                        : Positioned.fill(
+                            child: Container(
+                              color: Colors.black.withOpacity(0.7),
+                              child: Center(
+                                  child: toSvgIcon(
+                                      icon: Assets.iconsTick,
+                                      size: 32.0,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .surface)),
+                            ),
+                          ),
                 ],
               ),
             );
@@ -100,45 +88,11 @@ class AnimeItem extends StatelessWidget {
               final animeManipCubit = context.read<AnimeManipCubit>();
               final anime = animeManipCubit.anime;
               return GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) =>
-                        AnimeDetailScreen.get(context: context, anime: anime))),
-                child: Stack(
-                  children: [
-                    Image(
-                      image:
-                          context.read<AppCacheManager>().getAnimeImage(anime),
-                      fit: BoxFit.cover,
-                      frameBuilder:
-                          (context, child, frame, wasSynchronouslyLoaded) {
-                        if (frame != null) return child;
-                        return Container(
-                          color:
-                              Theme.of(context).colorScheme.tertiaryContainer,
-                          height: 368,
-                          width: double.infinity,
-                          child: wasSynchronouslyLoaded
-                              ? child
-                              : Center(
-                                  child: SizedBox(
-                                    height: 16.0,
-                                    width: 16.0,
-                                    child: CircularProgressIndicator(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onTertiaryContainer,
-                                      strokeWidth: 2.0,
-                                    ),
-                                  ),
-                                ),
-                        );
-                      },
-                      errorBuilder: (_, __, ___) => const Icon(Icons.error),
-                    ),
-                  ],
-                ),
-              );
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => AnimeDetailScreen.get(
+                          context: context, anime: anime))),
+                  child: animeItemImage(anime: anime, context: context));
             });
   }
 
@@ -148,7 +102,6 @@ class AnimeItem extends StatelessWidget {
     required SelectAnimeCubit selectAnimeCubit,
   }) async {
     if (withSelect) {
-      // if (isViewedList) {
       if (selectAnimeCubit.isSelected(anime)) {
         selectAnimeCubit.removeAnime(anime);
       } else {
@@ -157,19 +110,31 @@ class AnimeItem extends StatelessWidget {
     }
   }
 
-  // void onEventReceived(BuildContext context, AnimeManipState state) async {
-  //   if (withSelect) {
-  //     if (state is WatchListAddSuccesState) {
-  //       Navigator.of(context).pop();
-  //       showSuccessToast(
-  //           content: "Anime ajouté à votre watchlist", context: context);
-  //     } else if (state is AnimeViewedAddSuccesState) {
-  //       Navigator.of(context).pop();
-  //       showSuccessToast(
-  //           content: "Anime ajouté à votre liste de vue", context: context);
-  //     } else if (state is AnimeManipErrorState) {
-  //       showErrorToast(content: state.error, context: context);
-  //     }
-  //   }
-  // }
+  animeItemImage({required BuildContext context, required Anime anime}) =>
+      Image(
+        image: context.read<AppCacheManager>().getAnimeImage(anime),
+        fit: BoxFit.cover,
+        width: double.infinity,
+        frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+          if (frame != null) return child;
+          return Container(
+            color: Theme.of(context).colorScheme.tertiaryContainer,
+            width: double.infinity,
+            child: wasSynchronouslyLoaded
+                ? child
+                : Center(
+                    child: SizedBox(
+                      height: 16.0,
+                      width: 16.0,
+                      child: CircularProgressIndicator(
+                        color:
+                            Theme.of(context).colorScheme.onTertiaryContainer,
+                        strokeWidth: 2.0,
+                      ),
+                    ),
+                  ),
+          );
+        },
+        errorBuilder: (_, __, ___) => const Icon(Icons.error),
+      );
 }

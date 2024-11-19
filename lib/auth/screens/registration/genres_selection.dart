@@ -60,8 +60,9 @@ class _RegistrationGenresSelectionState
                               label: Text(genre),
                               labelStyle: Theme.of(context)
                                   .textTheme
-                                  .labelLarge!
-                                  .copyWith(fontWeight: FontWeight.normal),
+                                  .labelMedium
+                                  !
+                                  .copyWith(fontWeight: FontWeight.bold),
                               selected: isSelected,
                               side: isSelected ? BorderSide.none : null,
                               onSelected: (selected) {

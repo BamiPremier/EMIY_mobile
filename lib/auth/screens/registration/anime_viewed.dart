@@ -51,7 +51,9 @@ class _RegistrationAnimeViewedState extends State<RegistrationAnimeViewed>
     return BlocListener<AuthCubit, AuthState>(
       listener: onEventReceived,
       child: Scaffold(
-        appBar: AppBar(title: const Text("Ceux-ci m'intéressent")),
+        appBar: AppBar(
+            forceMaterialTransparency: true,
+            title: const Text("Ceux-ci m'intéressent")),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -70,12 +72,15 @@ class _RegistrationAnimeViewedState extends State<RegistrationAnimeViewed>
                 cubit: animeByGenreCubit,
                 viewType: ViewType.grid,
                 itemBuilder: (context, anime) => AnimeItem.get(
-                    context: context, anime: anime, withSelect: true),
+                    context: context,
+                    anime: anime,
+                    withSelect: true,
+                    isViewedList: true),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     crossAxisSpacing: 2.0,
                     mainAxisSpacing: 2.0,
-                    childAspectRatio: .65),
+                    childAspectRatio: .70),
                 emptyBuilder: (ctx) => Center(
                   child: toSvgIcon(
                     icon: Assets.iconsEmpty,
@@ -102,7 +107,7 @@ class _RegistrationAnimeViewedState extends State<RegistrationAnimeViewed>
             mainAxisSize: MainAxisSize.min,
             children: [
               UmaiButton.primary(
-                onPressed:()=> nextButtonAction,
+                onPressed: () => nextButtonAction,
                 text: "Continuer",
               ),
             ],
@@ -118,7 +123,7 @@ class _RegistrationAnimeViewedState extends State<RegistrationAnimeViewed>
         selectAnimeCubit.state.length >= 3) {
       context.read<AuthCubit>().addListAnimeToViewed(selectAnimeCubit.state);
     } else {
-      showErrorToast(content: "Choisis au moins 3 animes", context: context);
+      showBlackErrorToast(content: "Choisis au moins 3 animes", context: context);
     }
     return null;
   }
