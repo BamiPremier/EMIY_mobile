@@ -86,7 +86,7 @@ class _AnimeBlockState extends State<AnimeBlock> {
               autoManage: false,
               viewType: ViewType.grid,
               itemBuilder: (context, anime) => AnimeItem.get(
-                  context: context, anime: anime, withAction: false),
+                  context: context, anime: anime, withSelect: false),
               gridDelegate: gridDelegate,
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -143,7 +143,7 @@ class _AnimeBlockState extends State<AnimeBlock> {
           autoManage: false,
           viewType: ViewType.grid,
           itemBuilder: (context, anime) =>
-              AnimeItem.get(context: context, anime: anime, withAction: false),
+              AnimeItem.get(context: context, anime: anime, withSelect: false),
           gridDelegate: gridDelegate,
           emptyBuilder: (ctx) => Center(
             child: toSvgIcon(

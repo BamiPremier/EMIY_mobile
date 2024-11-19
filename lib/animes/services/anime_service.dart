@@ -63,13 +63,13 @@ class AnimeService extends ApiService {
   }
 
   Future<PaginatedList<Anime>> getAnimesSearch(
-      {int page = 1, int? size, String? search}) async {
+      {int page = 1, String? search}) async {
     return compute(
         dio.get(_anime,
             options: Options(headers: withAuth()),
             queryParameters: {
               'page': page,
-              'size': size ?? 6,
+              'size': 10,
               'search': search,
             }),
         mapper: (result) => toPaginatedList(result, Anime.fromJson));

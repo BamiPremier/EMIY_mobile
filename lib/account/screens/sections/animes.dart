@@ -48,14 +48,14 @@ class _AnimesTabState extends State<AnimesTab> with CompletableMixin {
         cubit: userAnimeCubit,
         viewType: ViewType.grid,
         itemBuilder: (context, anime) =>
-            AnimeItem.get(context: context, anime: anime, withAction: true),
+            AnimeItem.get(context: context, anime: anime, withSelect: false),
         shrinkWrap: true,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
             crossAxisSpacing: 2.0,
             mainAxisSpacing: 2.0,
             childAspectRatio: .65),
-          emptyBuilder: (ctx) => Center(
+        emptyBuilder: (ctx) => Center(
               child: toSvgIcon(
                 icon: Assets.iconsEmpty,
                 size: 56,

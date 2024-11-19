@@ -13,12 +13,14 @@ import 'package:umai/common/bloc/notification_cubit.dart';
 import 'package:umai/common/screens/common_details.dart';
 import 'package:umai/common/services/notification_service.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
+import 'package:umai/common/widgets/search_widget.dart';
 import 'package:umai/quiz/screens/home.dart';
 import 'package:umai/quiz/screens/quiz_details.dart';
 import 'package:umai/social/screens/home.dart';
 import 'package:umai/social/widgets/head_post.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/svg_utils.dart';
+import 'package:umai/utils/themes.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -31,7 +33,6 @@ class _HomeScreenState extends State<HomeScreen> with CompletableMixin {
   static const int _mainPageIndex = 0;
   final pages = const [
     {'title': 'Social', 'page': SocialHomeScreen()},
-    {'title': 'Évènements', 'page': SizedBox()},
     {'title': 'Actu', 'page': SizedBox()},
     {'title': 'Animes', 'page': AnimeHomeScreen()},
     {'title': 'Quiz', 'page': QuizHomeScreen()},
@@ -78,16 +79,16 @@ class _HomeScreenState extends State<HomeScreen> with CompletableMixin {
                             .bottomNavigationBarTheme
                             .backgroundColor,
                       ),
-              actions: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const AccountScreen()));
-                  },
-                  child: const UserProfilePicture(),
-                ),
-                const SizedBox(width: 16.0)
-              ],
+              leading: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const AccountScreen()));
+                },
+                child: Container(
+                    margin: const EdgeInsets.only(left: 16),
+                    child: const UserProfilePicture()),
+              ),
+              actions: [SearchWidget(index: index)],
             ),
             body: PageView(
               controller: pageController,
@@ -100,40 +101,33 @@ class _HomeScreenState extends State<HomeScreen> with CompletableMixin {
               useLegacyColorScheme: false,
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
-                  icon: _buildIconWithDecoration(
-                      icon: Assets.iconsNotification, selected: index == 0),
-                  label: pages[0]['title'] as String,
-                  backgroundColor: Theme.of(context)
-                    .bottomNavigationBarTheme.backgroundColor
-                ),
+                    icon: _buildIconWithDecoration(
+                        icon: Assets.iconsNotification, selected: index == 0),
+                    label: pages[0]['title'] as String,
+                    backgroundColor: Theme.of(context)
+                        .bottomNavigationBarTheme
+                        .backgroundColor),
                 BottomNavigationBarItem(
-                  icon: _buildIconWithDecoration(
-                      icon: Assets.iconsCalendar, selected: index == 1),
-                  label: pages[1]['title'] as String,
-                  backgroundColor: Theme.of(context)
-                    .bottomNavigationBarTheme.backgroundColor
-                ),
+                    icon: _buildIconWithDecoration(
+                        icon: Assets.iconsUmai, selected: index == 1),
+                    label: pages[1]['title'] as String,
+                    backgroundColor: Theme.of(context)
+                        .bottomNavigationBarTheme
+                        .backgroundColor),
                 BottomNavigationBarItem(
-                  icon: _buildIconWithDecoration(
-                      icon: Assets.iconsUmai, selected: index == 2),
-                  label: pages[2]['title'] as String,
-                  backgroundColor: Theme.of(context)
-                    .bottomNavigationBarTheme.backgroundColor
-                ),
+                    icon: _buildIconWithDecoration(
+                        icon: Assets.iconsTrending, selected: index == 2),
+                    label: pages[2]['title'] as String,
+                    backgroundColor: Theme.of(context)
+                        .bottomNavigationBarTheme
+                        .backgroundColor),
                 BottomNavigationBarItem(
-                  icon: _buildIconWithDecoration(
-                      icon: Assets.iconsTrending, selected: index == 3),
-                  label: pages[3]['title'] as String,
-                  backgroundColor: Theme.of(context)
-                    .bottomNavigationBarTheme.backgroundColor
-                ),
-                BottomNavigationBarItem(
-                  icon: _buildIconWithDecoration(
-                      icon: Assets.iconsQuiz, selected: index == 4),
-                  label: pages[4]['title'] as String,
-                  backgroundColor: Theme.of(context)
-                    .bottomNavigationBarTheme.backgroundColor
-                ),
+                    icon: _buildIconWithDecoration(
+                        icon: Assets.iconsQuiz, selected: index == 3),
+                    label: pages[3]['title'] as String,
+                    backgroundColor: Theme.of(context)
+                        .bottomNavigationBarTheme
+                        .backgroundColor),
               ],
             ),
           ),
@@ -227,21 +221,20 @@ class _HomeScreenState extends State<HomeScreen> with CompletableMixin {
 
   Widget _buildIconWithDecoration({required icon, required bool selected}) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 4.0),
-      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 20),
-      decoration: selected
-        ? BoxDecoration(
-            color: Theme.of(context).colorScheme.primary,
-            borderRadius: BorderRadius.circular(16))
-        : null,
-      child: toSvgIcon(
-        icon: icon,
-        color: selected
-          ? Theme.of(context).bottomNavigationBarTheme.selectedItemColor
-          : Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
-        size: 24,
-      )
-    );
+        margin: const EdgeInsets.only(bottom: 4.0),
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 20),
+        decoration: selected
+            ? BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
+                borderRadius: BorderRadius.circular(16))
+            : null,
+        child: toSvgIcon(
+          icon: icon,
+          color: selected
+              ? Theme.of(context).bottomNavigationBarTheme.selectedItemColor
+              : Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
+          size: 24,
+        ));
   }
 
   @override

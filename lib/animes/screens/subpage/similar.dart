@@ -45,7 +45,7 @@ class _SimilarScreenState extends State<SimilarScreen>
           autoManage: false,
           viewType: ViewType.grid,
           itemBuilder: (context, anime) =>
-              AnimeItem.get(context: context, anime: anime, withAction: false),
+              AnimeItem.get(context: context, anime: anime, withSelect: false),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
               crossAxisSpacing: 2.0,
