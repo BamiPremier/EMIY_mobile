@@ -92,11 +92,11 @@ class AnimeManipCubit extends ObjectCubit<Anime, AnimeManipState> {
     });
   }
 
-  void shareAnime () {
+  void shareAnime() {
     if (state is InitializingAnimeManipState) {
       final stateBefore = state;
 
-        emit(const ShareAnimeLoadingState());
+      emit(const ShareAnimeLoadingState());
       animeService
           .shareAnime(
         idAnime: anime.id,

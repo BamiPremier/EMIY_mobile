@@ -86,12 +86,18 @@ class UserCubit extends ObjectCubit<User, UserState> {
   void updateUser({
     String? username,
     String? biography,
+    List<String>? genres,
   }) {
     final stateBefore = state;
 
     emit(const UserUpdatingState());
-    userService.updateUser(username: username, biography: biography).then(
-        (user) {
+    userService
+        .updateUser(
+      username: username,
+      biography: biography,
+      genres: genres,
+    )
+        .then((user) {
       preferencesService.saveUser(user);
       emit(const UserUpdatedState());
       emit(UserLoggedState(user));
@@ -120,8 +126,6 @@ class UserCubit extends ObjectCubit<User, UserState> {
       final stateBefore = state;
       emit(const UserLoggingOut());
 
-       
-
       Future.wait([
         GoogleSignIn().signOut(),
         preferencesService.clear(),
@@ -130,8 +134,7 @@ class UserCubit extends ObjectCubit<User, UserState> {
           onError: (error, trace) {
         emit(UserErrorState(error, trace));
         emit(stateBefore);
-        });
-     
+      });
     }
   }
 

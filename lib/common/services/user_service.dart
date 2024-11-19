@@ -27,13 +27,15 @@ class UserService extends ApiService {
   static const String _posts = '/posts';
   static const String _quizUser = '/quiz';
   static const String _shareUser = '/users/:idUser/share';
-  static const String _sendFCMToken = '/users/notification'; 
+  static const String _sendFCMToken = '/users/notification';
+  static const String _searchUser = '/users';
   const UserService(super._dio);
 
   Future<void> sendFCMToken({required String user, required String token}) {
     return compute(dio.patch(_sendFCMToken,
         options: Options(headers: withAuth()), data: {"token": token}));
-  } 
+  }
+
   Future<User> getMe() {
     return compute(
         dio.get(
@@ -111,11 +113,23 @@ class UserService extends ApiService {
   Future<User> updateUser({
     String? username,
     String? biography,
+    List<String>? genres,
   }) {
+    print(
+      {
+        if (username != null) 'username': username,
+        if (biography != null) 'biography': biography,
+        if (genres != null) 'favorite_genres': genres,
+      },
+    );
     return compute(
         dio.patch(
           _updateUser,
-          data: {'username': username, 'biography': biography},
+          data: {
+            if (username != null) 'username': username,
+            if (biography != null) 'biography': biography,
+            if (genres != null) 'favorite_genres': genres,
+          },
           options: Options(headers: withAuth()),
         ),
         mapper: User.fromJson);
@@ -215,5 +229,14 @@ class UserService extends ApiService {
               if (userId != null) 'userId': userId,
             }),
         mapper: (result) => toPaginatedList(result, Post.fromJson));
+  }
+
+  Future<PaginatedList<User>> searchUser({int page = 1, required String search}) async {
+    return compute(
+        dio.get(
+          "$_searchUser?search=$search",
+          options: Options(headers: withAuth()),
+        ),
+        mapper: (result) => toPaginatedList(result, User.fromJson));
   }
 }

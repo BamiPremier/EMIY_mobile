@@ -46,7 +46,7 @@ class _WatchListState extends State<WatchList> with CompletableMixin {
         cubit: userWatchlistCubit,
         viewType: ViewType.grid,
         itemBuilder: (context, anime) =>
-            AnimeItem.get(context: context, anime: anime, withAction: true),
+            AnimeItem.get(context: context, anime: anime, withSelect: false),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
             crossAxisSpacing: 2.0,

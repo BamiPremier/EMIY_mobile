@@ -132,10 +132,8 @@ class MyApp extends StatelessWidget {
               create: (context) => AnimeCubitManager(context.read())),
           RepositoryProvider(create: (context) => QuizService(dio)),
           RepositoryProvider(
-            create: (context) => QuizManageCubitManager(
-              context.read(),
-              context.read()
-            )),
+              create: (context) =>
+                  QuizManageCubitManager(context.read(), context.read())),
           RepositoryProvider(
               create: (context) => EpisodeCubitManager(context.read())),
           RepositoryProvider(create: (_) => LinkService(dio)),
@@ -153,7 +151,6 @@ class MyApp extends StatelessWidget {
               ),
               BlocProvider(
                 create: (context) => NotificationCubit(
-
                     preferencesService,
                     context.read(),
                     context.read(),

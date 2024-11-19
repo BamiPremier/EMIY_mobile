@@ -7,6 +7,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:umai/animes/models/anime.dart';
 import 'package:umai/auth/services/auth_service.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/models/user.dart';
@@ -83,7 +84,7 @@ class AuthCubit extends Cubit<AuthState> {
       deviceName: deviceInfo.name,
       token: idToken!,
       timezone: timezone,
-      appVersion:  appVersion,
+      appVersion: appVersion,
     )
         .then((response) async {
       await userCubit.preferencesService.saveUser(response.user);
@@ -122,6 +123,37 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
+  void addToListAnimeWatchlist(List<Anime> animeList) {
+    final stateBefore = state;
+
+    emit(const AuthAddListAnimeToWatchlistLoadingState());
+    authService
+        .addListAnimeToWatchList(animeList: animeList.map((e) => e.id).toList())
+        .then((updateAnime) {
+      emit(const AuthAddListAnimeToWatchlistSuccesState());
+    }, onError: (error, trace) {
+      emit(AuthErrorState(error, trace));
+      emit(stateBefore);
+    });
+  }
+
+  addListAnimeToViewed(List<Anime> animeList) {
+    final stateBefore = state;
+
+    emit(const AuthAddListAnimeToViewedLoadingState());
+    authService
+        .addListAnimeToViewerList(
+            animeList: animeList.map((e) => e.id).toList())
+        .then((updateAnime) {
+      emit(const AuthAddListAnimeToViewedSuccesState());
+    }, onError: (error, trace) {
+      emit(AuthErrorState(error, trace));
+
+      emit(stateBefore);
+    });
+    return;
+  }
+
   void updateUserNameAndTag(String value) {
     if (state is AuthIdleState) {
       final currentState = state as AuthIdleState;
@@ -154,8 +186,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   String generateUserTag(String username) {
-    // Convertir en minuscules
-    String tag = username.toLowerCase();
+      String tag = username.toLowerCase();
 
     // Remplacer les espaces par des tirets
     tag = tag.replaceAll(' ', '-');
