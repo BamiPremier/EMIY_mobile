@@ -19,6 +19,8 @@ void showSuccessToast({
   required BuildContext context,
   required String content,
 }) {
+  _showToast(textColor: null, bgColor: null, content: content, context: context);
+
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
         margin: const EdgeInsets.symmetric(horizontal: 32)
@@ -27,31 +29,40 @@ void showSuccessToast({
   );
 }
 
-
 void showBlackErrorToast(
     {required dynamic content, required BuildContext context}) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-        backgroundColor: Colors.black,
-        margin: const EdgeInsets.symmetric(horizontal: 32)
-            .add(const EdgeInsets.only(bottom: 12)),
-        content: Center(
-            child: Text(
-          _translateError(content),
-          style: const TextStyle(color: Colors.white),
-        ))),
-  );
+  _showToast(
+      textColor: Colors.white,
+      bgColor: Colors.black,
+      content: content,
+      context: context);
 }
+
 void showErrorToast({required dynamic content, required BuildContext context}) {
+  final contentText = _translateError(content);
+
+  _showToast(
+      textColor: Colors.white,
+      bgColor: Theme.of(context).colorScheme.error,
+      content: contentText,
+      context: context);
+}
+
+void _showToast({
+  required dynamic content,
+  required BuildContext context,
+  Color? textColor,
+  Color? bgColor,
+}) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-        backgroundColor: Theme.of(context).colorScheme.error,
+        backgroundColor: bgColor,
         margin: const EdgeInsets.symmetric(horizontal: 32)
             .add(const EdgeInsets.only(bottom: 12)),
         content: Center(
             child: Text(
-          _translateError(content),
-          style: const TextStyle(color: Colors.white),
+          content,
+          style: TextStyle(color: textColor),
         ))),
   );
 }

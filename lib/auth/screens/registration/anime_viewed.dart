@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
-import 'package:potatoes/potatoes.dart';
+import 'package:potatoes/common/widgets/loaders.dart';
 import 'package:umai/auth/bloc/auth_cubit.dart';
 import 'package:umai/auth/bloc/select_anime_cubitt.dart';
+import 'package:umai/auth/screens/registration/anime_viewed.dart';
+import 'package:umai/auth/screens/registration/anime_watchlist.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/svg_utils.dart';
@@ -15,6 +17,10 @@ import 'package:umai/auth/screens/registration/people.dart';
 import 'package:umai/common/widgets/buttons.dart';
 
 class RegistrationAnimeViewed extends StatefulWidget {
+  const RegistrationAnimeViewed._({
+    super.key,
+  });
+
   static Widget init({
     required BuildContext context,
   }) {
@@ -24,28 +30,25 @@ class RegistrationAnimeViewed extends StatefulWidget {
           create: (context) => AnimeByGenreCubit(
             cubitManager: context.read(),
             authService: context.read(),
-            selectedTarget: AvailableValues.viewed,
+            selectedTarget: AvailableValues.watchlist,
           ),
         ),
         BlocProvider(
           create: (context) => SelectAnimeCubit(),
         ),
       ],
-      child: RegistrationAnimeViewed._(),
+      child: const RegistrationAnimeViewed._(),
     );
   }
 
-  const RegistrationAnimeViewed._();
-
   @override
   State<RegistrationAnimeViewed> createState() =>
-      _RegistrationAnimeViewedState();
+      _RegistrationAnimeViewedlistState();
 }
 
-class _RegistrationAnimeViewedState extends State<RegistrationAnimeViewed>
+class _RegistrationAnimeViewedlistState extends State<RegistrationAnimeViewed>
     with CompletableMixin {
   late final animeByGenreCubit = context.read<AnimeByGenreCubit>();
-
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthCubit, AuthState>(
@@ -53,7 +56,7 @@ class _RegistrationAnimeViewedState extends State<RegistrationAnimeViewed>
       child: Scaffold(
         appBar: AppBar(
             forceMaterialTransparency: true,
-            title: const Text("Ceux-ci m'intéressent")),
+            title: const Text("J'ai trop aimé!")),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -61,21 +64,18 @@ class _RegistrationAnimeViewedState extends State<RegistrationAnimeViewed>
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
-                  'Sélectionne les animes que tu voudrais regarder dans un futur proche',
+                  'Sélectionne un anime pour l’ajouter à ta liste de favoris',
                   style: Theme.of(context).textTheme.bodySmall),
             ),
             const SizedBox(height: 16.0),
             Expanded(
               child: AutoListView.get<Anime>(
-                padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                // padding: EdgeInsets.only(
+                //     bottom: MediaQuery.of(context).viewInsets.bottom),
                 cubit: animeByGenreCubit,
                 viewType: ViewType.grid,
                 itemBuilder: (context, anime) => AnimeItem.get(
-                    context: context,
-                    anime: anime,
-                    withSelect: true,
-                    isViewedList: true),
+                    context: context, anime: anime, withSelect: true),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     crossAxisSpacing: 2.0,
@@ -123,7 +123,8 @@ class _RegistrationAnimeViewedState extends State<RegistrationAnimeViewed>
         selectAnimeCubit.state.length >= 3) {
       context.read<AuthCubit>().addListAnimeToViewed(selectAnimeCubit.state);
     } else {
-      showBlackErrorToast(content: "Choisis au moins 3 animes", context: context);
+      showBlackErrorToast(
+          content: "Choisis au moins 3 animes", context: context);
     }
     return null;
   }
@@ -135,7 +136,9 @@ class _RegistrationAnimeViewedState extends State<RegistrationAnimeViewed>
       loadingDialogCompleter = showLoadingBarrier(context: context);
     } else if (state is AuthAddListAnimeToViewedSuccesState) {
       Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => const PeopleToFollowScreen()),
+        MaterialPageRoute(
+            builder: (context) =>
+                RegistrationAnimeWatchList.init(context: context)),
       );
     } else if (state is AuthErrorState) {
       showErrorToast(content: state.error, context: context);
