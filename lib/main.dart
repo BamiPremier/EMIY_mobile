@@ -15,7 +15,6 @@ import 'package:umai/animes/services/episode_cubit_manager.dart';
 import 'package:umai/animes/services/episode_service.dart';
 import 'package:umai/auth/bloc/auth_cubit.dart';
 import 'package:umai/auth/screens/onboarding_screen.dart';
-import 'package:umai/auth/screens/registration/genres_selection.dart';
 import 'package:umai/auth/screens/registration/username.dart';
 import 'package:umai/auth/services/auth_service.dart';
 import 'package:umai/common/bloc/common_cubit.dart';

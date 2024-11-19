@@ -47,6 +47,7 @@ class AnimeItem extends StatelessWidget {
                 selectAnimeCubit: context.read<SelectAnimeCubit>(),
               ),
               child: Stack(
+                fit: StackFit.expand,
                 children: [
                   animeItemImage(anime: anime, context: context),
                   if (context.read<SelectAnimeCubit>().isSelected(anime))
