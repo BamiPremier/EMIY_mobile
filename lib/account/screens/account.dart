@@ -60,10 +60,12 @@ class _AccountScreenState extends State<AccountScreen>
             Text(
               NumberFormat.compact().format(count),
               style: Theme.of(context).textTheme.labelLarge,
+              textAlign: TextAlign.center,
             ),
             Text(
               label,
               style: Theme.of(context).textTheme.bodySmall,
+              textAlign: TextAlign.center,
             ),
           ],
         ),
@@ -168,7 +170,7 @@ class _AccountScreenState extends State<AccountScreen>
                                   builder: (context) => FollowScreen.get(
                                     context: context,
                                     title:
-                                    "M'ont ajouté (${userCubit.user.followersCount})",
+                                    "M'ont ajouté (${NumberFormat.compact().format(userCubit.user.followersCount)})",
                                     followCubit: followersCubit)));
                             },
                             count: user.followersCount,
@@ -181,7 +183,7 @@ class _AccountScreenState extends State<AccountScreen>
                                   builder: (context) => FollowScreen.get(
                                     context: context,
                                     title:
-                                    "Ajoutés (${userCubit.user.followingCount})",
+                                    "Ajoutés (${NumberFormat.compact().format(userCubit.user.followingCount)})",
                                     followCubit: followingCubit)));
                             },
                             count: user.followingCount,

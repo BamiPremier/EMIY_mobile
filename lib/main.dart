@@ -152,6 +152,7 @@ class MyApp extends StatelessWidget {
               ),
               BlocProvider(
                 create: (context) => NotificationCubit(
+
                     preferencesService,
                     context.read(),
                     context.read(),
