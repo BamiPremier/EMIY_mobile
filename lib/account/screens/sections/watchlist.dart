@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
-import 'package:umai/utils/assets.dart';
-import 'package:umai/utils/svg_utils.dart';
+import 'package:umai/common/widgets/empty_builder.dart';
+import 'package:umai/common/widgets/error_builder.dart'; 
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/account/bloc/user_watxhlist_cubit.dart';
@@ -52,21 +52,7 @@ class _WatchListState extends State<WatchList> with CompletableMixin {
             crossAxisSpacing: 2.0,
             mainAxisSpacing: 2.0,
             childAspectRatio: .65),
-        emptyBuilder: (ctx) => Center(
-              child: toSvgIcon(
-                icon: Assets.iconsEmpty,
-                size: 56,
-              ),
-            ),
-        errorBuilder: (context, retry) => Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text("An error occured"),
-                TextButton(
-                  onPressed: retry,
-                  child: const Text("Retry"),
-                )
-              ],
-            ));
+        emptyBuilder: (ctx) => const EmptyBuilder(),
+         errorBuilder: (context, retry) => ErrorBuilder(retry: retry),);
   }
 }

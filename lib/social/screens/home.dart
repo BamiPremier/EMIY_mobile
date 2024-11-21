@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
+import 'package:umai/common/widgets/empty_builder.dart';
+import 'package:umai/common/widgets/error_builder.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/svg_utils.dart';
 import 'package:potatoes/libs.dart';
@@ -7,9 +9,7 @@ import 'package:umai/social/bloc/post_feed_cubit.dart';
 import 'package:umai/social/models/post.dart';
 import 'package:umai/social/screens/new_post_screen.dart';
 import 'package:umai/social/widgets/item_post.dart';
-import 'package:umai/social/widgets/new_post_banner.dart';
-import 'package:umai/utils/assets.dart';
-import 'package:umai/utils/svg_utils.dart';
+import 'package:umai/social/widgets/new_post_banner.dart'; 
 
 class SocialHomeScreen extends StatefulWidget {
   const SocialHomeScreen({super.key});
@@ -37,22 +37,9 @@ class _SocialHomeScreenState extends State<SocialHomeScreen> {
                     itemBuilder: (context, post) =>
                         PostItem.get(context: context, post: post),
                     separatorBuilder: (_, __) => const Divider(height: 8),
-                    emptyBuilder: (ctx) => Center(
-                          child: toSvgIcon(
-                            icon: Assets.iconsEmpty,
-                            size: 56
-                          ),
-                        ),
-                    errorBuilder: (context, retry) => Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Text("An error occured"),
-                            TextButton(
-                              onPressed: retry,
-                              child: const Text("Retry"),
-                            )
-                          ],
-                        ))),
+                    emptyBuilder: (ctx) => const EmptyBuilder(),
+                    errorBuilder: (context, retry) =>
+                        ErrorBuilder(retry: retry))),
           ],
         ),
         floatingActionButton: FloatingActionButton(

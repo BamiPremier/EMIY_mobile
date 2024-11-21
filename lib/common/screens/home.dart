@@ -20,7 +20,6 @@ import 'package:umai/social/screens/home.dart';
 import 'package:umai/social/widgets/head_post.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/svg_utils.dart';
-import 'package:umai/utils/themes.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -140,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> with CompletableMixin {
     await waitForDialog();
     if (state is LinkLoading) {
       loadingDialogCompleter = showLoadingBarrier(context: context);
-    } else if (state is PersonLinkLoaded) {
+    } else if (state is UserLinkLoaded) {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) =>
               PersonAccountScreen.get(context: context, user: state.user)));

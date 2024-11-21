@@ -1,10 +1,11 @@
 import 'package:potatoes/auto_list/models/paginated_list.dart';
 import 'package:potatoes/libs.dart';
+import 'package:umai/common/bloc/repport_cubit.dart';
 import 'package:umai/common/services/api_service.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/models/quiz_response.dart';
 
-class QuizService extends ApiService {
+class QuizService extends ApiService with ReportService<Quiz> {
   static const String _quiz = '/quiz';
   static const String _quizUpdate = '/quiz/:id';
   static const String _quizFeed = '/quiz/feed';
@@ -28,10 +29,11 @@ class QuizService extends ApiService {
     );
   }
 
-  Future reportQuiz({required String idQuiz, required String reason}) {
+  @override
+  Future reportItem({required String idItem, required String reason}) {
     return compute(
       dio.post(
-        _reportQuiz.replaceAll(':id', idQuiz),
+        _reportQuiz.replaceAll(':id', idItem),
         options: Options(headers: withAuth()),
         data: {
           'reason': reason,
@@ -146,8 +148,13 @@ class QuizService extends ApiService {
           options: Options(headers: withAuth()),
         ),
         mapper: (result) => (result['questions'] as List<dynamic>)
-            .map((question) =>
-                QuizQuestionResponse.fromJson(question as Map<String, dynamic>))
+            .map((e) => QuizQuestionResponse.fromJson(e))
             .toList());
   }
+
+  @override
+  Future<void> reportComment({
+    required String idItem,
+    required String reason,
+  }) async {}
 }

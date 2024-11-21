@@ -7,10 +7,11 @@ import 'package:umai/animes/services/anime_cubit_manager.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/common/widgets/buttons.dart';
+import 'package:umai/common/widgets/empty_builder.dart';
+import 'package:umai/common/widgets/error_builder.dart';
 import 'package:umai/quiz/bloc/load_quiz_ranking_cubit.dart';
-import 'package:umai/quiz/bloc/quiz_cubit.dart';
+import 'package:umai/quiz/bloc/new_quiz_cubit.dart';
 import 'package:umai/quiz/bloc/quiz_manage_cubit.dart';
-import 'package:umai/quiz/bloc/quiz_question_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/screens/quiz_participation.dart';
 import 'package:umai/quiz/services/quiz_cubit_manager.dart';
@@ -18,9 +19,7 @@ import 'package:umai/quiz/services/quiz_service.dart';
 import 'package:umai/quiz/widgets/head_quiz.dart';
 import 'package:umai/quiz/widgets/item_user_quiz.dart';
 import 'package:umai/quiz/widgets/quiz_info.dart';
-import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/dialogs.dart';
-import 'package:umai/utils/svg_utils.dart';
 
 const quizRouteName = 'quiz_details';
 
@@ -31,9 +30,11 @@ class QuizDetailScreen extends StatefulWidget {
   }) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider.value(value: context.read<QuizManageCubitManager>().get(quiz)),
+        BlocProvider.value(
+            value: context.read<QuizManageCubitManager>().get(quiz)),
         if (quiz.anime != null)
-          BlocProvider.value(value: context.read<AnimeCubitManager>().get(quiz.anime!))
+          BlocProvider.value(
+              value: context.read<AnimeCubitManager>().get(quiz.anime!))
       ],
       child: const QuizDetailScreen._(),
     );
@@ -48,10 +49,12 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
     with CompletableMixin {
   final isCollapsed = ValueNotifier<bool>(true);
   late final quizManageCubit = context.read<QuizManageCubit>();
-  late final Quiz quiz = quizManageCubit.quiz;
-  late final QuizQuestionCubit quizQuestionCubit =
-      context.read<QuizQuestionCubit>();
-  late final quizCubit = context.read<QuizCubit>();
+  late final quizCubit = context.read<NewQuizCubit>();
+  late final participationListCubit = LoadQuizRankingCubit(
+    context.read(),
+    context.read<QuizService>(),
+    quizManageCubit.quiz.id,
+  );
 
   @override
   void initState() {
@@ -60,12 +63,12 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<QuizQuestionCubit, QuizQuestionState>(
+    return BlocConsumer<QuizManageCubit, QuizManageState>(
       listener: onEventReceived,
-      builder: (context, stateQuizQuestion) =>
-          BlocListener<QuizCubit, QuizState>(
-        listener: onEventReceivedQuiz,
-        child: Scaffold(
+      buildWhen: (_, current) => current is InitializingQuizManageState,
+      builder: (context, state) {
+        final quiz = quizManageCubit.quiz;
+        return Scaffold(
           body: CustomScrollView(
             slivers: [
               const HeadQuiz(),
@@ -102,11 +105,8 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
                   shrinkWrap: true,
                   padding: EdgeInsets.zero,
                   physics: const NeverScrollableScrollPhysics(),
-                  cubit: LoadQuizRankingCubit(
-                    context.read(),
-                    context.read<QuizService>(),
-                    quiz.id,
-                  ),
+                  cubit: participationListCubit,
+                  autoManage: false,
                   itemBuilder: (context, quizParticipation) => UserItemQuiz.get(
                       context: context, quizParticipation: quizParticipation),
                   loadingBuilder: (context) => Container(
@@ -129,25 +129,8 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
                             Theme.of(context).colorScheme.tertiaryContainer,
                         borderRadius: BorderRadius.circular(30),
                       )),
-                  emptyBuilder: (ctx) => Center(
-                    child: toSvgIcon(
-                      icon: Assets.iconsEmpty,
-                      size: 56,
-                    ),
-                  ),
-                  errorBuilder: (context, retry) => Align(
-                    alignment: Alignment.center,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Text("Une erreur est survenue"),
-                        TextButton(
-                          onPressed: retry,
-                          child: const Text("Réessayer"),
-                        )
-                      ],
-                    ),
-                  ),
+                  emptyBuilder: (ctx) => const EmptyBuilder(),
+                  errorBuilder: (context, retry) => ErrorBuilder(retry: retry),
                 ),
               ),
             ],
@@ -161,7 +144,7 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
                 if (quiz.participation == null &&
                     quiz.user.id != context.read<UserCubit>().user.id)
                   UmaiButton.primary(
-                    onPressed: participer,
+                    onPressed: () => participer(quiz),
                     text: "Participer",
                   ),
                 if (quiz.status == QuizStatus.pending &&
@@ -173,12 +156,12 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
               ],
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
-  void onEventReceivedQuiz(BuildContext context, QuizState state) async {
+  void onEventReceivedQuiz(BuildContext context, NewQuizState state) async {
     await waitForDialog();
 
     if (state is QuizUpdateState) {
@@ -190,7 +173,7 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
     }
   }
 
-  void participer() => showAppBottomSheet(
+  void participer(quiz) => showAppBottomSheet(
       context: context,
       builder: (_) => Padding(
             padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
@@ -211,7 +194,7 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
                 UmaiButton.primary(
                   onPressed: () {
                     Navigator.of(context).pop();
-                    quizQuestionCubit.getQuizQuestions(quiz: quiz);
+                    quizManageCubit.loadQuestions();
                   },
                   text: "Commencer",
                 ),
@@ -219,27 +202,31 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
             ),
           ));
 
-  void onEventReceived(BuildContext context, QuizQuestionState state) async {
+  void onEventReceived(BuildContext context, QuizManageState state) async {
     await waitForDialog();
 
-    if (state is QuizQuestionLoadingState) {
+    if (state is QuizManageLoadingState) {
       loadingDialogCompleter = showLoadingBarrier(context: context);
-    } else if (state is QuizListQuestionState) {
+    } else if (state is InitializingQuizManageState) {
+      participationListCubit.reset();
+    } else if (state is QuizQuestionsState) {
       if (state.questions.isNotEmpty) {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => QuizParticipationScreen.get(
-                context: context, quiz: quiz, questions: state.questions)));
+                context: context,
+                quiz: quizManageCubit.quiz,
+                questions: state.questions)));
       } else {
         showErrorToast(content: "Aucune question trouvée", context: context);
       }
-    } else if (state is QuizQuestionErrorState) {
+    } else if (state is QuizManageErrorState) {
       showErrorToast(content: state.error, context: context);
     }
   }
+
+  @override
+  void dispose() {
+    participationListCubit.close();
+    super.dispose();
+  }
 }
-
-
-
-    // C extends XCommonCubit<T>,
-    // L extends BaseLoadCommentCubit<T>,
-    // A extends ActionCommentBaseCubit<C>

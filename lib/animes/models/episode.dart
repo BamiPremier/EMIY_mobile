@@ -46,8 +46,7 @@ class Episode with _$Episode, XItem {
   @override
   User? get itemUser => null;
 
-  Anime get itemAnime => anime;
-
+  @override
   Episode copyWithLike({bool? hasLiked}) =>
       copyWith(hasLiked: hasLiked ?? this.hasLiked);
 }

@@ -6,6 +6,7 @@ import 'package:umai/animes/models/anime.dart';
 import 'package:umai/animes/services/anime_cubit_manager.dart';
 import 'package:umai/animes/widgets/item_anime.dart';
 import 'package:umai/common/bloc/anime_manip_cubit.dart';
+import 'package:umai/common/widgets/error_builder.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/svg_utils.dart';
 
@@ -57,20 +58,7 @@ class _SimilarScreenState extends State<SimilarScreen>
                   size: 56,
                 ),
               ),
-          errorBuilder: (context, retry) => Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Text("An error occured"),
-                    TextButton(
-                      onPressed: retry,
-                      child: const Text("Retry"),
-                    )
-                  ],
-                ),
-              )
+           errorBuilder: (context, retry) => ErrorBuilder(retry: retry),
           // loadingBuilder: (context) => Container(
           //     padding: const EdgeInsets.only(top: 16, bottom: 28)
           //         .add(const EdgeInsets.symmetric(horizontal: 16)),

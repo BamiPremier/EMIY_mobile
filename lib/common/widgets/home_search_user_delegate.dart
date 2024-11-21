@@ -4,15 +4,10 @@ import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
 
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:umai/common/bloc/user_search_cubit.dart';
-import 'package:umai/common/models/user.dart';
-import 'package:umai/common/services/user_service.dart';
-import 'package:umai/common/widgets/item_user.dart';
-import 'package:umai/utils/assets.dart';
-import 'package:umai/utils/svg_utils.dart';
-import 'package:umai/animes/models/anime.dart';
-import 'package:umai/animes/services/anime_service.dart';
-import 'package:umai/common/services/cache_manager.dart';
-import 'package:umai/quiz/bloc/quiz_cubit.dart';
+import 'package:umai/common/models/user.dart'; 
+import 'package:umai/common/widgets/empty_builder.dart';
+import 'package:umai/common/widgets/error_builder.dart';
+import 'package:umai/common/widgets/item_user.dart'; 
 
 class HomeSearchUserDelegate extends SearchDelegate<String> {
   late final AutoListCubit<User> _cubit;
@@ -116,26 +111,8 @@ class HomeSearchUserDelegate extends SearchDelegate<String> {
       separatorBuilder: (context, index) => const SizedBox(height: 8),
       itemBuilder: (context, user) =>
           UserItem.get(context: context, user: user),
-      emptyBuilder: (ctx) => Center(
-        child: toSvgIcon(
-          icon: Assets.iconsEmpty,
-          size: 56,
-        ),
-      ),
-      errorBuilder: (context, retry) => Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text("Une erreur s'est produite"),
-            TextButton(
-              onPressed: retry,
-              child: const Text("Réessayer"),
-            )
-          ],
-        ),
-      ),
+      emptyBuilder: (ctx) =>  const EmptyBuilder(),
+     errorBuilder: (context, retry) => ErrorBuilder(retry: retry),
       loadingBuilder: (context) => const Center(
         child: CircularProgressIndicator(),
       ),

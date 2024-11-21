@@ -6,10 +6,8 @@ import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/common/utils/validators.dart';
 import 'package:umai/common/widgets/buttons.dart';
-import 'package:umai/quiz/bloc/quiz_cubit.dart';
-import 'package:umai/quiz/screens/new/editing_quiz.dart';
+import 'package:umai/quiz/bloc/new_quiz_cubit.dart';
 import 'package:umai/quiz/screens/new/search_anime_delegate.dart';
-import 'package:umai/utils/dialogs.dart';
 
 class UpdateQuizAfterPublishScreen extends StatefulWidget {
   const UpdateQuizAfterPublishScreen({
@@ -26,7 +24,7 @@ class _UpdateQuizAfterPublishScreenState
   final TextEditingController _titreController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
-  late final QuizCubit quizCubit = context.read<QuizCubit>();
+  late final NewQuizCubit quizCubit = context.read<NewQuizCubit>();
   @override
   void initState() {
     super.initState();
@@ -52,8 +50,12 @@ class _UpdateQuizAfterPublishScreenState
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<QuizCubit, QuizState>(
+    return BlocConsumer<NewQuizCubit, NewQuizState>(
       listener: onEventReceived,
+      buildWhen: (previous, current) =>
+          current is QuizCreatedState ||
+          current is QuizUpdateState ||
+          current is QuizPublishedState,
       builder: (context, state) => Scaffold(
         appBar: AppBar(
           leading: BackButton(
@@ -204,18 +206,15 @@ class _UpdateQuizAfterPublishScreenState
     );
   }
 
-  void onEventReceived(BuildContext context, QuizState state) async {
-    await waitForDialog();
+  void onEventReceived(BuildContext context, NewQuizState state) async {
+    // await waitForDialog();
 
-    if (state is QuizLoadingState) {
-      loadingDialogCompleter = showLoadingBarrier(context: context);
-    } else if (state is QuizCreatedState) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => EditingQuizScreen(state.quiz)),
-      );
-    } else if (state is QuizErrorState) {
-      showErrorToast(content: state.error, context: context);
-    }
+    // if (state is QuizLoadingState) {
+    //   loadingDialogCompleter = showLoadingBarrier(context: context);
+    // } else if (state is QuizCreatedState) {
+    //   Navigator.pop(context);
+    // } else if (state is QuizErrorState) {
+    //   showErrorToast(content: state.error, context: context);
+    // }
   }
 }

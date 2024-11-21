@@ -3,15 +3,18 @@ import 'package:umai/animes/services/anime_cubit_manager.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/bloc/quiz_manage_cubit.dart';
 import 'package:umai/quiz/services/quiz_service.dart';
+import 'package:umai/common/services/person_cubit_manager.dart';
 
 class QuizManageCubitManager
     extends CubitManager<QuizManageCubit, Quiz, String> {
   final QuizService quizService;
   final AnimeCubitManager animeCubitManager;
 
+  final PersonCubitManager personCubitManager;
   QuizManageCubitManager(
     this.quizService,
-    this.animeCubitManager
+    this.animeCubitManager,
+    this.personCubitManager,
   );
 
   @override
@@ -24,6 +27,8 @@ class QuizManageCubitManager
     if (object.anime != null) {
       animeCubitManager.add(object.anime!);
     }
+    personCubitManager.add(object.user);
+
     return QuizManageCubit(quizService, object);
   }
 
@@ -33,5 +38,6 @@ class QuizManageCubitManager
     if (object.anime != null) {
       animeCubitManager.add(object.anime!);
     }
+    personCubitManager.add(object.user);
   }
 }

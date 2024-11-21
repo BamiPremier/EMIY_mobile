@@ -1,23 +1,23 @@
-part of 'quiz_cubit.dart';
+part of 'new_quiz_cubit.dart';
 
-mixin QuizState on Equatable {}
+mixin NewQuizState on Equatable {}
 
-class QuizIdleState extends CubitSuccessState with QuizState {
+class QuizIdleState extends CubitSuccessState with NewQuizState {
   const QuizIdleState();
 
   @override
   List<Object?> get props => [];
 }
 
-class QuizLoadingState extends CubitLoadingState with QuizState {
+class QuizLoadingState extends CubitLoadingState with NewQuizState {
   const QuizLoadingState();
 }
 
-class QuizLoadingPublishState extends CubitLoadingState with QuizState {
+class QuizLoadingPublishState extends CubitLoadingState with NewQuizState {
   const QuizLoadingPublishState();
 }
 
-class QuizCreatedState extends CubitSuccessState with QuizState {
+class QuizCreatedState extends CubitSuccessState with NewQuizState {
   final Anime? anime;
   final Quiz quiz;
   final List<QuestionQuiz> questions;
@@ -28,15 +28,15 @@ class QuizCreatedState extends CubitSuccessState with QuizState {
   List<Object?> get props => [anime, quiz, questions];
 }
 
-class QuizPublishedState extends CubitInformationState with QuizState {
+class QuizPublishedState extends CubitInformationState with NewQuizState {
   const QuizPublishedState();
 }
 
-class QuizErrorState extends CubitErrorState with QuizState {
+class QuizErrorState extends CubitErrorState with NewQuizState {
   QuizErrorState(super.error, [super.trace]);
 }
 
-class QuizSelectAnimeState extends CubitSuccessState with QuizState {
+class QuizSelectAnimeState extends CubitSuccessState with NewQuizState {
   final Anime anime;
   final List<QuestionQuiz>? questions;
   final Quiz? quiz;
@@ -51,7 +51,7 @@ class QuizSelectAnimeState extends CubitSuccessState with QuizState {
   List<Object?> get props => [anime, quiz, questions];
 }
 
-class QuizUpdateState extends CubitSuccessState with QuizState {
+class QuizUpdateState extends CubitSuccessState with NewQuizState {
   final Anime? anime;
   final List<QuestionQuiz>? questions;
   final Quiz? quiz;

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
-import 'package:umai/utils/assets.dart';
-import 'package:umai/utils/svg_utils.dart';
+import 'package:umai/common/widgets/empty_builder.dart';
+import 'package:umai/common/widgets/error_builder.dart'; 
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/bloc/load_quiz_anime_cubit.dart';
 import 'package:umai/animes/models/anime.dart';
@@ -34,7 +34,7 @@ class _QuizAnimeScreenState extends State<QuizAnimeScreen>
 
   late final anime = animeManipCubit.anime;
   late final LoadQuizAnimeCubit cubit = LoadQuizAnimeCubit(
-      context.read(), context.read(), context.read(), anime.id.toString());
+      context.read(), context.read(),   anime.id.toString());
 
   @override
   Widget build(BuildContext context) {
@@ -45,25 +45,8 @@ class _QuizAnimeScreenState extends State<QuizAnimeScreen>
         shrinkWrap: true,
         itemBuilder: (context, quiz) =>
             ItemQuiz.get(context: context, quiz: quiz),
-        emptyBuilder: (ctx) => Center(
-              child: toSvgIcon(
-                icon: Assets.iconsEmpty,
-                size: 56,
-              ),
-            ),
-        errorBuilder: (context, retry) => Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text("An error occured"),
-                  TextButton(
-                    onPressed: retry,
-                    child: const Text("Retry"),
-                  )
-                ],
-              ),
-            ));
+        emptyBuilder: (ctx) => const EmptyBuilder(),
+      errorBuilder: (context, retry) => ErrorBuilder(retry: retry),
+    );
   }
 }

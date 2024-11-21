@@ -4,6 +4,8 @@ import 'package:umai/quiz/widgets/quiz_block.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/svg_utils.dart';
 
+const quizRouteHomeName = 'quiz_home';
+
 class QuizHomeScreen extends StatefulWidget {
   const QuizHomeScreen({super.key});
 
@@ -12,8 +14,7 @@ class QuizHomeScreen extends StatefulWidget {
 }
 
 class _QuizHomeScreenState extends State<QuizHomeScreen> {
-  @override
-  Widget build(BuildContext context) {
+  @override   Widget build(BuildContext context) {
     return Scaffold(
       primary: false,
       body: NestedScrollView(
@@ -34,7 +35,10 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => NewQuizScreen()),
+          MaterialPageRoute(
+            builder: (context) => const NewQuizScreen(),
+            settings: const RouteSettings(name: quizRouteHomeName),
+          ),
         ),
         child: toSvgIcon(
           icon: Assets.iconsMore,
