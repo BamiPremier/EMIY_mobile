@@ -3,11 +3,9 @@ import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/quiz/bloc/quiz_participation_cubit.dart';
-import 'package:umai/quiz/bloc/quiz_question_cubit.dart';
 import 'package:umai/quiz/bloc/timer_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/models/quiz_response.dart';
-import 'package:umai/quiz/screens/quiz_details.dart';
 import 'package:umai/quiz/screens/quizz_finished.dart';
 import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/quiz/widgets/head_particiation.dart';
@@ -37,53 +35,21 @@ class QuizParticipationScreen extends StatefulWidget {
 
 class _QuizParticipationScreenState extends State<QuizParticipationScreen>
     with CompletableMixin {
-  late final QuizQuestionCubit quizQuestionCubit =
-      context.read<QuizQuestionCubit>();
   late final QuizParticipationCubit quizParticipationCubit =
       context.read<QuizParticipationCubit>();
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<QuizParticipationCubit, QuizParticipationState>(
         listener: onEventReceived,
-        child: BlocBuilder<QuizQuestionCubit, QuizQuestionState>(
-          builder: (context, stateQuizQuestion) {
-            return Scaffold(
-              body: CustomScrollView(
-                slivers: [
-                  HeadParticipation.get(context: context, quiz: widget.quiz),
-                  if (stateQuizQuestion is QuizQuestionLoadingState)
-                    _buildLoadingIndicator(context)
-                  else if (stateQuizQuestion is QuizListQuestionState)
-                    stateQuizQuestion.questions.isNotEmpty
-                        ? _buildQuestionContent(context)
-                        : SliverToBoxAdapter(
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Text('Aucune question disponible'),
-                                  const SizedBox(height: 16),
-                                  TextButton(
-                                    onPressed: () {
-                                      quizQuestionCubit.getQuizQuestions(
-                                          quiz: widget.quiz);
-                                    },
-                                    child: const Text('Rafraîchir'),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          )
-                ],
-              ),
-              bottomNavigationBar: _buildBottomNavigation(context),
-            );
-          },
+        child: Scaffold(
+          body: CustomScrollView(
+            slivers: [
+              HeadParticipation.get(context: context, quiz: widget.quiz),
+              _buildQuestionContent(context)
+            ],
+          ),
+          bottomNavigationBar: _buildBottomNavigation(context),
         ));
   }
 
@@ -99,59 +65,49 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen>
 
     if (state is QuizParticipationFinishedState) {
       context.read<QuizManageCubitManager>().add(state.quiz);
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-              builder: (_) => QuizFinishedScreen(
-                  nombrePoints: state.nombrePoints, quiz: widget.quiz)),
-          (route) => route.settings.name == quizRouteName);
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+            builder: (_) => QuizFinishedScreen(
+                nombrePoints: state.nombrePoints, quiz: widget.quiz)),
+      );
     }
   }
-
-  Widget _buildLoadingIndicator(BuildContext context) {
-    return SliverPadding(
-        padding: const EdgeInsets.all(16.0),
-        sliver: SliverToBoxAdapter(
-            child: Center(
-                child: LinearProgressIndicator(
-          color: Theme.of(context).colorScheme.onTertiaryContainer,
-          backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
-          borderRadius: BorderRadius.circular(30),
-        ))));
-  }
-
+ 
   Widget _buildQuestionContent(BuildContext context) {
     return BlocBuilder<QuizParticipationCubit, QuizParticipationState>(
+        buildWhen: (previous, current) => current is QuizParticipationIdleState,
         builder: (context, stateParticipation) {
-      if (stateParticipation is QuizParticipationFinishedState ||
-          stateParticipation is QuizParticipationLoadingState) {
-        return const SliverToBoxAdapter(child: SizedBox.shrink());
-      }
-      final state = (stateParticipation as QuizParticipationIdleState);
-      return SliverPadding(
-        padding: const EdgeInsets.all(16.0),
-        sliver: SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              if (index == 0) {
-                return Text(
-                  'Question ${state.questions.indexOf(state.currentQuestion) + 1} - ${stateParticipation.questions.length}',
-                  style: Theme.of(context).textTheme.titleSmall,
-                );
-              }
+          if (stateParticipation is QuizParticipationFinishedState ||
+              stateParticipation is QuizParticipationLoadingState) {
+            return const SliverToBoxAdapter(child: SizedBox.shrink());
+          }
+          final state = (stateParticipation as QuizParticipationIdleState);
+          return SliverPadding(
+            padding: const EdgeInsets.all(16.0),
+            sliver: SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  if (index == 0) {
+                    return Text(
+                      'Question ${state.questions.indexOf(state.currentQuestion) + 1} - ${stateParticipation.questions.length}',
+                      style: Theme.of(context).textTheme.titleSmall,
+                    );
+                  }
 
-              return _buildQuestionDetails(context);
-            },
-            childCount: 2,
-          ),
-        ),
-      );
-    });
+                  return _buildQuestionDetails(context);
+                },
+                childCount: 2,
+              ),
+            ),
+          );
+        });
   }
 
   Widget _buildQuestionDetails(
     BuildContext context,
   ) {
     return BlocBuilder<QuizParticipationCubit, QuizParticipationState>(
+      buildWhen: (previous, current) => current is QuizParticipationIdleState,
       builder: (context, stateParticipation) {
         if (stateParticipation is! QuizParticipationIdleState) {
           return const SizedBox.shrink();
@@ -203,6 +159,7 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen>
     BuildContext context,
   ) {
     return BlocBuilder<QuizParticipationCubit, QuizParticipationState>(
+      buildWhen: (previous, current) => current is QuizParticipationIdleState,
       builder: (context, stateParticipation) {
         final currentQuestionState =
             (stateParticipation as QuizParticipationIdleState);

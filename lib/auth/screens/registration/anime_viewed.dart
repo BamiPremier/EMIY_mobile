@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
-
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/common/widgets/loaders.dart';
-import 'package:umai/auth/bloc/auth_cubit.dart';
-import 'package:umai/auth/bloc/select_anime_cubitt.dart';
-import 'package:umai/auth/screens/registration/anime_viewed.dart';
-import 'package:umai/auth/screens/registration/anime_watchlist.dart';
-import 'package:umai/utils/assets.dart';
-import 'package:umai/utils/dialogs.dart';
-import 'package:umai/utils/svg_utils.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/models/anime.dart';
 import 'package:umai/animes/widgets/item_anime.dart';
 import 'package:umai/auth/bloc/anime_by_genre_cubit.dart';
-import 'package:umai/auth/screens/registration/people.dart';
+import 'package:umai/auth/bloc/auth_cubit.dart';
+import 'package:umai/auth/bloc/select_anime_cubitt.dart';
+import 'package:umai/auth/screens/registration/anime_watchlist.dart';
 import 'package:umai/common/widgets/buttons.dart';
+import 'package:umai/common/widgets/empty_builder.dart';
+import 'package:umai/common/widgets/error_builder.dart';
+import 'package:umai/utils/dialogs.dart';
 
 class RegistrationAnimeViewed extends StatefulWidget {
   const RegistrationAnimeViewed._();
@@ -68,8 +65,8 @@ class _RegistrationAnimeViewedlistState extends State<RegistrationAnimeViewed>
             const SizedBox(height: 16.0),
             Expanded(
               child: AutoListView.get<Anime>(
-                // padding: EdgeInsets.only(
-                //     bottom: MediaQuery.of(context).viewInsets.bottom),
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
                 cubit: animeByGenreCubit,
                 viewType: ViewType.grid,
                 itemBuilder: (context, anime) => AnimeItem.get(
@@ -81,23 +78,9 @@ class _RegistrationAnimeViewedlistState extends State<RegistrationAnimeViewed>
                     crossAxisCount: 3,
                     crossAxisSpacing: 2.0,
                     mainAxisSpacing: 2.0,
-                    childAspectRatio: .70),
-                emptyBuilder: (ctx) => Center(
-                  child: toSvgIcon(
-                    icon: Assets.iconsEmpty,
-                    size: 56,
-                  ),
-                ),
-                errorBuilder: (context, retry) => Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Text("An error occured"),
-                    TextButton(
-                      onPressed: retry,
-                      child: const Text("Retry"),
-                    )
-                  ],
-                ),
+                    childAspectRatio: .65),
+                emptyBuilder: (ctx) => const EmptyBuilder(),
+                errorBuilder: (context, retry) => ErrorBuilder(retry: retry),
               ),
             )
           ],

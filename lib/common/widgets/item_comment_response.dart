@@ -10,8 +10,10 @@ import 'package:umai/common/bloc/load_comment_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/models/comment.dart';
 import 'package:umai/common/screens/common_details.dart';
+import 'package:umai/common/services/report_util_service.dart';
 import 'package:umai/common/widgets/action_comment_response.dart';
-import 'package:umai/common/widgets/item_comment.dart';
+import 'package:umai/common/widgets/empty_builder.dart';
+import 'package:umai/common/widgets/error_builder.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/dialogs.dart';
@@ -80,10 +82,9 @@ class _ItemCommentResponseState<T extends XItem>
               leading: SizedBox(
                 child: Row(mainAxisSize: MainAxisSize.min, children: [
                   toSvgIcon(
-                    icon: Assets.iconsDirectionRight,
-                    color: AppTheme.surfaceGrey,
-                    size: 16
-                  ),
+                      icon: Assets.iconsDirectionRight,
+                      color: AppTheme.surfaceGrey,
+                      size: 16),
                   const SizedBox(width: 8.0),
                   GestureDetector(
                       child: ProfilePicture(
@@ -114,8 +115,10 @@ class _ItemCommentResponseState<T extends XItem>
                   PopupMenuButton<String>(
                     onSelected: (value) {
                       if (value == 'Signaler') {
-                        reportComment(
-                            context: context, commentCubit: commentCubit);
+                        reportUtilService<T>(
+                            item: comment as T,
+                            reportService: context.read<XService<T>>(),
+                            context: context);
                       } else if (value == 'Supprimer') {
                         context.read<LoadCommentCubit>().deleteComment(comment);
                       } else if (value == 'Copier') {
@@ -214,25 +217,8 @@ class _ItemCommentResponseState<T extends XItem>
                       Theme.of(context).colorScheme.tertiaryContainer,
                   borderRadius: BorderRadius.circular(30),
                 )),
-            emptyBuilder: (ctx) => Center(
-              child: toSvgIcon(
-                icon: Assets.iconsEmpty,
-                size: 56
-              ),
-            ),
-            errorBuilder: (context, retry) => Align(
-              alignment: Alignment.center,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text("Une erreur est survenue"),
-                  TextButton(
-                    onPressed: retry,
-                    child: const Text("Réessayer"),
-                  )
-                ],
-              ),
-            ),
+            emptyBuilder: (ctx) => const EmptyBuilder(),
+            errorBuilder: (context, retry) => ErrorBuilder(retry: retry),
           ),
       ]);
     });

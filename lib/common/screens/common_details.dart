@@ -10,18 +10,19 @@ import 'package:umai/common/bloc/action_comment_cubit.dart';
 import 'package:umai/common/bloc/comment_cubit.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/bloc/load_comment_cubit.dart';
+import 'package:umai/common/bloc/repport_cubit.dart';
 import 'package:umai/common/models/comment.dart';
 import 'package:umai/common/models/user.dart';
 import 'package:umai/common/widgets/button_common.dart';
 import 'package:umai/common/widgets/comment_input.dart';
+import 'package:umai/common/widgets/empty_builder.dart';
+import 'package:umai/common/widgets/error_builder.dart';
 import 'package:umai/common/widgets/item_comment.dart';
 import 'package:umai/social/bloc/post_cubit.dart'; // Removed incorrect import
 import 'package:umai/social/models/post.dart';
-import 'package:umai/social/services/post_cubit_manager.dart';
-import 'package:umai/utils/assets.dart';
-import 'package:umai/utils/svg_utils.dart';
+import 'package:umai/social/services/post_cubit_manager.dart'; 
 
-mixin XItem {
+mixin XItem implements XReportedItem {
   String get itemId;
   bool get itemHasLiked;
 
@@ -198,24 +199,10 @@ class _CommonDetailsScreenState<T extends XItem>
                                       .tertiaryContainer,
                                   borderRadius: BorderRadius.circular(30),
                                 )),
-                            emptyBuilder: (ctx) => Center(
-                                  child: toSvgIcon(
-                                    icon: Assets.iconsEmpty,
-                                    size: 56,
-                                  ),
-                                ),
-                            errorBuilder: (context, retry) => Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const Text("Une erreur est survenue"),
-                                    TextButton(
-                                      onPressed: retry,
-                                      child: const Text("Réessayer"),
-                                    )
-                                  ],
-                                ))
+                            emptyBuilder: (ctx) => const EmptyBuilder(),
+                            errorBuilder: (context, retry) =>
+                              ErrorBuilder(retry: retry),
+                        )
                       ],
                     ),
                   ),

@@ -30,6 +30,14 @@ class CreateQuizQuestionCubit extends Cubit<CreateQuizQuestionState> {
 
   void initializeForm() {
     if (state is! QuizUpdateQuestionFormBuildState) {
+      _questionController = TextEditingController();
+      _propositionControllers = [
+        TextEditingController(),
+        TextEditingController(),
+      ];
+      _correctAnswerIndex = null;
+      imagePath = null;
+      
       emit(QuizCreateQuestionFormBuildState(
         propositionControllers: List.from(_propositionControllers),
         questionController: _questionController,
@@ -40,12 +48,13 @@ class CreateQuizQuestionCubit extends Cubit<CreateQuizQuestionState> {
   }
 
   void initializeUpdateForm(QuestionQuiz question) {
-    _questionController.text = question.label;
+    _questionController = TextEditingController(text: question.label);
     _propositionControllers = question.responses
         .map((response) => TextEditingController(text: response.label))
         .toList();
     _correctAnswerIndex = question.correctAnswerIndex;
     imagePath = question.image;
+    
     emit(QuizUpdateQuestionFormBuildState(
         propositionControllers: List.from(_propositionControllers),
         questionController: _questionController,
@@ -64,8 +73,12 @@ class CreateQuizQuestionCubit extends Cubit<CreateQuizQuestionState> {
   void removeProposition(int index) {
     if (_propositionControllers.length > 2) {
       _propositionControllers.removeAt(index);
-      if (_correctAnswerIndex != null && _correctAnswerIndex! >= index) {
-        _correctAnswerIndex = null;
+      if (_correctAnswerIndex != null) {
+        if (_correctAnswerIndex! == index) {
+          _correctAnswerIndex = null;
+        } else if (_correctAnswerIndex! > index) {
+          _correctAnswerIndex = _correctAnswerIndex! - 1;
+        }
       }
       _emitUpdatedState();
     }
@@ -75,9 +88,11 @@ class CreateQuizQuestionCubit extends Cubit<CreateQuizQuestionState> {
     if (index == null) {
       _correctAnswerIndex = null;
       _emitUpdatedState();
-    } else if (_propositionControllers.length > 1 &&
-        _correctAnswerIndex != index &&
-        _questionController.text.isNotEmpty &&
+      return;
+    }
+
+    if (index >= 0 && 
+        index < _propositionControllers.length &&
         _propositionControllers[index].text.isNotEmpty) {
       _correctAnswerIndex = index;
       _emitUpdatedState();
@@ -101,28 +116,27 @@ class CreateQuizQuestionCubit extends Cubit<CreateQuizQuestionState> {
         correctAnswerIndex: _correctAnswerIndex,
         imagePath: imagePath,
       ));
-    } else {
+    } else if (state is QuizUpdateQuestionFormBuildState) {
+      final updateState = state as QuizUpdateQuestionFormBuildState;
       emit(QuizUpdateQuestionFormBuildState(
         propositionControllers: List.from(_propositionControllers),
         questionController: _questionController,
         correctAnswerIndex: _correctAnswerIndex,
         imagePath: imagePath,
-        idQuestion: (state is QuizCreateQuestionSuccessState)
-            ? (state as QuizCreateQuestionSuccessState).question.id!
-            : (state as QuizUpdateQuestionFormBuildState).idQuestion,
+        idQuestion: updateState.idQuestion,
       ));
     }
   }
 
   void reset() {
     _questionController = TextEditingController();
-
     _propositionControllers = [
       TextEditingController(),
       TextEditingController(),
     ];
     _correctAnswerIndex = null;
     imagePath = null;
+    
     emit(QuizCreateQuestionFormBuildState(
       propositionControllers: List.from(_propositionControllers),
       questionController: _questionController,
@@ -139,22 +153,30 @@ class CreateQuizQuestionCubit extends Cubit<CreateQuizQuestionState> {
     }
   }
 
-  void addQuestion(
-    Quiz quiz,
-  ) async {
+  void addQuestion(Quiz quiz) async {
     final stateBefore = state as QuizCreateQuestionFormBuildState;
+    
+    if (stateBefore.questionController.text.isEmpty ||
+        stateBefore.correctAnswerIndex == null) {
+      return;
+    }
+
+    final nonEmptyPropositions = stateBefore.propositionControllers
+        .where((controller) => controller.text.isNotEmpty)
+        .toList();
+
+    if (nonEmptyPropositions.length < 2) {
+      return;
+    }
+
     final question = QuestionQuiz(
       label: stateBefore.questionController.text,
       image: stateBefore.imagePath,
-      responses: stateBefore.propositionControllers
-          .where((controller) => controller.text.isNotEmpty)
+      responses: nonEmptyPropositions
           .map((e) => QuizResponse(
               label: e.text,
-              isCorrect: stateBefore.correctAnswerIndex ==
-                  stateBefore.propositionControllers
-                      .where((controller) => controller.text.isNotEmpty)
-                      .toList()
-                      .indexOf(e)))
+              isCorrect: stateBefore.correctAnswerIndex == 
+                  nonEmptyPropositions.indexOf(e)))
           .toList(),
       correctAnswerIndex: stateBefore.correctAnswerIndex!,
     );
@@ -168,8 +190,8 @@ class CreateQuizQuestionCubit extends Cubit<CreateQuizQuestionState> {
           "image": await MultipartFile.fromFile(stateBefore.imagePath!,
               filename: basename(stateBefore.imagePath!))
       });
-      final response =
-          await quizService.addQuestion(data: data, idQuiz: quiz.id);
+      
+      final response = await quizService.addQuestion(data: data, idQuiz: quiz.id);
       final updatedQuestion = QuestionQuiz(
           id: response.id,
           label: question.label,
@@ -185,22 +207,30 @@ class CreateQuizQuestionCubit extends Cubit<CreateQuizQuestionState> {
     }
   }
 
-  void updateQuestion(
-    Quiz quiz,
-  ) async {
+  void updateQuestion(Quiz quiz) async {
     final stateBefore = state as QuizUpdateQuestionFormBuildState;
+
+    if (stateBefore.questionController.text.isEmpty ||
+        stateBefore.correctAnswerIndex == null) {
+      return;
+    }
+
+    final nonEmptyPropositions = stateBefore.propositionControllers
+        .where((controller) => controller.text.isNotEmpty)
+        .toList();
+
+    if (nonEmptyPropositions.length < 2) {
+      return;
+    }
+
     final question = QuestionQuiz(
       label: stateBefore.questionController.text,
       image: stateBefore.imagePath,
-      responses: stateBefore.propositionControllers
-          .where((controller) => controller.text.isNotEmpty)
+      responses: nonEmptyPropositions
           .map((e) => QuizResponse(
               label: e.text,
               isCorrect: stateBefore.correctAnswerIndex ==
-                  stateBefore.propositionControllers
-                      .where((controller) => controller.text.isNotEmpty)
-                      .toList()
-                      .indexOf(e)))
+                  nonEmptyPropositions.indexOf(e)))
           .toList(),
       correctAnswerIndex: stateBefore.correctAnswerIndex!,
     );
@@ -210,13 +240,17 @@ class CreateQuizQuestionCubit extends Cubit<CreateQuizQuestionState> {
 
       var data = FormData.fromMap({
         ...question.toFormData(),
-        if (!stateBefore.imagePath!.contains('cloudfront'))
-          if (stateBefore.imagePath != null)
-            "image": await MultipartFile.fromFile(stateBefore.imagePath!,
-                filename: basename(stateBefore.imagePath!))
+        if (stateBefore.imagePath != null && 
+            !stateBefore.imagePath!.contains('cloudfront'))
+          "image": await MultipartFile.fromFile(stateBefore.imagePath!,
+              filename: basename(stateBefore.imagePath!))
       });
+
       final response = await quizService.updateQuestion(
-          data: data, idQuiz: quiz.id, idQuestion: stateBefore.idQuestion);
+          data: data, 
+          idQuiz: quiz.id,
+          idQuestion: stateBefore.idQuestion);
+
       final updatedQuestion = QuestionQuiz(
           id: response.id,
           label: question.label,

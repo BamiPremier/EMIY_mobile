@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart' hide PreferencesService;
 import 'package:umai/common/models/user.dart';
+import 'package:umai/common/services/notification_service.dart';
 import 'package:umai/common/services/preferences_service.dart';
 import 'package:umai/common/services/user_service.dart';
 
@@ -13,10 +14,11 @@ part 'user_state.dart';
 class UserCubit extends ObjectCubit<User, UserState> {
   final UserService userService;
   final PreferencesService preferencesService;
-
+  final NotificationService notificationService;
   UserCubit(
     this.userService,
     this.preferencesService,
+    this.notificationService,
   ) : super(const InitializingUserState()) {
     _getInitialState(true);
   }
@@ -129,6 +131,7 @@ class UserCubit extends ObjectCubit<User, UserState> {
       Future.wait([
         GoogleSignIn().signOut(),
         preferencesService.clear(),
+        notificationService.disconnect(),
         Future.delayed(const Duration(seconds: 2))
       ]).then((value) => emit(const UserNotLoggedState()),
           onError: (error, trace) {

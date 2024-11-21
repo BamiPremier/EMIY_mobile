@@ -8,14 +8,16 @@ import 'package:umai/common/services/cache_manager.dart';
 import 'package:umai/common/utils/validators.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/quiz/bloc/create_quiz_question_cubit.dart';
-import 'package:umai/quiz/bloc/quiz_cubit.dart';
+import 'package:umai/quiz/bloc/new_quiz_cubit.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/svg_utils.dart';
 
 class AddQuizQuestionScreen extends StatefulWidget {
+  const AddQuizQuestionScreen({super.key});
+
   @override
-  _AddQuizQuestionScreenState createState() => _AddQuizQuestionScreenState();
+  State<AddQuizQuestionScreen> createState() => _AddQuizQuestionScreenState();
 }
 
 class _AddQuizQuestionScreenState extends State<AddQuizQuestionScreen>
@@ -23,11 +25,9 @@ class _AddQuizQuestionScreenState extends State<AddQuizQuestionScreen>
   @override
   void initState() {
     super.initState();
-
-    context.read<CreateQuizQuestionCubit>().initializeForm();
   }
 
-  late final QuizCubit quizCubit = context.read<QuizCubit>();
+  late final NewQuizCubit quizCubit = context.read<NewQuizCubit>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +40,9 @@ class _AddQuizQuestionScreenState extends State<AddQuizQuestionScreen>
       ),
       body: BlocConsumer<CreateQuizQuestionCubit, CreateQuizQuestionState>(
         listener: onEventReceived,
+        buildWhen: (previous, current) =>
+            current is QuizCreateQuestionFormBuildState ||
+            current is QuizUpdateQuestionFormBuildState,
         builder: (context, state) {
           final cubit = context.read<CreateQuizQuestionCubit>();
 
@@ -375,34 +378,12 @@ class _AddQuizQuestionScreenState extends State<AddQuizQuestionScreen>
       bottomNavigationBar: SafeArea(
         minimum: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
         child: BlocBuilder<CreateQuizQuestionCubit, CreateQuizQuestionState>(
+          buildWhen: (previous, current) =>
+              current is QuizCreateQuestionFormBuildState ||
+              current is QuizUpdateQuestionFormBuildState,
           builder: (context, state) {
-            final cubit = context.read<CreateQuizQuestionCubit>();
-
             return UmaiButton.primary(
-              onPressed: (state is QuizCreateQuestionFormBuildState ||
-                          state is QuizUpdateQuestionFormBuildState) &&
-                      (state is QuizCreateQuestionFormBuildState
-                          ? state.correctAnswerIndex != null &&
-                              state.propositionControllers
-                                      .where(
-                                          (TextEditingController controller) =>
-                                              controller.text.isNotEmpty)
-                                      .length >=
-                                  2
-                          : (state as QuizUpdateQuestionFormBuildState)
-                                      .correctAnswerIndex !=
-                                  null &&
-                              state.propositionControllers
-                                      .where(
-                                          (TextEditingController controller) =>
-                                              controller.text.isNotEmpty)
-                                      .length >=
-                                  2)
-                  ? () {
-                      cubit.submitQuestion(
-                          (quizCubit.state as QuizCreatedState).quiz);
-                    }
-                  : null,
+              onPressed: actionQuestion(state),
               text: (state is QuizCreateQuestionFormBuildState)
                   ? "Enregistrer"
                   : "Mettre à jour",
@@ -413,6 +394,35 @@ class _AddQuizQuestionScreenState extends State<AddQuizQuestionScreen>
     );
   }
 
+  actionQuestion(state) {
+    print(state);
+    return (state is QuizCreateQuestionFormBuildState ||
+                state is QuizUpdateQuestionFormBuildState) &&
+            (state is QuizCreateQuestionFormBuildState
+                ? state.correctAnswerIndex != null &&
+                    state.propositionControllers
+                            .where((TextEditingController controller) =>
+                                controller.text.isNotEmpty)
+                            .length >=
+                        2
+                : (state as QuizUpdateQuestionFormBuildState)
+                            .correctAnswerIndex !=
+                        null &&
+                    state.propositionControllers
+                            .where((TextEditingController controller) =>
+                                controller.text.isNotEmpty)
+                            .length >=
+                        2)
+        ? () {
+         
+              context
+                  .read<CreateQuizQuestionCubit>()
+                  .submitQuestion((quizCubit.state as QuizCreatedState).quiz);
+           
+          }
+        : null;
+  }
+
   void onEventReceived(
       BuildContext context, CreateQuizQuestionState state) async {
     await waitForDialog();
@@ -420,7 +430,7 @@ class _AddQuizQuestionScreenState extends State<AddQuizQuestionScreen>
     if (state is QuizCreateQuestionLoadingState) {
       loadingDialogCompleter = showLoadingBarrier(context: context);
     } else if (state is QuizCreateQuestionSuccessState) {
-      context.read<QuizCubit>().addQuestion(state.question);
+      context.read<NewQuizCubit>().addQuestion(state.question);
       Navigator.pop(context);
     } else if (state is QuizCreateQuestionErrorState) {
       showErrorToast(content: state.error, context: context);

@@ -187,7 +187,7 @@ class __$$CommentImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$CommentImpl implements _Comment {
+class _$CommentImpl extends _Comment {
   _$CommentImpl(
       {required this.id,
       required this.content,
@@ -197,7 +197,8 @@ class _$CommentImpl implements _Comment {
       required this.user,
       @JsonKey(name: 'created_at')
       @DateTimeConverter()
-      required this.createdAt});
+      required this.createdAt})
+      : super._();
 
   factory _$CommentImpl.fromJson(Map<String, dynamic> json) =>
       _$$CommentImplFromJson(json);
@@ -261,7 +262,7 @@ class _$CommentImpl implements _Comment {
   }
 }
 
-abstract class _Comment implements Comment {
+abstract class _Comment extends Comment {
   factory _Comment(
       {required final String id,
       required final String content,
@@ -272,6 +273,7 @@ abstract class _Comment implements Comment {
       @JsonKey(name: 'created_at')
       @DateTimeConverter()
       required final DateTime createdAt}) = _$CommentImpl;
+  _Comment._() : super._();
 
   factory _Comment.fromJson(Map<String, dynamic> json) = _$CommentImpl.fromJson;
 

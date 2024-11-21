@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
+import 'package:umai/common/widgets/error_builder.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/svg_utils.dart';
 import 'package:potatoes/libs.dart';
@@ -52,16 +53,7 @@ class _QuizUserScreenState extends State<QuizUserScreen>
           size: 56,
         ),
       ),
-      errorBuilder: (context, retry) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Text("Une erreur s'est produite"),
-          TextButton(
-            onPressed: retry,
-            child: const Text("Réessayer"),
-          )
-        ],
-      ),
+       errorBuilder: (context, retry) => ErrorBuilder(retry: retry),
     );
   }
 }

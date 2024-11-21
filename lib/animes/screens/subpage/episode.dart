@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
-import 'package:umai/utils/assets.dart';
-import 'package:umai/utils/svg_utils.dart';
+import 'package:umai/common/widgets/empty_builder.dart'; 
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/bloc/load_episode_anime_cubit.dart';
 import 'package:umai/animes/models/anime.dart';
 import 'package:umai/animes/models/episode.dart';
 import 'package:umai/animes/services/anime_cubit_manager.dart';
 import 'package:umai/animes/widgets/item_episode.dart';
+
+import '../../../common/widgets/error_builder.dart';
 
 class EpisodeScreen extends StatefulWidget {
   static Widget get({
@@ -49,25 +50,8 @@ class _EpisodeScreenState extends State<EpisodeScreen>
         cubit: loadEpisodeAnimeCubit,
         itemBuilder: (context, episode) => EpisodeItem(
             loadEpisodeAnimeCubit: loadEpisodeAnimeCubit, episode: episode),
-        emptyBuilder: (ctx) => Center(
-              child: toSvgIcon(
-                icon: Assets.iconsEmpty,
-                size: 56,
-              ),
-            ),
-        errorBuilder: (context, retry) => Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text("An error occured"),
-                  TextButton(
-                    onPressed: retry,
-                    child: const Text("Retry"),
-                  )
-                ],
-              ),
-            ));
+        emptyBuilder: (ctx) => const EmptyBuilder(),
+       errorBuilder: (context, retry) => ErrorBuilder(retry: retry),
+    );
   }
 }

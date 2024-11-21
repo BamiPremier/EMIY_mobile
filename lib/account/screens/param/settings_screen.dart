@@ -26,7 +26,7 @@ class _SettingsScreenState extends State<SettingsScreen>
   }
 
   Future<void> _fetchNotificationSettings() async {
-    final settings = await FirebaseMessaging.instance.getNotificationSettings();
+      await FirebaseMessaging.instance.getNotificationSettings();
     setState(() {});
   }
 

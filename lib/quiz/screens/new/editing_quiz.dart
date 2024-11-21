@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
-import 'package:umai/common/screens/home.dart';
 import 'package:umai/common/services/cache_manager.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/common/widgets/buttons.dart';
-import 'package:umai/quiz/bloc/quiz_cubit.dart';
+import 'package:umai/quiz/bloc/create_quiz_question_cubit.dart';
+import 'package:umai/quiz/bloc/new_quiz_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/screens/new/add_quiz_question.dart';
 import 'package:umai/quiz/screens/new/list_quiz_questions.dart';
@@ -26,16 +26,17 @@ class EditingQuizScreen extends StatefulWidget {
 
 class _EditingQuizScreenState extends State<EditingQuizScreen>
     with CompletableMixin {
-  late final quizCubit = context.read<QuizCubit>();
+  late final quizCubit = context.read<NewQuizCubit>();
   late final Quiz quiz = widget.quiz;
   @override
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (bool didPop, dynamic result) async {
-        return await showAppBottomSheet(
-          context: context,
-          builder: (_) => Padding(
+        if (!didPop) {
+          final shouldPop = await showAppBottomSheet<bool>(
+            context: context,
+            builder: (_) => Padding(
               padding: const EdgeInsets.only(top: 24.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,31 +55,36 @@ class _EditingQuizScreenState extends State<EditingQuizScreen>
                   UmaiButton.primary(
                     onPressed: () {
                       Navigator.of(context).pop(true);
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        Navigator.of(context).pop();
-                      });
                     },
                     text: "Quitter",
                   ),
-                  const SizedBox(
-                    height: 12,
-                  ),
+                  const SizedBox(height: 12),
                   UmaiButton.white(
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () => Navigator.of(context).pop(false),
                     text: 'retour',
                   )
                 ],
-              )),
-        );
+              ),
+            ),
+          );
+
+          if (shouldPop == true && context.mounted) {
+            Navigator.of(context).pop();
+          }
+        }
       },
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Mon Quiz'),
         ),
-        body: BlocConsumer<QuizCubit, QuizState>(
+        body: BlocConsumer<NewQuizCubit, NewQuizState>(
           listener: onEventReceived,
+          buildWhen: (previous, current) =>
+              current is QuizCreatedState ||
+              current is QuizUpdateState ||
+              current is QuizPublishedState,
           builder: (context, state) {
-            return (state is QuizCreatedState)
+            return (  state is QuizCreatedState)
                 ? SingleChildScrollView(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Column(
@@ -130,15 +136,17 @@ class _EditingQuizScreenState extends State<EditingQuizScreen>
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(children: [
-                                    Expanded(
-                                      child: Text(
-                                        (state).quiz.title,
-                                        maxLines: 2,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleMedium,
+                                    if (state is QuizCreatedState)
+                                      Expanded(
+                                        child: Text(
+                                          (state).quiz.title,
+                                          maxLines: 2,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium,
+                                        ),
                                       ),
-                                    ),
+                                    
                                     IconButton(
                                       icon: toSvgIcon(
                                         icon: Assets.iconsEdit,
@@ -148,13 +156,16 @@ class _EditingQuizScreenState extends State<EditingQuizScreen>
                                       },
                                     ),
                                   ]),
-                                  Text(
-                                    (state).quiz.description,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium!
-                                        .copyWith(color: AppTheme.disabledText),
-                                  ),
+                                  if (state is QuizCreatedState)
+                                    Text(
+                                      (state).quiz.description,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                              color: AppTheme.disabledText),
+                                    ),
+                                   
                                 ],
                               ),
                             ),
@@ -173,10 +184,15 @@ class _EditingQuizScreenState extends State<EditingQuizScreen>
           },
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddQuizQuestionScreen()),
-          ),
+          onPressed: () {
+            context.read<CreateQuizQuestionCubit>().initializeForm();
+
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const AddQuizQuestionScreen()),
+            );
+          },
           child: toSvgIcon(
             icon: Assets.iconsMore,
           ),
@@ -186,7 +202,7 @@ class _EditingQuizScreenState extends State<EditingQuizScreen>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              BlocBuilder<QuizCubit, QuizState>(
+              BlocBuilder<NewQuizCubit, NewQuizState>(
                 builder: (context, state) {
                   return UmaiButton.primary(
                     onPressed: (state is QuizCreatedState &&
@@ -206,19 +222,15 @@ class _EditingQuizScreenState extends State<EditingQuizScreen>
     );
   }
 
-  void onEventReceived(BuildContext context, QuizState state) async {
+  void onEventReceived(BuildContext context, NewQuizState state) async {
     await waitForDialog();
 
     if (state is QuizLoadingPublishState) {
       loadingDialogCompleter = showLoadingBarrier(context: context);
     } else if (state is QuizPublishedState) {
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
-        (route) => false,
-      );
+      Navigator.popUntil(context, (route) => route.isFirst);
     } else if (state is QuizUpdateState) {
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const NewQuizScreen()),
       );

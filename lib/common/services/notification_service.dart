@@ -22,6 +22,15 @@ class NotificationService {
     _createLocalNotificationsPlugin().then((plugin) => _plugin = plugin);
   }
 
+  Future<void> disconnect() async {
+    try {
+      await FirebaseMessaging.instance.deleteToken();
+      await _plugin.cancelAll();
+    } catch (e) {
+      log('Erreur lors de la déconnexion des notifications: $e');
+    }
+  }
+
   set context(BuildContext context) => _context = context;
 
   Future<void> requestPermission(ValueChanged<String> sendToken) async {
@@ -103,7 +112,7 @@ class NotificationService {
     const androidPlatformChannelSpecifics = AndroidNotificationDetails(
         androidChannelId, androidChannelName,
         priority: Priority.max,
-        color: AppTheme.primaryYellow,
+        color: AppTheme.primaryRed,
         enableLights: true);
     const iOSPlatformChannelSpecifics = DarwinNotificationDetails();
     const platformChannelSpecifics = NotificationDetails(
@@ -122,7 +131,7 @@ class NotificationService {
           androidChannelId,
           androidChannelName,
           importance: Importance.max,
-          ledColor: AppTheme.primaryYellow,
+          ledColor: AppTheme.primaryRed,
           enableLights: true,
           playSound: false,
         ));

@@ -140,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> with CompletableMixin {
     await waitForDialog();
     if (state is LinkLoading) {
       loadingDialogCompleter = showLoadingBarrier(context: context);
-    } else if (state is PersonLinkLoaded) {
+    } else if (state is UserLinkLoaded) {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) =>
               PersonAccountScreen.get(context: context, user: state.user)));

@@ -22,7 +22,7 @@ class LoadQuizRankingCubit extends AutoListCubit<QuizParticipation> {
           (change.nextState as AutoListReadyState<QuizParticipation>)
               .items
               .items
-              .map((quiz) => quiz.user));
+              .map((participation) => participation.user));
     }
   }
 }

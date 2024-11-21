@@ -1,13 +1,13 @@
 import 'package:potatoes/libs.dart';
+import 'package:potatoes/potatoes.dart';
 import 'package:umai/quiz/models/quiz.dart';
+import 'package:umai/quiz/models/quiz_response.dart';
 import 'package:umai/quiz/services/quiz_service.dart';
 
-import 'package:potatoes/potatoes.dart';
 part 'quiz_manage_state.dart';
 
 class QuizManageCubit extends ObjectCubit<Quiz, QuizManageState> {
   final QuizService quizService;
-
   QuizManageCubit(this.quizService, Quiz quiz)
       : super(InitializingQuizManageState(quiz));
 
@@ -27,6 +27,22 @@ class QuizManageCubit extends ObjectCubit<Quiz, QuizManageState> {
         'cannot retrieve quiz: Current state is ${state.runtimeType}');
   }
 
+  void loadQuestions() async {
+    final stateBefore = state;
+
+    try {
+      emit(const QuizManageLoadingState());
+
+      await quizService.getQuizQuestions(idQuiz: quiz.id).then((questions) {
+        emit(QuizQuestionsState(questions));
+        emit(stateBefore);
+      });
+    } catch (error, trace) {
+      emit(QuizManageErrorState(error, trace));
+      emit(stateBefore);
+    }
+  }
+
   void shareQuiz() {
     if (state is InitializingQuizManageState) {
       final stateBefore = state;
@@ -39,25 +55,6 @@ class QuizManageCubit extends ObjectCubit<Quiz, QuizManageState> {
           .then((reponse) {
         emit(ShareQuizSuccesState(reponse['shareLink']));
         emit(InitializingQuizManageState(quiz));
-      }, onError: (error, trace) {
-        emit(QuizManageErrorState(error, trace));
-        emit(stateBefore);
-      });
-    }
-  }
-
-  void reportQuiz({required String reason}) {
-    if (state is InitializingQuizManageState) {
-      final stateBefore = state;
-
-      emit(const SendQuizRepportLoadingState());
-      quizService
-          .reportQuiz(
-        idQuiz: quiz.id,
-        reason: reason,
-      )
-          .then((_) {
-        emit(SuccessSendQuizRepportPostState(quiz));
       }, onError: (error, trace) {
         emit(QuizManageErrorState(error, trace));
         emit(stateBefore);
