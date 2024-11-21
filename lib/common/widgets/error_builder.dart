@@ -1,18 +1,24 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/svg_utils.dart';
 import 'package:umai/utils/themes.dart';
 
 class ErrorBuilder extends StatelessWidget {
-  final void Function() retry;
+  final VoidCallback retry;
+  final double? height;
 
-  const ErrorBuilder({super.key, required this.retry});
+  const ErrorBuilder({super.key, required this.retry, this.height});
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-        onTap: () => retry,
-        child: Center(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxHeight < 56) return const SizedBox();
+        return Container(
+          alignment: Alignment.center,
+          height: height == null ? null : max(56, height!),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -21,30 +27,18 @@ class ErrorBuilder extends StatelessWidget {
                 size: 56,
                 color: AppTheme.disabledText,
               ),
-              const SizedBox(height: 32),
-              SizedBox(
-                width: 133,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.white,
-                    foregroundColor: AppTheme.white,
-                    textStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant),
-                    side: BorderSide(
-                      width: 2,
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
+              if (constraints.maxHeight > 132)
+                ...[
+                  const SizedBox(height: 32),
+                  OutlinedButton(
+                    onPressed: retry,
+                    child: const Text('Réessayer'),
                   ),
-                  onPressed: retry,
-                  child: Text(
-                    'Réessayer',
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant),
-                  ),
-                ),
-              ),
+                ]
             ],
           ),
-        ));
+        );
+      }
+    );
   }
 }

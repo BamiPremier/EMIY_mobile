@@ -22,8 +22,10 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () async {
-        homeQuizService.refresh();
+      onRefresh: () async => homeQuizService.refresh(),
+      notificationPredicate: (notification) {
+        return notification.depth == 1 &&
+          notification.metrics.axisDirection == AxisDirection.down;
       },
       child: Scaffold(
         primary: false,

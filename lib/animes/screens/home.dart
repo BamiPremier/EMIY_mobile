@@ -20,13 +20,13 @@ class _AnimeHomeScreenState extends State<AnimeHomeScreen> {
     return Scaffold(
       primary: false,
       body: RefreshIndicator(
-        onRefresh: () async {
-          print("rafraîchissement");
-          homeAnimeService.refresh();
+        onRefresh: () async => homeAnimeService.refresh(),
+        notificationPredicate: (notification) {
+          return notification.depth == 1 &&
+            notification.metrics.axisDirection == AxisDirection.down;
         },
         child: NestedScrollView(
-          physics: const AlwaysScrollableScrollPhysics(
-              parent: BouncingScrollPhysics()),
+          physics: const AlwaysScrollableScrollPhysics(),
           headerSliverBuilder: (context, _) => [
             AnimeBlock(
               title: "Tendance",
