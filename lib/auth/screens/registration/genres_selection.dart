@@ -4,7 +4,6 @@ import 'package:potatoes/common/widgets/loaders.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/auth/bloc/genre_cubit.dart';
 import 'package:umai/auth/screens/registration/anime_viewed.dart';
-import 'package:umai/auth/screens/registration/anime_viewed.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/utils/dialogs.dart';

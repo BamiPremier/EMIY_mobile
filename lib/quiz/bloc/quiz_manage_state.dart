@@ -52,3 +52,11 @@ class SuccessSendQuizRepportPostState extends CubitSuccessState
   @override
   List<Object?> get props => [quiz];
 }
+
+class QuizQuestionsState extends CubitInformationState with QuizManageState {
+  final List<QuizQuestionResponse> questions;
+  const QuizQuestionsState(this.questions);
+
+  @override
+  List<Object?> get props => [questions];
+}

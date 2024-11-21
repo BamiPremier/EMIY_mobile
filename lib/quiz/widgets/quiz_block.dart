@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
+import 'package:umai/common/widgets/empty_builder.dart';
+import 'package:umai/common/widgets/error_builder.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/svg_utils.dart';
 import 'package:potatoes/libs.dart';
@@ -36,8 +38,7 @@ class QuizBlock extends StatefulWidget {
 class _QuizBlockState extends State<QuizBlock> {
   late final cubit = LoadQuizCubit(
       context.read(),
-      context.read(),
-      context.read(),
+      context.read(), 
       widget.filter?.name ?? '',
       widget.type == QuizBlockType.skinless ? 10 : null);
 
@@ -89,22 +90,8 @@ class _QuizBlockState extends State<QuizBlock> {
                   ItemQuiz.get(context: context, quiz: quiz),
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              emptyBuilder: (ctx) => Center(
-                child: toSvgIcon(
-                  icon: Assets.iconsEmpty,
-                  size: 56,
-                ),
-              ),
-              errorBuilder: (context, retry) => Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text("Une erreur s'est produite"),
-                  TextButton(
-                    onPressed: retry,
-                    child: const Text("Réessayer"),
-                  )
-                ],
-              ),
+              emptyBuilder: (ctx) => const EmptyBuilder(),
+              errorBuilder: (context, retry) => ErrorBuilder(retry: retry),
               loadingBuilder: widgetBuilder,
               manualLoadMoreBuilder: (ctx, loadMore) => Container(
                 margin: const EdgeInsets.only(right: 16.0),
@@ -142,22 +129,9 @@ class _QuizBlockState extends State<QuizBlock> {
           autoManage: false,
           itemBuilder: (context, quiz) =>
               ItemQuiz.get(context: context, quiz: quiz),
-          emptyBuilder: (ctx) => Center(
-            child: toSvgIcon(
-              icon: Assets.iconsEmpty,
-              size: 56,
-            ),
-          ),
-          errorBuilder: (context, retry) => Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text("Une erreur s'est produite"),
-              TextButton(
-                onPressed: retry,
-                child: const Text("Réessayer"),
-              )
-            ],
-          ),
+          emptyBuilder: (ctx) => const EmptyBuilder(),
+           errorBuilder: (context, retry) =>
+                        ErrorBuilder(retry: retry),
           loadingBuilder: widgetBuilder,
           loadingMoreBuilder: (context) => Container(
               padding: const EdgeInsets.only(top: 16, bottom: 28)

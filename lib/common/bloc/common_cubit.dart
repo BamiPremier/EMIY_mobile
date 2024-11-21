@@ -1,12 +1,13 @@
 import 'package:potatoes/auto_list.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
+import 'package:umai/common/bloc/repport_cubit.dart';
 import 'package:umai/common/models/comment.dart';
 import 'package:umai/common/screens/common_details.dart';
 
 part 'common_state.dart';
 
-mixin XService<T> {
+mixin XService<T> implements ReportService<T> {
   Future<T> likeItem({required String idItem});
   Future<T> unLikeItem({required String idItem});
   Future shareItem({required String idItem});
@@ -36,11 +37,7 @@ mixin XService<T> {
   });
   Future unLikeComment({
     required String commentId,
-  });
-  Future reportComment({
-    required String commentId,
-    required String reason,
-  });
+  }); 
 }
 
 class XCommonCubit<T> extends ObjectCubit<XItem, XCommonState> {

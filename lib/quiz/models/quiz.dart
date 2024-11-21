@@ -1,12 +1,14 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:umai/animes/models/anime.dart';
+import 'package:umai/common/bloc/repport_cubit.dart';
 import 'package:umai/common/models/user.dart';
 
 part 'quiz.freezed.dart';
 part 'quiz.g.dart';
 
 @freezed
-class Quiz with _$Quiz {
+class Quiz with _$Quiz, XReportedItem {
+  const Quiz._();
   const factory Quiz({
     required String id,
     required String title,
@@ -21,6 +23,8 @@ class Quiz with _$Quiz {
   }) = _Quiz;
 
   factory Quiz.fromJson(Map<String, dynamic> json) => _$QuizFromJson(json);
+  @override
+  String get itemId => id;
 }
 
 @freezed

@@ -6,13 +6,13 @@ import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/quiz/services/quiz_service.dart';
 
-part 'quiz_state.dart';
+part 'new_quiz_state.dart';
 
-class QuizCubit extends Cubit<QuizState> {
+class NewQuizCubit extends Cubit<NewQuizState> {
   final QuizManageCubitManager quizManageCubitManager;
   final QuizService quizService;
 
-  QuizCubit(this.quizService, this.quizManageCubitManager)
+  NewQuizCubit(this.quizService, this.quizManageCubitManager)
       : super(const QuizIdleState());
 
   void resetState() {
@@ -38,7 +38,10 @@ class QuizCubit extends Cubit<QuizState> {
   }
 
   void saveQuiz({required String title, required String description}) {
-    if (state is QuizSelectAnimeState) {
+    print(state);
+    if (state is QuizSelectAnimeState ||
+        state is QuizCreatedState ||
+        state is QuizIdleState) {
       createQuiz(title: title, description: description);
     } else if (state is QuizUpdateState) {
       updateQuiz(title: title, description: description);
@@ -56,6 +59,7 @@ class QuizCubit extends Cubit<QuizState> {
         if (stateBefore is QuizSelectAnimeState)
           "anime_id": stateBefore.anime.id,
       };
+      print(data);
       final response = await quizService.newQuiz(data: data);
       quizManageCubitManager.add(response);
       emit(QuizCreatedState(
@@ -130,6 +134,7 @@ class QuizCubit extends Cubit<QuizState> {
       await quizService.quizPublished(
           idQuiz: (stateBefore as QuizCreatedState).quiz.id);
       emit(const QuizPublishedState());
+      emit(const QuizIdleState());
     } catch (error, trace) {
       emit(QuizErrorState(error, trace));
       emit(stateBefore);
@@ -176,15 +181,13 @@ class QuizCubit extends Cubit<QuizState> {
       return q.id == question.id ? question : q;
     }).toList();
 
-    if (!(stateBefore as QuizCreatedState)
-        .questions
-        .any((q) => q.id == question.id)) {
+    if (!(stateBefore).questions.any((q) => q.id == question.id)) {
       updatedQuestions.add(question);
     }
 
     emit(QuizCreatedState(
-        anime: (stateBefore as QuizCreatedState).anime,
-        quiz: (stateBefore as QuizCreatedState).quiz,
+        anime: (stateBefore).anime,
+        quiz: (stateBefore).quiz,
         questions: updatedQuestions));
   }
 }

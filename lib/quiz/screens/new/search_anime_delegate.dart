@@ -3,12 +3,11 @@ import 'package:potatoes/libs.dart';
 import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
 
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
-import 'package:umai/utils/assets.dart';
-import 'package:umai/utils/svg_utils.dart';
+import 'package:umai/common/widgets/empty_builder.dart'; 
 import 'package:umai/animes/models/anime.dart';
 import 'package:umai/animes/services/anime_service.dart';
 import 'package:umai/common/services/cache_manager.dart';
-import 'package:umai/quiz/bloc/quiz_cubit.dart';
+import 'package:umai/quiz/bloc/new_quiz_cubit.dart';
 
 class SearchAnimeDelegate extends SearchDelegate<String> {
   late final AutoListCubit<Anime> _cubit;
@@ -112,7 +111,7 @@ class SearchAnimeDelegate extends SearchDelegate<String> {
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: InkWell(
           onTap: () {
-            context.read<QuizCubit>().selectAnime(anime);
+            context.read<NewQuizCubit>().selectAnime(anime);
             close(context, anime.title.romaji);
           },
           child: Row(
@@ -141,12 +140,7 @@ class SearchAnimeDelegate extends SearchDelegate<String> {
           ),
         ),
       ),
-      emptyBuilder: (ctx) => Center(
-        child: toSvgIcon(
-          icon: Assets.iconsEmpty,
-          size: 56,
-        ),
-      ),
+      emptyBuilder: (ctx) => const EmptyBuilder(),
       errorBuilder: (context, retry) => Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,

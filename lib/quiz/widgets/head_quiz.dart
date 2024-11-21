@@ -3,12 +3,13 @@ import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:umai/common/services/cache_manager.dart';
+import 'package:umai/common/services/report_util_service.dart';
 import 'package:umai/common/widgets/action_widget.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
-import 'package:umai/common/widgets/buttons.dart';
-import 'package:umai/quiz/bloc/quiz_cubit.dart';
+import 'package:umai/quiz/bloc/new_quiz_cubit.dart';
 import 'package:umai/quiz/bloc/quiz_manage_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
+import 'package:umai/quiz/services/quiz_service.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/svg_utils.dart';
@@ -23,7 +24,7 @@ class HeadQuiz extends StatefulWidget {
 
 class _HeadQuizState extends State<HeadQuiz> with CompletableMixin {
   late final quizManageCubit = context.read<QuizManageCubit>();
-  late final quizCubit = context.read<QuizCubit>();
+  late final quizCubit = context.read<NewQuizCubit>();
   late final Quiz quiz = quizManageCubit.quiz;
   @override
   Widget build(BuildContext context) {
@@ -113,7 +114,7 @@ class _HeadQuizState extends State<HeadQuiz> with CompletableMixin {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-             ActionWidget(
+              ActionWidget(
                 title: 'Partager...',
                 icon: toSvgIcon(
                   icon: Assets.iconsShare,
@@ -123,163 +124,16 @@ class _HeadQuizState extends State<HeadQuiz> with CompletableMixin {
               const SizedBox(
                 height: 16,
               ),
-               ActionWidget(
+              ActionWidget(
                 title: 'Signaler',
                 icon: toSvgIcon(
                   icon: Assets.iconsSignal,
                 ),
-                onTap: () => reportQuiz(context: context),
+                onTap: () =>    reportUtilService<Quiz>(
+                  item: quiz,
+                  reportService: context.read<QuizService>(),
+                  context: context),
               ),
             ],
           )));
-
-  Future reportQuiz({required BuildContext context}) {
-    String? selectedReason;
-
-    return showAppBottomSheet(
-        context: context,
-        builder: (BuildContext context) {
-          return StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-              return BlocProvider.value(
-                value: quizManageCubit,
-                child: BlocBuilder<QuizManageCubit, QuizManageState>(
-                  builder: (context, state) => Padding(
-                    padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Text('Signaler ce contenu ?',
-                            style: Theme.of(context).textTheme.titleLarge!),
-                        (state is SendQuizRepportLoadingState)
-                            ? const Padding(
-                                padding:
-                                    EdgeInsets.only(top: 118.0, bottom: 130),
-                                child: Center(
-                                  child: CircularProgressIndicator(),
-                                ))
-                            : (state is SuccessSendQuizRepportPostState)
-                                ? Center(
-                                    child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                                horizontal: 16.0)
-                                            .copyWith(top: 80, bottom: 100),
-                                        child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: <Widget>[
-                                              const Text(
-                                                'Merci d’avoir signalé ce contenu. Nous allons prendre les mesures nécessaires en cas de contenu inapproprié avéré.',
-                                                textAlign: TextAlign.center,
-                                              ),
-                                              const SizedBox(height: 40.0),
-                                              Icon(
-                                                Icons.check_box_outlined,
-                                                size: 40.0,
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onSurfaceVariant,
-                                              ),
-                                            ])))
-                                : Padding(
-                                    padding: const EdgeInsets.only(top: 24),
-                                    child: Column(
-                                      children: [
-                                        RadioListTile<String>(
-                                          title: const Text(
-                                              'Haine / Discrimination'),
-                                          value: 'Haine / Discrimination',
-                                          groupValue: selectedReason,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              selectedReason = value;
-                                            });
-                                          },
-                                          controlAffinity:
-                                              ListTileControlAffinity.trailing,
-                                        ),
-                                        RadioListTile<String>(
-                                          title: const Text('Contenu sexuel'),
-                                          value: 'Contenu sexuel',
-                                          groupValue: selectedReason,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              selectedReason = value;
-                                            });
-                                          },
-                                          controlAffinity:
-                                              ListTileControlAffinity.trailing,
-                                        ),
-                                        RadioListTile<String>(
-                                          title: const Text('Harcèlement'),
-                                          value: 'Harcèlement',
-                                          groupValue: selectedReason,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              selectedReason = value;
-                                            });
-                                          },
-                                          controlAffinity:
-                                              ListTileControlAffinity.trailing,
-                                        ),
-                                        RadioListTile<String>(
-                                          title: const Text(
-                                              'Divulgation d\'informations privées'),
-                                          value:
-                                              'Divulgation d\'informations privées',
-                                          groupValue: selectedReason,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              selectedReason = value;
-                                            });
-                                          },
-                                          controlAffinity:
-                                              ListTileControlAffinity.trailing,
-                                        ),
-                                        RadioListTile<String>(
-                                          title: const Text('Autre'),
-                                          value: 'Autre',
-                                          groupValue: selectedReason,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              selectedReason = value;
-                                            });
-                                          },
-                                          controlAffinity:
-                                              ListTileControlAffinity.trailing,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                        const SizedBox(
-                          height: 24,
-                        ),
-                        UmaiButton.primary(
-                          onPressed: selectedReason != null &&
-                                  state is InitializingQuizManageState
-                              ? () {
-                                  quizManageCubit.reportQuiz(
-                                      reason: selectedReason!);
-                                }
-                              : (state is SuccessSendQuizRepportPostState)
-                                  ? () {
-                                      Navigator.of(context).pop();
-                                      // quizManageCubit.reset();
-                                    }
-                                  : null,
-                          text: state is SuccessSendQuizRepportPostState
-                              ? "Fermer"
-                              : "Signaler",
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
-          );
-        });
-  }
-}
+ }

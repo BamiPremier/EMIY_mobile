@@ -236,9 +236,9 @@ class _AccountScreenState extends State<AccountScreen>
               body: TabBarView(
                 children: [
                   const ActivityTab(),
-                  AnimesTab(),
+                  const AnimesTab(),
                   WatchList(),
-                  PostTab(),
+                  const PostTab(),
                   QuizUserScreen(),
                 ],
               ),
@@ -308,7 +308,7 @@ class _AccountScreenState extends State<AccountScreen>
                 const SizedBox(height: 16),
                 ActionWidget(
                   title: 'Déconnexion',
-                  icon: Icon(Icons.logout),
+                  icon: const Icon(Icons.logout),
                   onTap: () async {
                     Navigator.pop(innerContext);
                     await disconnect(context: context);

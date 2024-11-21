@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/quiz/models/quiz.dart';
-import 'package:umai/quiz/screens/quiz_details.dart';
 import 'package:umai/utils/themes.dart';
 
 class QuizFinishedScreen extends StatefulWidget {
@@ -41,12 +40,7 @@ class _QuizFinishedScreenState extends State<QuizFinishedScreen> {
                 const SizedBox(height: 32),
                 UmaiButton.white(
                   onPressed: () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                          builder: (_) => QuizDetailScreen.get(
-                              context: context, quiz: widget.quiz),
-                        ),
-                        (route) => route.settings.name == quizRouteName);
+                    Navigator.of(context).pop();
                   },
                   text: "Merci",
                 ),

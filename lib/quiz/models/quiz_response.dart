@@ -2,11 +2,9 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'quiz_response.freezed.dart';
 part 'quiz_response.g.dart';
-
 @freezed
 class QuizQuestionResponse with _$QuizQuestionResponse {
-  const QuizQuestionResponse._(); // Ajout d'un constructeur privé pour les méthodes de classe
-
+  const QuizQuestionResponse._(); 
   const factory QuizQuestionResponse({
     @JsonKey(name: '_id') required String id,
     required String label,

@@ -32,8 +32,7 @@ import 'package:umai/common/services/preferences_service.dart';
 import 'package:umai/common/services/user_service.dart';
 import 'package:umai/firebase_options.dart';
 import 'package:umai/quiz/bloc/create_quiz_question_cubit.dart';
-import 'package:umai/quiz/bloc/quiz_cubit.dart';
-import 'package:umai/quiz/bloc/quiz_question_cubit.dart';
+import 'package:umai/quiz/bloc/new_quiz_cubit.dart';
 import 'package:umai/quiz/bloc/timer_cubit.dart';
 import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/quiz/services/quiz_service.dart';
@@ -132,10 +131,11 @@ class MyApp extends StatelessWidget {
               create: (context) => AnimeCubitManager(context.read())),
           RepositoryProvider(create: (context) => QuizService(dio)),
           RepositoryProvider(
-              create: (context) =>
-                  QuizManageCubitManager(context.read(), context.read())),
+              create: (context) => QuizManageCubitManager(
+                  context.read(), context.read(), context.read())),
           RepositoryProvider(
-              create: (context) => EpisodeCubitManager(context.read())),
+              create: (context) => EpisodeCubitManager(
+                  context.read(), context.read())),
           RepositoryProvider(create: (_) => LinkService(dio)),
         ],
         child: MultiBlocProvider(
@@ -165,6 +165,7 @@ class MyApp extends StatelessWidget {
                   create: (context) => UserCubit(
                         context.read(),
                         preferencesService,
+                        context.read(),
                       )),
               BlocProvider(
                   create: (context) =>
@@ -174,15 +175,11 @@ class MyApp extends StatelessWidget {
                       NewPostCubit(context.read(), context.read())),
               BlocProvider(
                   create: (context) =>
-                      QuizCubit(context.read(), context.read())),
+                      NewQuizCubit(context.read(), context.read())),
               BlocProvider(
                 create: (context) =>
                     TimerCubit.duration(const Duration(seconds: 30)),
               ),
-              BlocProvider(
-                  create: (context) => QuizQuestionCubit(
-                        context.read(),
-                      )),
               BlocProvider(
                   create: (context) => CreateQuizQuestionCubit(
                         context.read(),

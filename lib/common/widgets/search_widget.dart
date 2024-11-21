@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:potatoes/libs.dart';
-import 'package:umai/common/bloc/user_cubit.dart';
-import 'package:umai/common/services/cache_manager.dart';
+import 'package:flutter/material.dart'; 
 import 'package:umai/common/widgets/home_search_anime_delegate.dart';
 import 'package:umai/common/widgets/home_search_user_delegate.dart';
 import 'package:umai/utils/assets.dart';

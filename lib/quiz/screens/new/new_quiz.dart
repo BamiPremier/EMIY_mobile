@@ -5,7 +5,7 @@ import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/common/utils/validators.dart';
 import 'package:umai/common/widgets/buttons.dart';
-import 'package:umai/quiz/bloc/quiz_cubit.dart';
+import 'package:umai/quiz/bloc/new_quiz_cubit.dart';
 import 'package:umai/quiz/screens/new/editing_quiz.dart';
 import 'package:umai/quiz/screens/new/search_anime_delegate.dart';
 import 'package:umai/utils/dialogs.dart';
@@ -23,10 +23,11 @@ class _NewQuizScreenState extends State<NewQuizScreen> with CompletableMixin {
   final TextEditingController _titreController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
-  late final QuizCubit quizCubit = context.read<QuizCubit>();
+  late final NewQuizCubit quizCubit = context.read<NewQuizCubit>();
   @override
   void initState() {
     super.initState();
+    print(quizCubit.state);
     log(quizCubit.state.toString());
     if (quizCubit.state is QuizUpdateState) {
       setState(() {
@@ -34,7 +35,9 @@ class _NewQuizScreenState extends State<NewQuizScreen> with CompletableMixin {
             (quizCubit.state as QuizUpdateState).quiz!.title;
         _descriptionController.text =
             (quizCubit.state as QuizUpdateState).quiz!.description;
-        quizCubit.selectAnime((quizCubit.state as QuizUpdateState).anime!);
+        if ((quizCubit.state as QuizUpdateState).anime != null) {
+          quizCubit.selectAnime((quizCubit.state as QuizUpdateState).anime!);
+        }
       });
     }
   }
@@ -49,20 +52,26 @@ class _NewQuizScreenState extends State<NewQuizScreen> with CompletableMixin {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<QuizCubit, QuizState>(
+    return BlocConsumer<NewQuizCubit, NewQuizState>(
       listener: onEventReceived,
+      buildWhen: (previous, current) =>
+          current is QuizUpdateState ||
+          current is QuizSelectAnimeState ||
+          current is QuizErrorState,
       builder: (context, state) => Scaffold(
         appBar: AppBar(
-          title: Text(quizCubit.state is QuizUpdateState
-              ? "Modifier le quiz"
-              : "Nouveau Quiz"),
+          title: Text(
+              state is QuizUpdateState ? "Modifier le quiz" : "Nouveau Quiz"),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              if (state is QuizUpdateState) {
-                quizCubit.resetState();
-              }
-              Navigator.pop(context);
+              state is QuizUpdateState
+                  ? Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => EditingQuizScreen(state.quiz!)),
+                    )
+                  : Navigator.pop(context);
             },
           ),
         ),
@@ -200,7 +209,7 @@ class _NewQuizScreenState extends State<NewQuizScreen> with CompletableMixin {
                     );
                   }
                 },
-                text: "Suivant",
+                text: state is QuizUpdateState ? "Modifier" : "Suivant",
               ),
             ],
           ),
@@ -209,9 +218,9 @@ class _NewQuizScreenState extends State<NewQuizScreen> with CompletableMixin {
     );
   }
 
-  void onEventReceived(BuildContext context, QuizState state) async {
+  void onEventReceived(BuildContext context, NewQuizState state) async {
     await waitForDialog();
-
+    print(state);
     if (state is QuizLoadingState) {
       loadingDialogCompleter = showLoadingBarrier(context: context);
     } else if (state is QuizCreatedState) {

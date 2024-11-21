@@ -153,13 +153,27 @@ class EpisodeService extends ApiService with XService<Episode> {
   }
 
   @override
-  Future<void> reportComment({
-    required String commentId,
+  Future<void> reportItem({
+    required String idItem,
     required String reason,
   }) async {
     return compute(
       dio.post(
-        _signalerCommentEpisode.replaceAll(':idComment', commentId),
+        _signalerCommentEpisode.replaceAll(':idComment', idItem),
+        options: Options(headers: withAuth()),
+        data: {'reason': reason},
+      ),
+    );
+  }
+
+  @override
+  Future<void> reportComment({
+    required String idItem,
+    required String reason,
+  }) async {
+    return compute(
+      dio.post(
+        _signalerCommentEpisode.replaceAll(':idComment', idItem),
         options: Options(headers: withAuth()),
         data: {'reason': reason},
       ),

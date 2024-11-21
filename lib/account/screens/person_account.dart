@@ -389,13 +389,13 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
               body: TabBarView(
                 children: [
                   const ActivityTab(),
-                  AnimesTab(
+                  const AnimesTab(
                     currentUser: false,
                   ),
                   WatchList(
                     currentUser: false,
                   ),
-                  PostTab(
+                  const PostTab(
                     currentUser: false,
                   ),
                   QuizUserScreen(
