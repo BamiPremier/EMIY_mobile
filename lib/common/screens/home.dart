@@ -11,11 +11,14 @@ import 'package:umai/animes/widgets/episode_head.dart';
 import 'package:umai/common/bloc/link_cubit.dart';
 import 'package:umai/common/bloc/notification_cubit.dart';
 import 'package:umai/common/screens/common_details.dart';
+import 'package:umai/common/services/home_quiz_service.dart';
 import 'package:umai/common/services/notification_service.dart';
+import 'package:umai/common/services/home_anime_service.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/common/widgets/search_widget.dart';
 import 'package:umai/quiz/screens/home.dart';
 import 'package:umai/quiz/screens/quiz_details.dart';
+import 'package:umai/social/bloc/post_feed_cubit.dart';
 import 'package:umai/social/screens/home.dart';
 import 'package:umai/social/widgets/head_post.dart';
 import 'package:umai/utils/assets.dart';
@@ -31,11 +34,17 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with CompletableMixin {
   static const int _mainPageIndex = 0;
-  final pages = const [
-    {'title': 'Social', 'page': SocialHomeScreen()},
+  late final postFeedCubit =
+      PostFeedCubit(context.read(), context.read(), context.read());
+ 
+  late final pages = [
+    {
+      'title': 'Social',
+      'page': SocialHomeScreen.get(context: context, cubit: postFeedCubit)
+    },
     {'title': 'Actu', 'page': SizedBox()},
     {'title': 'Animes', 'page': AnimeHomeScreen()},
-    {'title': 'Quiz', 'page': QuizHomeScreen()},
+    {'title': 'Quiz', 'page': QuizHomeScreen( )},
   ];
   final pageController = PageController(initialPage: _mainPageIndex);
   int index = 0;
@@ -162,9 +171,10 @@ class _HomeScreenState extends State<HomeScreen> with CompletableMixin {
             builder: (context) => CommonDetailsScreen.fromEpisode(
                 context: context,
                 episode: state.episode,
-                loadEpisodeAnimeCubit: LoadEpisodeAnimeCubit(context.read(),
-                    context.read(), state.episode.id.toString()),
-                head: (context) => const EpisodeHead())),
+                head: (context) => EpisodeHead.get(
+                      context: context,
+                      episode: state.episode,
+                    ))),
       );
     } else if (state is QuizLinkLoaded) {
       Navigator.of(context).push(
@@ -204,9 +214,10 @@ class _HomeScreenState extends State<HomeScreen> with CompletableMixin {
             builder: (context) => CommonDetailsScreen.fromEpisode(
                 context: context,
                 episode: state.episode,
-                loadEpisodeAnimeCubit: LoadEpisodeAnimeCubit(context.read(),
-                    context.read(), state.episode.id.toString()),
-                head: (context) => const EpisodeHead())),
+                head: (context) => EpisodeHead.get(
+                      context: context,
+                      episode: state.episode,
+                    ))),
       );
     } else if (state is QuizNotificationLoaded) {
       Navigator.of(context).push(

@@ -10,24 +10,31 @@ import 'package:potatoes/libs.dart';
 import 'package:umai/quiz/bloc/load_quiz_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/widgets/item_quiz.dart';
+import 'package:umai/common/services/home_quiz_service.dart';
 
 class QuizBlock extends StatefulWidget {
   final String title;
   final QuizBlockFilter? filter;
   final QuizBlockType type;
+  final LoadQuizCubit cubit;
 
-  const QuizBlock({super.key, required this.title, required this.filter})
+  const QuizBlock(
+      {super.key, required this.title, required this.filter,
+      required this.cubit})
       : type = QuizBlockType.regular;
 
   const QuizBlock.empty({
     super.key,
+    required this.cubit,
     required this.title,
   })  : type = QuizBlockType.empty,
-        filter = null;
+        filter = null 
+      ;
 
   const QuizBlock.skinless({
     super.key,
     required this.filter,
+    required this.cubit ,
   })  : type = QuizBlockType.skinless,
         title = '';
 
@@ -36,11 +43,13 @@ class QuizBlock extends StatefulWidget {
 }
 
 class _QuizBlockState extends State<QuizBlock> {
-  late final cubit = LoadQuizCubit(
-      context.read(),
-      context.read(), 
-      widget.filter?.name ?? '',
-      widget.type == QuizBlockType.skinless ? 10 : null);
+  late final LoadQuizCubit cubit;
+
+  @override
+  void initState() {
+    super.initState();
+    cubit = widget.cubit  ;
+  }
 
   final gridDelegate = const SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: 3,
@@ -130,8 +139,7 @@ class _QuizBlockState extends State<QuizBlock> {
           itemBuilder: (context, quiz) =>
               ItemQuiz.get(context: context, quiz: quiz),
           emptyBuilder: (ctx) => const EmptyBuilder(),
-           errorBuilder: (context, retry) =>
-                        ErrorBuilder(retry: retry),
+          errorBuilder: (context, retry) => ErrorBuilder(retry: retry),
           loadingBuilder: widgetBuilder,
           loadingMoreBuilder: (context) => Container(
               padding: const EdgeInsets.only(top: 16, bottom: 28)

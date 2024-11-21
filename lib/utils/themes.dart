@@ -134,11 +134,8 @@ abstract class AppTheme {
         unselectedItemColor: colorScheme.onSurfaceVariant,
         type: BottomNavigationBarType.shifting,
         showUnselectedLabels: false,
-        selectedLabelStyle: const TextStyle(
-          color: black,
-          fontSize: 12.0,
-          letterSpacing: 0.4
-        ),
+        selectedLabelStyle:
+            const TextStyle(color: black, fontSize: 12.0, letterSpacing: 0.4),
       ),
       textSelectionTheme: const TextSelectionThemeData(
         cursorColor: primaryYellow,

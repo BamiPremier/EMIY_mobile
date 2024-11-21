@@ -10,24 +10,32 @@ import 'package:potatoes/libs.dart';
 import 'package:umai/animes/bloc/category_anime_cubit.dart';
 import 'package:umai/animes/models/anime.dart';
 import 'package:umai/animes/widgets/item_anime.dart';
+import 'package:umai/common/services/home_anime_service.dart';
 
 class AnimeBlock extends StatefulWidget {
   final String title;
   final AnimeBlockFilter? filter;
   final AnimeBlockType type;
+  final CategoryAnimeCubit cubit;
 
-  const AnimeBlock({super.key, required this.title, required this.filter})
-      : type = AnimeBlockType.regular;
+  const AnimeBlock({
+    super.key, 
+    required this.title, 
+    required this.filter,
+    required this.cubit,
+  }) : type = AnimeBlockType.regular;
 
   const AnimeBlock.empty({
     super.key,
     required this.title,
+    required this.cubit,
   })  : type = AnimeBlockType.empty,
         filter = null;
 
   const AnimeBlock.skinless({
     super.key,
     required this.filter,
+    required this.cubit,
   })  : type = AnimeBlockType.skinless,
         title = '';
 
@@ -36,11 +44,13 @@ class AnimeBlock extends StatefulWidget {
 }
 
 class _AnimeBlockState extends State<AnimeBlock> {
-  late final cubit = CategoryAnimeCubit(
-      context.read(),
-      context.read(),
-      widget.filter?.name ?? '',
-      widget.type == AnimeBlockType.skinless ? 9 : null);
+  late final CategoryAnimeCubit cubit;
+
+  @override
+  void initState() {
+    super.initState();
+    cubit = widget.cubit;
+  }
 
   final gridDelegate = const SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: 3,

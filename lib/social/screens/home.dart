@@ -9,38 +9,51 @@ import 'package:umai/social/bloc/post_feed_cubit.dart';
 import 'package:umai/social/models/post.dart';
 import 'package:umai/social/screens/new_post_screen.dart';
 import 'package:umai/social/widgets/item_post.dart';
-import 'package:umai/social/widgets/new_post_banner.dart'; 
+import 'package:umai/social/widgets/new_post_banner.dart';
 
 class SocialHomeScreen extends StatefulWidget {
-  const SocialHomeScreen({super.key});
+  static Widget get(
+      {required BuildContext context, required PostFeedCubit cubit}) {
+    return BlocProvider.value(
+      value: cubit,
+      child: const SocialHomeScreen._(),
+    );
+  }
+
+  const SocialHomeScreen._();
 
   @override
   State<SocialHomeScreen> createState() => _SocialHomeScreenState();
 }
 
 class _SocialHomeScreenState extends State<SocialHomeScreen> {
-  late final postFeedCubit =
-      PostFeedCubit(context.read(), context.read(), context.read());
+  late final postFeedCubit = context.read<PostFeedCubit>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         primary: false,
-        body: Column(
-          children: [
-            const NewPostBanner(),
-            Expanded(
-                child: AutoListView.get<Post>(
-                    padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom),
-                    cubit: postFeedCubit,
-                    itemBuilder: (context, post) =>
-                        PostItem.get(context: context, post: post),
-                    separatorBuilder: (_, __) => const Divider(height: 8),
-                    emptyBuilder: (ctx) => const EmptyBuilder(),
-                    errorBuilder: (context, retry) =>
-                        ErrorBuilder(retry: retry))),
-          ],
+        body: RefreshIndicator(
+          onRefresh: () async {
+            postFeedCubit.reset();
+          },
+          child: Column(
+            children: [
+              const NewPostBanner(),
+              Expanded(
+                  child: AutoListView.get<Post>(
+                      autoManage: false,
+                      padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom),
+                      cubit: postFeedCubit,
+                      itemBuilder: (context, post) =>
+                          PostItem.get(context: context, post: post),
+                      separatorBuilder: (_, __) => const Divider(height: 8),
+                      emptyBuilder: (ctx) => const EmptyBuilder(),
+                      errorBuilder: (context, retry) =>
+                          ErrorBuilder(retry: retry))),
+            ],
+          ),
         ),
         floatingActionButton: FloatingActionButton(
             onPressed: () => NewPostScreen.show(context: context),
