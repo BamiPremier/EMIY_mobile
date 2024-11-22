@@ -4,16 +4,13 @@ import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/account/screens/account.dart';
 import 'package:umai/account/screens/person_account.dart';
-import 'package:umai/animes/bloc/load_episode_anime_cubit.dart';
 import 'package:umai/animes/screens/anime_details.dart';
 import 'package:umai/animes/screens/home.dart';
 import 'package:umai/animes/widgets/episode_head.dart';
 import 'package:umai/common/bloc/link_cubit.dart';
 import 'package:umai/common/bloc/notification_cubit.dart';
 import 'package:umai/common/screens/common_details.dart';
-import 'package:umai/common/services/home_quiz_service.dart';
 import 'package:umai/common/services/notification_service.dart';
-import 'package:umai/common/services/home_anime_service.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/common/widgets/search_widget.dart';
 import 'package:umai/quiz/screens/home.dart';
@@ -23,7 +20,6 @@ import 'package:umai/social/screens/home.dart';
 import 'package:umai/social/widgets/head_post.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/svg_utils.dart';
-import 'package:umai/utils/themes.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
