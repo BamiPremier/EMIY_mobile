@@ -86,7 +86,7 @@ class _QuizBlockState extends State<QuizBlock> {
                   ItemQuiz.get(context: context, quiz: quiz),
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              emptyBuilder: (ctx) => const EmptyBuilder(),
+              emptyBuilder: (ctx) => EmptyBuilder(height: errorBuilderHeight),
               errorBuilder: (context, retry) => ErrorBuilder(
                 retry: retry,
                 height: errorBuilderHeight,
@@ -128,7 +128,7 @@ class _QuizBlockState extends State<QuizBlock> {
           autoManage: false,
           itemBuilder: (context, quiz) =>
               ItemQuiz.get(context: context, quiz: quiz),
-          emptyBuilder: (ctx) => const EmptyBuilder(),
+          emptyBuilder: (ctx) => EmptyBuilder(height: errorBuilderHeight),
           errorBuilder: (context, retry) => ErrorBuilder(
             retry: retry,
             height: errorBuilderHeight,

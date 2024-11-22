@@ -98,7 +98,7 @@ class _AnimeBlockState extends State<AnimeBlock> {
               gridDelegate: gridDelegate,
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-                emptyBuilder: (ctx) => const EmptyBuilder(),
+                emptyBuilder: (ctx) => EmptyBuilder(height: errorBuilderHeight),
                errorBuilder: (context, retry) => ErrorBuilder(
                  retry: retry,
                  height: errorBuilderHeight
@@ -142,8 +142,11 @@ class _AnimeBlockState extends State<AnimeBlock> {
           itemBuilder: (context, anime) =>
               AnimeItem.get(context: context, anime: anime, withSelect: false),
           gridDelegate: gridDelegate,
-          emptyBuilder: (ctx) => const EmptyBuilder(),
-          errorBuilder: (context, retry) => ErrorBuilder(retry: retry, height: errorBuilderHeight),
+          emptyBuilder: (ctx) => EmptyBuilder(height: errorBuilderHeight),
+          errorBuilder: (context, retry) => ErrorBuilder(
+            retry: retry,
+            height: errorBuilderHeight
+          ),
           loadingBuilder: widgetBuilder,
           loadingMoreBuilder: (context) => Container(
               padding: const EdgeInsets.only(top: 16, bottom: 28)
