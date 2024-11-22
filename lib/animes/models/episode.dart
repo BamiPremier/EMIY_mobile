@@ -49,4 +49,10 @@ class Episode with _$Episode, XItem {
   @override
   Episode copyWithLike({bool? hasLiked}) =>
       copyWith(hasLiked: hasLiked ?? this.hasLiked);
+
+
+  Episode copyWithCommentsCount({bool increment = true}) {
+    final newCount = increment ? commentsCount + 1 : commentsCount - 1;
+    return copyWith(commentsCount: newCount < 0 ? 0 : newCount);
+  }
 }

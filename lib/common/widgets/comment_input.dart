@@ -39,7 +39,10 @@ class _CommentInputState<C extends XCommonCubit,
               if (state is CommentItemSuccessState) {
                 setState(() {
                   _commentController.clear();
+
                 });
+                
+                
               }
             },
             builder: (context, state) => SafeArea(

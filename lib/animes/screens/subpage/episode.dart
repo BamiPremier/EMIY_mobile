@@ -48,8 +48,9 @@ class _EpisodeScreenState extends State<EpisodeScreen>
           right: 16,
         ),
         cubit: loadEpisodeAnimeCubit,
-        itemBuilder: (context, episode) => EpisodeItem(
-            loadEpisodeAnimeCubit: loadEpisodeAnimeCubit, episode: episode),
+        itemBuilder: (context, episode) => EpisodeItem.get(
+          context: context,
+           episode: episode),
         emptyBuilder: (ctx) => const EmptyBuilder(),
        errorBuilder: (context, retry) => ErrorBuilder(retry: retry),
     );

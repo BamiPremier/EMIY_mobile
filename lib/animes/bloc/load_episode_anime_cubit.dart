@@ -22,29 +22,7 @@ class LoadEpisodeAnimeCubit extends AutoListCubit<Episode> {
           (change.nextState as AutoListReadyState<Episode>).items.items);
     }
   }
-
-  void updateCommentCount({required int idEpisode, required bool isIncrement}) {
-    if (state is EpisodeAnimeReadyState) {
-      final list = (state as EpisodeAnimeReadyState).items.items;
-      final newList = list.map((e) {
-        if (e.id == idEpisode) {
-          return e.copyWith(
-              commentsCount: e.commentsCount +
-                  (isIncrement
-                      ? 1
-                      : e.commentsCount > 0
-                          ? -1
-                          : 0));
-        }
-        return e;
-      }).toList();
-      emit(AutoListReadyState(PaginatedList(
-        items: newList,
-        page: 1,
-        total: list.length,
-      )));
-    }
-  }
+ 
 }
 
 typedef EpisodeAnimeState = AutoListState<Episode>;

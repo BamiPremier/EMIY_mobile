@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:potatoes/auto_list.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
+import 'package:umai/animes/models/episode.dart';
 import 'package:umai/common/bloc/repport_cubit.dart';
 import 'package:umai/common/models/comment.dart';
 import 'package:umai/common/screens/common_details.dart';
+import 'package:umai/social/models/post.dart';
 
 part 'common_state.dart';
 
@@ -37,7 +41,7 @@ mixin XService<T> implements ReportService<T> {
   });
   Future unLikeComment({
     required String commentId,
-  }); 
+  });
 }
 
 class XCommonCubit<T> extends ObjectCubit<XItem, XCommonState> {
@@ -134,7 +138,9 @@ class XCommonCubit<T> extends ObjectCubit<XItem, XCommonState> {
               target: targetCommentId)
           .then((comment) {
         emit(CommentItemSuccessState(comment));
-        emit(stateBefore);
+
+        var newItem = x.copyWithCommentsCount(increment: true);
+        update(newItem);
       }, onError: (error, trace) {
         emit(XErrorState(error, trace));
         emit(stateBefore);

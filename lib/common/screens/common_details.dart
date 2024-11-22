@@ -20,7 +20,7 @@ import 'package:umai/common/widgets/error_builder.dart';
 import 'package:umai/common/widgets/item_comment.dart';
 import 'package:umai/social/bloc/post_cubit.dart'; // Removed incorrect import
 import 'package:umai/social/models/post.dart';
-import 'package:umai/social/services/post_cubit_manager.dart'; 
+import 'package:umai/social/services/post_cubit_manager.dart';
 
 mixin XItem implements XReportedItem {
   String get itemId;
@@ -34,6 +34,7 @@ mixin XItem implements XReportedItem {
 
   DateTime get itemCreatedAt;
   copyWithLike({bool? hasLiked});
+  copyWithCommentsCount({bool increment = true});
 }
 
 class CommonDetailsScreen<T extends XItem> extends StatefulWidget {
@@ -68,7 +69,6 @@ class CommonDetailsScreen<T extends XItem> extends StatefulWidget {
   }
 
   static Widget fromEpisode({
-    required LoadEpisodeAnimeCubit loadEpisodeAnimeCubit,
     required BuildContext context,
     required Episode episode,
     required WidgetBuilder head,
@@ -79,15 +79,13 @@ class CommonDetailsScreen<T extends XItem> extends StatefulWidget {
               as XCommonCubit<Episode>),
       BlocProvider(
           create: (context) => ActionCommentEpisodeCubit(
-                  context.read<XCommonCubit<Episode>>() as EpisodeCubit,
-                  loadEpisodeAnimeCubit)
-              as ActionCommentBaseCubit<XCommonCubit<Episode>>),
+                context.read<XCommonCubit<Episode>>() as EpisodeCubit,
+              ) as ActionCommentBaseCubit<XCommonCubit<Episode>>),
       BlocProvider(
           create: (context) => LoadCommentEpisodeCubit(
                 context.read(),
                 episode.id,
                 '',
-                loadEpisodeAnimeCubit,
                 context.read(),
               ) as BaseLoadCommentCubit<Episode>),
     ], child: CommonDetailsScreen<Episode>(head: head));
@@ -146,61 +144,59 @@ class _CommonDetailsScreenState<T extends XItem>
                         ButtonCommon<T>(canComment: true),
                         const Divider(),
                         AutoListView.get<Comment>(
-                            padding: EdgeInsets.zero,
-                            shrinkWrap: true,
-                            autoManage: false,
-                            physics: const NeverScrollableScrollPhysics(),
-                            cubit: loadCommentCubit,
-                            itemBuilder: (context, comment) =>
-                                MultiBlocProvider(
-                                  providers: [
-                                    BlocProvider(
-                                      create: (context) => CommentCubit<T>(
-                                        context.read<XService<T>>(),
-                                        comment,
-                                      ),
-                                    ),
-                                    BlocProvider.value(
-                                      value: context.read<XCommonCubit<T>>(),
-                                    ),
-                                    BlocProvider.value(
-                                      value: context.read<
-                                          ActionCommentBaseCubit<
-                                              XCommonCubit<T>>>(),
-                                    ),
-                                  ],
-                                  child: ItemComment<T>(
-                                    comment: comment,
-                                    idItem: itemCubit.x.itemId,
-                                    actionCommentBaseCubit: actionCommentCubit,
-                                  ),
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          autoManage: false,
+                          physics: const NeverScrollableScrollPhysics(),
+                          cubit: loadCommentCubit,
+                          itemBuilder: (context, comment) => MultiBlocProvider(
+                            providers: [
+                              BlocProvider(
+                                create: (context) => CommentCubit<T>(
+                                  context.read<XService<T>>(),
+                                  comment,
                                 ),
-                            loadingBuilder: (context) => Container(
-                                alignment: Alignment.center,
-                                padding: const EdgeInsets.all(16),
-                                child: LinearProgressIndicator(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onTertiaryContainer,
-                                  backgroundColor: Theme.of(context)
-                                      .colorScheme
-                                      .tertiaryContainer,
-                                  borderRadius: BorderRadius.circular(30),
-                                )),
-                            loadingMoreBuilder: (context) => Container(
-                                alignment: Alignment.center,
-                                padding: const EdgeInsets.all(16),
-                                child: LinearProgressIndicator(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onTertiaryContainer,
-                                  backgroundColor: Theme.of(context)
-                                      .colorScheme
-                                      .tertiaryContainer,
-                                  borderRadius: BorderRadius.circular(30),
-                                )),
-                            emptyBuilder: (ctx) => const EmptyBuilder(),
-                            errorBuilder: (context, retry) =>
+                              ),
+                              BlocProvider.value(
+                                value: context.read<XCommonCubit<T>>(),
+                              ),
+                              BlocProvider.value(
+                                value: context.read<
+                                    ActionCommentBaseCubit<XCommonCubit<T>>>(),
+                              ),
+                            ],
+                            child: ItemComment<T>(
+                              comment: comment,
+                              idItem: itemCubit.x.itemId,
+                              actionCommentBaseCubit: actionCommentCubit,
+                            ),
+                          ),
+                          loadingBuilder: (context) => Container(
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.all(16),
+                              child: LinearProgressIndicator(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onTertiaryContainer,
+                                backgroundColor: Theme.of(context)
+                                    .colorScheme
+                                    .tertiaryContainer,
+                                borderRadius: BorderRadius.circular(30),
+                              )),
+                          loadingMoreBuilder: (context) => Container(
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.all(16),
+                              child: LinearProgressIndicator(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onTertiaryContainer,
+                                backgroundColor: Theme.of(context)
+                                    .colorScheme
+                                    .tertiaryContainer,
+                                borderRadius: BorderRadius.circular(30),
+                              )),
+                          emptyBuilder: (ctx) => const EmptyBuilder(),
+                          errorBuilder: (context, retry) =>
                               ErrorBuilder(retry: retry),
                         )
                       ],

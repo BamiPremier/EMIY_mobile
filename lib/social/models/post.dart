@@ -41,6 +41,13 @@ class Post with _$Post, XItem, XReportedItem {
   @override
   DateTime get itemCreatedAt => createdAt;
 
+  @override
   Post copyWithLike({bool? hasLiked}) =>
       copyWith(hasLiked: hasLiked ?? this.hasLiked);
+      
+  @override
+  Post copyWithCommentsCount({bool increment = true}) {
+    final newCount = increment ? commentsCount + 1 : commentsCount - 1;
+    return copyWith(commentsCount: newCount < 0 ? 0 : newCount);
+  }
 }

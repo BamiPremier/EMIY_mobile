@@ -1,3 +1,4 @@
+import 'package:potatoes/auto_content/bloc/auto_content_cubit.dart';
 import 'package:potatoes/auto_list.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/models/anime.dart';
@@ -20,6 +21,7 @@ class AnimeByGenreCubit extends AutoListCubit<Anime> {
 
   @override
   void onChange(Change<AutoListState<Anime>> change) {
+   
     super.onChange(change);
     if (change.nextState is AutoListReadyState<Anime>) {
       cubitManager
