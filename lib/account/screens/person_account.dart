@@ -68,8 +68,11 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
   late final followingCubit = FollowCubit(
       context.read<UserService>().getUserFollowing(userId: personCubit.user.id),
       context.read());
-  Widget counter(
-      {required int count, required String label, VoidCallback? onTap}) {
+  Widget counter({
+    required int count,
+    required String label,
+    VoidCallback? onTap
+  }) {
     return GestureDetector(
       onTap: onTap,
       child: SizedBox(

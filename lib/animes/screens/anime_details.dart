@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 import 'package:potatoes/common/widgets/loaders.dart';
@@ -45,268 +47,221 @@ class AnimeDetailScreen extends StatefulWidget {
 class _AnimeDetailScreenState extends State<AnimeDetailScreen>
     with CompletableMixin {
   late final animeManipCubit = context.read<AnimeManipCubit>();
-
-  final _trimMode = TrimMode.Line;
-  final isCollapsed = ValueNotifier<bool>(false);
-
-  late final ScrollController _scrollController;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController = ScrollController()..addListener(_updateCollapsedState);
-  }
-
-  void _updateCollapsedState() {
-    final newIsCollapsed = _scrollController.offset > 0;
-    if (isCollapsed.value != newIsCollapsed) {
-      setState(() {
-        isCollapsed.value = newIsCollapsed;
-      });
-    }
-  }
-
-  @override
-  void dispose() {
-    _scrollController.removeListener(_updateCollapsedState);
-    _scrollController.dispose();
-    super.dispose();
-  }
+  late final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AnimeManipCubit, AnimeManipState>(
-        listener: onEventReceived,
-        builder: (context, state) {
-          final anime = animeManipCubit.anime;
-          return Scaffold(
-              appBar: !isCollapsed.value
-                  ? null
-                  : AppBar(
-                      systemOverlayStyle: Theme.of(context)
-                          .appBarTheme
-                          .systemOverlayStyle
-                          ?.copyWith(statusBarIconBrightness: Brightness.light),
-                      backgroundColor:
-                          Theme.of(context).colorScheme.tertiaryContainer,
-                      foregroundColor: AppTheme.white,
-                      elevation: 0,
-                      actions: [
-                        IconButton(
-                          onPressed: actionsOptions,
-                          icon: toSvgIcon(
-                            icon: Assets.iconsOptions,
-                            color: AppTheme.white,
+      listener: onEventReceived,
+      builder: (context, state) {
+        final anime = animeManipCubit.anime;
+
+        return NestedScrollView(
+          controller: _scrollController,
+          headerSliverBuilder: (context, _) => [
+            SliverAppBar(
+              backgroundColor:
+                Theme.of(context).colorScheme.tertiaryContainer,
+              foregroundColor: AppTheme.white,
+              expandedHeight: 200,
+              pinned: true,
+              actions: [
+                IconButton(
+                  onPressed: actionsOptions,
+                  icon: toSvgIcon(
+                    icon: Assets.iconsOptions,
+                    color: AppTheme.white,
+                  ),
+                ),
+              ],
+              flexibleSpace: FlexibleSpaceBar(
+                background: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    Image(
+                      fit: BoxFit.cover,
+                      image: context
+                          .read<AppCacheManager>()
+                          .getAnimeImage(anime),
+                      errorBuilder: (context, error, stackTrace) =>
+                          Icon(
+                            Icons.error,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onTertiaryContainer,
+                            size: 32,
                           ),
-                        ),
-                      ],
                     ),
-              body: NestedScrollView(
-                  controller: _scrollController,
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  headerSliverBuilder: (context, _) => [
-                        SliverAppBar(
-                          expandedHeight: 200,
-                          floating: false,
-                          pinned: false,
-                          leading: !isCollapsed.value
-                              ? BackButton(
-                                  color: AppTheme.white,
-                                  onPressed: () => Navigator.pop(context))
-                              : const SizedBox.shrink(),
-                          actions: !isCollapsed.value
-                              ? [
-                                  IconButton(
-                                    onPressed: actionsOptions,
-                                    icon: toSvgIcon(
-                                      icon: Assets.iconsOptions,
-                                      color: AppTheme.white,
-                                    ),
-                                  ),
-                                ]
-                              : null,
-                          backgroundColor:
-                              Theme.of(context).colorScheme.tertiaryContainer,
-                          flexibleSpace: FlexibleSpaceBar(
-                            background: Stack(
-                              fit: StackFit.expand,
-                              children: [
-                                Image(
-                                  fit: BoxFit.cover,
-                                  image: context
-                                      .read<AppCacheManager>()
-                                      .getAnimeImage(anime),
-                                  errorBuilder: (context, error, stackTrace) =>
-                                      Icon(
-                                    Icons.error,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onTertiaryContainer,
-                                    size: 32,
-                                  ),
-                                ),
-                                Positioned(
-                                  top: 0,
-                                  left: 0,
-                                  right: 0,
-                                  child: Container(
-                                    height:
-                                        MediaQuery.of(context).viewPadding.top +
-                                            kToolbarHeight,
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: [
-                                          Theme.of(context)
-                                              .colorScheme
-                                              .inverseSurface,
-                                          Colors.transparent
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SliverToBoxAdapter(
-                          child: Container(
-                            color: AppTheme.white,
-                            padding: const EdgeInsets.only(
-                                top: 8.0, left: 16.0, right: 16.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  anime.title.romaji,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style:
-                                      Theme.of(context).textTheme.titleMedium,
-                                ),
-                                if (anime.title.english != null)
-                                  Text(
-                                    anime.title.english!,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall!
-                                        .copyWith(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onSurfaceVariant),
-                                  ),
-                                const SizedBox(height: 16),
-                                const PrimaryInfo(),
-                                const SizedBox(height: 32),
-                                const BtnWatchView(),
-                                const SizedBox(height: 32),
-                                Text(
-                                  "Synopsis",
-                                  style: Theme.of(context).textTheme.titleSmall,
-                                ),
-                                const SizedBox(height: 4),
-                                AnimatedSize(
-                                  duration: const Duration(milliseconds: 300),
-                                  alignment: Alignment.topCenter,
-                                  curve: Curves.easeInOut,
-                                  child: ReadMoreText(
-                                    parse(anime.description ?? '')
-                                        .documentElement!
-                                        .text,
-                                    trimMode: _trimMode,
-                                    trimLines: 3,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium!
-                                        .copyWith(
-                                          inherit: true,
-                                          color: const Color(0xff9F9F9F),
-                                        ),
-                                    colorClickableText:
-                                        Theme.of(context).primaryColor,
-                                    trimCollapsedText: 'Lire plus',
-                                    trimExpandedText: ' moins',
-                                  ),
-                                ),
-                                const SizedBox(height: 16),
-                                Wrap(
-                                  spacing: 8,
-                                  runSpacing: 8,
-                                  children: anime.genres
-                                          ?.map((genre) => Container(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                            horizontal: 16)
-                                                        .copyWith(
-                                                            top: 2, bottom: 4),
-                                                decoration: BoxDecoration(
-                                                  shape: BoxShape.rectangle,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          100.0),
-                                                  border: Border.all(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .onSurface),
-                                                  color: Theme.of(context)
-                                                      .chipTheme
-                                                      .backgroundColor,
-                                                ),
-                                                child: Text(
-                                                  genre,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .labelMedium,
-                                                ),
-                                              ))
-                                          .toList() ??
-                                      [],
-                                ),
-                                const SizedBox(height: 24),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                  body: DefaultTabController(
-                      length: 3,
-                      child: Column(children: [
-                        TabBar(
-                          isScrollable: true,
-                          tabAlignment: TabAlignment.start,
-                          indicatorSize: TabBarIndicatorSize.tab,
-                          labelPadding:
-                              const EdgeInsets.symmetric(horizontal: 32),
-                          unselectedLabelColor:
-                              Theme.of(context).colorScheme.onSurfaceVariant,
-                          labelStyle: Theme.of(context)
-                              .tabBarTheme
-                              .labelStyle!
-                              .copyWith(
-                                  color:
-                                      Theme.of(context).colorScheme.onSurface),
-                          tabs: const [
-                            Tab(text: "Épisodes"),
-                            Tab(text: "Recommandations"),
-                            Tab(text: "Quiz"),
-                          ],
-                        ),
-                        Expanded(
-                          child: TabBarView(
-                            children: [
-                              EpisodeScreen.get(context: context, anime: anime),
-                              SimilarScreen.get(context: context, anime: anime),
-                              QuizAnimeScreen.get(
-                                  context: context, anime: anime),
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        height:
+                        MediaQuery.of(context).viewPadding.top +
+                            kToolbarHeight,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Theme.of(context)
+                                  .colorScheme
+                                  .inverseSurface,
+                              Colors.transparent
                             ],
                           ),
                         ),
-                      ]))));
-        });
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Container(
+                color: AppTheme.white,
+                padding: const EdgeInsets.only(
+                  top: 8.0,
+                  left: 16.0,
+                  right: 16.0
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      anime.title.romaji,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style:
+                      Theme.of(context).textTheme.titleMedium,
+                    ),
+                    if (anime.title.english != null)
+                      Text(
+                        anime.title.english!,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall!
+                            .copyWith(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurfaceVariant),
+                      ),
+                    const SizedBox(height: 16),
+                    const PrimaryInfo(),
+                    const SizedBox(height: 32),
+                    const BtnWatchView(),
+                    const SizedBox(height: 32),
+                    Text(
+                      "Synopsis",
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    const SizedBox(height: 4),
+                    AnimatedSize(
+                      duration: const Duration(milliseconds: 300),
+                      alignment: Alignment.topCenter,
+                      curve: Curves.easeInOut,
+                      child: ReadMoreText(
+                        parse(anime.description ?? '')
+                            .documentElement!
+                            .text,
+                        trimMode: TrimMode.Line,
+                        trimLines: 3,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium!
+                            .copyWith(
+                          inherit: true,
+                          color: AppTheme.disabledText,
+                        ),
+                        colorClickableText:
+                        Theme.of(context).primaryColor,
+                        trimCollapsedText: 'Lire plus',
+                        trimExpandedText: ' moins',
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: anime.genres
+                          ?.map((genre) => Container(
+                        padding:
+                        const EdgeInsets.symmetric(
+                            horizontal: 16)
+                            .copyWith(
+                            top: 2, bottom: 4),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          borderRadius:
+                          BorderRadius.circular(
+                              100.0),
+                          border: Border.all(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurface),
+                          color: Theme.of(context)
+                              .chipTheme
+                              .backgroundColor,
+                        ),
+                        child: Text(
+                          genre,
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelMedium,
+                        ),
+                      ))
+                          .toList() ??
+                          [],
+                    ),
+                    const SizedBox(height: 24),
+                  ],
+                ),
+              ),
+            ),
+          ],
+          body: Material(
+            child: DefaultTabController(
+                length: 3,
+                child: Column(children: [
+                  _TabBarGap(controller: _scrollController),
+                  TabBar(
+                    isScrollable: true,
+                    tabAlignment: TabAlignment.start,
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    labelPadding:
+                    const EdgeInsets.symmetric(horizontal: 32),
+                    unselectedLabelColor:
+                    Theme.of(context).colorScheme.onSurfaceVariant,
+                    labelStyle: Theme.of(context)
+                        .tabBarTheme
+                        .labelStyle!
+                        .copyWith(
+                        color:
+                        Theme.of(context).colorScheme.onSurface),
+                    tabs: const [
+                      Tab(text: "Épisodes"),
+                      Tab(text: "Recommandations"),
+                      Tab(text: "Quiz"),
+                    ],
+                  ),
+                  Expanded(
+                    child: TabBarView(
+                      children: [
+                        EpisodeScreen.get(context: context, anime: anime),
+                        SimilarScreen.get(context: context, anime: anime),
+                        QuizAnimeScreen.get(
+                            context: context, anime: anime),
+                      ],
+                    ),
+                  ),
+                ])),
+          ),
+        );
+      },
+    );
   }
 
   void actionsOptions() => showAppBottomSheet(
@@ -343,5 +298,50 @@ class _AnimeDetailScreenState extends State<AnimeDetailScreen>
     } else if (state is AnimeManipErrorState) {
       showErrorToast(content: state.error, context: context);
     }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+}
+
+class _TabBarGap extends StatefulWidget {
+  final ScrollController controller;
+
+  const _TabBarGap({required this.controller});
+
+  @override
+  State<_TabBarGap> createState() => _TabBarGapState();
+}
+
+class _TabBarGapState extends State<_TabBarGap> {
+  double gap = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(() {
+      if (!widget.controller.hasClients) return;
+
+      // calcule la distance entre le début du body (du NestedScrollView) et
+      // le haut de l'écran, et en fait un SizedBox. L'écart s'adapte en
+      // fonction de la distance entre les deux, ce qui donne l'effet sticky.
+      setState(() {
+        gap = max(
+          widget.controller.position.pixels
+              - (widget.controller.position.maxScrollExtent
+                - MediaQuery.of(context).viewPadding.top
+                - kToolbarHeight),
+          0
+        );
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(height: gap);
   }
 }
