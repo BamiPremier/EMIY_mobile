@@ -79,8 +79,7 @@ class _NewQuizScreenState extends State<NewQuizScreen> with CompletableMixin {
           key: _formKey,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+            child: ListView(
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 8, bottom: 16),

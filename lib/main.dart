@@ -25,6 +25,8 @@ import 'package:umai/common/models/device_info.dart';
 import 'package:umai/common/screens/home.dart';
 import 'package:umai/common/services/api_service.dart';
 import 'package:umai/common/services/cache_manager.dart';
+import 'package:umai/common/services/home_anime_service.dart';
+import 'package:umai/common/services/home_quiz_service.dart';
 import 'package:umai/common/services/link_service.dart';
 import 'package:umai/common/services/notification_service.dart';
 import 'package:umai/common/services/person_cubit_manager.dart';
@@ -134,9 +136,11 @@ class MyApp extends StatelessWidget {
               create: (context) => QuizManageCubitManager(
                   context.read(), context.read(), context.read())),
           RepositoryProvider(
-              create: (context) => EpisodeCubitManager(
-                  context.read(), context.read())),
+              create: (context) =>
+                  EpisodeCubitManager(context.read(), context.read())),
           RepositoryProvider(create: (_) => LinkService(dio)),
+          RepositoryProvider(create: (context) => HomeAnimeService(context)),
+          RepositoryProvider(create: (context) => HomeQuizService(context)),
         ],
         child: MultiBlocProvider(
             providers: [

@@ -62,24 +62,14 @@ class LoadCommentCubit extends BaseLoadCommentCubit<Post> {
 }
 
 class LoadCommentEpisodeCubit extends BaseLoadCommentCubit<Episode> {
-  final EpisodeService episodeService;
-  final LoadEpisodeAnimeCubit? loadEpisodeAnimeCubit;
+  final EpisodeService episodeService; 
   final int idEpisode;
   final String target;
 
   LoadCommentEpisodeCubit(this.episodeService, this.idEpisode, this.target,
-      this.loadEpisodeAnimeCubit, PersonCubitManager personCubitManager)
+      PersonCubitManager personCubitManager)
       : super(episodeService, idEpisode.toString(), target, personCubitManager);
 
-  @override
-  void deleteComment(Comment comment) {
-    super.deleteComment(comment).then((_) {
-      if (loadEpisodeAnimeCubit != null) {
-        loadEpisodeAnimeCubit!
-            .updateCommentCount(idEpisode: idEpisode, isIncrement: false);
-      }
-    });
-  }
 }
 
 typedef LoadCommentState = AutoListState<Comment>;

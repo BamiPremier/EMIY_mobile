@@ -46,11 +46,8 @@ class _AccountScreenState extends State<AccountScreen>
   late final followingCubit = FollowCubit(
       context.read<UserService>().getUserFollowing(), context.read());
 
-  Widget counter({
-    required int count,
-    required String label,
-    VoidCallback? onTap
-  }) {
+  Widget counter(
+      {required int count, required String label, VoidCallback? onTap}) {
     return GestureDetector(
       onTap: onTap,
       child: SizedBox(
@@ -87,163 +84,189 @@ class _AccountScreenState extends State<AccountScreen>
           late final user = userCubit.user;
 
           return Scaffold(
-              body: DefaultTabController(
-            length: 5,
-            child: NestedScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              headerSliverBuilder: (context, _) => [
-                SliverAppBar(
-                  title: Text(user.username),
-                  centerTitle: true,
-                  actions: [
-                    IconButton(
-                      padding: EdgeInsets.zero,
-                      onPressed: onActionsPressed,
-                      icon: toSvgIcon(
-                        icon: Assets.iconsOptions,
-                      ),
-                    )
-                  ],
-                ),
-                SliverToBoxAdapter(
-                    child: Column(
-                  children: [
-                    const SizedBox(height: 16.0),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const UserProfilePicture(size: 80),
-                          const SizedBox(width: 16.0),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '@${user.usertag}',
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                ),
-                                const SizedBox(height: 4),
-                                (user.biography != null &&
-                                        user.biography!.isNotEmpty)
-                                    ? Text(
-                                        user.biography!,
-                                        maxLines: 3,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall!
-                                            .copyWith(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .surfaceTint),
-                                      )
-                                    : Text(
-                                        'Pas de bio',
-                                        maxLines: 3,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall!
-                                            .copyWith(
-                                                color: Theme.of(context)
-                                                    .disabledColor),
-                                      ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
+              appBar: AppBar(
+                forceMaterialTransparency: true,
+                title: Text(user.username),
+                centerTitle: true,
+                actions: [
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: onActionsPressed,
+                    icon: toSvgIcon(
+                      icon: Assets.iconsOptions,
                     ),
-                    const SizedBox(height: 32.0),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Row(
-                        children: [
-                          toSvgIcon(icon: Assets.iconsTrending, size: 16.0),
-                          const SizedBox(width: 16),
-                          counter(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => FollowScreen.get(
-                                    context: context,
-                                    title:
-                                    "M'ont ajouté (${NumberFormat.compact().format(userCubit.user.followersCount)})",
-                                    followCubit: followersCubit)));
-                            },
-                            count: user.followersCount,
-                            label: "m'ont ajouté",
-                          ),
-                          counter(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => FollowScreen.get(
-                                    context: context,
-                                    title:
-                                    "Ajoutés (${NumberFormat.compact().format(userCubit.user.followingCount)})",
-                                    followCubit: followingCubit)));
-                            },
-                            count: user.followingCount,
-                            label: "ajoutés",
-                          ),
-                          const Spacer(),
-                          toSvgIcon(
-                              icon: Assets.iconsDirectionRight,
-                              size: 16.0
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Divider(thickness: 0.7),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Row(
-                        children: [
-                          toSvgIcon(icon: Assets.iconsTrending, size: 16.0),
-                          const SizedBox(width: 16),
-                          counter(
-                              count: user.animesViewedCount,
-                              label: "vus"
-                          ),
-                          counter(
-                              count: user.watchlistCount,
-                              label: "à voir"
-                          ),
-                          const Spacer(),
-                          toSvgIcon(
-                              icon: Assets.iconsDirectionRight,
-                              size: 16.0
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 16.0),
-                    const TabBar(
-                      tabs: [
-                        Tab(text: 'Activité'),
-                        Tab(text: 'Animes'),
-                        Tab(text: 'Watchlist'),
-                        Tab(text: 'Social'),
-                        Tab(text: 'Quiz'),
-                      ],
-                    ),
-                  ],
-                ))
-              ],
-              body: TabBarView(
-                children: [
-                  const ActivityTab(),
-                  const AnimesTab(),
-                  WatchList(),
-                  const PostTab(),
-                  QuizUserScreen(),
+                  )
                 ],
               ),
-            ),
-          ));
+              body: DefaultTabController(
+                length: 5,
+                child: NestedScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  headerSliverBuilder: (context, _) => [
+                    SliverToBoxAdapter(
+                      child: Column(
+                        children: [
+                          SizedBox(height: 16),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const UserProfilePicture(size: 80),
+                                const SizedBox(width: 16.0),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '@${user.usertag}',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium,
+                                      ),
+                                      const SizedBox(height: 4),
+                                      (user.biography != null &&
+                                              user.biography!.isNotEmpty)
+                                          ? Text(
+                                              user.biography!,
+                                              maxLines: 3,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall!
+                                                  .copyWith(
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .surfaceTint),
+                                            )
+                                          : Text(
+                                              'Pas de bio',
+                                              maxLines: 3,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall!
+                                                  .copyWith(
+                                                      color: Theme.of(context)
+                                                          .disabledColor),
+                                            ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 32.0),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Row(
+                              children: [
+                                toSvgIcon(
+                                    icon: Assets.iconsTrending, size: 16.0),
+                                const SizedBox(width: 16),
+                                counter(
+                                  onTap: () {
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (context) => FollowScreen.get(
+                                            context: context,
+                                            title:
+                                                "M'ont ajouté (${NumberFormat.compact().format(userCubit.user.followersCount)})",
+                                            followCubit: followersCubit)));
+                                  },
+                                  count: user.followersCount,
+                                  label: "m'ont ajouté",
+                                ),
+                                counter(
+                                  onTap: () {
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (context) => FollowScreen.get(
+                                            context: context,
+                                            title:
+                                                "Ajoutés (${NumberFormat.compact().format(userCubit.user.followingCount)})",
+                                            followCubit: followingCubit)));
+                                  },
+                                  count: user.followingCount,
+                                  label: "ajoutés",
+                                ),
+                                const Spacer(),
+                                toSvgIcon(
+                                    icon: Assets.iconsDirectionRight,
+                                    size: 16.0),
+                              ],
+                            ),
+                          ),
+                          const Divider(thickness: 0.7),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Row(
+                              children: [
+                                toSvgIcon(
+                                    icon: Assets.iconsTrending, size: 16.0),
+                                const SizedBox(width: 16),
+                                counter(
+                                    count: user.animesViewedCount,
+                                    label: "vus"),
+                                counter(
+                                    count: user.watchlistCount,
+                                    label: "à voir"),
+                                const Spacer(),
+                                toSvgIcon(
+                                    icon: Assets.iconsDirectionRight,
+                                    size: 16.0),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                        ],
+                      ),
+                    ),
+                  ],
+                  body: DefaultTabController(
+                    length: 5,
+                    child: Column(
+                      children: [
+                        TabBar(
+                          isScrollable: true,
+                          tabAlignment: TabAlignment.start,
+                          indicatorSize: TabBarIndicatorSize.tab,
+                          labelPadding:
+                              const EdgeInsets.symmetric(horizontal: 32),
+                          unselectedLabelColor:
+                              Theme.of(context).colorScheme.onSurfaceVariant,
+                          labelStyle: Theme.of(context)
+                              .tabBarTheme
+                              .labelStyle!
+                              .copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface),
+                          tabs: const [
+                            Tab(text: 'Activité'),
+                            Tab(text: 'Animes'),
+                            Tab(text: 'Watchlist'),
+                            Tab(text: 'Social'),
+                            Tab(text: 'Quiz'),
+                          ],
+                        ),
+                        Expanded(
+                          child: TabBarView(
+                            children: [
+                              const ActivityTab(),
+                              const AnimesTab(),
+                              WatchList(),
+                              const PostTab(),
+                              QuizUserScreen(),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ));
         });
   }
 

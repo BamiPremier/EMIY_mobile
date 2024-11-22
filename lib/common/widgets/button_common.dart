@@ -39,13 +39,13 @@ class _ButtonCommonState<T extends XItem> extends State<ButtonCommon<T>>
               icon: toSvgIcon(
                 icon: Assets.iconsLike,
                 color: item.itemHasLiked
-                  ? Theme.of(context).colorScheme.tertiary
-                  : Theme.of(context).colorScheme.onSurfaceVariant,
+                    ? Theme.of(context).colorScheme.tertiary
+                    : Theme.of(context).colorScheme.onSurfaceVariant,
               ),
               onPressed: () {
                 item.itemHasLiked
-                  ? commonCubit.unLikeItem()
-                  : commonCubit.likeItem();
+                    ? commonCubit.unLikeItem()
+                    : commonCubit.likeItem();
               },
             ),
             IconButton(
