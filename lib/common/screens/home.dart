@@ -4,6 +4,7 @@ import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/account/screens/account.dart';
 import 'package:umai/account/screens/person_account.dart';
+import 'package:umai/actu/screens/home.dart';
 import 'package:umai/animes/bloc/load_episode_anime_cubit.dart';
 import 'package:umai/animes/screens/anime_details.dart';
 import 'package:umai/animes/screens/home.dart';
@@ -36,15 +37,15 @@ class _HomeScreenState extends State<HomeScreen> with CompletableMixin {
   static const int _mainPageIndex = 0;
   late final postFeedCubit =
       PostFeedCubit(context.read(), context.read(), context.read());
- 
+
   late final pages = [
     {
       'title': 'Social',
       'page': SocialHomeScreen.get(context: context, cubit: postFeedCubit)
     },
-    {'title': 'Actu', 'page': SizedBox()},
+    {'title': 'Actu', 'page': ActuHomeScreen()},
     {'title': 'Animes', 'page': AnimeHomeScreen()},
-    {'title': 'Quiz', 'page': QuizHomeScreen( )},
+    {'title': 'Quiz', 'page': QuizHomeScreen()},
   ];
   final pageController = PageController(initialPage: _mainPageIndex);
   int index = 0;
