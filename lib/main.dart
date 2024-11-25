@@ -8,7 +8,8 @@ import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:potatoes/potatoes.dart' hide PreferencesService;
 import 'package:potatoes_secured_preferences/potatoes_secured_preferences.dart';
-import 'package:umai/actu/services/actu_service.dart';
+import 'package:umai/activitie/bloc/activitie_feed_cubit.dart';
+import 'package:umai/activitie/services/activitie_service.dart';
 import 'package:umai/animes/models/episode.dart';
 import 'package:umai/animes/services/anime_cubit_manager.dart';
 import 'package:umai/animes/services/anime_service.dart';
@@ -142,9 +143,7 @@ class MyApp extends StatelessWidget {
           RepositoryProvider(create: (_) => LinkService(dio)),
           RepositoryProvider(create: (context) => HomeAnimeService(context)),
           RepositoryProvider(create: (context) => HomeQuizService(context)),
-      
-          RepositoryProvider(create: (_) =>ActuService(dio)),
-      
+          RepositoryProvider(create: (_) => ActivitieService(dio)),
         ],
         child: MultiBlocProvider(
             providers: [
@@ -193,6 +192,14 @@ class MyApp extends StatelessWidget {
                         context.read(),
                         context.read(),
                       )),
+              BlocProvider(
+                  create: (context) => ActivitieFeedCubit(
+                      context.read(),
+                      context.read(),
+                      context.read(),
+                      context.read(),
+                      context.read(),
+                      context.read())),
             ],
             child: Builder(builder: (context) {
               return MaterialApp(
