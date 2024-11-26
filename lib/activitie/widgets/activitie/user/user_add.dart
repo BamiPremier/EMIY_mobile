@@ -24,17 +24,19 @@ import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
 class UserAddWidget extends StatelessWidget {
-  static Widget get({
-    required BuildContext context,
-    required User user,
-  }) {
+  final String targetEntity;
+
+  static Widget get(
+      {required BuildContext context,
+      required User user,
+      required String targetEntity}) {
     return BlocProvider.value(
       value: context.read<PersonCubitManager>().get(user),
-      child: UserAddWidget._(),
+      child: UserAddWidget._(targetEntity: targetEntity),
     );
   }
 
-  const UserAddWidget._();
+  const UserAddWidget._({required this.targetEntity});
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<PersonCubit, PersonState>(
@@ -47,7 +49,9 @@ class UserAddWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ActuHeadWidget.get(
-                    action: " a ajouté", context: context, user: personCubit.user),
+                    targetEntity: targetEntity,
+                    context: context,
+                    user: personCubit.user),
                 const SizedBox(height: 8),
                 Container(
                     padding: const EdgeInsets.all(8)

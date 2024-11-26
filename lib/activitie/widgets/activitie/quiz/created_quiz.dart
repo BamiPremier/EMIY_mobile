@@ -26,17 +26,20 @@ import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
 class CreatedQuizWidget extends StatefulWidget {
+  final String targetEntity;
+
   static Widget get({
     required BuildContext context,
+    required String targetEntity,
     required Quiz quiz,
   }) {
     return BlocProvider.value(
       value: context.read<QuizManageCubitManager>().get(quiz),
-      child: const CreatedQuizWidget._(),
+      child: CreatedQuizWidget._(targetEntity: targetEntity),
     );
   }
 
-  const CreatedQuizWidget._();
+  const CreatedQuizWidget._({required this.targetEntity});
   @override
   State<CreatedQuizWidget> createState() => _CreatedQuizWidgetState();
 }
@@ -56,7 +59,7 @@ class _CreatedQuizWidgetState extends State<CreatedQuizWidget>
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             ActuHeadWidget.get(
-                action: " a créé", context: context, user: quiz.user),
+             targetEntity: widget.targetEntity, context: context, user: quiz.user),
             const SizedBox(height: 8),
             Container(
                 padding:

@@ -25,9 +25,13 @@ import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
 class NewPostUserWidget extends StatefulWidget {
-  const NewPostUserWidget._();
+  const NewPostUserWidget._({required this.targetEntity});
+  final String targetEntity;
 
-  static Widget get({required BuildContext context, required Post post}) {
+  static Widget get(
+      {required BuildContext context,
+      required Post post,
+      required String targetEntity}) {
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(value: context.read<PostCubitManager>().get(post)),
@@ -36,7 +40,7 @@ class NewPostUserWidget extends StatefulWidget {
         BlocProvider.value(
             value: context.read<PersonCubitManager>().get(post.user)),
       ],
-      child: const NewPostUserWidget._(),
+      child: NewPostUserWidget._(targetEntity: targetEntity),
     );
   }
 
@@ -56,7 +60,9 @@ class _NewPostUserWidgetState extends State<NewPostUserWidget> {
         Container(
           padding: const EdgeInsets.all(8),
           child: ActuHeadWidget.get(
-              action: " a publié", context: context, user: post.user),
+              targetEntity: widget.targetEntity,
+              context: context,
+              user: post.user),
         ),
         Padding(
             padding: const EdgeInsets.only(bottom: 16, left: 16, right: 16),

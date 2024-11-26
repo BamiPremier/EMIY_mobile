@@ -19,10 +19,10 @@ class Activitie with _$Activitie {
     @JsonKey(name: 'created_at')
     @DateTimeConverter()
     required DateTime createdAt,
-    required bool isPrivate,
+    bool? isPrivate,
     @JsonKey(name: 'target_entity') required String targetEntity,
     required dynamic target,
-    dynamic subTarget,
+    @JsonKey(name: 'sub_target') dynamic subTarget,
   }) = _Activitie;
 
   factory Activitie.fromJson(Map<String, dynamic> json) =>
@@ -30,20 +30,20 @@ class Activitie with _$Activitie {
 }
 
 abstract class TargetEntity {
-  static const posts = "POSTS";
-  static const postLikes = "POST_LIKES";
-  static const postComments = "POST_COMMENTS";
-  static const postReports = "POST_REPORTS";
-  static const follows = "FOLLOWS";
-  static const userBlocked = "USER_BLOCKED";
-  static const animesVieweds = "ANIMES_VIEWEDS";
-  static const watchlists = "WATCHLISTS";
-  static const quizzes = "QUIZZES";
-  static const participations = "PARTICIPATIONS";
-  static const quizReports = "QUIZ_REPORTS";
-  static const episodeComments = "EPISODE_COMMENTS";
-  static const episodeLikes = "EPISODE_LIKES";
-  static const eventLikes = "EVENT_LIKES";
-  static const eventReports = "EVENT_REPORTS";
-  static const unknown = "UNKNOWN";
+  static const posts = "posts";
+  static const postLikes = "post_likes";
+  static const postComments = "post_comments";
+  static const postReports = "post_reports";
+  static const follows = "follows";
+  static const userBlocked = "user_blocked";
+  static const animesVieweds = "animes_vieweds";
+  static const watchlists = "watchlists";
+  static const quizzes = "quizzes";
+  static const participations = "participations";
+  static const quizReports = "quiz_reports";
+  static const episodeComments = "episode_comments";
+  static const episodeLikes = "episode_likes";
+  static const eventLikes = "event_likes";
+  static const eventReports = "event_reports";
+  static const unknown = "unknown";
 }

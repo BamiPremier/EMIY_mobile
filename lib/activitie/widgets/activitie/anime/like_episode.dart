@@ -30,28 +30,93 @@ import 'package:umai/utils/themes.dart';
 import 'package:umai/animes/services/episode_cubit_manager.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
-class LikeEpisodeWidget extends StatelessWidget {
-  static Widget get(
-      {required BuildContext context,
-      required Episode episode,
-      required User user}) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<PersonCubit>.value(
-          value: context.read<PersonCubitManager>().get(user),
-        ),
-        BlocProvider.value(
-          value: context.read<EpisodeCubitManager>().get(episode),
-        ),
-      ],
-      child: const LikeEpisodeWidget._(),
-    );
+class LikeEpisodeWidget extends StatefulWidget {
+  final String targetEntity;
+  final Episode? episode;
+
+  LikeEpisodeWidget.forNoEpisode({
+    required this.targetEntity,
+  }) : episode = null;
+
+  LikeEpisodeWidget.forEpisode({
+    required this.targetEntity,
+    required this.episode,
+  });
+
+  static Widget get({
+    required BuildContext context,
+    Episode? episode,
+    required String targetEntity,
+    required User user,
+  }) {
+    return (episode == null)
+        ? BlocProvider.value(
+            value: context.read<PersonCubitManager>().get(user),
+            child: LikeEpisodeWidget.forNoEpisode(targetEntity: targetEntity))
+        : MultiBlocProvider(
+            providers: [
+              BlocProvider<XCommonCubit<Episode>>(
+                create: (context) => context.read<EpisodeCubit>(),
+              ),
+              BlocProvider.value(
+                value: context.read<EpisodeCubitManager>().get(episode),
+              ),
+            ],
+            child: LikeEpisodeWidget.forEpisode(
+                targetEntity: targetEntity, episode: episode),
+          );
   }
 
-  const LikeEpisodeWidget._();
+  @override
+  _LikeEpisodeWidgetState createState() => _LikeEpisodeWidgetState();
+}
 
+class _LikeEpisodeWidgetState extends State<LikeEpisodeWidget> {
   @override
   Widget build(BuildContext context) {
+    return (widget.episode == null)
+        ? buildNoEpisode()
+        : buildEpisode(widget.episode!);
+  }
+
+  Widget buildNoEpisode() {
+    final personCubit = context.read<PersonCubit>();
+    final user = personCubit.user;
+    return Container(
+        margin: const EdgeInsets.all(8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ActuHeadWidget.get(
+                context: context,
+                targetEntity: widget.targetEntity,
+                user: user),
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.onInverseSurface,
+                        borderRadius: BorderRadius.circular(8)),
+                    child: Text(
+                      "Le contenu n’est plus disponible",
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ));
+  }
+
+  Widget buildEpisode(Episode episode) {
     return BlocConsumer<EpisodeCubit, XCommonState>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -65,7 +130,9 @@ class LikeEpisodeWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ActuHeadWidget.get(
-                  context: context, action: " a aimé", user: user),
+                  context: context,
+                  targetEntity: widget.targetEntity,
+                  user: user),
               const SizedBox(height: 8),
               GestureDetector(
                 behavior: HitTestBehavior.opaque,

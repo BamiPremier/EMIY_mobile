@@ -24,6 +24,8 @@ import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
 class UserBlockedWidget extends StatelessWidget {
+
+  
   static Widget get({
     required BuildContext context,
     required User user,

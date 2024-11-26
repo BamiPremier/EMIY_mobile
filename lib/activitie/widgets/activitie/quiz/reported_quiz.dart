@@ -26,17 +26,20 @@ import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
 class ReportedQuizWidget extends StatelessWidget {
+  final String targetEntity;
+
   static Widget get({
     required BuildContext context,
+    required String targetEntity,
     required Quiz quiz,
   }) {
     return BlocProvider.value(
       value: context.read<QuizManageCubitManager>().get(quiz),
-      child: ReportedQuizWidget._(),
+      child: ReportedQuizWidget._(targetEntity: targetEntity),
     );
   }
 
-  ReportedQuizWidget._();
+  ReportedQuizWidget._({required this.targetEntity});
 
   @override
   Widget build(BuildContext context) {

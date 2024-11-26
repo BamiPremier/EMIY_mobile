@@ -26,24 +26,45 @@ import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
 class LikePostWidget extends StatefulWidget {
-  LikePostWidget._();
+  final Post? post;
+  final String targetEntity;
 
-  static Widget get({required BuildContext context, required Post post,
-  
-      required User user
+  // Constructeur pour les cas où le post est nul
+  LikePostWidget.forNoPost({
+    required this.targetEntity,
+  }) : post = null;
+
+  // Constructeur pour les cas où le post est non nul
+  LikePostWidget.forPost({
+    required this.post,
+    required this.targetEntity,
+  });
+
+  static Widget get({
+    required BuildContext context,
+    Post? post,
+    required User user,
+    required String targetEntity,
   }) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider.value(value: context.read<PostCubitManager>().get(post)),
-        BlocProvider<XCommonCubit<Post>>(
-            create: (context) => context.read<PostCubit>()),
-        BlocProvider.value(
-            value: context.read<PersonCubitManager>().get(post.user)),
-       BlocProvider<PersonCubit>.value(
-          value: context.read<PersonCubitManager>().get(user),
-        ),  ],
-      child: LikePostWidget._(),
-    );
+    return (post == null)
+        ? BlocProvider.value(
+            value: context.read<PersonCubitManager>().get(user),
+            child: LikePostWidget.forNoPost(targetEntity: targetEntity))
+        : MultiBlocProvider(
+            providers: [
+              BlocProvider<XCommonCubit<Post>>(
+                create: (context) => context.read<PostCubit>(),
+              ),
+              BlocProvider.value(
+                value: context.read<PostCubitManager>().get(post),
+              ),
+              BlocProvider.value(
+                value: context.read<PersonCubitManager>().get(user),
+              ),
+            ],
+            child:
+                LikePostWidget.forPost(post: post, targetEntity: targetEntity),
+          );
   }
 
   @override
@@ -51,102 +72,156 @@ class LikePostWidget extends StatefulWidget {
 }
 
 class _LikePostWidgetState extends State<LikePostWidget> {
-  late final postCubit = context.read<PostCubit>();
   final isCollapsed = ValueNotifier<bool>(true);
   final _trimMode = TrimMode.Line;
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PostCubit, XCommonState>(builder: (context, state) {
-      final post = postCubit.x as Post;
-      final personCubit = context.read<PersonCubit>();
+    return (widget.post == null) ? buildNoPost() : buildPost(widget.post!);
+  }
 
-      final user = personCubit.user; return Container(
+  Widget buildNoPost() {
+    final user = context.read<PersonCubit>().user;
+    return Container(
         padding: const EdgeInsets.all(8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ActuHeadWidget.get(
-                action: " a aimé", context: context, user: user),
-
-            const SizedBox(height: 8),
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.onInverseSurface,
-                  borderRadius: BorderRadius.circular(8)),
-              child: Column(
-                children: [
-                  Row(
-                    children: <Widget>[
-                      GestureDetector(
-                        child: const ProfilePicture(
-                          image: "user.image",
-                          size: 24.0,
-                        ),
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => PersonAccountScreen.get(
-                                  context: context, user: post.user)));
-                        },
-                      ),
-                      const SizedBox(width: 4),
-                      Expanded(
-                        child: GestureDetector(
-                          child: Text(
-                            post.user.username,
-                            style:
-                                Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSurfaceVariant,
-                                    ),
-                            overflow: TextOverflow.ellipsis,
+                targetEntity: widget.targetEntity,
+                context: context,
+                user: user),
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.onInverseSurface,
+                        borderRadius: BorderRadius.circular(8)),
+                    child: Text(
+                      "Le contenu n’est plus disponible",
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => PersonAccountScreen.get(
-                                    context: context, user: post.user)));
-                          },
-                        ),
-                      ),
-                      Text(
-                        "Il y a 16h",
-                        style: Theme.of(context)
-                            .textTheme
-                            .labelMedium!
-                            .copyWith(color: AppTheme.disabledText),
-                      ),
-                    ],
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                  const SizedBox(height: 16),
-                  AnimatedSize(
-                      duration: const Duration(milliseconds: 300),
-                      alignment: Alignment.topCenter,
-                      curve: Curves.easeInOut,
-                      child: ReadMoreText(
-                        post.content,
-                        trimMode: _trimMode,
-                        trimLines: 3,
-                        isCollapsed: isCollapsed,
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurfaceVariant,
-                            ),
-                        colorClickableText: Theme.of(context).primaryColor,
-                        trimCollapsedText: 'Lire plus',
-                        trimExpandedText: ' moins',
-                      )),
-                  const SizedBox(height: 8),
-                  if (post.image?.isNotEmpty ?? false)
-                    PostActuImage(url: post.image!),
-                ],
-              ),
+                ),
+              ],
             ),
-            ActuBtnType1Widget()
           ],
-        ),
-      );
+        ));
+  }
+
+  Widget buildPost(Post post) {
+    late final postCubit = context.read<PostCubit>();
+
+    return BlocBuilder<PostCubit, XCommonState>(builder: (context, state) {
+      final post = postCubit.x as Post;
+      return Container(
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ActuHeadWidget.get(
+                  targetEntity: widget.targetEntity,
+                  context: context,
+                  user: post.user),
+              Container(
+                padding: const EdgeInsets.all(8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        padding:
+                            const EdgeInsets.only(bottom: 8, left: 8, right: 8),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: <Widget>[
+                                  GestureDetector(
+                                    child: ProfilePicture(
+                                      image: post.user.image,
+                                      size: 24.0,
+                                    ),
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  PersonAccountScreen.get(
+                                                      context: context,
+                                                      user: post.user)));
+                                    },
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Expanded(
+                                    child: GestureDetector(
+                                      child: Text(
+                                        post.user.username,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge!
+                                            .copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurfaceVariant,
+                                            ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    PersonAccountScreen.get(
+                                                        context: context,
+                                                        user: post.user)));
+                                      },
+                                    ),
+                                  ),
+                                  Text(
+                                    "Il y a 16h",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelMedium!
+                                        .copyWith(color: AppTheme.disabledText),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 16),
+                              AnimatedSize(
+                                  duration: const Duration(milliseconds: 300),
+                                  alignment: Alignment.topLeft,
+                                  curve: Curves.easeInOut,
+                                  child: ReadMoreText(
+                                    post.content,
+                                    trimMode: _trimMode,
+                                    trimLines: 3,
+                                    isCollapsed: isCollapsed,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall!
+                                        .copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurfaceVariant,
+                                        ),
+                                    colorClickableText:
+                                        Theme.of(context).primaryColor,
+                                    trimCollapsedText: 'Lire plus',
+                                    trimExpandedText: ' moins',
+                                  )),
+                            ])),
+                    if (post.image?.isNotEmpty ?? false)
+                      PostActuImage(url: post.image!),
+                  ],
+                ),
+              ),
+              ActuBtnType1Widget()
+            ],
+          ));
     });
   }
 }

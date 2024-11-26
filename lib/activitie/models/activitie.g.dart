@@ -12,10 +12,10 @@ _$ActivitieImpl _$$ActivitieImplFromJson(Map<String, dynamic> json) =>
       user: User.fromJson(json['user'] as Map<String, dynamic>),
       createdAt: const DateTimeConverter()
           .fromJson((json['created_at'] as num).toInt()),
-      isPrivate: json['isPrivate'] as bool,
+      isPrivate: json['isPrivate'] as bool?,
       targetEntity: json['target_entity'] as String,
       target: json['target'],
-      subTarget: json['subTarget'],
+      subTarget: json['sub_target'],
     );
 
 Map<String, dynamic> _$$ActivitieImplToJson(_$ActivitieImpl instance) =>
@@ -26,5 +26,5 @@ Map<String, dynamic> _$$ActivitieImplToJson(_$ActivitieImpl instance) =>
       'isPrivate': instance.isPrivate,
       'target_entity': instance.targetEntity,
       'target': instance.target,
-      'subTarget': instance.subTarget,
+      'sub_target': instance.subTarget,
     };

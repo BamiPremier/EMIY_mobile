@@ -49,9 +49,11 @@ class ActivitieFeedCubit extends AutoListCubit<Activitie> {
           case TargetEntity.quizReports:
             quizCubitManager.add(Quiz.fromJson(activitie.target));
           case TargetEntity.episodeComments:
-            episodeCubitManager.add(Episode.fromJson(activitie.subTarget));
+            if (activitie.subTarget != null)
+              episodeCubitManager.add(Episode.fromJson(activitie.subTarget));
           case TargetEntity.postComments:
-            postCubitManager.add(Post.fromJson(activitie.target));
+            if (activitie.subTarget != null)
+              postCubitManager.add(Post.fromJson(activitie.subTarget));
         }
       }
     }

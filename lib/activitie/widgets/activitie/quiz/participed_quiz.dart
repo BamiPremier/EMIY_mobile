@@ -28,8 +28,14 @@ import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
 class ParticipedQuizWidget extends StatelessWidget {
+
+  final String targetEntity;
+
   static Widget get(
-      {required BuildContext context, required Quiz quiz, required User user}) {
+      {required BuildContext context,
+      required Quiz quiz,
+      required String targetEntity,
+      required User user}) {
     return MultiBlocProvider(
       providers: [
         BlocProvider<PersonCubit>.value(
@@ -39,11 +45,11 @@ class ParticipedQuizWidget extends StatelessWidget {
           value: context.read<QuizManageCubitManager>().get(quiz),
         )
       ],
-      child: ParticipedQuizWidget._(),
+      child: ParticipedQuizWidget._(targetEntity: targetEntity),
     );
   }
 
-  ParticipedQuizWidget._();
+  ParticipedQuizWidget._({required this.targetEntity});
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<QuizManageCubit, QuizManageState>(
@@ -58,7 +64,7 @@ class ParticipedQuizWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             ActuHeadWidget.get(
-                action: " a participé", context: context, user: user),
+              targetEntity:  targetEntity, context: context, user: user),
             const SizedBox(height: 8),
             Container(
                 padding:

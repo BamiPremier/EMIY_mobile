@@ -9,6 +9,7 @@ import 'package:umai/activitie/widgets/activitie/post/post_actu_image.dart';
 import 'package:umai/animes/bloc/episode_cubit.dart';
 import 'package:umai/animes/models/episode.dart';
 import 'package:umai/animes/services/episode_cubit_manager.dart';
+import 'package:umai/common/bloc/action_comment_cubit.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/bloc/person_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
@@ -30,16 +31,49 @@ import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
 class EpisodeCommentWidget extends StatefulWidget {
-  const EpisodeCommentWidget._({required this.comment});
+  final Episode? episode;
   final Comment comment;
-  static Widget get(
-      {required BuildContext context,
-      required Episode episode,
-      required Comment comment}) {
-    return BlocProvider.value(
-      value: context.read<EpisodeCubitManager>().get(episode),
-      child: EpisodeCommentWidget._(comment: comment),
-    );
+  final String targetEntity;
+
+  const EpisodeCommentWidget.forNoEpisode({
+    required this.comment,
+    required this.targetEntity,
+  }) : episode = null;
+
+  const EpisodeCommentWidget.forEpisode({
+    required this.episode,
+    required this.comment,
+    required this.targetEntity,
+  });
+
+  static Widget get({
+    required BuildContext context,
+    Episode? episode,
+    required Comment comment,
+    required dynamic targetEntity,
+  }) {
+    return (episode == null)
+        ? EpisodeCommentWidget.forNoEpisode(
+            comment: comment, targetEntity: targetEntity)
+        : MultiBlocProvider(
+            providers: [
+              BlocProvider<XCommonCubit<Episode>>(
+                create: (context) => context.read<EpisodeCubit>(),
+              ),
+              BlocProvider(
+                  create: (context) => ActionCommentEpisodeCubit(
+                        context.read<XCommonCubit<Episode>>() as EpisodeCubit,
+                      ) as ActionCommentBaseCubit<XCommonCubit<Episode>>),
+              BlocProvider.value(
+                value: context.read<EpisodeCubitManager>().get(episode),
+              ),
+            ],
+            child: EpisodeCommentWidget.forEpisode(
+              episode: episode,
+              comment: comment,
+              targetEntity: targetEntity,
+            ),
+          );
   }
 
   @override
@@ -47,12 +81,70 @@ class EpisodeCommentWidget extends StatefulWidget {
 }
 
 class _EpisodeCommentWidgetState extends State<EpisodeCommentWidget> {
-  late final postCubit = context.read<PostCubit>();
   final isCollapsed = ValueNotifier<bool>(true);
   final _trimMode = TrimMode.Line;
-  late final episodeCubit = context.read<EpisodeCubit>();
+
   @override
   Widget build(BuildContext context) {
+    return (widget.episode == null)
+        ? buildNoEpisode()
+        : buildEpisode(widget.episode!);
+  }
+
+  Widget buildNoEpisode() {
+    return Container(
+        margin: const EdgeInsets.all(8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ActuHeadWidget.get(
+                targetEntity: widget.targetEntity,
+                context: context,
+                user: widget.comment.user),
+            Container(
+                padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
+                child: AnimatedSize(
+                    duration: const Duration(milliseconds: 300),
+                    alignment: Alignment.topCenter,
+                    curve: Curves.easeInOut,
+                    child: ReadMoreText(
+                      widget.comment!.content,
+                      trimMode: _trimMode,
+                      trimLines: 3,
+                      isCollapsed: isCollapsed,
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
+                      colorClickableText: Theme.of(context).primaryColor,
+                      trimCollapsedText: 'Lire plus',
+                      trimExpandedText: ' moins',
+                    ))),
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.onInverseSurface,
+                        borderRadius: BorderRadius.circular(8)),
+                    child: Text(
+                      "Le contenu n’est plus disponible",
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ));
+  }
+
+  Widget buildEpisode(Episode episode) {
     return BlocConsumer<EpisodeCubit, XCommonState>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -63,10 +155,9 @@ class _EpisodeCommentWidgetState extends State<EpisodeCommentWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ActuHeadWidget.get(
-                      action: " a commenté",
+                      targetEntity: widget.targetEntity,
                       context: context,
                       user: widget.comment.user),
-                  const SizedBox(height: 8),
                   Container(
                       padding: const EdgeInsets.all(8),
                       child: AnimatedSize(
@@ -182,7 +273,11 @@ class _EpisodeCommentWidgetState extends State<EpisodeCommentWidget> {
                       ),
                     ),
                   ),
-                  ActuBtnType3Widget()
+                  ActuBtnType3Widget<Episode, EpisodeCubit,
+                      ActionCommentBaseCubit<EpisodeCubit>>(
+                    actionCommentBaseCubit:
+                        context.read<ActionCommentBaseCubit<EpisodeCubit>>(),
+                  )
                 ],
               ));
         });

@@ -6,6 +6,7 @@ import 'package:umai/activitie/widgets/activitie/actu_btn_type1.dart';
 import 'package:umai/activitie/widgets/activitie/actu_btn_type3.dart';
 import 'package:umai/activitie/widgets/activitie/actu_head.dart';
 import 'package:umai/activitie/widgets/activitie/post/post_actu_image.dart';
+import 'package:umai/common/bloc/action_comment_cubit.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/bloc/person_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
@@ -26,22 +27,48 @@ import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
 class CommentPostWidget extends StatefulWidget {
-  CommentPostWidget._({required this.comment});
+  final Post? post;
   final Comment comment;
-  static Widget get(
-      {required BuildContext context,
-      required Post post,
-      required Comment comment}) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider.value(value: context.read<PostCubitManager>().get(post)),
-        BlocProvider<XCommonCubit<Post>>(
-            create: (context) => context.read<PostCubit>()),
-        BlocProvider.value(
-            value: context.read<PersonCubitManager>().get(post.user)),
-      ],
-      child: CommentPostWidget._(comment: comment),
-    );
+  final String targetEntity;
+
+  const CommentPostWidget.forNoPost({
+    required this.comment,
+    required this.targetEntity,
+  }) : post = null;
+
+  const CommentPostWidget.forPost({
+    required this.post,
+    required this.comment,
+    required this.targetEntity,
+  });
+
+  static Widget get({
+    required BuildContext context,
+    Post? post,
+    required Comment comment,
+    required dynamic targetEntity,
+  }) {
+    return (post == null)
+        ? CommentPostWidget.forNoPost(
+            comment: comment, targetEntity: targetEntity)
+        : MultiBlocProvider(
+            providers: [
+              BlocProvider<XCommonCubit<Post>>(
+                create: (context) => context.read<PostCubit>(),
+              ),
+              BlocProvider<ActionCommentBaseCubit<PostCubit>>(
+                  create: (context) =>
+                      ActionCommentCubit(context.read<PostCubit>())),
+              BlocProvider.value(
+                value: context.read<PostCubitManager>().get(post),
+              ),
+            ],
+            child: CommentPostWidget.forPost(
+              post: post,
+              comment: comment,
+              targetEntity: targetEntity,
+            ),
+          );
   }
 
   @override
@@ -49,11 +76,78 @@ class CommentPostWidget extends StatefulWidget {
 }
 
 class _CommentPostWidgetState extends State<CommentPostWidget> {
-  late final postCubit = context.read<PostCubit>();
   final isCollapsed = ValueNotifier<bool>(true);
   final _trimMode = TrimMode.Line;
+  late final ActionCommentBaseCubit<PostCubit> actionCommentCubit =
+      context.read<ActionCommentBaseCubit<PostCubit>>();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    print("build =============================${widget.post}");
+    return (widget.post == null) ? buildNoPost() : buildPost(widget.post!);
+  }
+
+  Widget buildNoPost() {
+    return Container(
+        margin: const EdgeInsets.all(8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ActuHeadWidget.get(
+                targetEntity: widget.targetEntity,
+                context: context,
+                user: widget.comment.user),
+            Container(
+                padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
+                child: AnimatedSize(
+                    duration: const Duration(milliseconds: 300),
+                    alignment: Alignment.topCenter,
+                    curve: Curves.easeInOut,
+                    child: ReadMoreText(
+                      widget.comment.content,
+                      trimMode: _trimMode,
+                      trimLines: 3,
+                      isCollapsed: isCollapsed,
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
+                      colorClickableText: Theme.of(context).primaryColor,
+                      trimCollapsedText: 'Lire plus',
+                      trimExpandedText: ' moins',
+                    ))),
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.onInverseSurface,
+                        borderRadius: BorderRadius.circular(8)),
+                    child: Text(
+                      "Le contenu n’est plus disponible",
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ));
+  }
+
+  Widget buildPost(Post post) {
+    late final postCubit = context.read<PostCubit>();
+
     return BlocBuilder<PostCubit, XCommonState>(builder: (context, state) {
       final post = postCubit.x as Post;
       return Container(
@@ -62,10 +156,9 @@ class _CommentPostWidgetState extends State<CommentPostWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ActuHeadWidget.get(
-                  action: " a commenté",
+                  targetEntity: widget.targetEntity,
                   context: context,
                   user: widget.comment.user),
-              const SizedBox(height: 8),
               Container(
                   padding: const EdgeInsets.all(8),
                   child: AnimatedSize(
@@ -73,7 +166,7 @@ class _CommentPostWidgetState extends State<CommentPostWidget> {
                       alignment: Alignment.topCenter,
                       curve: Curves.easeInOut,
                       child: ReadMoreText(
-                        post.content,
+                        widget.comment.content,
                         trimMode: _trimMode,
                         trimLines: 3,
                         isCollapsed: isCollapsed,
@@ -114,7 +207,7 @@ class _CommentPostWidgetState extends State<CommentPostWidget> {
                               Expanded(
                                 child: GestureDetector(
                                   child: Text(
-                                    "user.name",
+                                    post.user.username,
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyLarge!
@@ -126,15 +219,17 @@ class _CommentPostWidgetState extends State<CommentPostWidget> {
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   onTap: () {
-                                    // Navigator.of(context).push(MaterialPageRoute(
-                                    //   builder: (context) => PersonAccountScreen.get(
-                                    //       context: context, user: user)
-                                    // ));
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                PersonAccountScreen.get(
+                                                    context: context,
+                                                    user: post.user)));
                                   },
                                 ),
                               ),
                               Text(
-                                "Il y a 16h",
+                                post.createdAt.elapsed(),
                                 style: Theme.of(context)
                                     .textTheme
                                     .labelMedium!
@@ -171,7 +266,10 @@ class _CommentPostWidgetState extends State<CommentPostWidget> {
                   ],
                 ),
               ),
-              ActuBtnType3Widget()
+              ActuBtnType3Widget<Post, PostCubit,
+                  ActionCommentBaseCubit<PostCubit>>(
+                actionCommentBaseCubit: actionCommentCubit,
+              )
             ],
           ));
     });

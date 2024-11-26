@@ -25,9 +25,15 @@ import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
 class ReportedPostWidget extends StatefulWidget {
-  const ReportedPostWidget._();
+  const ReportedPostWidget._({
+    required this.targetEntity,
+  });
+  final String targetEntity;
 
-  static Widget get({required BuildContext context, required Post post}) {
+  static Widget get(
+      {required BuildContext context,
+      required String targetEntity,
+      required Post post}) {
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(value: context.read<PostCubitManager>().get(post)),
@@ -36,7 +42,7 @@ class ReportedPostWidget extends StatefulWidget {
         BlocProvider.value(
             value: context.read<PersonCubitManager>().get(post.user)),
       ],
-      child: const ReportedPostWidget._(),
+      child:   ReportedPostWidget._(targetEntity: targetEntity),
     );
   }
 

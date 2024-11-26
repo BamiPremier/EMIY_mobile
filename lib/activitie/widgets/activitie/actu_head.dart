@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:readmore/readmore.dart';
 import 'package:umai/account/screens/person_account.dart';
+import 'package:umai/activitie/models/activitie.dart';
 import 'package:umai/common/bloc/person_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/models/user.dart';
@@ -19,20 +20,24 @@ import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
 class ActuHeadWidget extends StatelessWidget {
-  final String action;
+  final String targetEntity;
+  late final String action;
 
   static Widget get({
     required BuildContext context,
     required User user,
-    required String action,
+    required String targetEntity,
   }) {
     return BlocProvider.value(
       value: context.read<PersonCubitManager>().get(user),
-      child: ActuHeadWidget._(action: action),
+      child: ActuHeadWidget._(targetEntity: targetEntity),
     );
   }
 
-  ActuHeadWidget._({required this.action});
+  ActuHeadWidget._({required this.targetEntity}) {
+    action = buildActionText(targetEntity: targetEntity);
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<PersonCubit, PersonState>(
@@ -53,32 +58,15 @@ class ActuHeadWidget extends StatelessWidget {
                         size: 32.0,
                       ),
                       onTap: () {
-                        //  Navigator.of(context).push(MaterialPageRoute(
-                        //     builder: (context) => PersonAccountScreen.get(
-                        //         context: context, user: user)));
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => PersonAccountScreen.get(
+                                context: context, user: user)));
                       },
                     ),
                     Align(
                       alignment: Alignment.bottomRight,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color:
-                                Theme.of(context).colorScheme.onInverseSurface,
-                            shape: BoxShape.circle),
-                        height: 16,
-                        width: 16,
-                        padding: const EdgeInsets.all(3),
-                        child: IconButton(
-                          padding: EdgeInsets.zero,
-                          icon: toSvgIcon(
-                            icon: Assets.iconsLike,
-                            size: 10,
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
-                          ),
-                          onPressed: () {},
-                        ),
-                      ),
+                      child: buildActivitieIcon(
+                          context: context, targetEntity: targetEntity),
                     ),
                   ],
                 ),
@@ -89,7 +77,7 @@ class ActuHeadWidget extends StatelessWidget {
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: "user.username",
+                            text: user.username,
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                           WidgetSpan(
@@ -113,5 +101,77 @@ class ActuHeadWidget extends StatelessWidget {
             ),
           );
         });
+  }
+
+  Widget buildActivitieIcon(
+      {required BuildContext context, required String targetEntity}) {
+    var iconData = {
+      TargetEntity.posts: Assets.iconsNotification,
+      TargetEntity.episodeLikes: Assets.iconsLike,
+      TargetEntity.postLikes: Assets.iconsLike,
+      TargetEntity.eventLikes: Assets.iconsLike,
+      TargetEntity.episodeComments: Assets.iconsComment,
+      TargetEntity.postComments: Assets.iconsComment,
+      TargetEntity.follows: Assets.iconsFollower,
+      TargetEntity.userBlocked: Assets.iconsBlocked,
+      TargetEntity.animesVieweds: Assets.iconsTick,
+      TargetEntity.watchlists: Assets.iconsBookmark,
+      TargetEntity.participations: Assets.iconsQuiz,
+      TargetEntity.quizzes: Assets.iconsQuiz,
+      TargetEntity.postReports: Assets.iconsSignal,
+      TargetEntity.quizReports: Assets.iconsSignal,
+      TargetEntity.eventReports: Assets.iconsSignal,
+    };
+
+    return iconData.containsKey(targetEntity)
+        ? Container(
+            decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.onInverseSurface,
+                shape: BoxShape.circle),
+            height: 16,
+            width: 16,
+            padding: const EdgeInsets.all(3),
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              icon: toSvgIcon(
+                icon: iconData[targetEntity]!,
+                size: 10,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+              onPressed: () {},
+            ),
+          )
+        : Container();
+  }
+
+  String buildActionText({
+    required String targetEntity,
+  }) {
+    switch (targetEntity) {
+      case TargetEntity.posts:
+        return 'a publié';
+      case TargetEntity.episodeLikes:
+      case TargetEntity.postLikes:
+      case TargetEntity.eventLikes:
+        return 'a aimé';
+      case TargetEntity.episodeComments:
+      case TargetEntity.postComments:
+        return 'a commenté';
+
+      case TargetEntity.follows:
+        return 'a ajouté';
+
+      case TargetEntity.animesVieweds:
+        return 'a vu';
+      case TargetEntity.watchlists:
+        return 'a ajouté à sa liste';
+      case TargetEntity.quizzes:
+        return 'a créé';
+      case TargetEntity.participations:
+        return 'a participé';
+
+      default:
+        return '';
+    }
   }
 }

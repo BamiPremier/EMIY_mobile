@@ -28,10 +28,12 @@ import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
 class AnimeAddWatchedWidget extends StatelessWidget {
+  final String targetEntity;
   static Widget get(
       {required BuildContext context,
       required Anime anime,
-      required User user}) {
+      required User user,
+      required String targetEntity}) {
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(
@@ -41,11 +43,11 @@ class AnimeAddWatchedWidget extends StatelessWidget {
           value: context.read<PersonCubitManager>().get(user),
         ),
       ],
-      child: const AnimeAddWatchedWidget._(),
+      child: AnimeAddWatchedWidget._(targetEntity: targetEntity),
     );
   }
 
-  const AnimeAddWatchedWidget._();
+  const AnimeAddWatchedWidget._({required this.targetEntity});
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AnimeManipCubit, AnimeManipState>(
@@ -61,8 +63,8 @@ class AnimeAddWatchedWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ActuHeadWidget.get(
-                  action: " a ajouté à sa liste", context: context, user: user),
-              const SizedBox(height: 8),
+                  targetEntity: targetEntity, context: context, user: user),
+             
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {},

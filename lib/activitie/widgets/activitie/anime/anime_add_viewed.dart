@@ -27,8 +27,10 @@ import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
 class AnimeAddViewedWidget extends StatelessWidget {
+  final String targetEntity;
   static Widget get(
       {required BuildContext context,
+      required String targetEntity,
       required Anime anime,
       required User user}) {
     return MultiBlocProvider(
@@ -40,11 +42,11 @@ class AnimeAddViewedWidget extends StatelessWidget {
           value: context.read<PersonCubitManager>().get(user),
         ),
       ],
-      child: const AnimeAddViewedWidget._(),
+      child: AnimeAddViewedWidget._(targetEntity: targetEntity),
     );
   }
 
-  const AnimeAddViewedWidget._();
+  const AnimeAddViewedWidget._({required this.targetEntity});
 
   @override
   Widget build(BuildContext context) {
@@ -60,8 +62,8 @@ class AnimeAddViewedWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ActuHeadWidget.get(action: " a vu", context: context, user: user),
-              const SizedBox(height: 8),
+              ActuHeadWidget.get(
+                  targetEntity: targetEntity, context: context, user: user),
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {},
@@ -73,7 +75,7 @@ class AnimeAddViewedWidget extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8)),
                   child: Row(
                     children: [
-                        ClipRRect(
+                      ClipRRect(
                         borderRadius: BorderRadius.circular(8),
                         child: Image(
                           image: context
@@ -112,7 +114,6 @@ class AnimeAddViewedWidget extends StatelessWidget {
                           ),
                         ),
                       ),
-                  
                       const SizedBox(width: 16),
                       Expanded(
                         child: Column(

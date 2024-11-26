@@ -25,10 +25,11 @@ mixin _$Activitie {
   @JsonKey(name: 'created_at')
   @DateTimeConverter()
   DateTime get createdAt => throw _privateConstructorUsedError;
-  bool get isPrivate => throw _privateConstructorUsedError;
+  bool? get isPrivate => throw _privateConstructorUsedError;
   @JsonKey(name: 'target_entity')
   String get targetEntity => throw _privateConstructorUsedError;
   dynamic get target => throw _privateConstructorUsedError;
+  @JsonKey(name: 'sub_target')
   dynamic get subTarget => throw _privateConstructorUsedError;
 
   /// Serializes this Activitie to a JSON map.
@@ -50,10 +51,10 @@ abstract class $ActivitieCopyWith<$Res> {
       {String id,
       User user,
       @JsonKey(name: 'created_at') @DateTimeConverter() DateTime createdAt,
-      bool isPrivate,
+      bool? isPrivate,
       @JsonKey(name: 'target_entity') String targetEntity,
       dynamic target,
-      dynamic subTarget});
+      @JsonKey(name: 'sub_target') dynamic subTarget});
 
   $UserCopyWith<$Res> get user;
 }
@@ -76,7 +77,7 @@ class _$ActivitieCopyWithImpl<$Res, $Val extends Activitie>
     Object? id = null,
     Object? user = null,
     Object? createdAt = null,
-    Object? isPrivate = null,
+    Object? isPrivate = freezed,
     Object? targetEntity = null,
     Object? target = freezed,
     Object? subTarget = freezed,
@@ -94,10 +95,10 @@ class _$ActivitieCopyWithImpl<$Res, $Val extends Activitie>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      isPrivate: null == isPrivate
+      isPrivate: freezed == isPrivate
           ? _value.isPrivate
           : isPrivate // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
       targetEntity: null == targetEntity
           ? _value.targetEntity
           : targetEntity // ignore: cast_nullable_to_non_nullable
@@ -136,10 +137,10 @@ abstract class _$$ActivitieImplCopyWith<$Res>
       {String id,
       User user,
       @JsonKey(name: 'created_at') @DateTimeConverter() DateTime createdAt,
-      bool isPrivate,
+      bool? isPrivate,
       @JsonKey(name: 'target_entity') String targetEntity,
       dynamic target,
-      dynamic subTarget});
+      @JsonKey(name: 'sub_target') dynamic subTarget});
 
   @override
   $UserCopyWith<$Res> get user;
@@ -161,7 +162,7 @@ class __$$ActivitieImplCopyWithImpl<$Res>
     Object? id = null,
     Object? user = null,
     Object? createdAt = null,
-    Object? isPrivate = null,
+    Object? isPrivate = freezed,
     Object? targetEntity = null,
     Object? target = freezed,
     Object? subTarget = freezed,
@@ -179,10 +180,10 @@ class __$$ActivitieImplCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      isPrivate: null == isPrivate
+      isPrivate: freezed == isPrivate
           ? _value.isPrivate
           : isPrivate // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
       targetEntity: null == targetEntity
           ? _value.targetEntity
           : targetEntity // ignore: cast_nullable_to_non_nullable
@@ -206,10 +207,10 @@ class _$ActivitieImpl extends _Activitie {
       {required this.id,
       required this.user,
       @JsonKey(name: 'created_at') @DateTimeConverter() required this.createdAt,
-      required this.isPrivate,
+      this.isPrivate,
       @JsonKey(name: 'target_entity') required this.targetEntity,
       required this.target,
-      this.subTarget})
+      @JsonKey(name: 'sub_target') this.subTarget})
       : super._();
 
   factory _$ActivitieImpl.fromJson(Map<String, dynamic> json) =>
@@ -224,13 +225,14 @@ class _$ActivitieImpl extends _Activitie {
   @DateTimeConverter()
   final DateTime createdAt;
   @override
-  final bool isPrivate;
+  final bool? isPrivate;
   @override
   @JsonKey(name: 'target_entity')
   final String targetEntity;
   @override
   final dynamic target;
   @override
+  @JsonKey(name: 'sub_target')
   final dynamic subTarget;
 
   @override
@@ -290,10 +292,10 @@ abstract class _Activitie extends Activitie {
       @JsonKey(name: 'created_at')
       @DateTimeConverter()
       required final DateTime createdAt,
-      required final bool isPrivate,
+      final bool? isPrivate,
       @JsonKey(name: 'target_entity') required final String targetEntity,
       required final dynamic target,
-      final dynamic subTarget}) = _$ActivitieImpl;
+      @JsonKey(name: 'sub_target') final dynamic subTarget}) = _$ActivitieImpl;
   const _Activitie._() : super._();
 
   factory _Activitie.fromJson(Map<String, dynamic> json) =
@@ -308,13 +310,14 @@ abstract class _Activitie extends Activitie {
   @DateTimeConverter()
   DateTime get createdAt;
   @override
-  bool get isPrivate;
+  bool? get isPrivate;
   @override
   @JsonKey(name: 'target_entity')
   String get targetEntity;
   @override
   dynamic get target;
   @override
+  @JsonKey(name: 'sub_target')
   dynamic get subTarget;
 
   /// Create a copy of Activitie
