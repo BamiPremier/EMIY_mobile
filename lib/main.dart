@@ -191,11 +191,7 @@ class MyApp extends StatelessWidget {
                 create: (context) =>
                     TimerCubit.duration(const Duration(seconds: 30)),
               ),
-              BlocProvider(
-                  create: (context) => PostFeedCubit(
-                        context.read(),
-                        context.read(),
-                      )),
+
               BlocProvider(
                   create: (context) => CreateQuizQuestionCubit(
                         context.read(),
