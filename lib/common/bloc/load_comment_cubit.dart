@@ -41,12 +41,17 @@ class BaseLoadCommentCubit<T> extends AutoListCubit<Comment> {
   deleteComment(Comment comment) {
     if (state is AutoListReadyState<Comment>) {
       final list = (state as AutoListReadyState<Comment>).items;
+      emit(AutoListReadyState(
+        list.remove(comment, update: true),
+      ));
+    }
+  }
+
+  deleteMyComment(Comment comment) {
+    if (state is AutoListReadyState<Comment>) {
+      final list = (state as AutoListReadyState<Comment>).items;
       service.deleteComment(commentId: comment.id).then((_) {
-        emit(AutoListReadyState(PaginatedList(
-          items: List.from(list.items)..removeWhere((c) => c.id == comment.id),
-          total: list.total - 1,
-          page: list.page,
-        )));
+        emit(AutoListReadyState(list.remove(comment, update: true)));
       });
     }
   }
@@ -61,14 +66,13 @@ class LoadCommentCubit extends BaseLoadCommentCubit<Post> {
 }
 
 class LoadCommentEpisodeCubit extends BaseLoadCommentCubit<Episode> {
-  final EpisodeService episodeService; 
+  final EpisodeService episodeService;
   final int idEpisode;
   final String target;
 
   LoadCommentEpisodeCubit(this.episodeService, this.idEpisode, this.target,
       PersonCubitManager personCubitManager)
       : super(episodeService, idEpisode.toString(), target, personCubitManager);
-
 }
 
 typedef LoadCommentState = AutoListState<Comment>;

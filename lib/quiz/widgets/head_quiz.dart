@@ -2,14 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:umai/common/bloc/load_comment_cubit.dart';
+import 'package:umai/common/bloc/report_cubit.dart';
+import 'package:umai/common/models/comment.dart';
 import 'package:umai/common/services/cache_manager.dart';
+import 'package:umai/common/services/home_quiz_service.dart';
 import 'package:umai/common/services/report_util_service.dart';
 import 'package:umai/common/widgets/action_widget.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
+import 'package:umai/quiz/bloc/load_quiz_cubit.dart';
 import 'package:umai/quiz/bloc/new_quiz_cubit.dart';
 import 'package:umai/quiz/bloc/quiz_manage_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/services/quiz_service.dart';
+import 'package:umai/social/models/post.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/svg_utils.dart';
@@ -105,6 +111,16 @@ class _HeadQuizState extends State<HeadQuiz> with CompletableMixin {
     }
   }
 
+  void onReportEventReceived(BuildContext context, XReportState state) async {
+    if (state is SuccessReportItemState) {
+      if (state.item is Quiz) {
+        context.read<HomeQuizService>().deleteQuiz(state.item as Quiz);
+
+        Navigator.of(context).popUntil((route) => route.isFirst);
+      }
+    }
+  }
+
   void actionsOptions() => showAppBottomSheet(
       context: context,
       horizontalPadding: 16.0,
@@ -129,11 +145,12 @@ class _HeadQuizState extends State<HeadQuiz> with CompletableMixin {
                 icon: toSvgIcon(
                   icon: Assets.iconsSignal,
                 ),
-                onTap: () =>    reportUtilService<Quiz>(
-                  item: quiz,
-                  reportService: context.read<QuizService>(),
-                  context: context),
+                onTap: () => reportUtilService<Quiz>(
+                    item: quiz,
+                    reportService: context.read<QuizService>(),
+                    context: context,
+                    onReportEventReceived: onReportEventReceived),
               ),
             ],
           )));
- }
+}

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:potatoes/common/widgets/loaders.dart';
 import 'package:potatoes/libs.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:umai/account/screens/account.dart';
 import 'package:umai/account/screens/follow.dart';
 import 'package:umai/account/screens/sections/activities.dart';
@@ -10,16 +11,15 @@ import 'package:umai/account/screens/sections/posts.dart';
 import 'package:umai/account/screens/sections/quiz_user.dart';
 import 'package:umai/account/screens/sections/watchlist.dart';
 import 'package:umai/common/bloc/follow_cubit.dart';
-import 'package:umai/common/bloc/user_cubit.dart';
-import 'package:umai/common/services/person_cubit_manager.dart';
 import 'package:umai/common/bloc/person_cubit.dart';
+import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/models/user.dart';
+import 'package:umai/common/services/person_cubit_manager.dart';
 import 'package:umai/common/services/user_service.dart';
+import 'package:umai/common/widgets/action_post.dart';
 import 'package:umai/common/widgets/action_widget.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:umai/common/widgets/action_post.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/svg_utils.dart';
 import 'package:umai/utils/themes.dart';
@@ -196,7 +196,11 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                                       ),
                                     )
                                   else
-                                    const Icon(Icons.block_flipped),
+                                    toSvgIcon(
+                                      icon: Assets.iconsBlock,
+                                      color: AppTheme.white,
+                                      size: 16.0
+                                    ),
                                   const SizedBox(width: 8),
                                   Text(
                                     'Débloquer',
@@ -435,15 +439,19 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                   ),
                   onTap: () {
                     Navigator.pop(context);
-
                     personCubit.shareUser();
                   },
                 ),
                 const SizedBox(height: 16),
                 ActionWidget(
                   title: 'Bloquer',
-                  icon: const Icon(Icons.block_flipped),
-                  onTap: () => blockUser(context: context),
+                  icon: toSvgIcon(
+                    icon: Assets.iconsBlock,
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    blockUser(context: context);
+                  },
                 ),
               ],
             ),

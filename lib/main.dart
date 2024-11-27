@@ -179,6 +179,9 @@ class MyApp extends StatelessWidget {
                   create: (context) =>
                       AuthCubit(context.read(), context.read())),
               BlocProvider(
+                  create: (context) => PostFeedCubit(
+                      context.read(), context.read(), context.read())),
+              BlocProvider(
                   create: (context) =>
                       NewPostCubit(context.read(), context.read())),
               BlocProvider(

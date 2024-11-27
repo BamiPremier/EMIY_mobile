@@ -7,6 +7,7 @@ import 'package:umai/common/bloc/action_comment_cubit.dart';
 import 'package:umai/common/bloc/comment_cubit.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/bloc/load_comment_cubit.dart';
+import 'package:umai/common/bloc/report_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/models/comment.dart';
 import 'package:umai/common/screens/common_details.dart';
@@ -21,16 +22,26 @@ import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
 class ItemComment<T extends XItem> extends StatefulWidget {
-  final Comment comment;
-  final String idItem;
-  final ActionCommentBaseCubit<XCommonCubit<T>> actionCommentBaseCubit;
+  final void Function(BuildContext context, XReportState state)
+      onReportEventReceived;
 
-  // Utilisez un constructeur normal au lieu d'une méthode statique
+  static Widget get<T extends XItem>(
+      {required void Function(BuildContext context, XReportState state)
+          onReportEventReceived}) {
+    return BlocProvider(
+      create: (context) => BaseLoadCommentCubit<T>(
+        context.read<XService<T>>(),
+        context.read<XCommonCubit<T>>().x.itemId,
+        context.read<CommentCubit<T>>().comment.id,
+        context.read(),
+      ),
+      child: ItemComment<T>(onReportEventReceived: onReportEventReceived),
+    );
+  }
+
   const ItemComment({
     super.key,
-    required this.comment,
-    required this.idItem,
-    required this.actionCommentBaseCubit,
+    required this.onReportEventReceived,
   });
 
   @override
@@ -40,25 +51,16 @@ class ItemComment<T extends XItem> extends StatefulWidget {
 class _ItemCommentState<T extends XItem> extends State<ItemComment<T>> {
   late final CommentCubit<T> commentCubit = context.read<CommentCubit<T>>();
   late final XCommonCubit<T> objectDataCubit = context.read<XCommonCubit<T>>();
-  late final BaseLoadCommentCubit<T> loadCommentCubit;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    loadCommentCubit = BaseLoadCommentCubit<T>(
-      context.read(),
-      objectDataCubit.x.itemId,
-      commentCubit.comment.id,
-      context.read(),
-    );
-
-    context.dependOnInheritedWidgetOfExactType();
+  late final BaseLoadCommentCubit<T> loadCommentCubit =
+      context.read<BaseLoadCommentCubit<T>>();
+  late final ActionCommentBaseCubit<XCommonCubit<T>> actionCommentBaseCubit =
+      context.read<ActionCommentBaseCubit<XCommonCubit<T>>>();
+  void onReportEventReceived(BuildContext context, XReportState state) async {
+    if (state is SuccessReportItemState) {
+      if (state.item is Comment) {
+        loadCommentCubit.deleteComment(state.item as Comment);
+      }
+    }
   }
 
   @override
@@ -116,10 +118,11 @@ class _ItemCommentState<T extends XItem> extends State<ItemComment<T>> {
                         reportUtilService<T>(
                             item: comment,
                             isComment: true,
+                            onReportEventReceived: widget.onReportEventReceived,
                             reportService: context.read<XService<T>>(),
                             context: context);
                       } else if (value == 'Supprimer') {
-                        loadCommentCubit.deleteComment(comment);
+                        loadCommentCubit.deleteMyComment(comment);
                       } else if (value == 'Copier') {
                         Clipboard.setData(ClipboardData(text: comment.content))
                             .then((_) {
@@ -169,8 +172,7 @@ class _ItemCommentState<T extends XItem> extends State<ItemComment<T>> {
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
-            ActionComment<T>(
-                actionCommentBaseCubit: widget.actionCommentBaseCubit)
+            ActionComment<T>(actionCommentBaseCubit: actionCommentBaseCubit)
           ],
         ),
         if (state is SeeCommentResponseState) const Divider(),
@@ -196,10 +198,8 @@ class _ItemCommentState<T extends XItem> extends State<ItemComment<T>> {
                         context.read<ActionCommentBaseCubit<XCommonCubit<T>>>(),
                   ),
                 ],
-                child: ItemCommentResponse<T>(
-                    comment: comment,
-                    idItem: objectDataCubit.x.itemId,
-                    actionCommentBaseCubit: widget.actionCommentBaseCubit)),
+                child: ItemCommentResponse.get<T>(
+                    onReportEventReceived: onReportEventReceived)),
             loadingBuilder: (context) => Container(
                 alignment: Alignment.center,
                 padding: const EdgeInsets.all(16),

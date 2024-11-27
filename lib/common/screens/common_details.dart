@@ -1,15 +1,15 @@
-// Start of Selection
 import 'package:flutter/material.dart';
+import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
-import 'package:umai/animes/bloc/episode_cubit.dart'; 
+import 'package:umai/animes/bloc/episode_cubit.dart';
 import 'package:umai/animes/models/episode.dart';
 import 'package:umai/animes/services/episode_cubit_manager.dart';
 import 'package:umai/common/bloc/action_comment_cubit.dart';
 import 'package:umai/common/bloc/comment_cubit.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/bloc/load_comment_cubit.dart';
-import 'package:umai/common/bloc/repport_cubit.dart';
+import 'package:umai/common/bloc/report_cubit.dart';
 import 'package:umai/common/models/comment.dart';
 import 'package:umai/common/models/user.dart';
 import 'package:umai/common/widgets/button_common.dart';
@@ -17,11 +17,12 @@ import 'package:umai/common/widgets/comment_input.dart';
 import 'package:umai/common/widgets/empty_builder.dart';
 import 'package:umai/common/widgets/error_builder.dart';
 import 'package:umai/common/widgets/item_comment.dart';
-import 'package:umai/social/bloc/post_cubit.dart'; // Removed incorrect import
+import 'package:umai/social/bloc/post_cubit.dart';
 import 'package:umai/social/models/post.dart';
 import 'package:umai/social/services/post_cubit_manager.dart';
 
 mixin XItem implements XReportedItem {
+  @override
   String get itemId;
   bool get itemHasLiked;
 
@@ -114,6 +115,14 @@ class _CommonDetailsScreenState<T extends XItem>
     super.dispose();
   }
 
+  void onReportEventReceived(BuildContext context, XReportState state) async {
+    if (state is SuccessReportItemState) {
+      if (state.item is Comment) {
+        loadCommentCubit.deleteComment(state.item as Comment);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<XCommonCubit<T>, XCommonState>(
@@ -142,62 +151,66 @@ class _CommonDetailsScreenState<T extends XItem>
                         widget.head(context),
                         ButtonCommon<T>(canComment: true),
                         const Divider(),
-                        AutoListView.get<Comment>(
-                          padding: EdgeInsets.zero,
-                          shrinkWrap: true,
-                          autoManage: false,
-                          physics: const NeverScrollableScrollPhysics(),
-                          cubit: loadCommentCubit,
-                          itemBuilder: (context, comment) => MultiBlocProvider(
-                            providers: [
-                              BlocProvider(
-                                create: (context) => CommentCubit<T>(
-                                  context.read<XService<T>>(),
-                                  comment,
-                                ),
-                              ),
-                              BlocProvider.value(
-                                value: context.read<XCommonCubit<T>>(),
-                              ),
-                              BlocProvider.value(
-                                value: context.read<
-                                    ActionCommentBaseCubit<XCommonCubit<T>>>(),
-                              ),
-                            ],
-                            child: ItemComment<T>(
-                              comment: comment,
-                              idItem: itemCubit.x.itemId,
-                              actionCommentBaseCubit: actionCommentCubit,
-                            ),
-                          ),
-                          loadingBuilder: (context) => Container(
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.all(16),
-                              child: LinearProgressIndicator(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onTertiaryContainer,
-                                backgroundColor: Theme.of(context)
-                                    .colorScheme
-                                    .tertiaryContainer,
-                                borderRadius: BorderRadius.circular(30),
-                              )),
-                          loadingMoreBuilder: (context) => Container(
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.all(16),
-                              child: LinearProgressIndicator(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onTertiaryContainer,
-                                backgroundColor: Theme.of(context)
-                                    .colorScheme
-                                    .tertiaryContainer,
-                                borderRadius: BorderRadius.circular(30),
-                              )),
-                          emptyBuilder: (ctx) => const EmptyBuilder(),
-                          errorBuilder: (context, retry) =>
-                              ErrorBuilder(retry: retry),
-                        )
+                        BlocBuilder<BaseLoadCommentCubit<T>,
+                                AutoListState<Comment>>(
+                            builder: (context, state) =>
+                                AutoListView.get<Comment>(
+                                  padding: EdgeInsets.zero,
+                                  shrinkWrap: true,
+                                  autoManage: false,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  cubit: loadCommentCubit,
+                                  itemBuilder: (context, comment) =>
+                                      MultiBlocProvider(
+                                    providers: [
+                                      BlocProvider(
+                                        create: (context) => CommentCubit<T>(
+                                          context.read<XService<T>>(),
+                                          comment,
+                                        ),
+                                      ),
+                                      BlocProvider.value(
+                                        value: context.read<XCommonCubit<T>>(),
+                                      ),
+                                      BlocProvider.value(
+                                        value: context.read<
+                                            ActionCommentBaseCubit<
+                                                XCommonCubit<T>>>(),
+                                      ),
+                                    ],
+                                    child: ItemComment.get<T>(
+                                      onReportEventReceived:
+                                          onReportEventReceived,
+                                    ),
+                                  ),
+                                  loadingBuilder: (context) => Container(
+                                      alignment: Alignment.center,
+                                      padding: const EdgeInsets.all(16),
+                                      child: LinearProgressIndicator(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onTertiaryContainer,
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .tertiaryContainer,
+                                        borderRadius: BorderRadius.circular(30),
+                                      )),
+                                  loadingMoreBuilder: (context) => Container(
+                                      alignment: Alignment.center,
+                                      padding: const EdgeInsets.all(16),
+                                      child: LinearProgressIndicator(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onTertiaryContainer,
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .tertiaryContainer,
+                                        borderRadius: BorderRadius.circular(30),
+                                      )),
+                                  emptyBuilder: (ctx) => const EmptyBuilder(),
+                                  errorBuilder: (context, retry) =>
+                                      ErrorBuilder(retry: retry),
+                                ))
                       ],
                     ),
                   ),

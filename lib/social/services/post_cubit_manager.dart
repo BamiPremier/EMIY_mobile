@@ -18,7 +18,11 @@ class PostCubitManager extends CubitManager<PostCubit, Post, String> {
   @override
   PostCubit create(Post object) {
     personCubitManager.add(object.user);
-    return PostCubit(socialService,   object);
+    return PostCubit(socialService, object);
+  }
+
+  void deletePostCubit(Post post) {
+    remove(post);
   }
 
   @override
