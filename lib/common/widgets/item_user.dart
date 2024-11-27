@@ -48,7 +48,7 @@ class UserItem extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
-              trailing: const BtnActionitemUser()),
+              trailing: const BtnActionItemUser()),
           onTap: () => canNavigate && (personCubit.user.id != userCubit.user.id)
               ? Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => PersonAccountScreen.get(

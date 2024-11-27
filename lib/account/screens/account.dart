@@ -165,7 +165,7 @@ class _AccountScreenState extends State<AccountScreen>
                             child: Row(
                               children: [
                                 toSvgIcon(
-                                    icon: Assets.iconsTrending, size: 16.0),
+                                    icon: Assets.iconsFollow, size: 16.0),
                                 const SizedBox(width: 16),
                                 counter(
                                   onTap: () {
@@ -331,7 +331,7 @@ class _AccountScreenState extends State<AccountScreen>
                 const SizedBox(height: 16),
                 ActionWidget(
                   title: 'Déconnexion',
-                  icon: const Icon(Icons.logout),
+                  icon: toSvgIcon(icon: Assets.iconsLogout),
                   onTap: () async {
                     Navigator.pop(innerContext);
                     await disconnect(context: context);

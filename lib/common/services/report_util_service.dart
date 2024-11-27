@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart' hide Notification;
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:umai/common/bloc/repport_cubit.dart';
+import 'package:umai/common/bloc/report_cubit.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/common/widgets/buttons.dart';
 import 'package:umai/utils/assets.dart';
@@ -11,7 +11,16 @@ Future<void> reportUtilService<T extends XReportedItem>({
   required XReportedItem item,
   isComment = false,
   required ReportService<T> reportService,
+  required void Function(BuildContext context, XReportState state)
+      onReportEventReceived,
 }) {
+  const List<String> listReason = [
+    'Haine / Discrimination',
+    'Contenu sexuel',
+    'Harcèlement',
+    'Divulgation d\'informations privées',
+    'Autre',
+  ];
   final reportCubit = ReportCubit<T>(reportService, item);
   String? selectedReason;
 
@@ -23,7 +32,8 @@ Future<void> reportUtilService<T extends XReportedItem>({
           builder: (BuildContext context, StateSetter setState) {
             return BlocProvider.value(
               value: reportCubit,
-              child: BlocBuilder<ReportCubit<T>, XReportState>(
+              child: BlocConsumer<ReportCubit<T>, XReportState>(
+                listener: onReportEventReceived,
                 builder: (context, state) => Padding(
                   padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
                   child: Column(
@@ -35,67 +45,20 @@ Future<void> reportUtilService<T extends XReportedItem>({
                           child: Column(
                             children: [
                               const SizedBox(height: 16.0),
-                              RadioListTile<String>(
-                                title: const Text('Haine / Discrimination'),
-                                value: 'Haine / Discrimination',
-                                groupValue: selectedReason,
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectedReason = value;
-                                  });
-                                },
-                                controlAffinity:
-                                    ListTileControlAffinity.trailing,
-                              ),
-                              RadioListTile<String>(
-                                title: const Text('Contenu sexuel'),
-                                value: 'Contenu sexuel',
-                                groupValue: selectedReason,
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectedReason = value;
-                                  });
-                                },
-                                controlAffinity:
-                                    ListTileControlAffinity.trailing,
-                              ),
-                              RadioListTile<String>(
-                                title: const Text('Harcèlement'),
-                                value: 'Harcèlement',
-                                groupValue: selectedReason,
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectedReason = value;
-                                  });
-                                },
-                                controlAffinity:
-                                    ListTileControlAffinity.trailing,
-                              ),
-                              RadioListTile<String>(
-                                title: const Text(
-                                    'Divulgation d\'informations privées'),
-                                value: 'Divulgation d\'informations privées',
-                                groupValue: selectedReason,
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectedReason = value;
-                                  });
-                                },
-                                controlAffinity:
-                                    ListTileControlAffinity.trailing,
-                              ),
-                              RadioListTile<String>(
-                                title: const Text('Autre'),
-                                value: 'Autre',
-                                groupValue: selectedReason,
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectedReason = value;
-                                  });
-                                },
-                                controlAffinity:
-                                    ListTileControlAffinity.trailing,
-                              ),
+                              ...listReason.map((reason) {
+                                return RadioListTile<String>(
+                                  title: Text(reason),
+                                  value: reason,
+                                  groupValue: selectedReason,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      selectedReason = value;
+                                    });
+                                  },
+                                  controlAffinity:
+                                      ListTileControlAffinity.trailing,
+                                );
+                              }).toList(),
                             ],
                           ),
                         ),
@@ -118,21 +81,22 @@ Future<void> reportUtilService<T extends XReportedItem>({
                                     toSvgIcon(icon: Assets.iconsTick, size: 24),
                                   ])),
                         ),
-                      UmaiButton.primary(
-                        onPressed: selectedReason != null &&
-                                state is InitializingXReportState
-                            ? () => reportCubit.report(
-                                reason: selectedReason!, isComment: isComment)
-                            : (state is SuccessSendReportItemState)
-                                ? () {
-                                    Navigator.of(context).pop();
-                                    reportCubit.reset();
-                                  }
-                                : null,
-                        text: state is SuccessSendReportItemState
-                            ? "Fermer"
-                            : "Signaler",
-                      ),
+                      if (selectedReason != null &&
+                          state is InitializingXReportState)
+                        UmaiButton.primary(
+                          onPressed: () => reportCubit.report(
+                            reason: selectedReason!,
+                            isComment: isComment
+                          ),
+                          text: "Signaler",
+                        )
+                      else UmaiButton.primary(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          reportCubit.applyReport();
+                        },
+                        text: "Fermer",
+                      )
                     ],
                   ),
                 ),

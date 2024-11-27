@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:umai/animes/models/anime.dart';
-import 'package:umai/common/bloc/repport_cubit.dart';
+import 'package:umai/common/bloc/report_cubit.dart';
 import 'package:umai/common/models/user.dart';
 
 part 'quiz.freezed.dart';

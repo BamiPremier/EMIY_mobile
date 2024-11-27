@@ -20,7 +20,6 @@ class HomeAnimeService {
   }
 
   void refresh() {
-    print("rafraîchissement");
     trendingCubit.reset();
     nextSeasonCubit.reset();
     allCubit.reset();

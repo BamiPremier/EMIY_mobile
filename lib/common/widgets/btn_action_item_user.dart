@@ -6,8 +6,8 @@ import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/svg_utils.dart';
 import 'package:umai/utils/themes.dart';
 
-class BtnActionitemUser extends StatelessWidget {
-  const BtnActionitemUser({super.key});
+class BtnActionItemUser extends StatelessWidget {
+  const BtnActionItemUser({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +17,12 @@ class BtnActionitemUser extends StatelessWidget {
           builder: (context, state) {
             final userCubit = context.read<UserCubit>();
             final personCubit = context.read<PersonCubit>();
-            if (stateUser is! CompleteUserProfileState) if (personCubit
-                    .user.id ==
-                userCubit.user.id) return const SizedBox();
+            if (
+              stateUser is! CompleteUserProfileState &&
+              personCubit.user.id == userCubit.user.id
+            ) {
+              return const SizedBox();
+            }
 
             final onPressed, backgroundColor, foregroundColor, icon, text;
             if (personCubit.user.hasBlocked) {
@@ -42,8 +45,13 @@ class BtnActionitemUser extends StatelessWidget {
                     color: AppTheme.white,
                   ),
                 );
-              } else
-                icon = const Icon(Icons.block_flipped);
+              } else {
+                icon = toSvgIcon(
+                  icon: Assets.iconsBlock,
+                  color: AppTheme.white,
+                  size: 16.0
+                );
+              }
             } else if (personCubit.user.followed) {
               onPressed = personCubit.unFollowUser;
               backgroundColor = Theme.of(context).colorScheme.tertiaryContainer;
@@ -63,12 +71,13 @@ class BtnActionitemUser extends StatelessWidget {
                     color: Theme.of(context).colorScheme.onTertiaryContainer,
                   ),
                 );
-              } else
+              } else {
                 icon = toSvgIcon(
                   icon: Assets.iconsTick,
                   size: 16,
                   color: Theme.of(context).colorScheme.onTertiaryContainer,
                 );
+              }
             } else {
               onPressed = personCubit.followUser;
               backgroundColor = null;
@@ -86,12 +95,13 @@ class BtnActionitemUser extends StatelessWidget {
                     color: Theme.of(context).textTheme.labelLarge?.color,
                   ),
                 );
-              } else
-                 icon = toSvgIcon(
+              } else {
+                icon = toSvgIcon(
                   icon: Assets.iconsMore,
                   size: 16,
                   color: Theme.of(context).textTheme.labelLarge?.color,
                 );
+              }
             }
 
             return FilledButton(
