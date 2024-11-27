@@ -4,9 +4,7 @@ import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
 
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:umai/animes/screens/anime_details.dart'; 
-import 'package:umai/common/bloc/anime_search_cubit.dart';
-import 'package:umai/common/widgets/empty_builder.dart';
-import 'package:umai/common/widgets/error_builder.dart'; 
+import 'package:umai/common/bloc/anime_search_cubit.dart'; 
 import 'package:umai/animes/models/anime.dart'; 
 import 'package:umai/common/services/cache_manager.dart';
 import 'package:umai/utils/assets.dart';

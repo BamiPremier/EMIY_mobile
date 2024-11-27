@@ -96,7 +96,7 @@ class _ItemCommentResponseState<T extends XItem>
                   GestureDetector(
                       child: ProfilePicture(
                         image: comment.user.image,
-                        size: 32,
+                        size: 24,
                       ),
                       onTap: () => Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => PersonAccountScreen.get(
@@ -105,7 +105,10 @@ class _ItemCommentResponseState<T extends XItem>
               ),
               title: Text(
                 comment.user.username,
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall!
+                    .copyWith(fontWeight: FontWeight.bold),
               ),
               subtitle: null,
               trailing: Row(

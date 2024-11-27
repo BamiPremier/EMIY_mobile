@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes_secured_preferences/potatoes_secured_preferences.dart';
 import 'package:umai/animes/bloc/episode_cubit.dart';
-import 'package:umai/animes/bloc/load_episode_anime_cubit.dart';
 import 'package:umai/animes/models/episode.dart';
 import 'package:umai/animes/services/episode_cubit_manager.dart';
-import 'package:umai/animes/widgets/episode_head.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/screens/common_details.dart';
 import 'package:umai/utils/themes.dart';
@@ -38,11 +36,7 @@ class _EpisodeItemState extends State<EpisodeItem> {
             onTap: () => Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => CommonDetailsScreen.fromEpisode(
                     context: context,
-                    episode: episode,
-                    head: (context) => EpisodeHead.get(
-                          context: context,
-                          episode: episode,
-                        )))),
+                    episode: episode))),
             child: Padding(
               padding: const EdgeInsets.symmetric(
                 vertical: 8.0,

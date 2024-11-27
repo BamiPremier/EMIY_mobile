@@ -1,4 +1,4 @@
-import 'package:intl/intl.dart';
+ 
 
 extension TimeElapsed on DateTime {
   String elapsed() {
@@ -16,6 +16,9 @@ extension TimeElapsed on DateTime {
     if (absDuration.inDays < 1) {
       final hours = absDuration.inHours;
       return '${isFuture ? "dans" : "il y a"} $hours heure${hours < 2 ? "" : "s"}';
+    }
+    if (absDuration.inDays == 1 && !isFuture) {
+      return 'hier';
     }
     if (absDuration.inDays < 7) {
       final days = absDuration.inDays;

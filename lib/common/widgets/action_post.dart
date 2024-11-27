@@ -28,67 +28,76 @@ class PostAction extends StatelessWidget {
     final postCubit = context.read<PostCubit>();
     final user = postCubit.x.itemUser!;
 
-    return ListTile(
-        contentPadding: const EdgeInsets.only(left: 16.0, right: 8.0),
-        leading: GestureDetector(
-          child: ProfilePicture(
-            image: user.image,
-            size: 48.0,
+    return Padding(
+      padding: const EdgeInsets.only(left: 16.0, right: 8.0),
+      child: Row(
+        children: [
+          GestureDetector(
+            child: ProfilePicture(
+              image: user.image,
+              size: 32.0,
+            ),
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) =>
+                    PersonAccountScreen.get(context: context, user: user))),
           ),
-          onTap: () => Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) =>
-                  PersonAccountScreen.get(context: context, user: user))),
-        ),
-        title: GestureDetector(
-          child: Text(user.username,
-              style: Theme.of(context).textTheme.bodyLarge),
-          onTap: () => Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) =>
-                  PersonAccountScreen.get(context: context, user: user))),
-        ),
-        subtitle: Text(
-          postCubit.x.itemCreatedAt.elapsed(),
-          style: Theme.of(context)
-              .textTheme
-              .labelMedium!
-              .copyWith(color: AppTheme.disabledText),
-        ),
-        trailing: PopupMenuButton<String>(
-          onSelected: (value) {
-            if (value == 'Signaler') {
-              reportUtilService<Post>(
-                  item: postCubit.x as Post,
-                  onReportEventReceived: onReportEventReceived,
-                  reportService: context.read<SocialService>(),
-                  context: context);
-            } else if (value == 'Bloquer') {
-              blockUser(context: context);
-            } else if (value == 'Supprimer') {
-              postCubit.delete();
-            }
-          },
-          icon: toSvgIcon(
-              icon: Assets.iconsOptions,
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-              size: 16),
-          itemBuilder: (BuildContext context) {
-            List<String> options = [];
+          const SizedBox(width: 16.0),
+          Expanded(
+            child: GestureDetector(
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>
+                      PersonAccountScreen.get(context: context, user: user))),
+              behavior: HitTestBehavior.translucent,
+              child: Text(user.username,
+                  style: Theme.of(context).textTheme.bodyLarge),
+            ),
+          ),
+          Text(
+            postCubit.x.itemCreatedAt.elapsed(),
+            style: Theme.of(context)
+                .textTheme
+                .labelMedium!
+                .copyWith(color: AppTheme.disabledText),
+          ),
+          PopupMenuButton<String>(
+            onSelected: (value) {
+              if (value == 'Signaler') {
+                reportUtilService<Post>(
+                    item: postCubit.x as Post,
+                    onReportEventReceived: onReportEventReceived,
+                    reportService: context.read<SocialService>(),
+                    context: context);
+              } else if (value == 'Bloquer') {
+                blockUser(context: context);
+              } else if (value == 'Supprimer') {
+                postCubit.delete();
+              }
+            },
+            icon: toSvgIcon(
+                icon: Assets.iconsOptions,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                size: 16),
+            itemBuilder: (BuildContext context) {
+              List<String> options = [];
 
-            if (user.id == context.read<UserCubit>().user.id) {
-              options.add('Supprimer');
-            } else {
-              options.addAll(['Signaler', 'Bloquer']);
-            }
+              if (user.id == context.read<UserCubit>().user.id) {
+                options.add('Supprimer');
+              } else {
+                options.addAll(['Signaler', 'Bloquer']);
+              }
 
-            return options.map((String choice) {
-              return PopupMenuItem<String>(
-                padding: const EdgeInsets.only(right: 48.0, left: 16.0),
-                value: choice,
-                child: Text(choice),
-              );
-            }).toList();
-          },
-        ));
+              return options.map((String choice) {
+                return PopupMenuItem<String>(
+                  padding: const EdgeInsets.only(right: 48.0, left: 16.0),
+                  value: choice,
+                  child: Text(choice),
+                );
+              }).toList();
+            },
+          )
+        ],
+      ),
+    );
   }
 }
 

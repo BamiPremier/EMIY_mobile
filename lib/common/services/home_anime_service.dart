@@ -16,7 +16,7 @@ class HomeAnimeService {
         context.read(), context.read(), AnimeBlockFilter.nextSeason.name, null);
 
     allCubit = CategoryAnimeCubit(
-        context.read(), context.read(), AnimeBlockFilter.all.name, 9);
+        context.read(), context.read(), AnimeBlockFilter.all.name, 15);
   }
 
   void refresh() {

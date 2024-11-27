@@ -11,7 +11,6 @@ import 'package:umai/social/bloc/post_cubit.dart';
 import 'package:umai/social/bloc/post_feed_cubit.dart';
 import 'package:umai/social/models/post.dart';
 import 'package:umai/social/services/post_cubit_manager.dart';
-import 'package:umai/social/widgets/head_post.dart';
 import 'package:umai/social/widgets/post_image.dart';
 
 class PostItem extends StatefulWidget {
@@ -42,10 +41,7 @@ class _PostItemState extends State<PostItem> {
     if (state is SuccessReportItemState) {
       if (state.item is Post) {
         context.read<PostCubitManager>().deletePostCubit(state.item as Post);
-        print('sss---- post');
         context.read<PostFeedCubit>().deletePost(state.item as Post);
-        print('44---- post');
-        print('deletesssss---- post');
         postCubit.close();
         Navigator.of(context).popUntil((route) => route.isFirst);
       }
@@ -64,7 +60,8 @@ class _PostItemState extends State<PostItem> {
                   builder: (context) => CommonDetailsScreen.fromPost(
                       context: context,
                       post: post,
-                      head: (context) => const HeadPost())),
+                  )
+              ),
             );
           },
           behavior: HitTestBehavior.translucent,
@@ -72,6 +69,7 @@ class _PostItemState extends State<PostItem> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               PostAction(onReportEventReceived: onReportEventReceived),
+              const SizedBox(height: 8.0),
               Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: AnimatedSize(
