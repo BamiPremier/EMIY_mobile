@@ -50,7 +50,6 @@ class _ActivityTabState extends State<ActivityTab> with CompletableMixin {
       cubit: activitieUserCubit,
       itemBuilder: (context, activitie) =>
           ActivitieWidget(activitie: activitie),
-      separatorBuilder: (_, __) => const Divider(height: 8),
       emptyBuilder: (ctx) => const EmptyBuilder(),
       errorBuilder: (context, retry) => ErrorBuilder(retry: retry),
     );

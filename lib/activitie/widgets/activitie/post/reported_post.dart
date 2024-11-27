@@ -9,6 +9,7 @@ import 'package:umai/activitie/widgets/activitie/post/post_actu_image.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/bloc/person_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
+import 'package:umai/common/screens/common_details.dart';
 import 'package:umai/common/services/person_cubit_manager.dart';
 import 'package:umai/common/services/report_util_service.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
@@ -18,6 +19,7 @@ import 'package:umai/social/bloc/post_cubit.dart';
 import 'package:umai/social/models/post.dart';
 import 'package:umai/social/services/post_cubit_manager.dart';
 import 'package:umai/social/services/social_service.dart';
+import 'package:umai/social/widgets/head_post.dart';
 import 'package:umai/social/widgets/post_image.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/svg_utils.dart';
@@ -42,7 +44,7 @@ class ReportedPostWidget extends StatefulWidget {
         BlocProvider.value(
             value: context.read<PersonCubitManager>().get(post.user)),
       ],
-      child:   ReportedPostWidget._(targetEntity: targetEntity),
+      child: ReportedPostWidget._(targetEntity: targetEntity),
     );
   }
 
@@ -58,110 +60,113 @@ class _ReportedPostWidgetState extends State<ReportedPostWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<PostCubit, XCommonState>(builder: (context, state) {
       final post = postCubit.x as Post;
-      return   Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              child: Row(
-                children: <Widget>[
-                  Stack(
-                    alignment: Alignment.bottomRight,
-                    children: [
-                      GestureDetector(
-                        child: ProfilePicture(
-                          image: post.user.image,
-                          size: 32.0,
-                        ),
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => PersonAccountScreen.get(
-                                  context: context, user: post.user)));
-                        },
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            child: Row(
+              children: <Widget>[
+                Stack(
+                  alignment: Alignment.bottomRight,
+                  children: [
+                    GestureDetector(
+                      child: ProfilePicture(
+                        image: post.user.image,
+                        size: 32.0,
                       ),
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onInverseSurface,
-                              shape: BoxShape.circle),
-                          height: 16,
-                          width: 16,
-                          padding: const EdgeInsets.all(3),
-                          child: IconButton(
-                            padding: EdgeInsets.zero,
-                            icon: toSvgIcon(
-                              icon: Assets.iconsLike,
-                              size: 10,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurfaceVariant,
-                            ),
-                            onPressed: () {},
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      "Tu as signalé un social",
-                      style: Theme.of(context).textTheme.bodyMedium,
-                      overflow: TextOverflow.ellipsis,
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => PersonAccountScreen.get(
+                                context: context, user: post.user)));
+                      },
                     ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 8),
-            Container(
-              padding:
-                  const EdgeInsets.all(8).add(const EdgeInsets.only(left: 8)),
-              decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.onInverseSurface,
-                  borderRadius: BorderRadius.circular(8)),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      "Le contenu est masqué",
-                      style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color:
+                                Theme.of(context).colorScheme.onInverseSurface,
+                            shape: BoxShape.circle),
+                        height: 16,
+                        width: 16,
+                        padding: const EdgeInsets.all(3),
+                        child: IconButton(
+                          padding: EdgeInsets.zero,
+                          icon: toSvgIcon(
+                            icon: Assets.iconsLike,
+                            size: 10,
                             color:
                                 Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                          onPressed: () {},
+                        ),
+                      ),
                     ),
+                  ],
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    "Tu as signalé un social",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  FilledButton(
-                    onPressed: () {},
-                    style: FilledButton.styleFrom(
-                        backgroundColor: AppTheme.mainText,
-                        foregroundColor: AppTheme.white,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 40, vertical: 12),
-                        minimumSize: Size.zero),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'VOIR',
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelLarge!
-                              .copyWith(color: AppTheme.white),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-       
+          ),
+          Container(
+            padding:
+                const EdgeInsets.all(8).add(const EdgeInsets.only(left: 8)),
+            decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.onInverseSurface,
+                borderRadius: BorderRadius.circular(8)),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    "Le contenu est masqué",
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                FilledButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => CommonDetailsScreen.fromPost(
+                              context: context,
+                              post: post,
+                              head: (context) => const HeadPost())),
+                    );
+                  },
+                  style: FilledButton.styleFrom(
+                      backgroundColor: AppTheme.mainText,
+                      foregroundColor: AppTheme.white,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 40, vertical: 12),
+                      minimumSize: Size.zero),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'VOIR',
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelLarge!
+                            .copyWith(color: AppTheme.white),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ],
       );
     });
   }

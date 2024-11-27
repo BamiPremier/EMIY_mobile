@@ -99,7 +99,6 @@ class UserBlockedWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: 8),
               Container(
                 padding:
                     const EdgeInsets.all(8).add(const EdgeInsets.only(left: 8)),
@@ -121,7 +120,11 @@ class UserBlockedWidget extends StatelessWidget {
                       ),
                     ),
                     FilledButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => PersonAccountScreen.get(
+                                context: context, user: personCubit.user)));
+                      },
                       style: FilledButton.styleFrom(
                           backgroundColor: AppTheme.mainText,
                           foregroundColor: AppTheme.white,

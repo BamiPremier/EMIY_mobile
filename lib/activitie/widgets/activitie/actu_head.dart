@@ -46,7 +46,7 @@ class ActuHeadWidget extends StatelessWidget {
           final personCubit = context.read<PersonCubit>();
           final user = personCubit.user;
           return Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8).copyWith(top: 24),
             child: Row(
               children: <Widget>[
                 Stack(

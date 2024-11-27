@@ -35,7 +35,6 @@ class _ActuHomeScreenState extends State<ActuHomeScreen> {
               itemBuilder: (context, activitie) => activitie.isPrivate == true
                   ? const SizedBox.shrink()
                   : ActivitieWidget(activitie: activitie),
-              separatorBuilder: (_, __) => const Divider(height: 8),
               emptyBuilder: (ctx) => const EmptyBuilder(),
               errorBuilder: (context, retry) => ErrorBuilder(retry: retry))),
     );

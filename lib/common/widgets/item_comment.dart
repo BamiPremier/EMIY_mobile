@@ -82,7 +82,7 @@ class _ItemCommentState<T extends XItem> extends State<ItemComment<T>> {
               leading: GestureDetector(
                 child: ProfilePicture(
                   image: comment.user.image,
-                  size: 40,
+                  size: 32,
                 ),
                 onTap: () => Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => PersonAccountScreen.get(

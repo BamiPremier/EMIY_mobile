@@ -45,21 +45,23 @@ class UserAddWidget extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           final personCubit = context.read<PersonCubit>();
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ActuHeadWidget.get(
-                  targetEntity: targetEntity,
-                  context: context,
-                  user: personCubit.user),
-              Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onInverseSurface,
-                      borderRadius: BorderRadius.circular(8)),
-                  child: UserItem.get(context: context, user: targetUser)),
-            ],
-          );
+          return Container(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ActuHeadWidget.get(
+                      targetEntity: targetEntity,
+                      context: context,
+                      user: personCubit.user),
+                  Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.onInverseSurface,
+                          borderRadius: BorderRadius.circular(8)),
+                      child: UserItem.get(context: context, user: targetUser)),
+                ],
+              ));
         });
   }
 }
