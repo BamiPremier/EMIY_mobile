@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:potatoes/auto_list.dart';
 import 'package:potatoes/libs.dart';
+import 'package:umai/common/models/user.dart';
 import 'package:umai/common/services/person_cubit_manager.dart';
 import 'package:umai/social/models/post.dart';
 import 'package:umai/social/services/post_cubit_manager.dart';
@@ -26,6 +29,29 @@ class PostFeedCubit extends AutoListCubit<Post> {
           in (change.nextState as AutoListReadyState<Post>).items.items) {
         personCubitManager.add(post.user);
       }
+    }
+  }
+
+  void deletePost(Post post) {
+    if (state is AutoListReadyState<Post>) {
+      final list = (state as AutoListReadyState<Post>).items;
+      emit(AutoListReadyState(list.remove(post, update: true)));
+    }
+  }
+
+  void deleteUserPost(User user) {
+    print("deleteUserPost");
+    if (state is AutoListReadyState<Post>) {
+      final list = (state as AutoListReadyState<Post>).items;
+      var l = List.from(list.items)..removeWhere((p) => p.user.id == user.id);
+      print("${l.length}t");
+      log("${List.from(list.items)..removeWhere((p) => p.user.id == user.id)}t");
+
+      emit(AutoListReadyState(PaginatedList(
+        items: List.from(list.items)..removeWhere((p) => p.user.id == user.id),
+        total: list.total - 1,
+        page: list.page,
+      )));
     }
   }
 }

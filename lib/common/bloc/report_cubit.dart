@@ -3,9 +3,9 @@
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 
-part 'repport_state.dart';
+part 'report_state.dart';
 
-mixin XReportedItem<T> {
+mixin XReportedItem  {
   String get itemId;
 }
 
@@ -43,11 +43,18 @@ class ReportCubit<T extends XReportedItem>
                   reason: reason,
                 ))
           .then((_) {
-        emit(SuccessSendReportItemState(item));
+        emit(const SuccessSendReportItemState());
       }, onError: (error, trace) {
-        emit(RpportErrorState(error, trace));
+        emit(ReportErrorState(error, trace));
         emit(stateBefore);
       });
+    }
+  }
+
+  void applyReport() {
+    if (state is SuccessSendReportItemState) {
+      emit(SuccessReportItemState(item));
+      reset();
     }
   }
 

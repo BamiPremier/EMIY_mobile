@@ -34,14 +34,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with CompletableMixin {
   static const int _mainPageIndex = 0;
-  late final postFeedCubit =
-      PostFeedCubit(context.read(), context.read(), context.read());
- 
+
   late final pages = [
-    {
-      'title': 'Social',
-      'page': SocialHomeScreen.get(context: context, cubit: postFeedCubit)
-    },
+    {'title': 'Social', 'page': SocialHomeScreen()},
     {'title': 'Actu', 'page': SizedBox()},
     {'title': 'Animes', 'page': AnimeHomeScreen()},
     {'title': 'Quiz', 'page': QuizHomeScreen( )},

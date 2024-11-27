@@ -19,7 +19,13 @@ class PersonLoadingState extends CubitLoadingState with PersonState {
   const PersonLoadingState() : super();
 }
 
-class SuccessBlockPersonState extends CubitSuccessState with PersonState {
+class SuccessSendBlockPersonState extends CubitSuccessState with PersonState {
+  const SuccessSendBlockPersonState();
+  @override
+  List<Object?> get props => [identityHashCode(this)];
+}
+
+class SuccessBlockPersonState extends CubitInformationState with PersonState {
   final User user;
 
   const SuccessBlockPersonState(this.user);
