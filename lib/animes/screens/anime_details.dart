@@ -117,6 +117,10 @@ class _AnimeDetailScreenState extends State<AnimeDetailScreen>
                   ],
                 ),
               ),
+              systemOverlayStyle: Theme.of(context)
+                  .appBarTheme
+                  .systemOverlayStyle
+                  ?.copyWith(statusBarIconBrightness: Brightness.light),
             ),
             SliverToBoxAdapter(
               child: Container(
