@@ -39,6 +39,7 @@ import 'package:umai/quiz/bloc/timer_cubit.dart';
 import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/quiz/services/quiz_service.dart';
 import 'package:umai/social/bloc/new_post_cubit.dart';
+import 'package:umai/social/bloc/post_feed_cubit.dart';
 import 'package:umai/social/models/post.dart';
 import 'package:umai/social/services/post_cubit_manager.dart';
 import 'package:umai/social/services/social_service.dart';
@@ -174,6 +175,9 @@ class MyApp extends StatelessWidget {
               BlocProvider(
                   create: (context) =>
                       AuthCubit(context.read(), context.read())),
+              BlocProvider(
+                  create: (context) => PostFeedCubit(
+                      context.read(), context.read(), context.read())),
               BlocProvider(
                   create: (context) =>
                       NewPostCubit(context.read(), context.read())),

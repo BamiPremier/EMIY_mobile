@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
+import 'package:umai/common/bloc/report_cubit.dart';
 import 'package:umai/common/services/person_cubit_manager.dart';
+import 'package:umai/social/bloc/post_feed_cubit.dart';
 import 'package:umai/social/models/post.dart';
 import 'package:umai/social/services/post_cubit_manager.dart';
 import 'package:umai/common/widgets/action_post.dart';
@@ -19,6 +21,18 @@ class _HeadPostState extends State<HeadPost> {
   late final postCubit = context.read<XCommonCubit<Post>>();
   final isCollapsed = ValueNotifier<bool>(true);
   final _trimMode = TrimMode.Line;
+
+  void onReportEventReceived(BuildContext context, XReportState state) async {
+    if (state is SuccessReportItemState) {
+      if (state.item is Post) {
+        print('delete post');
+        context.read<PostFeedCubit>().deletePost(state.item as Post);
+
+        Navigator.of(context).popUntil((route) => route.isFirst);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<XCommonCubit<Post>, XCommonState>(
@@ -35,7 +49,7 @@ class _HeadPostState extends State<HeadPost> {
                 BlocProvider.value(
                     value: context.read<PersonCubitManager>().get(post.user)),
               ],
-              child: const PostAction(),
+              child: PostAction(onReportEventReceived: onReportEventReceived),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),

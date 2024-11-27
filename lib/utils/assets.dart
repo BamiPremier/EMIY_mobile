@@ -29,6 +29,9 @@ abstract class Assets {
   static const String iconsTime = '${_iconsDir}Time.svg';
   static const String iconsTrending = '${_iconsDir}Trending.svg';
   static const String iconsUmai = '${_iconsDir}Umai!.svg';
+  static const String iconsBlock = '${_iconsDir}Block.svg';
+  static const String iconsFollow = '${_iconsDir}Follow.svg';
+  static const String iconsLogout = '${_iconsDir}Logout.svg';
 
   static const String _imagesDir = 'assets/images/';
   static const String defaultAvatar = '${_imagesDir}default_avatar.svg';

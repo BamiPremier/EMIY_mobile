@@ -1,4 +1,4 @@
-part of 'repport_cubit.dart';
+part of 'report_cubit.dart';
 
 mixin XReportState on Equatable {}
 
@@ -14,12 +14,18 @@ class SendReportLoadingState extends CubitLoadingState with XReportState {
 }
 
 class SuccessSendReportItemState extends CubitSuccessState with XReportState {
+  const SuccessSendReportItemState();
+  @override
+  List<Object?> get props => [identityHashCode(this)];
+}
+
+class SuccessReportItemState extends CubitInformationState with XReportState {
   final XReportedItem item;
-  const SuccessSendReportItemState(this.item);
+  const SuccessReportItemState(this.item);
   @override
   List<Object?> get props => [item];
 }
 
-class RpportErrorState extends CubitErrorState with XReportState {
-  RpportErrorState(super.error, [super.trace]);
+class ReportErrorState extends CubitErrorState with XReportState {
+  ReportErrorState(super.error, [super.trace]);
 }

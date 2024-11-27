@@ -1,5 +1,6 @@
 import 'package:potatoes/auto_list.dart';
 import 'package:potatoes/libs.dart';
+import 'package:umai/common/models/user.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/quiz/services/quiz_service.dart';
@@ -8,8 +9,8 @@ class LoadQuizCubit extends AutoListCubit<Quiz> {
   final QuizService quizService;
   final QuizManageCubitManager cubitManager;
   final String selectedFilter;
-  LoadQuizCubit(this.quizService, this.cubitManager ,
-      this.selectedFilter, [int? size])
+  LoadQuizCubit(this.quizService, this.cubitManager, this.selectedFilter,
+      [int? size])
       : super(
             provider: ({page = 1}) => quizService.getQuizFeed(
                 page: page, size: size, selectedFilter: selectedFilter));
@@ -20,7 +21,25 @@ class LoadQuizCubit extends AutoListCubit<Quiz> {
     if (change.nextState is AutoListReadyState<Quiz>) {
       cubitManager
           .addAll((change.nextState as AutoListReadyState<Quiz>).items.items);
-   
+    }
+  }
+
+  void deleteQuiz(Quiz quiz) {
+    if (state is AutoListReadyState<Quiz>) {
+      final list = (state as AutoListReadyState<Quiz>).items;
+      emit(AutoListReadyState(list.remove(quiz, update: true)));
+    }
+  }
+
+  void deleteUserQuiz(User user) {
+    if (state is AutoListReadyState<Quiz>) {
+      final list = (state as AutoListReadyState<Quiz>).items;
+
+      emit(AutoListReadyState(PaginatedList(
+        items: List.from(list.items)..removeWhere((p) => p.user.id == user.id),
+        total: list.total - 1,
+        page: list.page,
+      )));
     }
   }
 }

@@ -55,7 +55,9 @@ class _ButtonCommonState<T extends XItem> extends State<ButtonCommon<T>>
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
               onPressed: widget.canComment
-                  ? () => context.read<ActionCommentCubit>().set(null)
+                  ? () => context
+                      .read<ActionCommentBaseCubit<XCommonCubit<T>>>()
+                      .set(null)
                   : null,
             ),
             const Spacer(),
