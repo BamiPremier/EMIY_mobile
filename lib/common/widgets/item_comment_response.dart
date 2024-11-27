@@ -16,8 +16,6 @@ import 'package:umai/common/widgets/action_comment_response.dart';
 import 'package:umai/common/widgets/empty_builder.dart';
 import 'package:umai/common/widgets/error_builder.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
-import 'package:umai/social/bloc/post_feed_cubit.dart';
-import 'package:umai/social/models/post.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/svg_utils.dart';

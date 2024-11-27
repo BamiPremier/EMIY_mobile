@@ -3,10 +3,9 @@
 import 'package:potatoes/auto_list.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
-import 'package:umai/animes/models/episode.dart';
 import 'package:umai/common/bloc/report_cubit.dart';
 import 'package:umai/common/models/comment.dart';
-import 'package:umai/common/screens/common_details.dart'; 
+import 'package:umai/common/screens/common_details.dart';
 
 part 'common_state.dart';
 

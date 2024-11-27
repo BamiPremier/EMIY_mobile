@@ -1,11 +1,10 @@
 import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
-import 'package:potatoes/auto_list/models/paginated_list.dart';
-import 'package:potatoes/libs.dart'; 
+import 'package:potatoes/libs.dart';
 import 'package:umai/animes/models/episode.dart';
 import 'package:umai/animes/services/episode_service.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
-import 'package:umai/common/services/person_cubit_manager.dart';
 import 'package:umai/common/models/comment.dart';
+import 'package:umai/common/services/person_cubit_manager.dart';
 import 'package:umai/social/models/post.dart';
 import 'package:umai/social/services/social_service.dart';
 
