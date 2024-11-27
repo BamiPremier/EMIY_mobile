@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart'; 
 import 'package:umai/activity/widgets/activity/anime/anime_primary_info.dart';
+import 'package:umai/animes/screens/anime_details.dart';
 import 'package:umai/common/bloc/anime_manip_cubit.dart'; 
 import 'package:umai/common/services/cache_manager.dart';
 import 'package:umai/utils/assets.dart'; 
 import 'package:umai/utils/svg_utils.dart'; 
 
 class AnimeInfo extends StatelessWidget {
+  const AnimeInfo({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AnimeManipCubit, AnimeManipState>(
@@ -16,7 +19,11 @@ class AnimeInfo extends StatelessWidget {
 
         return GestureDetector(
           behavior: HitTestBehavior.opaque,
-          onTap: () {},
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) => AnimeDetailScreen.get(
+                    context: context, anime: anime)));
+          },
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 8),
             padding:

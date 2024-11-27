@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:readmore/readmore.dart';
-import 'package:umai/account/screens/person_account.dart'; 
-import 'package:umai/activity/widgets/activity/post/post_actu_image.dart'; 
-import 'package:umai/common/bloc/common_cubit.dart'; 
-import 'package:umai/common/screens/common_details.dart'; 
+import 'package:umai/account/screens/person_account.dart';
+import 'package:umai/activity/widgets/activity/post/post_actu_image.dart';
+import 'package:umai/common/bloc/common_cubit.dart';
+import 'package:umai/common/screens/common_details.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/social/bloc/post_cubit.dart';
-import 'package:umai/social/models/post.dart'; 
-import 'package:umai/social/widgets/head_post.dart'; 
-import 'package:umai/utils/themes.dart';
+import 'package:umai/social/models/post.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
 class PostInfo extends StatefulWidget {
+  const PostInfo({super.key});
+
   @override
   State<PostInfo> createState() => _PostInfoState();
 }
@@ -38,8 +38,7 @@ class _PostInfoState extends State<PostInfo> {
             MaterialPageRoute(
                 builder: (context) => CommonDetailsScreen.fromPost(
                     context: context,
-                    post: post,
-                    head: (context) => const HeadPost())),
+                    post: post)),
           );
         },
         child: Container(
@@ -50,7 +49,7 @@ class _PostInfoState extends State<PostInfo> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
+              Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: Column(
@@ -71,18 +70,19 @@ class _PostInfoState extends State<PostInfo> {
                                             user: post.user)));
                               },
                             ),
-                            const SizedBox(width: 4),
+                            const SizedBox(width: 8),
                             Expanded(
                               child: GestureDetector(
                                 child: Text(
                                   post.user.username,
                                   style: Theme.of(context)
                                       .textTheme
-                                      .bodyLarge!
+                                      .bodySmall!
                                       .copyWith(
                                         color: Theme.of(context)
                                             .colorScheme
                                             .onSurfaceVariant,
+                                        fontWeight: FontWeight.bold
                                       ),
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -99,8 +99,10 @@ class _PostInfoState extends State<PostInfo> {
                               post.createdAt.elapsed(),
                               style: Theme.of(context)
                                   .textTheme
-                                  .labelMedium!
-                                  .copyWith(color: AppTheme.disabledText),
+                                  .labelSmall!
+                                  .copyWith(color: Theme.of(context)
+                                    .colorScheme
+                                    .onSurfaceVariant),
                             ),
                           ],
                         ),

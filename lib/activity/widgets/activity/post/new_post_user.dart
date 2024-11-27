@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
-import 'package:readmore/readmore.dart'; 
-import 'package:umai/activity/widgets/activity/actu_btn_type1.dart'; 
-import 'package:umai/activity/widgets/activity/actu_head.dart'; 
-import 'package:umai/common/bloc/common_cubit.dart'; 
+import 'package:readmore/readmore.dart';
+import 'package:umai/activity/widgets/activity/actu_btn_type1.dart';
+import 'package:umai/activity/widgets/activity/actu_head.dart';
+import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/screens/common_details.dart';
-import 'package:umai/common/services/person_cubit_manager.dart'; 
+import 'package:umai/common/services/person_cubit_manager.dart';
 import 'package:umai/social/bloc/post_cubit.dart';
 import 'package:umai/social/models/post.dart';
-import 'package:umai/social/services/post_cubit_manager.dart'; 
-import 'package:umai/social/widgets/head_post.dart';
+import 'package:umai/social/services/post_cubit_manager.dart';
 import 'package:umai/social/widgets/post_image.dart'; 
 
 class NewPostUserWidget extends StatefulWidget {
@@ -75,7 +74,8 @@ class _NewPostUserWidgetState extends State<NewPostUserWidget> {
                 builder: (context) => CommonDetailsScreen.fromPost(
                     context: context,
                     post: post,
-                    head: (context) => const HeadPost())),
+                )
+            ),
           );
         })
       ]);

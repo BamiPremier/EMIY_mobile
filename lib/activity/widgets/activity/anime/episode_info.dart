@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart'; 
 import 'package:umai/animes/bloc/episode_cubit.dart';
 import 'package:umai/animes/models/episode.dart'; 
-import 'package:umai/common/bloc/common_cubit.dart'; 
+import 'package:umai/common/bloc/common_cubit.dart';
+import 'package:umai/common/screens/common_details.dart';
 import 'package:umai/common/services/cache_manager.dart'; 
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/svg_utils.dart'; 
 
 class EpisodeInfo extends StatelessWidget {
+  const EpisodeInfo({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<EpisodeCubit, XCommonState>(
@@ -16,7 +19,14 @@ class EpisodeInfo extends StatelessWidget {
           Episode episode = context.read<EpisodeCubit>().x as Episode;
           return GestureDetector(
             behavior: HitTestBehavior.opaque,
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                    builder: (context) => CommonDetailsScreen.fromEpisode(
+                        context: context,
+                        episode: episode)),
+              );
+            },
             child: Container(
               padding:
                   const EdgeInsets.all(8).add(const EdgeInsets.only(left: 8)),

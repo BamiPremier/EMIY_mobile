@@ -25,7 +25,6 @@ class _HeadPostState extends State<HeadPost> {
   void onReportEventReceived(BuildContext context, XReportState state) async {
     if (state is SuccessReportItemState) {
       if (state.item is Post) {
-        print('delete post');
         context.read<PostFeedCubit>().deletePost(state.item as Post);
 
         Navigator.of(context).popUntil((route) => route.isFirst);

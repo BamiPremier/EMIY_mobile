@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
-import 'package:readmore/readmore.dart'; 
+import 'package:readmore/readmore.dart';
 import 'package:umai/activity/widgets/activity/actu_btn_type3.dart';
 import 'package:umai/activity/widgets/activity/actu_head.dart';
 import 'package:umai/activity/widgets/activity/post/post_info.dart';
 import 'package:umai/common/bloc/action_comment_cubit.dart';
 import 'package:umai/common/bloc/comment_cubit.dart';
-import 'package:umai/common/bloc/common_cubit.dart'; 
+import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/models/comment.dart';
-import 'package:umai/common/screens/common_details.dart'; 
+import 'package:umai/common/screens/common_details.dart';
 import 'package:umai/social/bloc/post_cubit.dart';
 import 'package:umai/social/models/post.dart';
-import 'package:umai/social/services/post_cubit_manager.dart'; 
-import 'package:umai/social/widgets/head_post.dart';  
+import 'package:umai/social/services/post_cubit_manager.dart';
 
 class CommentPostWidget extends StatefulWidget {
   final Post? post;
@@ -148,7 +147,8 @@ class _CommentPostWidgetState extends State<CommentPostWidget> {
                   builder: (context) => CommonDetailsScreen.fromPost(
                       context: context,
                       post: post,
-                      head: (context) => const HeadPost())),
+                  )
+              ),
             );
           },
           child: Column(
@@ -180,7 +180,7 @@ class _CommentPostWidgetState extends State<CommentPostWidget> {
                         trimCollapsedText: 'Lire plus',
                         trimExpandedText: ' moins',
                       ))),
-              PostInfo(),
+              const PostInfo(),
               ActuBtnType3Widget<Post, XCommonCubit<Post>,
                   ActionCommentBaseCubit<XCommonCubit<Post>>>(
                 actionCommentBaseCubit: actionCommentCubit,
@@ -189,8 +189,7 @@ class _CommentPostWidgetState extends State<CommentPostWidget> {
                     MaterialPageRoute(
                         builder: (context) => CommonDetailsScreen.fromPost(
                             context: context,
-                            post: post,
-                            head: (context) => const HeadPost())),
+                            post: post)),
                   );
                 },
               )

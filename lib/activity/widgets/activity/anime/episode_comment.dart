@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
-import 'package:readmore/readmore.dart'; 
+import 'package:readmore/readmore.dart';
 import 'package:umai/activity/widgets/activity/actu_btn_type3.dart';
 import 'package:umai/activity/widgets/activity/actu_head.dart';
-import 'package:umai/activity/widgets/activity/anime/episode_info.dart'; 
+import 'package:umai/activity/widgets/activity/anime/episode_info.dart';
 import 'package:umai/animes/bloc/episode_cubit.dart';
 import 'package:umai/animes/models/episode.dart';
 import 'package:umai/animes/services/episode_cubit_manager.dart';
-import 'package:umai/animes/widgets/episode_head.dart';
 import 'package:umai/common/bloc/action_comment_cubit.dart';
 import 'package:umai/common/bloc/comment_cubit.dart';
-import 'package:umai/common/bloc/common_cubit.dart'; 
+import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/models/comment.dart';
 import 'package:umai/common/screens/common_details.dart'; 
 
@@ -165,10 +164,8 @@ class _EpisodeCommentWidgetState extends State<EpisodeCommentWidget> {
                         trimCollapsedText: 'Lire plus',
                         trimExpandedText: ' moins',
                       ))),
-              SizedBox(
-                height: 8,
-              ),
-              EpisodeInfo(),
+              const SizedBox(height: 8),
+              const EpisodeInfo(),
               ActuBtnType3Widget<Episode, XCommonCubit<Episode>,
                       ActionCommentBaseCubit<XCommonCubit<Episode>>>(
                   actionCommentBaseCubit: actionCommentCubit,
@@ -176,10 +173,9 @@ class _EpisodeCommentWidgetState extends State<EpisodeCommentWidget> {
                       builder: (context) => CommonDetailsScreen.fromEpisode(
                           context: context,
                           episode: episode,
-                          head: (context) => EpisodeHead.get(
-                                context: context,
-                                episode: episode,
-                              )))))
+                      )
+                  ))
+              )
             ],
           );
         });

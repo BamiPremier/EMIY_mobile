@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:potatoes/libs.dart'; 
-import 'package:umai/activity/widgets/activity/actu_btn_type1.dart'; 
-import 'package:umai/activity/widgets/activity/actu_head.dart'; 
+import 'package:potatoes/libs.dart';
+import 'package:umai/activity/widgets/activity/actu_btn_type1.dart';
+import 'package:umai/activity/widgets/activity/actu_head.dart';
 import 'package:umai/activity/widgets/activity/anime/episode_info.dart';
-import 'package:umai/animes/bloc/episode_cubit.dart'; 
-import 'package:umai/animes/models/episode.dart'; 
-import 'package:umai/animes/widgets/episode_head.dart'; 
+import 'package:umai/animes/bloc/episode_cubit.dart';
+import 'package:umai/animes/models/episode.dart';
+import 'package:umai/animes/services/episode_cubit_manager.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/bloc/person_cubit.dart';
 import 'package:umai/common/models/user.dart';
-import 'package:umai/common/screens/common_details.dart'; 
-import 'package:umai/common/services/person_cubit_manager.dart'; 
-import 'package:umai/animes/services/episode_cubit_manager.dart'; 
+import 'package:umai/common/screens/common_details.dart';
+import 'package:umai/common/services/person_cubit_manager.dart';
 
 class LikeEpisodeWidget extends StatefulWidget {
   final String targetEntity;
@@ -113,16 +112,15 @@ class _LikeEpisodeWidgetState extends State<LikeEpisodeWidget> {
                   targetEntity: widget.targetEntity,
                   user: user),
               const SizedBox(height: 8),
-              EpisodeInfo(),
+              const EpisodeInfo(),
               ActuBtnType1Widget<Episode>(
                   onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => CommonDetailsScreen.fromEpisode(
                           context: context,
                           episode: episode,
-                          head: (context) => EpisodeHead.get(
-                                context: context,
-                                episode: episode,
-                              )))))
+                      )
+                  ))
+              )
             ],
       
         );

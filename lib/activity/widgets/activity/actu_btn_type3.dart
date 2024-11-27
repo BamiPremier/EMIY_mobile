@@ -10,13 +10,13 @@ class ActuBtnType3Widget<T extends XItem, C extends XCommonCubit<T>,
     A extends ActionCommentBaseCubit<C>> extends StatefulWidget {
   final A actionCommentBaseCubit;
   final VoidCallback onPressed;
-  ActuBtnType3Widget(
+  const ActuBtnType3Widget(
       {super.key,
       required this.onPressed,
       required this.actionCommentBaseCubit});
 
   @override
-  _ActuBtnType3WidgetState<T, C, A> createState() =>
+  State<ActuBtnType3Widget<T, C, A>> createState() =>
       _ActuBtnType3WidgetState<T, C, A>();
 }
 
@@ -37,7 +37,7 @@ class _ActuBtnType3WidgetState<T extends XItem, C extends XCommonCubit<T>,
         child: BlocBuilder<CommentCubit<T>, CommentState>(
           builder: (context, state) {
             return Container(
-              margin: const EdgeInsets.all(16),
+              margin: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(children: [
                 commentCubit.comment.hasLiked
                     ? TextButton(

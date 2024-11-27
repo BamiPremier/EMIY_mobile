@@ -31,7 +31,7 @@ class _ActuBtnType1WidgetState<T extends XItem>
       builder: (context, state) {
         final item = commonCubit.x;
         return Container(
-            margin: const EdgeInsets.all(16),
+            margin: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Row(
               children: [
                 IconButton(

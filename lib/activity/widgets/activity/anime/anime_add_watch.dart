@@ -45,8 +45,8 @@ class AnimeAddWatchedWidget extends StatelessWidget {
             ActuHeadWidget.get(
                 targetEntity: targetEntity, context: context, user: user),
             const SizedBox(height: 8),
-            AnimeInfo(),
-            ActuBtnType2Widget()
+            const AnimeInfo(),
+            const ActuBtnType2Widget()
           ],
         );
       },

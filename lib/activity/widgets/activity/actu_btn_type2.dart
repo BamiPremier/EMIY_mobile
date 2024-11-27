@@ -9,6 +9,8 @@ import 'package:umai/utils/svg_utils.dart';
 import 'package:umai/utils/themes.dart'; 
 
 class ActuBtnType2Widget extends StatefulWidget {
+  const ActuBtnType2Widget({super.key});
+
   @override
   State<ActuBtnType2Widget> createState() => _ActuBtnType2WidgetState();
 }
@@ -29,7 +31,7 @@ class _ActuBtnType2WidgetState extends State<ActuBtnType2Widget>
             ? AppTheme.primaryYellow
             : Theme.of(context).colorScheme.onSurfaceVariant;
         return Container(
-            margin: const EdgeInsets.all(16),
+            margin: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Row(
               children: [
                 IconButton(

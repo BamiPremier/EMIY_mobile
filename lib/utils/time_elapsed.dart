@@ -17,6 +17,9 @@ extension TimeElapsed on DateTime {
       final hours = absDuration.inHours;
       return '${isFuture ? "dans" : "il y a"} $hours heure${hours < 2 ? "" : "s"}';
     }
+    if (absDuration.inDays == 1 && !isFuture) {
+      return 'hier';
+    }
     if (absDuration.inDays < 7) {
       final days = absDuration.inDays;
       return '${isFuture ? "dans" : "il y a"} $days jour${days < 2 ? "" : "s"}';

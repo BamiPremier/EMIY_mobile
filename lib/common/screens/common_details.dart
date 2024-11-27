@@ -5,6 +5,7 @@ import 'package:potatoes/libs.dart';
 import 'package:umai/animes/bloc/episode_cubit.dart';
 import 'package:umai/animes/models/episode.dart';
 import 'package:umai/animes/services/episode_cubit_manager.dart';
+import 'package:umai/animes/widgets/episode_head.dart';
 import 'package:umai/common/bloc/action_comment_cubit.dart';
 import 'package:umai/common/bloc/comment_cubit.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
@@ -20,6 +21,7 @@ import 'package:umai/common/widgets/item_comment.dart';
 import 'package:umai/social/bloc/post_cubit.dart';
 import 'package:umai/social/models/post.dart';
 import 'package:umai/social/services/post_cubit_manager.dart';
+import 'package:umai/social/widgets/head_post.dart';
 
 mixin XItem implements XReportedItem {
   @override
@@ -48,7 +50,6 @@ class CommonDetailsScreen<T extends XItem> extends StatefulWidget {
   static Widget fromPost({
     required BuildContext context,
     required Post post,
-    required WidgetBuilder head,
   }) {
     return MultiBlocProvider(
       providers: [
@@ -64,31 +65,35 @@ class CommonDetailsScreen<T extends XItem> extends StatefulWidget {
                     context.read(), post.itemId, '', context.read())
                 as BaseLoadCommentCubit<Post>),
       ],
-      child: CommonDetailsScreen<Post>(head: head),
+      child: CommonDetailsScreen<Post>(head: (_) => const HeadPost()),
     );
   }
 
   static Widget fromEpisode({
     required BuildContext context,
     required Episode episode,
-    required WidgetBuilder head,
   }) {
     return MultiBlocProvider(providers: [
       BlocProvider.value(
-          value: context.read<EpisodeCubitManager>().get(episode)
-              as XCommonCubit<Episode>),
+        value: context.read<EpisodeCubitManager>().get(episode)
+          as XCommonCubit<Episode>),
       BlocProvider(
-          create: (context) => ActionCommentEpisodeCubit(
-                context.read<XCommonCubit<Episode>>() as EpisodeCubit,
-              ) as ActionCommentBaseCubit<XCommonCubit<Episode>>),
+        create: (context) => ActionCommentEpisodeCubit(
+          context.read<XCommonCubit<Episode>>() as EpisodeCubit,
+        ) as ActionCommentBaseCubit<XCommonCubit<Episode>>),
       BlocProvider(
-          create: (context) => LoadCommentEpisodeCubit(
-                context.read(),
-                episode.id,
-                '',
-                context.read(),
-              ) as BaseLoadCommentCubit<Episode>),
-    ], child: CommonDetailsScreen<Episode>(head: head));
+        create: (context) => LoadCommentEpisodeCubit(
+          context.read(),
+          episode.id,
+          '',
+          context.read(),
+        ) as BaseLoadCommentCubit<Episode>),
+    ], child: CommonDetailsScreen<Episode>(
+      head: (context) => EpisodeHead.get(
+        context: context,
+        episode: episode,
+      ),
+    ));
   }
 
   @override

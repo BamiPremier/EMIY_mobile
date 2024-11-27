@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
-import 'package:umai/common/bloc/common_cubit.dart';
+import 'package:potatoes/libs.dart';
 import 'package:umai/common/widgets/empty_builder.dart';
 import 'package:umai/common/widgets/error_builder.dart';
-import 'package:umai/social/bloc/post_cubit.dart';
-import 'package:umai/social/services/post_cubit_manager.dart';
-import 'package:umai/utils/assets.dart';
-import 'package:umai/utils/svg_utils.dart';
-import 'package:potatoes/libs.dart';
 import 'package:umai/social/bloc/post_feed_cubit.dart';
 import 'package:umai/social/models/post.dart';
 import 'package:umai/social/screens/new_post_screen.dart';
 import 'package:umai/social/widgets/item_post.dart';
 import 'package:umai/social/widgets/new_post_banner.dart';
+import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/svg_utils.dart';
 
 class SocialHomeScreen extends StatefulWidget {
+  const SocialHomeScreen({super.key});
+
   @override
   State<SocialHomeScreen> createState() => _SocialHomeScreenState();
 }
