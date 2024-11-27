@@ -11,25 +11,28 @@ import 'package:umai/social/models/post.dart';
 
 class ActivitieService extends ApiService {
   static const String _feed = '/activities/feed';
+  static const String _userActivitie = '/activities';
   const ActivitieService(super._dio);
 
   Future<PaginatedList<Activitie>> getFeed({int page = 1}) {
     return compute(
         dio.get(_feed, options: Options(headers: withAuth()), queryParameters: {
           'page': page,
-          'size': 10,
+          'size': 12,
         }),
         mapper: (result) => toPaginatedList(result, Activitie.fromJson));
   }
 
-  Future<PaginatedList<Activitie>> getUserActus(
-      {int page = 1, required String userId}) {
+  Future<PaginatedList<Activitie>> getUserActivitie(
+      {int page = 1, required String? userId}) {
     return compute(
-        dio.get(_feed, options: Options(headers: withAuth()), queryParameters: {
-          'page': page,
-          'userId': userId,
-          'size': 10,
-        }),
+        dio.get(_userActivitie,
+            options: Options(headers: withAuth()),
+            queryParameters: {
+              'page': page,
+              'size': 12,
+              if (userId != null) 'userId': userId,
+            }),
         mapper: (result) => toPaginatedList(result, Activitie.fromJson));
   }
 }

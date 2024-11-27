@@ -57,99 +57,95 @@ class AnimeAddViewedWidget extends StatelessWidget {
         final personCubit = context.read<PersonCubit>();
 
         final user = personCubit.user;
-        return Container(
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ActuHeadWidget.get(
-                  targetEntity: targetEntity, context: context, user: user),
-              GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {},
-                child: Container(
-                  padding: const EdgeInsets.all(8)
-                      .add(const EdgeInsets.only(left: 8)),
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onInverseSurface,
-                      borderRadius: BorderRadius.circular(8)),
-                  child: Row(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image(
-                          image: context
-                              .read<AppCacheManager>()
-                              .getAnimeImage(anime),
-                          width: 72,
-                          height: 88,
-                          fit: BoxFit.cover,
-                          frameBuilder:
-                              (context, child, frame, wasSynchronouslyLoaded) {
-                            if (frame != null) return child;
-                            return Container(
-                              width: 72,
-                              height: 88,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .tertiaryContainer,
-                              child: wasSynchronouslyLoaded
-                                  ? child
-                                  : Center(
-                                      child: SizedBox(
-                                        height: 16.0,
-                                        width: 16.0,
-                                        child: CircularProgressIndicator(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onTertiaryContainer,
-                                          strokeWidth: 2.0,
-                                        ),
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ActuHeadWidget.get(
+                targetEntity: targetEntity, context: context, user: user),
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {},
+              child: Container(
+                padding:
+                    const EdgeInsets.all(8).add(const EdgeInsets.only(left: 8)),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.onInverseSurface,
+                    borderRadius: BorderRadius.circular(8)),
+                child: Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image(
+                        image: context
+                            .read<AppCacheManager>()
+                            .getAnimeImage(anime),
+                        width: 72,
+                        height: 88,
+                        fit: BoxFit.cover,
+                        frameBuilder:
+                            (context, child, frame, wasSynchronouslyLoaded) {
+                          if (frame != null) return child;
+                          return Container(
+                            width: 72,
+                            height: 88,
+                            color:
+                                Theme.of(context).colorScheme.tertiaryContainer,
+                            child: wasSynchronouslyLoaded
+                                ? child
+                                : Center(
+                                    child: SizedBox(
+                                      height: 16.0,
+                                      width: 16.0,
+                                      child: CircularProgressIndicator(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onTertiaryContainer,
+                                        strokeWidth: 2.0,
                                       ),
                                     ),
-                            );
-                          },
-                          errorBuilder: (_, __, ___) => toSvgIcon(
-                            icon: Assets.iconsError,
-                          ),
+                                  ),
+                          );
+                        },
+                        errorBuilder: (_, __, ___) => toSvgIcon(
+                          icon: Assets.iconsError,
                         ),
                       ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            anime.title.romaji,
+                            style: Theme.of(context).textTheme.titleMedium,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          if (anime.title.english != null)
                             Text(
-                              anime.title.romaji,
-                              style: Theme.of(context).textTheme.titleMedium,
+                              anime.title.english!,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall!
+                                  .copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurfaceVariant),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
-                            if (anime.title.english != null)
-                              Text(
-                                anime.title.english!,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall!
-                                    .copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSurfaceVariant),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            const SizedBox(height: 9),
-                            ActivitieAnimePrimaryInfo()
-                          ],
-                        ),
+                          const SizedBox(height: 9),
+                          const ActivitieAnimePrimaryInfo()
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-              ActuBtnType2Widget()
-            ],
-          ),
+            ),
+            ActuBtnType2Widget()
+          ],
         );
       },
     );

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
+import 'package:potatoes/potatoes.dart';
 import 'package:readmore/readmore.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:umai/account/screens/person_account.dart';
 import 'package:umai/activitie/widgets/activitie/actu_btn_type1.dart';
 import 'package:umai/activitie/widgets/activitie/actu_btn_type3.dart';
@@ -21,6 +23,7 @@ import 'package:umai/social/models/post.dart';
 import 'package:umai/social/services/social_service.dart';
 import 'package:umai/social/widgets/post_image.dart';
 import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/svg_utils.dart';
 import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
@@ -45,40 +48,52 @@ class CreatedQuizWidget extends StatefulWidget {
 }
 
 class _CreatedQuizWidgetState extends State<CreatedQuizWidget>
-    with SingleTickerProviderStateMixin {
+    with CompletableMixin {
   late final quizManageCubit = context.read<QuizManageCubit>();
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<QuizManageCubit, QuizManageState>(
+    return BlocConsumer<QuizManageCubit, QuizManageState>(
+        listener: onEventReceived,
         builder: (context, state) {
-      final Quiz quiz = quizManageCubit.quiz;
-      return Container(
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            ActuHeadWidget.get(
-             targetEntity: widget.targetEntity, context: context, user: quiz.user),
-            const SizedBox(height: 8),
-            Container(
-                padding:
-                    const EdgeInsets.all(8).add(const EdgeInsets.only(left: 8)),
-                decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.onInverseSurface,
-                    borderRadius: BorderRadius.circular(8)),
-                child: ItemQuiz.get(context: context, quiz: quiz)),
-            IconButton(
-              padding: EdgeInsets.zero,
-              icon: toSvgIcon(
-                icon: Assets.iconsShare,
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
+          final Quiz quiz = quizManageCubit.quiz;
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              ActuHeadWidget.get(
+                  targetEntity: widget.targetEntity,
+                  context: context,
+                  user: quiz.user),
+              const SizedBox(height: 8),
+              Container(
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onInverseSurface,
+                      borderRadius: BorderRadius.circular(8)),
+                  child: ItemQuiz.get(context: context, quiz: quiz)),
+              IconButton(
+                padding: EdgeInsets.zero,
+                icon: toSvgIcon(
+                  icon: Assets.iconsShare,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+                onPressed: () => quizManageCubit.shareQuiz(),
               ),
-              onPressed: () {},
-            ),
-          ],
-        ),
+            ],
+          );
+        });
+  }
+
+  void onEventReceived(BuildContext context, QuizManageState state) async {
+    await waitForDialog();
+
+    if (state is ShareQuizLoadingState) {
+      loadingDialogCompleter = showLoadingBarrier(
+        context: context,
       );
-    });
+    } else if (state is ShareQuizSuccesState) {
+      await Share.share(state.link);
+    } else if (state is QuizManageErrorState) {
+      showErrorToast(content: state.error, context: context);
+    }
   }
 }

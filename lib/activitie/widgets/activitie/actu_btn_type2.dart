@@ -21,8 +21,9 @@ import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
 class ActuBtnType2Widget extends StatefulWidget {
+  
   @override
-  _ActuBtnType2WidgetState createState() => _ActuBtnType2WidgetState();
+  State<ActuBtnType2Widget> createState() => _ActuBtnType2WidgetState();
 }
 
 class _ActuBtnType2WidgetState extends State<ActuBtnType2Widget>

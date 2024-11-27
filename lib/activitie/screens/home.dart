@@ -8,6 +8,7 @@ import 'package:umai/common/widgets/error_builder.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/svg_utils.dart';
 import 'package:potatoes/libs.dart';
+
 class ActuHomeScreen extends StatefulWidget {
   const ActuHomeScreen({super.key});
 
@@ -31,8 +32,9 @@ class _ActuHomeScreenState extends State<ActuHomeScreen> {
               padding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom),
               cubit: activitieFeedCubit,
-              itemBuilder: (context, activitie) =>
-                  ActivitieWidget(activitie: activitie),
+              itemBuilder: (context, activitie) => activitie.isPrivate == true
+                  ? const SizedBox.shrink()
+                  : ActivitieWidget(activitie: activitie),
               separatorBuilder: (_, __) => const Divider(height: 8),
               emptyBuilder: (ctx) => const EmptyBuilder(),
               errorBuilder: (context, retry) => ErrorBuilder(retry: retry))),

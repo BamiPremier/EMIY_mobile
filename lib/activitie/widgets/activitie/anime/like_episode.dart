@@ -11,10 +11,12 @@ import 'package:umai/animes/bloc/episode_cubit.dart';
 import 'package:umai/animes/models/anime.dart';
 import 'package:umai/animes/models/episode.dart';
 import 'package:umai/animes/services/anime_cubit_manager.dart';
+import 'package:umai/animes/widgets/episode_head.dart';
 import 'package:umai/common/bloc/anime_manip_cubit.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/bloc/person_cubit.dart';
 import 'package:umai/common/models/user.dart';
+import 'package:umai/common/screens/common_details.dart';
 import 'package:umai/common/services/cache_manager.dart';
 import 'package:umai/common/services/person_cubit_manager.dart';
 import 'package:umai/common/services/report_util_service.dart';
@@ -55,11 +57,11 @@ class LikeEpisodeWidget extends StatefulWidget {
             child: LikeEpisodeWidget.forNoEpisode(targetEntity: targetEntity))
         : MultiBlocProvider(
             providers: [
-              BlocProvider<XCommonCubit<Episode>>(
-                create: (context) => context.read<EpisodeCubit>(),
-              ),
               BlocProvider.value(
                 value: context.read<EpisodeCubitManager>().get(episode),
+              ),
+              BlocProvider<XCommonCubit<Episode>>(
+                create: (context) => context.read<EpisodeCubit>(),
               ),
             ],
             child: LikeEpisodeWidget.forEpisode(
@@ -82,9 +84,7 @@ class _LikeEpisodeWidgetState extends State<LikeEpisodeWidget> {
   Widget buildNoEpisode() {
     final personCubit = context.read<PersonCubit>();
     final user = personCubit.user;
-    return Container(
-        margin: const EdgeInsets.all(8),
-        child: Column(
+    return  Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ActuHeadWidget.get(
@@ -113,7 +113,7 @@ class _LikeEpisodeWidgetState extends State<LikeEpisodeWidget> {
               ],
             ),
           ],
-        ));
+         );
   }
 
   Widget buildEpisode(Episode episode) {
@@ -124,9 +124,7 @@ class _LikeEpisodeWidgetState extends State<LikeEpisodeWidget> {
 
         final personCubit = context.read<PersonCubit>();
         final user = personCubit.user;
-        return Container(
-          padding: const EdgeInsets.all(8),
-          child: Column(
+        return  Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ActuHeadWidget.get(
@@ -226,9 +224,17 @@ class _LikeEpisodeWidgetState extends State<LikeEpisodeWidget> {
                   ),
                 ),
               ),
-              ActuBtnType1Widget()
+              ActuBtnType1Widget<Episode>(
+                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => CommonDetailsScreen.fromEpisode(
+                          context: context,
+                          episode: episode,
+                          head: (context) => EpisodeHead.get(
+                                context: context,
+                                episode: episode,
+                              )))))
             ],
-          ),
+      
         );
       },
     );

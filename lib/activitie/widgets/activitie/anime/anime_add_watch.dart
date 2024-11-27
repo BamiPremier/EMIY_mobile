@@ -57,9 +57,7 @@ class AnimeAddWatchedWidget extends StatelessWidget {
         final personCubit = context.read<PersonCubit>();
 
         final user = personCubit.user;
-        return Container(
-          padding: const EdgeInsets.all(8),
-          child: Column(
+        return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ActuHeadWidget.get(
@@ -150,7 +148,7 @@ class AnimeAddWatchedWidget extends StatelessWidget {
               ),
               ActuBtnType2Widget()
             ],
-          ),
+       
         );
       },
     );

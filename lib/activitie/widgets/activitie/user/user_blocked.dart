@@ -24,8 +24,6 @@ import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
 class UserBlockedWidget extends StatelessWidget {
-
-  
   static Widget get({
     required BuildContext context,
     required User user,
@@ -43,115 +41,110 @@ class UserBlockedWidget extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           final personCubit = context.read<PersonCubit>();
-          return Container(
-            padding: const EdgeInsets.all(8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  child: Row(
-                    children: <Widget>[
-                      Stack(
-                        alignment: Alignment.bottomRight,
-                        children: [
-                          GestureDetector(
-                            child: const ProfilePicture(
-                              image: "profile",
-                              size: 32.0,
-                            ),
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => PersonAccountScreen.get(
-                                      context: context,
-                                      user: personCubit.user)));
-                            },
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                child: Row(
+                  children: <Widget>[
+                    Stack(
+                      alignment: Alignment.bottomRight,
+                      children: [
+                        GestureDetector(
+                          child: const ProfilePicture(
+                            image: "profile",
+                            size: 32.0,
                           ),
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onInverseSurface,
-                                  shape: BoxShape.circle),
-                              height: 16,
-                              width: 16,
-                              padding: const EdgeInsets.all(3),
-                              child: IconButton(
-                                padding: EdgeInsets.zero,
-                                icon: toSvgIcon(
-                                  icon: Assets.iconsLike,
-                                  size: 10,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSurfaceVariant,
-                                ),
-                                onPressed: () {},
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => PersonAccountScreen.get(
+                                    context: context, user: personCubit.user)));
+                          },
+                        ),
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onInverseSurface,
+                                shape: BoxShape.circle),
+                            height: 16,
+                            width: 16,
+                            padding: const EdgeInsets.all(3),
+                            child: IconButton(
+                              padding: EdgeInsets.zero,
+                              icon: toSvgIcon(
+                                icon: Assets.iconsLike,
+                                size: 10,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSurfaceVariant,
                               ),
+                              onPressed: () {},
                             ),
                           ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        "Tu as bloqué cette personne",
+                        style: Theme.of(context).textTheme.bodyMedium,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 8),
+              Container(
+                padding:
+                    const EdgeInsets.all(8).add(const EdgeInsets.only(left: 8)),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.onInverseSurface,
+                    borderRadius: BorderRadius.circular(8)),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        "Le contenu est masqué",
+                        style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurfaceVariant,
+                            ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    FilledButton(
+                      onPressed: () {},
+                      style: FilledButton.styleFrom(
+                          backgroundColor: AppTheme.mainText,
+                          foregroundColor: AppTheme.white,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 40, vertical: 12),
+                          minimumSize: Size.zero),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'VOIR',
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelLarge!
+                                .copyWith(color: AppTheme.white),
+                          )
                         ],
                       ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          "Tu as bloqué cette personne",
-                          style: Theme.of(context).textTheme.bodyMedium,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
+                    )
+                  ],
                 ),
-                const SizedBox(height: 8),
-                Container(
-                  padding: const EdgeInsets.all(8)
-                      .add(const EdgeInsets.only(left: 8)),
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onInverseSurface,
-                      borderRadius: BorderRadius.circular(8)),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          "Le contenu est masqué",
-                          style:
-                              Theme.of(context).textTheme.titleSmall!.copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurfaceVariant,
-                                  ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      FilledButton(
-                        onPressed: () {},
-                        style: FilledButton.styleFrom(
-                            backgroundColor: AppTheme.mainText,
-                            foregroundColor: AppTheme.white,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 40, vertical: 12),
-                            minimumSize: Size.zero),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              'VOIR',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelLarge!
-                                  .copyWith(color: AppTheme.white),
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           );
         });
   }

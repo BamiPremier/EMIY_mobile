@@ -10,6 +10,7 @@ import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/bloc/person_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/models/user.dart';
+import 'package:umai/common/screens/common_details.dart';
 import 'package:umai/common/services/person_cubit_manager.dart';
 import 'package:umai/common/services/report_util_service.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
@@ -19,6 +20,7 @@ import 'package:umai/social/bloc/post_cubit.dart';
 import 'package:umai/social/models/post.dart';
 import 'package:umai/social/services/post_cubit_manager.dart';
 import 'package:umai/social/services/social_service.dart';
+import 'package:umai/social/widgets/head_post.dart';
 import 'package:umai/social/widgets/post_image.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/svg_utils.dart';
@@ -52,12 +54,12 @@ class LikePostWidget extends StatefulWidget {
             child: LikePostWidget.forNoPost(targetEntity: targetEntity))
         : MultiBlocProvider(
             providers: [
-              BlocProvider<XCommonCubit<Post>>(
-                create: (context) => context.read<PostCubit>(),
-              ),
               BlocProvider.value(
                 value: context.read<PostCubitManager>().get(post),
               ),
+              BlocProvider<XCommonCubit<Post>>(
+                  create: (context) =>
+                      context.read<PostCubit>() as XCommonCubit<Post>),
               BlocProvider.value(
                 value: context.read<PersonCubitManager>().get(user),
               ),
@@ -82,7 +84,10 @@ class _LikePostWidgetState extends State<LikePostWidget> {
   Widget buildNoPost() {
     final user = context.read<PersonCubit>().user;
     return Container(
-        padding: const EdgeInsets.all(8),
+        margin: const EdgeInsets.only(
+          left: 8,
+          right: 8,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -120,8 +125,16 @@ class _LikePostWidgetState extends State<LikePostWidget> {
 
     return BlocBuilder<PostCubit, XCommonState>(builder: (context, state) {
       final post = postCubit.x as Post;
-      return Container(
-          padding: const EdgeInsets.all(8),
+      return GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (context) => CommonDetailsScreen.fromPost(
+                      context: context,
+                      post: post,
+                      head: (context) => const HeadPost())),
+            );
+          },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -130,13 +143,15 @@ class _LikePostWidgetState extends State<LikePostWidget> {
                   context: context,
                   user: post.user),
               Container(
-                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.onInverseSurface,
+                    borderRadius: BorderRadius.circular(8)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        padding:
-                            const EdgeInsets.only(bottom: 8, left: 8, right: 8),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 8),
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -182,7 +197,7 @@ class _LikePostWidgetState extends State<LikePostWidget> {
                                     ),
                                   ),
                                   Text(
-                                    "Il y a 16h",
+                                    post.createdAt.elapsed(),
                                     style: Theme.of(context)
                                         .textTheme
                                         .labelMedium!
@@ -219,7 +234,15 @@ class _LikePostWidgetState extends State<LikePostWidget> {
                   ],
                 ),
               ),
-              ActuBtnType1Widget()
+              ActuBtnType1Widget<Post>(onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (context) => CommonDetailsScreen.fromPost(
+                          context: context,
+                          post: post,
+                          head: (context) => const HeadPost())),
+                );
+              })
             ],
           ));
     });

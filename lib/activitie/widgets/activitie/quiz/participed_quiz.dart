@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:potatoes/common/widgets/loaders.dart';
 import 'package:potatoes/libs.dart';
 import 'package:readmore/readmore.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:umai/account/screens/person_account.dart';
 import 'package:umai/activitie/widgets/activitie/actu_btn_type1.dart';
 import 'package:umai/activitie/widgets/activitie/actu_btn_type3.dart';
@@ -23,12 +25,12 @@ import 'package:umai/social/models/post.dart';
 import 'package:umai/social/services/social_service.dart';
 import 'package:umai/social/widgets/post_image.dart';
 import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/svg_utils.dart';
 import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
-class ParticipedQuizWidget extends StatelessWidget {
-
+class ParticipedQuizWidget extends StatefulWidget {
   final String targetEntity;
 
   static Widget get(
@@ -50,40 +52,58 @@ class ParticipedQuizWidget extends StatelessWidget {
   }
 
   ParticipedQuizWidget._({required this.targetEntity});
+
+  @override
+  _ParticipedQuizWidgetState createState() => _ParticipedQuizWidgetState();
+}
+
+class _ParticipedQuizWidgetState extends State<ParticipedQuizWidget>
+    with CompletableMixin {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<QuizManageCubit, QuizManageState>(
+    return BlocConsumer<QuizManageCubit, QuizManageState>(
+        listener: onEventReceived,
         builder: (context, state) {
-      final quizManageCubit = context.read<QuizManageCubit>();
-      final Quiz quiz = quizManageCubit.quiz;
-      final personCubit = context.read<PersonCubit>();
-      final user = personCubit.user;
-      return Container(
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            ActuHeadWidget.get(
-              targetEntity:  targetEntity, context: context, user: user),
-            const SizedBox(height: 8),
-            Container(
-                padding:
-                    const EdgeInsets.all(8).add(const EdgeInsets.only(left: 8)),
-                decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.onInverseSurface,
-                    borderRadius: BorderRadius.circular(8)),
-                child: ItemQuiz.get(context: context, quiz: quiz)),
-            IconButton(
-              padding: EdgeInsets.zero,
-              icon: toSvgIcon(
-                icon: Assets.iconsShare,
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
+          final quizManageCubit = context.read<QuizManageCubit>();
+          final Quiz quiz = quizManageCubit.quiz;
+          final personCubit = context.read<PersonCubit>();
+          final user = personCubit.user;
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              ActuHeadWidget.get(
+                  targetEntity: widget.targetEntity,
+                  context: context,
+                  user: user),
+              Container(
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onInverseSurface,
+                      borderRadius: BorderRadius.circular(8)),
+                  child: ItemQuiz.get(context: context, quiz: quiz)),
+              IconButton(
+                padding: EdgeInsets.zero,
+                icon: toSvgIcon(
+                  icon: Assets.iconsShare,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+                onPressed: () => quizManageCubit.shareQuiz(),
               ),
-              onPressed: () {},
-            ),
-          ],
-        ),
+            ],
+          );
+        });
+  }
+
+  void onEventReceived(BuildContext context, QuizManageState state) async {
+    await waitForDialog();
+
+    if (state is ShareQuizLoadingState) {
+      loadingDialogCompleter = showLoadingBarrier(
+        context: context,
       );
-    });
+    } else if (state is ShareQuizSuccesState) {
+      await Share.share(state.link);
+    } else if (state is QuizManageErrorState) {
+      showErrorToast(content: state.error, context: context);
+    }
   }
 }

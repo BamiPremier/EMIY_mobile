@@ -20,62 +20,80 @@ import 'package:umai/utils/svg_utils.dart';
 import 'package:umai/utils/themes.dart';
 import 'package:umai/utils/time_elapsed.dart';
 
-class ActuBtnType3Widget<T extends XItem, C extends XCommonCubit<T>, A extends ActionCommentBaseCubit<C>> extends StatelessWidget {
+class ActuBtnType3Widget<T extends XItem, C extends XCommonCubit<T>,
+    A extends ActionCommentBaseCubit<C>> extends StatefulWidget {
   final A actionCommentBaseCubit;
-
-  const ActuBtnType3Widget({Key? key, required this.actionCommentBaseCubit})
-      : super(key: key);
+  final VoidCallback onPressed;
+  ActuBtnType3Widget(
+      {super.key, required this.onPressed, required this.actionCommentBaseCubit});
 
   @override
-  Widget build(BuildContext context) {
-    final commentCubit = context.read<CommentCubit<T>>();
-    final comment = commentCubit.comment;
+  _ActuBtnType3WidgetState<T, C, A> createState() =>
+      _ActuBtnType3WidgetState<T, C, A>();
+}
 
-    return BlocBuilder<CommentCubit<T>, CommentState>(
-      builder: (context, state) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(children: [
-              comment.hasLiked
-                  ? TextButton(
-                      onPressed: () => commentCubit.unLikeComment(),
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.zero,
-                        textStyle:
-                            Theme.of(context).textTheme.labelSmall!.copyWith(
+class _ActuBtnType3WidgetState<T extends XItem, C extends XCommonCubit<T>,
+        A extends ActionCommentBaseCubit<C>>
+    extends State<ActuBtnType3Widget<T, C, A>> {
+  late final commentCubit = context.read<CommentCubit<T>>();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) { 
+    return BlocProvider.value(
+        value: commentCubit,
+        child: BlocBuilder<CommentCubit<T>, CommentState>(
+          builder: (context, state) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(children: [
+                  commentCubit.comment.hasLiked
+                      ? TextButton(
+                          onPressed: () => commentCubit.unLikeComment(),
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            textStyle: Theme.of(context)
+                                .textTheme
+                                .labelSmall!
+                                .copyWith(
                                   color: AppTheme.primaryRed,
                                 ),
-                      ),
-                      child: Text(
-                        'J\'aime',
-                        style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                              color: AppTheme.primaryRed,
-                            ),
-                      ),
-                    )
-                  : TextButton(
-                      onPressed: () => commentCubit.likeComment(),
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.zero,
-                      ),
-                      child: Text('J\'aime',
-                          style: Theme.of(context).textTheme.labelSmall!),
+                          ),
+                          child: Text(
+                            'J\'aime',
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelSmall!
+                                .copyWith(
+                                  color: AppTheme.primaryRed,
+                                ),
+                          ),
+                        )
+                      : TextButton(
+                          onPressed: () => commentCubit.likeComment(),
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                          ),
+                          child: Text('J\'aime',
+                              style: Theme.of(context).textTheme.labelSmall!),
+                        ),
+                  TextButton(
+                    onPressed:   widget.onPressed,
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      textStyle: Theme.of(context).textTheme.labelSmall,
                     ),
-              TextButton(
-                onPressed: () {
-                  actionCommentBaseCubit.set(comment);
-                },
-                style: TextButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  textStyle: Theme.of(context).textTheme.labelSmall,
-                ),
-                child: const Text('répondre'),
-              )
-            ]),
-          ],
-        );
-      },
-    );
+                    child: const Text('répondre'),
+                  )
+                ]),
+              ],
+            );
+          },
+        ));
   }
 }

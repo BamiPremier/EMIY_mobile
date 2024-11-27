@@ -53,8 +53,8 @@ class ActuHeadWidget extends StatelessWidget {
                   alignment: Alignment.bottomRight,
                   children: [
                     GestureDetector(
-                      child: const ProfilePicture(
-                        image: "profile",
+                      child: ProfilePicture(
+                        image: user.imageFull ?? '',
                         size: 32.0,
                       ),
                       onTap: () {

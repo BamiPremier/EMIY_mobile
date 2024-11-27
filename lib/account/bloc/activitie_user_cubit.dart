@@ -14,21 +14,25 @@ import 'package:umai/social/models/post.dart';
 import 'package:umai/social/services/post_cubit_manager.dart';
 import 'package:umai/social/services/social_service.dart';
 
-class ActivitieFeedCubit extends AutoListCubit<Activitie> {
+class ActivitieUserCubit extends AutoListCubit<Activitie> {
   final ActivitieService activitietService;
   final PersonCubitManager personCubitManager;
   final PostCubitManager postCubitManager;
   final AnimeCubitManager animeCubitManager;
   final QuizManageCubitManager quizCubitManager;
   final EpisodeCubitManager episodeCubitManager;
-  ActivitieFeedCubit(
+  final String? userId;
+
+  ActivitieUserCubit(
     this.activitietService,
     this.postCubitManager,
     this.personCubitManager,
     this.animeCubitManager,
     this.quizCubitManager,
     this.episodeCubitManager,
-  ) : super(provider: activitietService.getFeed);
+    this.userId,
+  ) : super(provider: ({page = 1}) =>
+                activitietService.getUserActivitie(userId: userId));
   @override
   void onChange(Change<AutoListState<Activitie>> change) {
     super.onChange(change);

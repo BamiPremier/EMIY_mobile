@@ -35,98 +35,85 @@ class ActivitieWidget extends StatelessWidget {
   final Activitie activitie;
 
   const ActivitieWidget({required this.activitie});
-
   @override
   Widget build(BuildContext context) {
-    switch (activitie.targetEntity) {
-      case TargetEntity.animesVieweds:
-        return AnimeAddViewedWidget.get(
-            targetEntity: activitie.targetEntity,
-            user: activitie.user,
-            context: context,
-            anime: Anime.fromJson(activitie.target));
-      case TargetEntity.watchlists:
-        return AnimeAddWatchedWidget.get(
-            targetEntity: activitie.targetEntity,
-            user: activitie.user,
-            context: context,
-            anime: Anime.fromJson(activitie.target));
-      case TargetEntity.episodeLikes:
-        final episode = activitie.target == null
-            ? null
-            : Episode.fromJson(activitie.target);
-        return LikeEpisodeWidget.get(
-            targetEntity: activitie.targetEntity,
-            user: activitie.user,
-            context: context,
-            episode: episode);
-      case TargetEntity.postLikes:
-        final post =
-            activitie.target == null ? null : Post.fromJson(activitie.target);
-        return LikePostWidget.get(
+    final child = switch (activitie.targetEntity) {
+      TargetEntity.animesVieweds => AnimeAddViewedWidget.get(
           targetEntity: activitie.targetEntity,
           user: activitie.user,
           context: context,
-          post: post,
-        );
+          anime: Anime.fromJson(activitie.target)),
+      TargetEntity.watchlists => AnimeAddWatchedWidget.get(
+          targetEntity: activitie.targetEntity,
+          user: activitie.user,
+          context: context,
+          anime: Anime.fromJson(activitie.target)),
+      TargetEntity.episodeLikes => LikeEpisodeWidget.get(
+          targetEntity: activitie.targetEntity,
+          user: activitie.user,
+          context: context,
+          episode: activitie.target == null
+              ? null
+              : Episode.fromJson(activitie.target)),
+      TargetEntity.postLikes => LikePostWidget.get(
+          targetEntity: activitie.targetEntity,
+          user: activitie.user,
+          context: context,
+          post: activitie.target == null
+              ? null
+              : Post.fromJson(activitie.target)),
+      TargetEntity.posts => NewPostUserWidget.get(
+          targetEntity: activitie.targetEntity,
+          context: context,
+          post: Post.fromJson(activitie.target)),
+      TargetEntity.postReports => ReportedPostWidget.get(
+          targetEntity: activitie.targetEntity,
+          context: context,
+          post: Post.fromJson(activitie.target)),
+      TargetEntity.quizzes => CreatedQuizWidget.get(
+          targetEntity: activitie.targetEntity,
+          context: context,
+          quiz: Quiz.fromJson(activitie.target)),
+      TargetEntity.participations => ParticipedQuizWidget.get(
+          targetEntity: activitie.targetEntity,
+          user: activitie.user,
+          context: context,
+          quiz: Quiz.fromJson(activitie.target)),
+      TargetEntity.quizReports => ReportedQuizWidget.get(
+          targetEntity: activitie.targetEntity,
+          context: context,
+          quiz: Quiz.fromJson(activitie.target)),
+      TargetEntity.follows => UserAddWidget.get(
+          targetEntity: activitie.targetEntity,
+          context: context,
+          user: activitie.user,
+          targetUser: User.fromJson(activitie.target),
+        ),
+      TargetEntity.userBlocked => UserBlockedWidget.get(
+          context: context, user: User.fromJson(activitie.target)),
+      TargetEntity.postComments => CommentPostWidget.get(
+          targetEntity: activitie.targetEntity,
+          context: context,
+          post: activitie.subTarget == null
+              ? null
+              : Post.fromJson(activitie.subTarget),
+          comment: Comment.fromJson(activitie.target)),
+      TargetEntity.episodeComments => EpisodeCommentWidget.get(
+          targetEntity: activitie.targetEntity,
+          context: context,
+          episode: activitie.subTarget == null
+              ? null
+              : Episode.fromJson(activitie.subTarget),
+          comment: Comment.fromJson(activitie.target)),
+      _ => Container(child: Text(activitie.targetEntity)),
+    };
 
-      case TargetEntity.posts:
-        return NewPostUserWidget.get(
-            targetEntity: activitie.targetEntity,
-            context: context,
-            post: Post.fromJson(activitie.target));
-      case TargetEntity.postReports:
-        return ReportedPostWidget.get(
-            targetEntity: activitie.targetEntity,
-            context: context,
-            post: Post.fromJson(activitie.target));
-      case TargetEntity.quizzes:
-        return CreatedQuizWidget.get(
-            targetEntity: activitie.targetEntity,
-            context: context,
-            quiz: Quiz.fromJson(activitie.target));
-      case TargetEntity.participations:
-        return ParticipedQuizWidget.get(
-            targetEntity: activitie.targetEntity,
-            user: activitie.user,
-            context: context,
-            quiz: Quiz.fromJson(activitie.target));
-      case TargetEntity.quizReports:
-        return ReportedQuizWidget.get(
-            targetEntity: activitie.targetEntity,
-            context: context,
-            quiz: Quiz.fromJson(activitie.target));
-      case TargetEntity.follows:
-        return UserAddWidget.get(
-            targetEntity: activitie.targetEntity,
-            context: context,
-            user: User.fromJson(activitie.target));
-      case TargetEntity.userBlocked:
-        return UserBlockedWidget.get(
-            context: context, user: User.fromJson(activitie.target));
-      case TargetEntity.postComments:
-        final comment = Comment.fromJson(activitie.target);
-        final post = activitie.subTarget == null
-            ? null
-            : Post.fromJson(activitie.subTarget);
-        return CommentPostWidget.get(
-            targetEntity: activitie.targetEntity,
-            context: context,
-            post: post,
-            comment: comment);
-      case TargetEntity.episodeComments:
-        final comment = Comment.fromJson(activitie.target);
-        final episode = activitie.subTarget == null
-            ? null
-            : Episode.fromJson(activitie.subTarget);
-        return EpisodeCommentWidget.get(
-            targetEntity: activitie.targetEntity,
-            context: context,
-            episode: episode,
-            comment: comment);
-
-      default:
-        return Container();
-    }
+    return Container(
+      margin: const EdgeInsets.only(
+        left: 8,
+        right: 8,
+      ),
+      child: child,
+    );
   }
 }

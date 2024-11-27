@@ -47,112 +47,106 @@ class ReportedQuizWidget extends StatelessWidget {
         builder: (context, state) {
       final quizManageCubit = context.read<QuizManageCubit>();
       final Quiz quiz = quizManageCubit.quiz;
-      return Container(
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              child: Row(
-                children: <Widget>[
-                  Stack(
-                    alignment: Alignment.bottomRight,
-                    children: [
-                      GestureDetector(
-                        child: ProfilePicture(
-                          image: quiz.user.image,
-                          size: 32.0,
-                        ),
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => PersonAccountScreen.get(
-                                  context: context, user: quiz.user)));
-                        },
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            child: Row(
+              children: <Widget>[
+                Stack(
+                  alignment: Alignment.bottomRight,
+                  children: [
+                    GestureDetector(
+                      child: ProfilePicture(
+                        image: quiz.user.image,
+                        size: 32.0,
                       ),
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onInverseSurface,
-                              shape: BoxShape.circle),
-                          height: 16,
-                          width: 16,
-                          padding: const EdgeInsets.all(3),
-                          child: IconButton(
-                            padding: EdgeInsets.zero,
-                            icon: toSvgIcon(
-                              icon: Assets.iconsLike,
-                              size: 10,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurfaceVariant,
-                            ),
-                            onPressed: () {},
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      "Tu as signalé un quiz",
-                      style: Theme.of(context).textTheme.bodyMedium,
-                      overflow: TextOverflow.ellipsis,
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => PersonAccountScreen.get(
+                                context: context, user: quiz.user)));
+                      },
                     ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 8),
-            Container(
-              padding:
-                  const EdgeInsets.all(8).add(const EdgeInsets.only(left: 8)),
-              decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.onInverseSurface,
-                  borderRadius: BorderRadius.circular(8)),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      "Le contenu est masqué",
-                      style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color:
+                                Theme.of(context).colorScheme.onInverseSurface,
+                            shape: BoxShape.circle),
+                        height: 16,
+                        width: 16,
+                        padding: const EdgeInsets.all(3),
+                        child: IconButton(
+                          padding: EdgeInsets.zero,
+                          icon: toSvgIcon(
+                            icon: Assets.iconsLike,
+                            size: 10,
                             color:
                                 Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                          onPressed: () {},
+                        ),
+                      ),
                     ),
+                  ],
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    "Tu as signalé un quiz",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  FilledButton(
-                    onPressed: () {},
-                    style: FilledButton.styleFrom(
-                        backgroundColor: AppTheme.mainText,
-                        foregroundColor: AppTheme.white,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 40, vertical: 12),
-                        minimumSize: Size.zero),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'VOIR',
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelLarge!
-                              .copyWith(color: AppTheme.white),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 8),
+          Container(
+            padding:
+                const EdgeInsets.all(8).add(const EdgeInsets.only(left: 8)),
+            decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.onInverseSurface,
+                borderRadius: BorderRadius.circular(8)),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    "Le contenu est masqué",
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                FilledButton(
+                  onPressed: () {},
+                  style: FilledButton.styleFrom(
+                      backgroundColor: AppTheme.mainText,
+                      foregroundColor: AppTheme.white,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 40, vertical: 12),
+                      minimumSize: Size.zero),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'VOIR',
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelLarge!
+                            .copyWith(color: AppTheme.white),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ],
       );
     });
   }

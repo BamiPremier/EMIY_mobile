@@ -68,11 +68,8 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
   late final followingCubit = FollowCubit(
       context.read<UserService>().getUserFollowing(userId: personCubit.user.id),
       context.read());
-  Widget counter({
-    required int count,
-    required String label,
-    VoidCallback? onTap
-  }) {
+  Widget counter(
+      {required int count, required String label, VoidCallback? onTap}) {
     return GestureDetector(
       onTap: onTap,
       child: SizedBox(
@@ -107,7 +104,6 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                   .appBarTheme
                   .systemOverlayStyle
                   ?.copyWith(statusBarIconBrightness: Brightness.light),
-                  
               forceMaterialTransparency: true,
               title: Text(user.username),
               centerTitle: true,
@@ -127,7 +123,7 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                 SliverToBoxAdapter(
                     child: Column(
                   children: [
-                  const  SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Row(
@@ -355,7 +351,7 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                         ],
                       ),
                     ),
-                 const   SizedBox(height: 16),
+                    const SizedBox(height: 16),
                   ],
                 ))
               ],
@@ -386,7 +382,9 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                     Expanded(
                       child: TabBarView(
                         children: [
-                          const ActivityTab(),
+                          const ActivityTab(
+                            currentUser: false,
+                          ),
                           const AnimesTab(
                             currentUser: false,
                           ),

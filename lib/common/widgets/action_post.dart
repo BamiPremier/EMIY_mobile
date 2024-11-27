@@ -30,7 +30,7 @@ class PostAction extends StatelessWidget {
           GestureDetector(
             child: ProfilePicture(
               image: user.image,
-              size: 20.0,
+              size: 32.0,
             ),
             onTap: () => Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) =>

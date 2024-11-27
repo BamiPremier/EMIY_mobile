@@ -58,9 +58,7 @@ class _ReportedPostWidgetState extends State<ReportedPostWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<PostCubit, XCommonState>(builder: (context, state) {
       final post = postCubit.x as Post;
-      return Container(
-        padding: const EdgeInsets.all(8),
-        child: Column(
+      return   Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
@@ -163,7 +161,7 @@ class _ReportedPostWidgetState extends State<ReportedPostWidget> {
               ),
             ),
           ],
-        ),
+       
       );
     });
   }

@@ -10,7 +10,8 @@ class ActivitieAnimePrimaryInfo extends StatefulWidget {
   const ActivitieAnimePrimaryInfo({super.key});
 
   @override
-  State<ActivitieAnimePrimaryInfo> createState() => _ActivitieAnimePrimaryInfoState();
+  State<ActivitieAnimePrimaryInfo> createState() =>
+      _ActivitieAnimePrimaryInfoState();
 }
 
 class _ActivitieAnimePrimaryInfoState extends State<ActivitieAnimePrimaryInfo>
