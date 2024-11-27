@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/account/screens/person_account.dart';
+import 'package:flutter/material.dart';
+import 'package:potatoes/libs.dart';
+import 'package:umai/account/screens/person_account.dart';
 import 'package:umai/common/bloc/person_cubit.dart';
 import 'package:umai/common/bloc/report_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
@@ -28,26 +31,20 @@ class PostAction extends StatelessWidget {
     final postCubit = context.read<PostCubit>();
     final user = postCubit.x.itemUser!;
 
-    return Container(
-      padding: const EdgeInsets.only(left: 16.0, right: 8.0),
-      child: Row(
-        children: <Widget>[
-          GestureDetector(
-            child: ProfilePicture(
-              image: user.image,
-              size: 32.0,
-            ),
-            onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) =>
-                    PersonAccountScreen.get(context: context, user: user))),
+    return ListTile(
+        contentPadding: const EdgeInsets.only(left: 16.0, right: 8.0),
+        leading: GestureDetector(
+          child: ProfilePicture(
+            image: user.image,
+            size: 48.0,
           ),
           onTap: () => Navigator.of(context).push(MaterialPageRoute(
               builder: (context) =>
                   PersonAccountScreen.get(context: context, user: user))),
         ),
         title: GestureDetector(
-          child: Text(user.username,
-              style: Theme.of(context).textTheme.bodyLarge),
+          child:
+              Text(user.username, style: Theme.of(context).textTheme.bodyLarge),
           onTap: () => Navigator.of(context).push(MaterialPageRoute(
               builder: (context) =>
                   PersonAccountScreen.get(context: context, user: user))),
@@ -80,24 +77,21 @@ class PostAction extends StatelessWidget {
           itemBuilder: (BuildContext context) {
             List<String> options = [];
 
-              if (user.id == context.read<UserCubit>().user.id) {
-                options.add('Supprimer');
-              } else {
-                options.addAll(['Signaler', 'Bloquer']);
-              }
+            if (user.id == context.read<UserCubit>().user.id) {
+              options.add('Supprimer');
+            } else {
+              options.addAll(['Signaler', 'Bloquer']);
+            }
 
-              return options.map((String choice) {
-                return PopupMenuItem<String>(
-                  padding: const EdgeInsets.only(right: 48.0, left: 16.0),
-                  value: choice,
-                  child: Text(choice),
-                );
-              }).toList();
-            },
-          ),
-        ],
-      ),
-    );
+            return options.map((String choice) {
+              return PopupMenuItem<String>(
+                padding: const EdgeInsets.only(right: 48.0, left: 16.0),
+                value: choice,
+                child: Text(choice),
+              );
+            }).toList();
+          },
+        ));
   }
 }
 
