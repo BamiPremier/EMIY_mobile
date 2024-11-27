@@ -4,9 +4,9 @@ import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/account/screens/account.dart';
 import 'package:umai/account/screens/person_account.dart';
+import 'package:umai/activity/screens/home.dart';
 import 'package:umai/animes/screens/anime_details.dart';
 import 'package:umai/animes/screens/home.dart';
-import 'package:umai/animes/widgets/episode_head.dart';
 import 'package:umai/common/bloc/link_cubit.dart';
 import 'package:umai/common/bloc/notification_cubit.dart';
 import 'package:umai/common/screens/common_details.dart';
@@ -15,9 +15,7 @@ import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/common/widgets/search_widget.dart';
 import 'package:umai/quiz/screens/home.dart';
 import 'package:umai/quiz/screens/quiz_details.dart';
-import 'package:umai/social/bloc/post_feed_cubit.dart';
 import 'package:umai/social/screens/home.dart';
-import 'package:umai/social/widgets/head_post.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/svg_utils.dart';
 
@@ -29,18 +27,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with CompletableMixin {
-  static const int _mainPageIndex = 0;
+  int index = 1;
 
   late final pages = [
-    {'title': 'Social', 'page': SocialHomeScreen()},
-    {'title': 'Actu', 'page': SizedBox()},
-    {'title': 'Animes', 'page': AnimeHomeScreen()},
-    {'title': 'Quiz', 'page': QuizHomeScreen( )},
+    {'title': 'Social', 'page': const SocialHomeScreen()},
+    {'title': 'Actu', 'page': const ActuHomeScreen()},
+    {'title': 'Animes', 'page': const AnimeHomeScreen()},
+    {'title': 'Quiz', 'page': const QuizHomeScreen()},
   ];
-  final pageController = PageController(initialPage: _mainPageIndex);
-  int index = 0;
+  final pageController = PageController(initialPage: 1);
 
-  void setPage([int value = _mainPageIndex]) {
+  void setPage([int value = 0]) {
     setState(() {
       pageController.jumpToPage(value);
       index = value;
@@ -57,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> with CompletableMixin {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: index == _mainPageIndex,
+      canPop: index == 0,
       onPopInvokedWithResult: (bool didPop, dynamic result) {
         if (!didPop) setPage();
       },
@@ -149,8 +146,7 @@ class _HomeScreenState extends State<HomeScreen> with CompletableMixin {
         MaterialPageRoute(
             builder: (context) => CommonDetailsScreen.fromPost(
                 context: context,
-                post: state.post,
-                head: (context) => const HeadPost())),
+                post: state.post)),
       );
     } else if (state is AnimeLinkLoaded) {
       Navigator.of(context).push(MaterialPageRoute(
@@ -161,11 +157,7 @@ class _HomeScreenState extends State<HomeScreen> with CompletableMixin {
         MaterialPageRoute(
             builder: (context) => CommonDetailsScreen.fromEpisode(
                 context: context,
-                episode: state.episode,
-                head: (context) => EpisodeHead.get(
-                      context: context,
-                      episode: state.episode,
-                    ))),
+                episode: state.episode)),
       );
     } else if (state is QuizLinkLoaded) {
       Navigator.of(context).push(
@@ -192,8 +184,7 @@ class _HomeScreenState extends State<HomeScreen> with CompletableMixin {
         MaterialPageRoute(
             builder: (context) => CommonDetailsScreen.fromPost(
                 context: context,
-                post: state.post,
-                head: (context) => const HeadPost())),
+                post: state.post)),
       );
     } else if (state is AnimeNotificationLoaded) {
       Navigator.of(context).push(MaterialPageRoute(
@@ -204,11 +195,7 @@ class _HomeScreenState extends State<HomeScreen> with CompletableMixin {
         MaterialPageRoute(
             builder: (context) => CommonDetailsScreen.fromEpisode(
                 context: context,
-                episode: state.episode,
-                head: (context) => EpisodeHead.get(
-                      context: context,
-                      episode: state.episode,
-                    ))),
+                episode: state.episode)),
       );
     } else if (state is QuizNotificationLoaded) {
       Navigator.of(context).push(

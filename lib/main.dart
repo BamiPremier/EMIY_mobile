@@ -8,6 +8,8 @@ import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:potatoes/potatoes.dart' hide PreferencesService;
 import 'package:potatoes_secured_preferences/potatoes_secured_preferences.dart';
+import 'package:umai/activity/bloc/activity_feed_cubit.dart';
+import 'package:umai/activity/services/activity_service.dart';
 import 'package:umai/animes/models/episode.dart';
 import 'package:umai/animes/services/anime_cubit_manager.dart';
 import 'package:umai/animes/services/anime_service.dart';
@@ -142,6 +144,7 @@ class MyApp extends StatelessWidget {
           RepositoryProvider(create: (_) => LinkService(dio)),
           RepositoryProvider(create: (context) => HomeAnimeService(context)),
           RepositoryProvider(create: (context) => HomeQuizService(context)),
+          RepositoryProvider(create: (_) => ActivityService(dio)),
         ],
         child: MultiBlocProvider(
             providers: [
@@ -177,7 +180,7 @@ class MyApp extends StatelessWidget {
                       AuthCubit(context.read(), context.read())),
               BlocProvider(
                   create: (context) => PostFeedCubit(
-                      context.read(), context.read(), context.read())),
+                      context.read(), context.read())),
               BlocProvider(
                   create: (context) =>
                       NewPostCubit(context.read(), context.read())),
@@ -188,11 +191,20 @@ class MyApp extends StatelessWidget {
                 create: (context) =>
                     TimerCubit.duration(const Duration(seconds: 30)),
               ),
+
               BlocProvider(
                   create: (context) => CreateQuizQuestionCubit(
                         context.read(),
                         context.read(),
                       )),
+              BlocProvider(
+                  create: (context) => ActivityFeedCubit(
+                      context.read(),
+                      context.read(),
+                      context.read(),
+                      context.read(),
+                      context.read(),
+                      context.read())),
             ],
             child: Builder(builder: (context) {
               return MaterialApp(

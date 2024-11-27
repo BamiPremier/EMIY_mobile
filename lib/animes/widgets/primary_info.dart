@@ -75,17 +75,17 @@ class _PrimaryInfoState extends State<PrimaryInfo>
                       ),
                 )),
           if (anime.animeStatus != null)
-            _Status(status: anime.animeStatus!)
+            Status(status: anime.animeStatus!)
         ],
       );
     });
   }
 }
 
-class _Status extends StatelessWidget {
+class Status extends StatelessWidget {
   final AnimeStatus status;
 
-  const _Status({required this.status});
+  const Status({required this.status});
 
   @override
   Widget build(BuildContext context) {

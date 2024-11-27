@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:potatoes/libs.dart'; 
+import 'package:potatoes/libs.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
-import 'package:umai/common/utils/validators.dart'; 
-import 'package:umai/common/bloc/action_comment_cubit.dart'; 
+import 'package:umai/common/utils/validators.dart';
+import 'package:umai/common/bloc/action_comment_cubit.dart';
 import 'package:umai/common/models/comment.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/svg_utils.dart';
@@ -39,10 +39,7 @@ class _CommentInputState<C extends XCommonCubit,
               if (state is CommentItemSuccessState) {
                 setState(() {
                   _commentController.clear();
-
                 });
-                
-                
               }
             },
             builder: (context, state) => SafeArea(
@@ -85,24 +82,23 @@ class _CommentInputState<C extends XCommonCubit,
                               backgroundColor: Theme.of(context).primaryColor,
                               radius: 24,
                               child: state is XLoadingState
-                                ? const SizedBox(
-                                    width: 16,
-                                    height: 16,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      color: AppTheme.black,
-                                    ),
-                                  )
-                                : toSvgIcon(
-                                    icon: Assets.iconsDirectionUp,
-                                    size: 16.0
-                                  )
-                          ),
+                                  ? const SizedBox(
+                                      width: 16,
+                                      height: 16,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: AppTheme.black,
+                                      ),
+                                    )
+                                  : toSvgIcon(
+                                      icon: Assets.iconsDirectionUp,
+                                      size: 16.0)),
                           onPressed: () {
                             if (Validators.empty(_commentController.text) ==
                                 null) {
-                              context.read<A>()
-                                .comment(content: _commentController.text);
+                              context
+                                  .read<ActionCommentBaseCubit<C>>()
+                                  .comment(content: _commentController.text);
                             }
                           },
                         ),
