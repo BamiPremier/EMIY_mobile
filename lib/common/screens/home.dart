@@ -4,27 +4,22 @@ import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/account/screens/account.dart';
 import 'package:umai/account/screens/person_account.dart';
-import 'package:umai/activitie/screens/home.dart';
-import 'package:umai/animes/bloc/load_episode_anime_cubit.dart';
+import 'package:umai/activity/screens/home.dart'; 
 import 'package:umai/animes/screens/anime_details.dart';
 import 'package:umai/animes/screens/home.dart';
 import 'package:umai/animes/widgets/episode_head.dart';
 import 'package:umai/common/bloc/link_cubit.dart';
 import 'package:umai/common/bloc/notification_cubit.dart';
-import 'package:umai/common/screens/common_details.dart';
-import 'package:umai/common/services/home_quiz_service.dart';
-import 'package:umai/common/services/notification_service.dart';
-import 'package:umai/common/services/home_anime_service.dart';
+import 'package:umai/common/screens/common_details.dart'; 
+import 'package:umai/common/services/notification_service.dart'; 
 import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/common/widgets/search_widget.dart';
 import 'package:umai/quiz/screens/home.dart';
-import 'package:umai/quiz/screens/quiz_details.dart';
-import 'package:umai/social/bloc/post_feed_cubit.dart';
+import 'package:umai/quiz/screens/quiz_details.dart'; 
 import 'package:umai/social/screens/home.dart';
 import 'package:umai/social/widgets/head_post.dart';
 import 'package:umai/utils/assets.dart';
-import 'package:umai/utils/svg_utils.dart';
-import 'package:umai/utils/themes.dart';
+import 'package:umai/utils/svg_utils.dart'; 
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -34,23 +29,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with CompletableMixin {
-  static const int _mainPageIndex = 0;
-  late final postFeedCubit =
-      PostFeedCubit(context.read(), context.read(), context.read());
+  int index = 1;
 
   late final pages = [
-    {
-      'title': 'Social',
-      'page': SocialHomeScreen.get(context: context, cubit: postFeedCubit)
-    },
+    {'title': 'Social', 'page': SocialHomeScreen()},
     {'title': 'Actu', 'page': ActuHomeScreen()},
     {'title': 'Animes', 'page': AnimeHomeScreen()},
     {'title': 'Quiz', 'page': QuizHomeScreen()},
   ];
-  final pageController = PageController(initialPage: _mainPageIndex);
-  int index = 0;
+  final pageController = PageController(initialPage: 1);
 
-  void setPage([int value = _mainPageIndex]) {
+  void setPage([int value = 0]) {
     setState(() {
       pageController.jumpToPage(value);
       index = value;
@@ -67,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> with CompletableMixin {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: index == _mainPageIndex,
+      canPop: index == 0,
       onPopInvokedWithResult: (bool didPop, dynamic result) {
         if (!didPop) setPage();
       },

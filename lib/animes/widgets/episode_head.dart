@@ -1,5 +1,4 @@
-import 'dart:developer';
-
+ 
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/bloc/episode_cubit.dart';

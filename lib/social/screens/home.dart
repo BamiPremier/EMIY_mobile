@@ -12,15 +12,7 @@ import 'package:umai/social/widgets/item_post.dart';
 import 'package:umai/social/widgets/new_post_banner.dart';
 
 class SocialHomeScreen extends StatefulWidget {
-  static Widget get(
-      {required BuildContext context, required PostFeedCubit cubit}) {
-    return BlocProvider.value(
-      value: cubit,
-      child: const SocialHomeScreen._(),
-    );
-  }
-
-  const SocialHomeScreen._();
+  
 
   @override
   State<SocialHomeScreen> createState() => _SocialHomeScreenState();

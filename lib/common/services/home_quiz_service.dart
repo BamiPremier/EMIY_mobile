@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
-import 'package:umai/quiz/bloc/load_quiz_cubit.dart';
-import 'package:umai/quiz/widgets/item_quiz.dart';
+import 'package:umai/quiz/bloc/load_quiz_cubit.dart'; 
 import 'package:umai/quiz/widgets/quiz_block.dart';
 
 class HomeQuizService {

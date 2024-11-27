@@ -2,8 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/auto_list/widgets/auto_list_view.dart';
 import 'package:potatoes/libs.dart';
-import 'package:umai/animes/bloc/episode_cubit.dart';
-import 'package:umai/animes/bloc/load_episode_anime_cubit.dart';
+import 'package:umai/animes/bloc/episode_cubit.dart'; 
 import 'package:umai/animes/models/episode.dart';
 import 'package:umai/animes/services/episode_cubit_manager.dart';
 import 'package:umai/common/bloc/action_comment_cubit.dart';

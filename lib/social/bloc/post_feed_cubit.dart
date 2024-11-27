@@ -1,19 +1,16 @@
 import 'package:potatoes/auto_list.dart';
-import 'package:potatoes/libs.dart';
-import 'package:umai/common/services/person_cubit_manager.dart';
+import 'package:potatoes/libs.dart'; 
 import 'package:umai/social/models/post.dart';
 import 'package:umai/social/services/post_cubit_manager.dart';
 import 'package:umai/social/services/social_service.dart';
 
 class PostFeedCubit extends AutoListCubit<Post> {
-  final SocialService socialService;
-  final PersonCubitManager personCubitManager;
+  final SocialService socialService; 
   final PostCubitManager cubitManager;
 
   PostFeedCubit(
     this.socialService,
-    this.cubitManager,
-    this.personCubitManager,
+    this.cubitManager, 
   ) : super(provider: socialService.getFeed);
 
   @override
@@ -22,10 +19,7 @@ class PostFeedCubit extends AutoListCubit<Post> {
     if (change.nextState is AutoListReadyState<Post>) {
       cubitManager
           .addAll((change.nextState as AutoListReadyState<Post>).items.items);
-      for (var post
-          in (change.nextState as AutoListReadyState<Post>).items.items) {
-        personCubitManager.add(post.user);
-      }
+       
     }
   }
 }

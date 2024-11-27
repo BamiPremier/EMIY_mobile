@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes_secured_preferences/potatoes_secured_preferences.dart';
-import 'package:umai/animes/bloc/episode_cubit.dart';
-import 'package:umai/animes/bloc/load_episode_anime_cubit.dart';
+import 'package:umai/animes/bloc/episode_cubit.dart'; 
 import 'package:umai/animes/models/episode.dart';
 import 'package:umai/animes/services/episode_cubit_manager.dart';
 import 'package:umai/animes/widgets/episode_head.dart';

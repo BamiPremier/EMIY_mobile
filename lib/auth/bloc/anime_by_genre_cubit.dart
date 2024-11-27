@@ -1,4 +1,4 @@
-import 'package:potatoes/auto_content/bloc/auto_content_cubit.dart';
+ 
 import 'package:potatoes/auto_list.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/models/anime.dart';
