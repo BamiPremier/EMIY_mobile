@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:readmore/readmore.dart';
-import 'package:umai/activity/widgets/activity/actu_btn_type1.dart';
-import 'package:umai/activity/widgets/activity/actu_head.dart';
+import 'package:umai/activity/widgets/activity/activity_btn_type1.dart';
+import 'package:umai/activity/widgets/activity/activity_head.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/screens/common_details.dart';
 import 'package:umai/common/services/person_cubit_manager.dart';
 import 'package:umai/social/bloc/post_cubit.dart';
 import 'package:umai/social/models/post.dart';
 import 'package:umai/social/services/post_cubit_manager.dart';
-import 'package:umai/social/widgets/post_image.dart'; 
+import 'package:umai/social/widgets/post_image.dart';
 
 class NewPostUserWidget extends StatefulWidget {
   const NewPostUserWidget._({required this.targetEntity});
@@ -44,13 +44,13 @@ class _NewPostUserWidgetState extends State<NewPostUserWidget> {
     return BlocBuilder<PostCubit, XCommonState>(builder: (context, state) {
       final post = postCubit.x as Post;
       return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-       ActuHeadWidget.get(
-              targetEntity: widget.targetEntity,
-              context: context,
-              user: post.user),
-       
+        ActivityHeadWidget.get(
+            targetEntity: widget.targetEntity,
+            context: context,
+            user: post.user),
         Padding(
-            padding: const EdgeInsets.only(bottom: 16, left: 16, right: 16,top:8),
+            padding:
+                const EdgeInsets.only(bottom: 16, left: 16, right: 16, top: 8),
             child: AnimatedSize(
                 duration: const Duration(milliseconds: 300),
                 alignment: Alignment.topCenter,
@@ -68,14 +68,13 @@ class _NewPostUserWidgetState extends State<NewPostUserWidget> {
                   trimExpandedText: ' moins',
                 ))),
         if (post.image?.isNotEmpty ?? false) PostImage(url: post.image!),
-        ActuBtnType1Widget<Post>(onPressed: () {
+        ActivityBtnType1Widget<Post>(onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(
                 builder: (context) => CommonDetailsScreen.fromPost(
-                    context: context,
-                    post: post,
-                )
-            ),
+                      context: context,
+                      post: post,
+                    )),
           );
         })
       ]);

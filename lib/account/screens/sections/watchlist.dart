@@ -11,7 +11,7 @@ import 'package:umai/common/bloc/person_cubit.dart';
 
 class WatchList extends StatefulWidget {
   final bool currentUser;
-  WatchList({super.key, this.currentUser = true});
+  const WatchList({super.key, this.currentUser = true});
 
   @override
   State<WatchList> createState() => _WatchListState();

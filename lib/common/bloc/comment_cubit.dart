@@ -47,9 +47,11 @@ class CommentCubit<T> extends ObjectCubit<Comment, CommentState> {
     update(newComment);
     service
         .likeComment(
-      commentId: comment.id,
-    )
-        .then((updatecomment) {}, onError: (error, trace) {
+          commentId: comment.id,
+        )
+        .then((updatecomment) {})
+        .onError((error, trace) {
+      print(error);
       emit(CommentErrorState(error, trace));
       emit(stateBefore);
     });

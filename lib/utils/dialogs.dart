@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:umai/common/services/api_error.dart';
 
 String _translateError(dynamic error) {
   const String noInternetMessage =
@@ -7,20 +8,30 @@ String _translateError(dynamic error) {
       'Vous n\'êtes pas connecté à votre compte';
   const String defaultMessage =
       'Une erreur est survenue, veuillez-réessayer plus tard.';
-  if (error is String) return error;
-  if (error.isUnauthenticatedError) return unauthenticatedMessage;
-  if (error.isNoInternetConnectionError) return noInternetMessage;
-  if (error.trace != null) return defaultMessage;
 
-  return error.message ?? defaultMessage;
+  if (error is String) return error;
+
+  if (error is String) return error;
+
+  if (error == null || error is! ApiError) return defaultMessage;
+
+  final apiError = error;
+
+  if (apiError.error != null) {
+    return apiError.error!;
+  }
+  if (apiError.isUnauthenticatedError) return unauthenticatedMessage;
+  if (apiError.isNoInternetConnectionError) return noInternetMessage;
+
+  return defaultMessage;
 }
 
 void showSuccessToast({
   required BuildContext context,
   required String content,
 }) {
-  _showToast(textColor: null, bgColor: null, content: content, context: context);
- 
+  _showToast(
+      textColor: null, bgColor: null, content: content, context: context);
 }
 
 void showBlackErrorToast(

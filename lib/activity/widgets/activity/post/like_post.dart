@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
-import 'package:umai/activity/widgets/activity/actu_btn_type1.dart';
-import 'package:umai/activity/widgets/activity/actu_head.dart';
+import 'package:umai/activity/widgets/activity/activity_btn_type1.dart';
+import 'package:umai/activity/widgets/activity/activity_head.dart';
 import 'package:umai/activity/widgets/activity/post/post_info.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/bloc/person_cubit.dart';
@@ -59,7 +59,7 @@ class LikePostWidget extends StatefulWidget {
 }
 
 class _LikePostWidgetState extends State<LikePostWidget> {
-  final isCollapsed = ValueNotifier<bool>(true); 
+  final isCollapsed = ValueNotifier<bool>(true);
   @override
   Widget build(BuildContext context) {
     return (widget.post == null) ? buildNoPost() : buildPost(widget.post!);
@@ -75,7 +75,7 @@ class _LikePostWidgetState extends State<LikePostWidget> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ActuHeadWidget.get(
+            ActivityHeadWidget.get(
                 targetEntity: widget.targetEntity,
                 context: context,
                 user: user),
@@ -114,29 +114,27 @@ class _LikePostWidgetState extends State<LikePostWidget> {
             Navigator.of(context).push(
               MaterialPageRoute(
                   builder: (context) => CommonDetailsScreen.fromPost(
-                      context: context,
-                      post: post,
-                  )
-              ),
+                        context: context,
+                        post: post,
+                      )),
             );
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ActuHeadWidget.get(
+              ActivityHeadWidget.get(
                   targetEntity: widget.targetEntity,
                   context: context,
                   user: post.user),
               const SizedBox(height: 8),
               const PostInfo(),
-              ActuBtnType1Widget<Post>(onPressed: () {
+              ActivityBtnType1Widget<Post>(onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                       builder: (context) => CommonDetailsScreen.fromPost(
-                          context: context,
-                          post: post,
-                      )
-                  ),
+                            context: context,
+                            post: post,
+                          )),
                 );
               })
             ],

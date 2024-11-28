@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:readmore/readmore.dart';
-import 'package:umai/activity/widgets/activity/actu_btn_type3.dart';
-import 'package:umai/activity/widgets/activity/actu_head.dart';
+import 'package:umai/activity/widgets/activity/activity_btn_type3.dart';
+import 'package:umai/activity/widgets/activity/activity_head.dart';
 import 'package:umai/activity/widgets/activity/anime/episode_info.dart';
 import 'package:umai/animes/bloc/episode_cubit.dart';
 import 'package:umai/animes/models/episode.dart';
@@ -11,19 +11,21 @@ import 'package:umai/common/bloc/action_comment_cubit.dart';
 import 'package:umai/common/bloc/comment_cubit.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/models/comment.dart';
-import 'package:umai/common/screens/common_details.dart'; 
+import 'package:umai/common/screens/common_details.dart';
 
 class EpisodeCommentWidget extends StatefulWidget {
   final Episode? episode;
   final Comment comment;
   final String targetEntity;
 
-  const EpisodeCommentWidget.forNoEpisode({super.key, 
+  const EpisodeCommentWidget.forNoEpisode({
+    super.key,
     required this.comment,
     required this.targetEntity,
   }) : episode = null;
 
-  const EpisodeCommentWidget.forEpisode({super.key, 
+  const EpisodeCommentWidget.forEpisode({
+    super.key,
     required this.episode,
     required this.comment,
     required this.targetEntity,
@@ -85,7 +87,7 @@ class _EpisodeCommentWidgetState extends State<EpisodeCommentWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ActuHeadWidget.get(
+        ActivityHeadWidget.get(
             targetEntity: widget.targetEntity,
             context: context,
             user: widget.comment.user),
@@ -142,11 +144,11 @@ class _EpisodeCommentWidgetState extends State<EpisodeCommentWidget> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ActuHeadWidget.get(
+              ActivityHeadWidget.get(
                   targetEntity: widget.targetEntity,
                   context: context,
                   user: widget.comment.user),
-              Padding(
+              Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: AnimatedSize(
                       duration: const Duration(milliseconds: 300),
@@ -166,16 +168,14 @@ class _EpisodeCommentWidgetState extends State<EpisodeCommentWidget> {
                       ))),
               const SizedBox(height: 8),
               const EpisodeInfo(),
-              ActuBtnType3Widget<Episode, XCommonCubit<Episode>,
+              ActivityBtnType3Widget<Episode, XCommonCubit<Episode>,
                       ActionCommentBaseCubit<XCommonCubit<Episode>>>(
                   actionCommentBaseCubit: actionCommentCubit,
                   onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => CommonDetailsScreen.fromEpisode(
-                          context: context,
-                          episode: episode,
-                      )
-                  ))
-              )
+                            context: context,
+                            episode: episode,
+                          ))))
             ],
           );
         });

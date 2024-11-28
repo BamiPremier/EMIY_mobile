@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:readmore/readmore.dart';
 import 'package:umai/account/screens/person_account.dart';
-import 'package:umai/activity/widgets/activity/post/post_actu_image.dart';
+import 'package:umai/activity/widgets/activity/post/post_activity_image.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
 import 'package:umai/common/screens/common_details.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
@@ -28,7 +28,7 @@ class _PostInfoState extends State<PostInfo> {
 
   @override
   Widget build(BuildContext context) {
-     late final postCubit = context.read<PostCubit>();
+    late final postCubit = context.read<PostCubit>();
 
     return BlocBuilder<PostCubit, XCommonState>(builder: (context, state) {
       final post = postCubit.x as Post;
@@ -36,9 +36,8 @@ class _PostInfoState extends State<PostInfo> {
         onTap: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-                builder: (context) => CommonDetailsScreen.fromPost(
-                    context: context,
-                    post: post)),
+                builder: (context) =>
+                    CommonDetailsScreen.fromPost(context: context, post: post)),
           );
         },
         child: Container(
@@ -79,11 +78,10 @@ class _PostInfoState extends State<PostInfo> {
                                       .textTheme
                                       .bodySmall!
                                       .copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSurfaceVariant,
-                                        fontWeight: FontWeight.bold
-                                      ),
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurfaceVariant,
+                                          fontWeight: FontWeight.bold),
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 onTap: () {
@@ -100,9 +98,10 @@ class _PostInfoState extends State<PostInfo> {
                               style: Theme.of(context)
                                   .textTheme
                                   .labelSmall!
-                                  .copyWith(color: Theme.of(context)
-                                    .colorScheme
-                                    .onSurfaceVariant),
+                                  .copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurfaceVariant),
                             ),
                           ],
                         ),
@@ -131,7 +130,7 @@ class _PostInfoState extends State<PostInfo> {
                             )),
                       ])),
               if (post.image?.isNotEmpty ?? false)
-                PostActuImage(url: post.image!),
+                PostActivityImage(url: post.image!),
             ],
           ),
         ),

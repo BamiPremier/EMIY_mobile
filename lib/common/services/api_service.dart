@@ -4,6 +4,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:potatoes/auto_list/models/paginated_list.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart' as potatoes;
+import 'api_error.dart';
 
 class ApiLinks extends potatoes.Links {
   const ApiLinks();
@@ -44,15 +45,16 @@ class ApiService extends potatoes.ApiService {
         throw response.data['detail'];
       }
     } on DioException catch (e) {
-      throw potatoes.ApiError.fromDio(e);
+    
+
+      throw ApiError.fromApi(
+          (e.response!.data as Map<String, dynamic>)['error']);
     } on Map<String, dynamic> catch (errors, s) {
-      // API error as Map
       throw ApiError.fromApi(errors, s);
     } on String catch (e) {
-      // API error as single string. Is either 'error' or 'detail'
       throw ApiError.unknown(e);
     } catch (e, s) {
-      throw potatoes.ApiError.unknown(e.toString(), s);
+      throw ApiError.unknown(e.toString(), s);
     }
   }
 
@@ -65,29 +67,6 @@ class ApiService extends potatoes.ApiService {
         page: data['page'],
         total: data['total']);
   }
-}
-
-class ApiError extends potatoes.ApiError {
-  final Map<String, String>? errors;
-
-  ApiError.fromDio(super.dio)
-      : errors = null,
-        super.fromDio();
-
-  const ApiError.unknown(super.message, [super.trace])
-      : errors = null,
-        super.unknown();
-
-  ApiError.fromApi(Map<String, dynamic> errors, [StackTrace? trace])
-      : errors = errors.map((key, value) => MapEntry(key, value.toString())),
-        super.unknown(null, trace);
-
-  @override
-  bool get isUnauthenticatedError =>
-      super.statusCode == 400 || super.isUnauthenticatedError;
-
-  @override
-  List<Object?> get props => [...super.props, errors];
 }
 
 Future<CacheOptions> cacheStoreOptions() {

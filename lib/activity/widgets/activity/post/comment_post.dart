@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
 import 'package:readmore/readmore.dart';
-import 'package:umai/activity/widgets/activity/actu_btn_type3.dart';
-import 'package:umai/activity/widgets/activity/actu_head.dart';
+import 'package:umai/activity/widgets/activity/activity_btn_type3.dart';
+import 'package:umai/activity/widgets/activity/activity_head.dart';
 import 'package:umai/activity/widgets/activity/post/post_info.dart';
 import 'package:umai/common/bloc/action_comment_cubit.dart';
 import 'package:umai/common/bloc/comment_cubit.dart';
@@ -87,7 +87,7 @@ class _CommentPostWidgetState extends State<CommentPostWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ActuHeadWidget.get(
+        ActivityHeadWidget.get(
             targetEntity: widget.targetEntity,
             context: context,
             user: widget.comment.user),
@@ -145,16 +145,15 @@ class _CommentPostWidgetState extends State<CommentPostWidget> {
             Navigator.of(context).push(
               MaterialPageRoute(
                   builder: (context) => CommonDetailsScreen.fromPost(
-                      context: context,
-                      post: post,
-                  )
-              ),
+                        context: context,
+                        post: post,
+                      )),
             );
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ActuHeadWidget.get(
+              ActivityHeadWidget.get(
                   targetEntity: widget.targetEntity,
                   context: context,
                   user: widget.comment.user),
@@ -181,15 +180,14 @@ class _CommentPostWidgetState extends State<CommentPostWidget> {
                         trimExpandedText: ' moins',
                       ))),
               const PostInfo(),
-              ActuBtnType3Widget<Post, XCommonCubit<Post>,
+              ActivityBtnType3Widget<Post, XCommonCubit<Post>,
                   ActionCommentBaseCubit<XCommonCubit<Post>>>(
                 actionCommentBaseCubit: actionCommentCubit,
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                         builder: (context) => CommonDetailsScreen.fromPost(
-                            context: context,
-                            post: post)),
+                            context: context, post: post)),
                   );
                 },
               )

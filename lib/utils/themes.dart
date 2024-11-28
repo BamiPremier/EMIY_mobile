@@ -173,7 +173,6 @@ abstract class AppTheme {
           maximumSize: const Size.fromHeight(40.0),
         ),
       ),
-
       radioTheme: RadioThemeData(
         fillColor:
             WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
@@ -219,9 +218,8 @@ abstract class AppTheme {
           )),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: colorScheme.onSurfaceVariant,
-          side: const BorderSide(width: 2.0)
-        ),
+            foregroundColor: colorScheme.onSurfaceVariant,
+            side: const BorderSide(width: 2.0)),
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(

@@ -37,19 +37,7 @@ class CommentItemSuccessState extends CubitInformationState with XCommonState {
   List<Object?> get props => [comment];
 }
 
-// class SendReportLoadingState extends CubitLoadingState with XCommonState {
-//   const SendReportLoadingState() : super();
-// }
-
-// class SuccessSendReportItemState extends CubitSuccessState with XCommonState {
-//   final XItem item;
-
-//   const SuccessSendReportItemState(this.item);
-
-//   @override
-//   List<Object?> get props => [item];
-// }
-
+ 
 class XErrorState extends CubitErrorState with XCommonState {
   XErrorState(super.error, [super.trace]);
 }

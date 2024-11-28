@@ -141,7 +141,7 @@ Future<void> blockUser({required BuildContext context}) {
                               children: <TextSpan>[
                                 const TextSpan(
                                     text:
-                                        'Tu ne verras plus les contenus de cette personne dans tes fils d\'actualité. '),
+                                        'Tu ne verras plus les contenus de cette personne dans tes fils d\'activityalité. '),
                                 TextSpan(
                                   text: personCubit.user.username,
                                   style: Theme.of(context)

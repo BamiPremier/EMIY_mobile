@@ -16,8 +16,6 @@ import 'package:umai/common/widgets/action_comment_response.dart';
 import 'package:umai/common/widgets/empty_builder.dart';
 import 'package:umai/common/widgets/error_builder.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
-import 'package:umai/social/bloc/post_feed_cubit.dart';
-import 'package:umai/social/models/post.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/svg_utils.dart';
@@ -78,8 +76,12 @@ class _ItemCommentResponseState<T extends XItem>
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CommentCubit<T>, CommentState>(
-        builder: (context, state) {
+    return BlocConsumer<CommentCubit<T>, CommentState>(
+        listener: (context, state) {
+      if (state is CommentErrorState) {
+        showErrorToast(content: state.error, context: context);
+      }
+    }, builder: (context, state) {
       return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,

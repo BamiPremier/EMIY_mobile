@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:potatoes/libs.dart'; 
-import 'package:umai/account/screens/person_account.dart'; 
+import 'package:potatoes/libs.dart';
+import 'package:umai/account/screens/person_account.dart';
 import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/quiz/bloc/quiz_manage_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
-import 'package:umai/quiz/services/quiz_cubit_manager.dart'; 
+import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/svg_utils.dart';
-import 'package:umai/utils/themes.dart'; 
+import 'package:umai/utils/themes.dart';
 
 class ReportedQuizWidget extends StatelessWidget {
   final String targetEntity;
@@ -35,7 +35,8 @@ class ReportedQuizWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            margin: const EdgeInsets.only(top: 16, left: 16, right: 16),
+            padding: const EdgeInsets.symmetric(vertical: 8),
             child: Row(
               children: <Widget>[
                 Stack(
@@ -89,8 +90,8 @@ class ReportedQuizWidget extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Container(
-            padding:
-                const EdgeInsets.all(8).add(const EdgeInsets.only(left: 8)),
+            margin: const EdgeInsets.symmetric(horizontal: 8),
+            padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.onInverseSurface,
                 borderRadius: BorderRadius.circular(8)),

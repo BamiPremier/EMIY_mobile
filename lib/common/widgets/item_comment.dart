@@ -73,8 +73,12 @@ class _ItemCommentState<T extends XItem> extends State<ItemComment<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CommentCubit<T>, CommentState>(
-        builder: (context, state) {
+    return BlocConsumer<CommentCubit<T>, CommentState>(
+        listener: (context, state) {
+      if (state is CommentErrorState) {
+        showErrorToast(content: state.error, context: context);
+      }
+    }, builder: (context, state) {
       return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,

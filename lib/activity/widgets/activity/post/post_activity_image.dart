@@ -6,10 +6,10 @@ import 'package:umai/common/services/cache_manager.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/svg_utils.dart';
 
-class PostActuImage extends StatelessWidget {
+class PostActivityImage extends StatelessWidget {
   final String url;
 
-  const PostActuImage({super.key, required this.url});
+  const PostActivityImage({super.key, required this.url});
 
   @override
   Widget build(BuildContext context) {

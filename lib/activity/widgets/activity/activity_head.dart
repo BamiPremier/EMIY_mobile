@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:potatoes/libs.dart'; 
+import 'package:potatoes/libs.dart';
 import 'package:umai/account/screens/person_account.dart';
 import 'package:umai/activity/models/activity.dart';
-import 'package:umai/common/bloc/person_cubit.dart'; 
+import 'package:umai/common/bloc/person_cubit.dart';
 import 'package:umai/common/models/user.dart';
-import 'package:umai/common/services/person_cubit_manager.dart'; 
-import 'package:umai/common/widgets/profile_picture.dart'; 
+import 'package:umai/common/services/person_cubit_manager.dart';
+import 'package:umai/common/widgets/profile_picture.dart';
 import 'package:umai/utils/assets.dart';
-import 'package:umai/utils/svg_utils.dart'; 
+import 'package:umai/utils/svg_utils.dart';
 
-class ActuHeadWidget extends StatelessWidget {
+class ActivityHeadWidget extends StatelessWidget {
   final String targetEntity;
   late final String action;
 
@@ -20,11 +20,11 @@ class ActuHeadWidget extends StatelessWidget {
   }) {
     return BlocProvider.value(
       value: context.read<PersonCubitManager>().get(user),
-      child: ActuHeadWidget._(targetEntity: targetEntity),
+      child: ActivityHeadWidget._(targetEntity: targetEntity),
     );
   }
 
-  ActuHeadWidget._({required this.targetEntity}) {
+  ActivityHeadWidget._({required this.targetEntity}) {
     action = buildActionText(targetEntity: targetEntity);
   }
 

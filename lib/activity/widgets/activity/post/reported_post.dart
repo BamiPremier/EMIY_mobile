@@ -10,7 +10,7 @@ import 'package:umai/social/models/post.dart';
 import 'package:umai/social/services/post_cubit_manager.dart';
 import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/svg_utils.dart';
-import 'package:umai/utils/themes.dart'; 
+import 'package:umai/utils/themes.dart';
 
 class ReportedPostWidget extends StatefulWidget {
   const ReportedPostWidget._({
@@ -41,7 +41,7 @@ class ReportedPostWidget extends StatefulWidget {
 class _ReportedPostWidgetState extends State<ReportedPostWidget> {
   late final postCubit = context.read<PostCubit>();
   final isCollapsed = ValueNotifier<bool>(true);
- 
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PostCubit, XCommonState>(builder: (context, state) {
@@ -50,7 +50,8 @@ class _ReportedPostWidgetState extends State<ReportedPostWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            margin: const EdgeInsets.only(top: 16, left: 16, right: 16),
+            padding: const EdgeInsets.symmetric(vertical: 8),
             child: Row(
               children: <Widget>[
                 Stack(
@@ -102,9 +103,12 @@ class _ReportedPostWidgetState extends State<ReportedPostWidget> {
               ],
             ),
           ),
+          SizedBox(
+            height: 8,
+          ),
           Container(
-            padding:
-                const EdgeInsets.all(8).add(const EdgeInsets.only(left: 8)),
+            margin: const EdgeInsets.symmetric(horizontal: 8),
+            padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.onInverseSurface,
                 borderRadius: BorderRadius.circular(8)),
@@ -125,10 +129,9 @@ class _ReportedPostWidgetState extends State<ReportedPostWidget> {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                           builder: (context) => CommonDetailsScreen.fromPost(
-                              context: context,
-                              post: post,
-                          )
-                      ),
+                                context: context,
+                                post: post,
+                              )),
                     );
                   },
                   style: FilledButton.styleFrom(

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
-import 'package:umai/activity/widgets/activity/actu_btn_type2.dart';
-import 'package:umai/activity/widgets/activity/actu_head.dart';
+import 'package:umai/activity/widgets/activity/activity_btn_type2.dart';
+import 'package:umai/activity/widgets/activity/activity_head.dart';
 import 'package:umai/activity/widgets/activity/anime/anime_info.dart';
 import 'package:umai/animes/models/anime.dart';
 import 'package:umai/animes/services/anime_cubit_manager.dart';
 import 'package:umai/common/bloc/anime_manip_cubit.dart';
 import 'package:umai/common/bloc/person_cubit.dart';
 import 'package:umai/common/models/user.dart';
-import 'package:umai/common/services/person_cubit_manager.dart'; 
+import 'package:umai/common/services/person_cubit_manager.dart';
 
 class AnimeAddViewedWidget extends StatelessWidget {
   final String targetEntity;
@@ -36,7 +36,6 @@ class AnimeAddViewedWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AnimeManipCubit, AnimeManipState>(
       builder: (context, state) {
-        
         final personCubit = context.read<PersonCubit>();
 
         final user = personCubit.user;
@@ -44,11 +43,11 @@ class AnimeAddViewedWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            ActuHeadWidget.get(
+            ActivityHeadWidget.get(
                 targetEntity: targetEntity, context: context, user: user),
             const SizedBox(height: 8),
             const AnimeInfo(),
-            const ActuBtnType2Widget(),
+            const ActivityBtnType2Widget(),
           ],
         );
       },

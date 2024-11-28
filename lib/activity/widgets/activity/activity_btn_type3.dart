@@ -7,43 +7,45 @@ import 'package:umai/common/screens/common_details.dart';
 import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/themes.dart';
 
-class ActionCommentResponse<T extends XItem, C extends XCommonCubit<T>,
+class ActivityBtnType3Widget<T extends XItem, C extends XCommonCubit<T>,
     A extends ActionCommentBaseCubit<C>> extends StatefulWidget {
-  final ActionCommentBaseCubit actionCommentBaseCubit;
+  final A actionCommentBaseCubit;
+  final VoidCallback onPressed;
+  const ActivityBtnType3Widget(
+      {super.key,
+      required this.onPressed,
+      required this.actionCommentBaseCubit});
 
-  const ActionCommentResponse(
-      {super.key, required this.actionCommentBaseCubit});
   @override
-  State<ActionCommentResponse<T, C, A>> createState() =>
-      _ActionCommentResponseState<T, C, A>();
+  State<ActivityBtnType3Widget<T, C, A>> createState() =>
+      _ActivityBtnType3WidgetState<T, C, A>();
 }
 
-class _ActionCommentResponseState<T extends XItem, C extends XCommonCubit<T>,
+class _ActivityBtnType3WidgetState<T extends XItem, C extends XCommonCubit<T>,
         A extends ActionCommentBaseCubit<C>>
-    extends State<ActionCommentResponse<T, C, A>> {
+    extends State<ActivityBtnType3Widget<T, C, A>> {
   late final commentCubit = context.read<CommentCubit<T>>();
-  late final comment = commentCubit.comment;
 
   @override
-  void dispose() {
-    // loadCommentCubit.close();
-    super.dispose();
+  void initState() {
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<CommentCubit<T>, CommentState>(
-        listener: (context, state) {
-      if (state is CommentErrorState) {
-        showErrorToast(content: state.error, context: context);
-      }
-    }, builder: (context, state) {
-      return Padding(
-        padding: const EdgeInsets.only(right: 16.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(children: [
+    return BlocProvider.value(
+        value: commentCubit,
+        child: BlocConsumer<CommentCubit<T>, CommentState>(
+          listener: (context, state) {
+            if (state is CommentErrorState) {
+              showErrorToast(content: state.error, context: context);
+            }
+          },
+          builder: (context, state) {
+            return Row(children: [
+              const SizedBox(
+                width: 4,
+              ),
               commentCubit.comment.hasLiked
                   ? TextButton(
                       onPressed: () => commentCubit.unLikeComment(),
@@ -70,32 +72,15 @@ class _ActionCommentResponseState<T extends XItem, C extends XCommonCubit<T>,
                           style: Theme.of(context).textTheme.labelSmall!),
                     ),
               TextButton(
-                onPressed: () {
-                  widget.actionCommentBaseCubit.set(comment);
-                },
+                onPressed: widget.onPressed,
                 style: TextButton.styleFrom(
                   padding: EdgeInsets.zero,
                   textStyle: Theme.of(context).textTheme.labelSmall,
                 ),
                 child: const Text('répondre'),
               )
-            ]),
-            if (comment.commentResponsesCount != 0)
-              TextButton(
-                onPressed: () {
-                  commentCubit.seeResponse();
-                },
-                style: TextButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  textStyle: Theme.of(context).textTheme.labelSmall,
-                ),
-                child: Text((state is SeeCommentResponseState)
-                    ? 'voir moins'
-                    : 'voir ${comment.commentResponsesCount} réponse${comment.commentResponsesCount > 1 ? 's' : ''}'),
-              ),
-          ],
-        ),
-      );
-    });
+            ]);
+          },
+        ));
   }
 }

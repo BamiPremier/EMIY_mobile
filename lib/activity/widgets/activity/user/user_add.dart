@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:potatoes/libs.dart'; 
-import 'package:umai/activity/widgets/activity/actu_head.dart';
-import 'package:umai/common/bloc/person_cubit.dart'; 
-import 'package:umai/common/models/user.dart'; 
-import 'package:umai/common/services/person_cubit_manager.dart'; 
-import 'package:umai/common/widgets/item_user.dart'; 
+import 'package:potatoes/libs.dart';
+import 'package:umai/activity/widgets/activity/activity_head.dart';
+import 'package:umai/common/bloc/person_cubit.dart';
+import 'package:umai/common/models/user.dart';
+import 'package:umai/common/services/person_cubit_manager.dart';
+import 'package:umai/common/widgets/item_user.dart';
 
 class UserAddWidget extends StatelessWidget {
   final String targetEntity;
@@ -31,7 +31,7 @@ class UserAddWidget extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ActuHeadWidget.get(
+              ActivityHeadWidget.get(
                   targetEntity: targetEntity,
                   context: context,
                   user: personCubit.user),

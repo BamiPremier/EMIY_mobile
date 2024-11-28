@@ -8,14 +8,14 @@ import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/svg_utils.dart';
 import 'package:umai/utils/themes.dart'; 
 
-class ActuBtnType2Widget extends StatefulWidget {
-  const ActuBtnType2Widget({super.key});
+class ActivityBtnType2Widget extends StatefulWidget {
+  const ActivityBtnType2Widget({super.key});
 
   @override
-  State<ActuBtnType2Widget> createState() => _ActuBtnType2WidgetState();
+  State<ActivityBtnType2Widget> createState() => _ActivityBtnType2WidgetState();
 }
 
-class _ActuBtnType2WidgetState extends State<ActuBtnType2Widget>
+class _ActivityBtnType2WidgetState extends State<ActivityBtnType2Widget>
     with CompletableMixin {
   late final animeManipCubit = context.read<AnimeManipCubit>();
   @override

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
-import 'package:umai/activity/widgets/activity/actu_btn_type1.dart';
-import 'package:umai/activity/widgets/activity/actu_head.dart';
+import 'package:umai/activity/widgets/activity/activity_btn_type1.dart';
+import 'package:umai/activity/widgets/activity/activity_head.dart';
 import 'package:umai/activity/widgets/activity/anime/episode_info.dart';
 import 'package:umai/animes/bloc/episode_cubit.dart';
 import 'package:umai/animes/models/episode.dart';
@@ -67,7 +67,7 @@ class _LikeEpisodeWidgetState extends State<LikeEpisodeWidget> {
     return  Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ActuHeadWidget.get(
+            ActivityHeadWidget.get(
                 context: context,
                 targetEntity: widget.targetEntity,
                 user: user),
@@ -107,13 +107,13 @@ class _LikeEpisodeWidgetState extends State<LikeEpisodeWidget> {
         return  Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ActuHeadWidget.get(
+              ActivityHeadWidget.get(
                   context: context,
                   targetEntity: widget.targetEntity,
                   user: user),
               const SizedBox(height: 8),
               const EpisodeInfo(),
-              ActuBtnType1Widget<Episode>(
+              ActivityBtnType1Widget<Episode>(
                   onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => CommonDetailsScreen.fromEpisode(
                           context: context,
