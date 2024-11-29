@@ -51,7 +51,6 @@ class CommentCubit<T> extends ObjectCubit<Comment, CommentState> {
         )
         .then((updatecomment) {})
         .onError((error, trace) {
-      print(error);
       emit(CommentErrorState(error, trace));
       emit(stateBefore);
     });

@@ -54,6 +54,8 @@ class _CommentInputState<C extends XCommonCubit,
                               style: Theme.of(context).textTheme.bodyMedium,
                               readOnly: state is XLoadingState ? true : false,
                               controller: _commentController,
+                              maxLines: 3,
+                              minLines: 1,
                               decoration: InputDecoration(
                                 hintText: (ystate != null)
                                     ? 'Réponse à ${ystate.user.username}'

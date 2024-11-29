@@ -34,8 +34,7 @@ class PostFeedCubit extends AutoListCubit<Post> {
   }
 
   void deleteUserPost(User user) {
-    print("deleteUserPost");
-    if (state is AutoListReadyState<Post>) {
+      if (state is AutoListReadyState<Post>) {
       final list = (state as AutoListReadyState<Post>).items;
       var l = List.from(list.items)..removeWhere((p) => p.user.id == user.id);
       print("${l.length}t");

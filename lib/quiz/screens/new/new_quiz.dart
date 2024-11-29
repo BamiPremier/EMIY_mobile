@@ -27,8 +27,6 @@ class _NewQuizScreenState extends State<NewQuizScreen> with CompletableMixin {
   @override
   void initState() {
     super.initState();
-    print(quizCubit.state);
-    log(quizCubit.state.toString());
     if (quizCubit.state is QuizUpdateState) {
       setState(() {
         _titreController.text =
@@ -219,7 +217,7 @@ class _NewQuizScreenState extends State<NewQuizScreen> with CompletableMixin {
 
   void onEventReceived(BuildContext context, NewQuizState state) async {
     await waitForDialog();
-    print(state);
+
     if (state is QuizLoadingState) {
       loadingDialogCompleter = showLoadingBarrier(context: context);
     } else if (state is QuizCreatedState) {

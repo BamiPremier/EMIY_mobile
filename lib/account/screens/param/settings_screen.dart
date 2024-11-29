@@ -26,7 +26,7 @@ class _SettingsScreenState extends State<SettingsScreen>
   }
 
   Future<void> _fetchNotificationSettings() async {
-      await FirebaseMessaging.instance.getNotificationSettings();
+    await FirebaseMessaging.instance.getNotificationSettings();
     setState(() {});
   }
 
@@ -72,13 +72,10 @@ class _SettingsScreenState extends State<SettingsScreen>
               FutureBuilder<NotificationSettings>(
                 future: _getNotificationSettings(),
                 builder: (context, snapshot) {
-                  print(snapshot.connectionState);
-
                   final settings = snapshot.data;
                   final isAuthorized = settings?.authorizationStatus ==
                       AuthorizationStatus.authorized;
                   return SwitchListTile(
-
                     title: Text(
                       'Notifications générales',
                       style: Theme.of(context).textTheme.bodyLarge,
@@ -112,7 +109,8 @@ class _SettingsScreenState extends State<SettingsScreen>
                   'Utilisateurs bloqués',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
-                trailing: toSvgIcon(icon: Assets.iconsDirectionRight, size: 16.0),
+                trailing:
+                    toSvgIcon(icon: Assets.iconsDirectionRight, size: 16.0),
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => const BlockedUserScreen()));
@@ -127,7 +125,8 @@ class _SettingsScreenState extends State<SettingsScreen>
                   'Voir la politique de confidentialité',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
-                trailing: toSvgIcon(icon: Assets.iconsDirectionRight, size: 16.0),
+                trailing:
+                    toSvgIcon(icon: Assets.iconsDirectionRight, size: 16.0),
                 onTap: () {},
               ),
               ListTile(
@@ -135,7 +134,8 @@ class _SettingsScreenState extends State<SettingsScreen>
                   'Version',
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
-                trailing: toSvgIcon(icon: Assets.iconsDirectionRight, size: 16.0),
+                trailing:
+                    toSvgIcon(icon: Assets.iconsDirectionRight, size: 16.0),
                 subtitle: Text(
                   preferencesService.packageInfo.version,
                   style: Theme.of(context).textTheme.bodyMedium,

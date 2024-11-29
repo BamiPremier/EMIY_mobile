@@ -115,13 +115,7 @@ class UserService extends ApiService {
     String? biography,
     List<String>? genres,
   }) {
-    print(
-      {
-        if (username != null) 'username': username,
-        if (biography != null) 'biography': biography,
-        if (genres != null) 'favorite_genres': genres,
-      },
-    );
+    
     return compute(
         dio.patch(
           _updateUser,

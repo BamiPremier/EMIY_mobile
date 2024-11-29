@@ -73,27 +73,29 @@ class CommonDetailsScreen<T extends XItem> extends StatefulWidget {
     required BuildContext context,
     required Episode episode,
   }) {
-    return MultiBlocProvider(providers: [
-      BlocProvider.value(
-        value: context.read<EpisodeCubitManager>().get(episode)
-          as XCommonCubit<Episode>),
-      BlocProvider(
-        create: (context) => ActionCommentEpisodeCubit(
-          context.read<XCommonCubit<Episode>>() as EpisodeCubit,
-        ) as ActionCommentBaseCubit<XCommonCubit<Episode>>),
-      BlocProvider(
-        create: (context) => LoadCommentEpisodeCubit(
-          context.read(),
-          episode.id,
-          '',
-          context.read(),
-        ) as BaseLoadCommentCubit<Episode>),
-    ], child: CommonDetailsScreen<Episode>(
-      head: (context) => EpisodeHead.get(
-        context: context,
-        episode: episode,
-      ),
-    ));
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider.value(
+              value: context.read<EpisodeCubitManager>().get(episode)
+                  as XCommonCubit<Episode>),
+          BlocProvider(
+              create: (context) => ActionCommentEpisodeCubit(
+                    context.read<XCommonCubit<Episode>>() as EpisodeCubit,
+                  ) as ActionCommentBaseCubit<XCommonCubit<Episode>>),
+          BlocProvider(
+              create: (context) => LoadCommentEpisodeCubit(
+                    context.read(),
+                    episode.id,
+                    '',
+                    context.read(),
+                  ) as BaseLoadCommentCubit<Episode>),
+        ],
+        child: CommonDetailsScreen<Episode>(
+          head: (context) => EpisodeHead.get(
+            context: context,
+            episode: episode,
+          ),
+        ));
   }
 
   @override
@@ -156,66 +158,76 @@ class _CommonDetailsScreenState<T extends XItem>
                         widget.head(context),
                         ButtonCommon<T>(canComment: true),
                         const Divider(),
-                        BlocBuilder<BaseLoadCommentCubit<T>,
-                                AutoListState<Comment>>(
-                            builder: (context, state) =>
-                                AutoListView.get<Comment>(
-                                  padding: EdgeInsets.zero,
-                                  shrinkWrap: true,
-                                  autoManage: false,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  cubit: loadCommentCubit,
-                                  itemBuilder: (context, comment) =>
-                                      MultiBlocProvider(
-                                    providers: [
-                                      BlocProvider(
-                                        create: (context) => CommentCubit<T>(
-                                          context.read<XService<T>>(),
-                                          comment,
+                        BlocProvider.value(
+                            value: loadCommentCubit,
+                            child: BlocBuilder<BaseLoadCommentCubit<T>,
+                                    AutoListState<Comment>>(
+                                builder: (context, state) =>
+                                    AutoListView.get<Comment>(
+                                      padding: EdgeInsets.zero,
+                                      shrinkWrap: true,
+                                      autoManage: false,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      cubit: loadCommentCubit,
+                                      itemBuilder: (context, comment) =>
+                                          MultiBlocProvider(
+                                        providers: [
+                                          BlocProvider(
+                                            create: (context) =>
+                                                CommentCubit<T>(
+                                              context.read<XService<T>>(),
+                                              comment,
+                                            ),
+                                          ),
+                                          BlocProvider.value(
+                                            value:
+                                                context.read<XCommonCubit<T>>(),
+                                          ),
+                                          BlocProvider.value(
+                                            value: context.read<
+                                                ActionCommentBaseCubit<
+                                                    XCommonCubit<T>>>(),
+                                          ),
+                                        ],
+                                        child: ItemComment.get<T>(
+                                          onReportEventReceived:
+                                              onReportEventReceived,
                                         ),
                                       ),
-                                      BlocProvider.value(
-                                        value: context.read<XCommonCubit<T>>(),
-                                      ),
-                                      BlocProvider.value(
-                                        value: context.read<
-                                            ActionCommentBaseCubit<
-                                                XCommonCubit<T>>>(),
-                                      ),
-                                    ],
-                                    child: ItemComment.get<T>(
-                                      onReportEventReceived:
-                                          onReportEventReceived,
-                                    ),
-                                  ),
-                                  loadingBuilder: (context) => Container(
-                                      alignment: Alignment.center,
-                                      padding: const EdgeInsets.all(16),
-                                      child: LinearProgressIndicator(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onTertiaryContainer,
-                                        backgroundColor: Theme.of(context)
-                                            .colorScheme
-                                            .tertiaryContainer,
-                                        borderRadius: BorderRadius.circular(30),
-                                      )),
-                                  loadingMoreBuilder: (context) => Container(
-                                      alignment: Alignment.center,
-                                      padding: const EdgeInsets.all(16),
-                                      child: LinearProgressIndicator(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onTertiaryContainer,
-                                        backgroundColor: Theme.of(context)
-                                            .colorScheme
-                                            .tertiaryContainer,
-                                        borderRadius: BorderRadius.circular(30),
-                                      )),
-                                  emptyBuilder: (ctx) => const EmptyBuilder(),
-                                  errorBuilder: (context, retry) =>
-                                      ErrorBuilder(retry: retry),
-                                ))
+                                      loadingBuilder: (context) => Container(
+                                          alignment: Alignment.center,
+                                          padding: const EdgeInsets.all(16),
+                                          child: LinearProgressIndicator(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onTertiaryContainer,
+                                            backgroundColor: Theme.of(context)
+                                                .colorScheme
+                                                .tertiaryContainer,
+                                            borderRadius:
+                                                BorderRadius.circular(30),
+                                          )),
+                                      loadingMoreBuilder: (context) =>
+                                          Container(
+                                              alignment: Alignment.center,
+                                              padding: const EdgeInsets.all(16),
+                                              child: LinearProgressIndicator(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onTertiaryContainer,
+                                                backgroundColor:
+                                                    Theme.of(context)
+                                                        .colorScheme
+                                                        .tertiaryContainer,
+                                                borderRadius:
+                                                    BorderRadius.circular(30),
+                                              )),
+                                      emptyBuilder: (ctx) =>
+                                          const EmptyBuilder(),
+                                      errorBuilder: (context, retry) =>
+                                          ErrorBuilder(retry: retry),
+                                    )))
                       ],
                     ),
                   ),

@@ -395,7 +395,7 @@ class _AddQuizQuestionScreenState extends State<AddQuizQuestionScreen>
   }
 
   actionQuestion(state) {
-    print(state);
+   
     return (state is QuizCreateQuestionFormBuildState ||
                 state is QuizUpdateQuestionFormBuildState) &&
             (state is QuizCreateQuestionFormBuildState

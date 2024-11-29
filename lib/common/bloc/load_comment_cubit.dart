@@ -1,5 +1,5 @@
 import 'package:potatoes/auto_list/bloc/auto_list_cubit.dart';
-import 'package:potatoes/libs.dart'; 
+import 'package:potatoes/libs.dart';
 import 'package:umai/animes/models/episode.dart';
 import 'package:umai/animes/services/episode_service.dart';
 import 'package:umai/common/bloc/common_cubit.dart';
@@ -47,9 +47,11 @@ class BaseLoadCommentCubit<T> extends AutoListCubit<Comment> {
   }
 
   deleteMyComment(Comment comment) {
+    print(comment.id);
     if (state is AutoListReadyState<Comment>) {
       final list = (state as AutoListReadyState<Comment>).items;
       service.deleteComment(commentId: comment.id).then((_) {
+        print(comment.id);
         emit(AutoListReadyState(list.remove(comment, update: true)));
       });
     }

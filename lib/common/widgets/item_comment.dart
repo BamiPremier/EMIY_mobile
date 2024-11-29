@@ -76,6 +76,8 @@ class _ItemCommentState<T extends XItem> extends State<ItemComment<T>> {
     return BlocConsumer<CommentCubit<T>, CommentState>(
         listener: (context, state) {
       if (state is CommentErrorState) {
+        print("=====================state.error");
+        print(state.error);
         showErrorToast(content: state.error, context: context);
       }
     }, builder: (context, state) {

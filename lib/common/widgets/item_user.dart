@@ -44,7 +44,7 @@ class UserItem extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodyLarge),
               subtitle: Text(
-                '${personCubit.user.animesViewedCount} animes • ${personCubit.user.followingCount} suivent',
+                '${personCubit.user.animesViewedCount + personCubit.user.watchlistCount} animes • ${personCubit.user.followersCount} suivent',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
