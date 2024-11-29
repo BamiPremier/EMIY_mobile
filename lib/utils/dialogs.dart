@@ -18,7 +18,7 @@ String _translateError(dynamic error) {
   final apiError = error;
 
   if (apiError.error != null) {
-    return apiError.error!;
+    return apiError.error!.displayMessages![1].value;
   }
   if (apiError.isUnauthenticatedError) return unauthenticatedMessage;
   if (apiError.isNoInternetConnectionError) return noInternetMessage;

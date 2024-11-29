@@ -180,6 +180,7 @@ class _CommentPostWidgetState extends State<CommentPostWidget> {
                         trimExpandedText: ' moins',
                       ))),
               const PostInfo(),
+              const SizedBox(height: 8),
               ActivityBtnType3Widget<Post, XCommonCubit<Post>,
                   ActionCommentBaseCubit<XCommonCubit<Post>>>(
                 actionCommentBaseCubit: actionCommentCubit,

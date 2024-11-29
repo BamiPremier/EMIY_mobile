@@ -168,6 +168,7 @@ class _EpisodeCommentWidgetState extends State<EpisodeCommentWidget> {
                       ))),
               const SizedBox(height: 8),
               const EpisodeInfo(),
+              const SizedBox(height: 8),
               ActivityBtnType3Widget<Episode, XCommonCubit<Episode>,
                       ActionCommentBaseCubit<XCommonCubit<Episode>>>(
                   actionCommentBaseCubit: actionCommentCubit,

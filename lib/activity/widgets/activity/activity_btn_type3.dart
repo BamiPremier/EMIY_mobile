@@ -34,53 +34,54 @@ class _ActivityBtnType3WidgetState<T extends XItem, C extends XCommonCubit<T>,
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-        value: commentCubit,
-        child: BlocConsumer<CommentCubit<T>, CommentState>(
-          listener: (context, state) {
-            if (state is CommentErrorState) {
-              showErrorToast(content: state.error, context: context);
-            }
-          },
-          builder: (context, state) {
-            return Row(children: [
-              const SizedBox(
-                width: 4,
-              ),
-              commentCubit.comment.hasLiked
-                  ? TextButton(
-                      onPressed: () => commentCubit.unLikeComment(),
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.zero,
-                        textStyle:
-                            Theme.of(context).textTheme.labelSmall!.copyWith(
-                                  color: AppTheme.primaryRed,
-                                ),
-                      ),
-                      child: Text(
-                        'J\'aime',
-                        style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                              color: AppTheme.primaryRed,
-                            ),
-                      ),
-                    )
-                  : TextButton(
-                      onPressed: () => commentCubit.likeComment(),
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.zero,
-                      ),
-                      child: Text('J\'aime',
-                          style: Theme.of(context).textTheme.labelSmall!),
+      value: commentCubit,
+      child: BlocConsumer<CommentCubit<T>, CommentState>(
+        listener: (context, state) {
+          if (state is CommentErrorState) {
+            showErrorToast(content: state.error, context: context);
+          }
+        },
+        builder: (context, state) {
+          return Row(children: [
+            const SizedBox(
+              width: 4,
+            ),
+            commentCubit.comment.hasLiked
+                ? TextButton(
+                    onPressed: () => commentCubit.unLikeComment(),
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      textStyle:
+                          Theme.of(context).textTheme.labelSmall!.copyWith(
+                                color: AppTheme.primaryRed,
+                              ),
                     ),
-              TextButton(
-                onPressed: widget.onPressed,
-                style: TextButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  textStyle: Theme.of(context).textTheme.labelSmall,
-                ),
-                child: const Text('répondre'),
-              )
-            ]);
-          },
-        ));
+                    child: Text(
+                      'J\'aime',
+                      style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                            color: AppTheme.primaryRed,
+                          ),
+                    ),
+                  )
+                : TextButton(
+                    onPressed: () => commentCubit.likeComment(),
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                    ),
+                    child: Text('J\'aime',
+                        style: Theme.of(context).textTheme.labelSmall!),
+                  ),
+            TextButton(
+              onPressed: widget.onPressed,
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.zero,
+                textStyle: Theme.of(context).textTheme.labelSmall,
+              ),
+              child: const Text('répondre'),
+            )
+          ]);
+        },
+      ),
+    );
   }
 }

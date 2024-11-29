@@ -1,8 +1,8 @@
 
-import 'package:potatoes/potatoes.dart' as potatoes;
-
+import 'package:potatoes/potatoes.dart' as potatoes  ;
+import 'package:umai/common/models/error.dart';
 class ApiError extends potatoes.ApiError {
-  final String? error;
+  final Error? error;
 
   ApiError.fromDio(super.dio)
       : error = null,
@@ -13,7 +13,7 @@ class ApiError extends potatoes.ApiError {
         super.unknown();
 
   ApiError.fromApi(Map<String, dynamic> errors, [StackTrace? trace])
-      : error = errors['display_messages']![1]['value'],
+      : error = Error.fromJson(errors),
         super.unknown(null, trace);
 
   @override
