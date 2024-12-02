@@ -9,9 +9,13 @@ import 'package:umai/auth/bloc/auth_cubit.dart';
 import 'package:umai/auth/screens/login_welcome_back_screen.dart';
 import 'package:umai/auth/screens/registration/username.dart';
 import 'package:umai/auth/widgets/auth_button.dart';
+import 'package:umai/common/screens/home.dart';
+import 'package:umai/common/screens/splash_screen.dart';
 import 'package:umai/common/widgets/bottom_sheet.dart';
 import 'package:umai/common/widgets/buttons.dart';
+import 'package:umai/utils/assets.dart';
 import 'package:umai/utils/dialogs.dart';
+import 'package:umai/utils/svg_utils.dart';
 import 'package:umai/utils/themes.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -41,6 +45,16 @@ class _OnboardingScreenState extends State<OnboardingScreen>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                const Spacer(),
+                GestureDetector(
+                  onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (_) => const SplashScreen(
+                                fromOnboarding: true,
+                              ))),
+                  child: toSvgIcon(icon: Assets.iconsOnboarding, size: 166),
+                ),
+                const Spacer(),
                 if (Platform.isIOS)
                   AuthButton.apple(
                     onPressed: () => acceptTerm(then: authCubit.appleSignIn),
@@ -108,9 +122,9 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     if (state is AuthLoadingState) {
       loadingDialogCompleter = showLoadingBarrier(context: context);
     } else if (state is AuthSuccessActiveUserState) {
-      Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => const LoginWelcomeBackScreen()),
-      );
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (_) => const HomeScreen()),
+          (route) => false);
     } else if (state is AuthSuccessInActiveUserState) {
       Navigator.of(context).push(
         MaterialPageRoute(builder: (context) => const RegistrationUsername()),

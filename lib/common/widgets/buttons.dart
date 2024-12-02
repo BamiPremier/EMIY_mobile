@@ -72,27 +72,39 @@ class UmaiButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FilledButton(
-      onPressed: onPressed,
-      style: FilledButton.styleFrom(
-        backgroundColor: _backgroundColor(context),
-        foregroundColor: _foregroundColor(context),
-        textStyle: Theme.of(context).textTheme.labelLarge,
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (icon != null) icon!,
-          if (icon != null) const SizedBox(width: 8),
-          Expanded(
-            child: AutoSizeText(
-              text,
-              maxLines: 1,
-              minFontSize: 10,
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ],
-      ),
-    );
+        onPressed: onPressed,
+        style: FilledButton.styleFrom(
+          backgroundColor: _backgroundColor(context),
+          foregroundColor: _foregroundColor(context),
+          textStyle: Theme.of(context).textTheme.labelLarge,
+        ),
+        child: large
+            ? Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (icon != null) icon!,
+                  if (icon != null) const SizedBox(width: 8),
+                  Expanded(
+                    child: AutoSizeText(
+                      text,
+                      maxLines: 1,
+                      minFontSize: 10,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              )
+            : Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (icon != null) icon!,
+                  if (icon != null) const SizedBox(width: 8),
+                  Text(
+                    text,
+                    maxLines: 1,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ));
   }
 }

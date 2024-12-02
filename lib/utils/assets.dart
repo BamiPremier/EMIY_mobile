@@ -32,6 +32,8 @@ abstract class Assets {
   static const String iconsBlock = '${_iconsDir}Block.svg';
   static const String iconsFollow = '${_iconsDir}Follow.svg';
   static const String iconsLogout = '${_iconsDir}Logout.svg';
+  static const String iconsSplashScreen = '${_iconsDir}SplashScreen.svg';
+  static const String iconsOnboarding = '${_iconsDir}Onboarding.svg';
 
   static const String _imagesDir = 'assets/images/';
   static const String defaultAvatar = '${_imagesDir}default_avatar.svg';
@@ -43,6 +45,8 @@ abstract class Assets {
   static const String _logoDir = 'assets/logo/';
   static const String logo = '${_logoDir}logo.png';
   static const String iconTransparent = '${_logoDir}icon_transparent.png';
+
+  static const String splashScreen = '${_imagesDir}SplashScreen.png';
 
   static const String fontsFamilyARCO = 'ARCO';
   static const String fontsPlusJakartaSans = 'Plus Jakarta Sans';

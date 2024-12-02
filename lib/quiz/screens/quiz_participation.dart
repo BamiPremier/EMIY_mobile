@@ -67,12 +67,14 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen>
       context.read<QuizManageCubitManager>().add(state.quiz);
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-            builder: (_) => QuizFinishedScreen(
-                nombrePoints: state.nombrePoints, quiz: widget.quiz)),
+            builder: (_) => QuizFinishedScreen.get(
+                context: context,
+                nombrePoints: state.nombrePoints,
+                quiz: widget.quiz)),
       );
     }
   }
- 
+
   Widget _buildQuestionContent(BuildContext context) {
     return BlocBuilder<QuizParticipationCubit, QuizParticipationState>(
         buildWhen: (previous, current) => current is QuizParticipationIdleState,

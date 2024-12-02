@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:potatoes/libs.dart';
+import 'package:umai/animes/models/anime.dart';
+import 'package:umai/common/bloc/user_cubit.dart';
+import 'package:umai/common/services/cache_manager.dart';
 import 'package:umai/quiz/bloc/quiz_manage_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/screens/quiz_details.dart';
@@ -46,43 +49,71 @@ class _ItemQuizState extends State<ItemQuiz>
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (quiz.anime != null)
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.network(
-                    quiz.anime!.coverImage.large ?? '',
-                    width: 72,
-                    height: 88,
-                    fit: BoxFit.cover,
-                    frameBuilder:
-                        (context, child, frame, wasSynchronouslyLoaded) {
-                      if (frame != null) return child;
-                      return Container(
+              (quiz.anime != null)
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Stack(
+                        children: [
+                          Image.network(
+                            quiz.anime!.coverImage.large ?? '',
+                            width: 72,
+                            height: 88,
+                            fit: BoxFit.cover,
+                            frameBuilder: (context, child, frame,
+                                wasSynchronouslyLoaded) {
+                              if (frame != null) return child;
+                              return Container(
+                                width: 72,
+                                height: 88,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .tertiaryContainer,
+                                child: wasSynchronouslyLoaded
+                                    ? child
+                                    : Center(
+                                        child: SizedBox(
+                                          height: 16.0,
+                                          width: 16.0,
+                                          child: CircularProgressIndicator(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onTertiaryContainer,
+                                            strokeWidth: 2.0,
+                                          ),
+                                        ),
+                                      ),
+                              );
+                            },
+                            errorBuilder: (_, __, ___) => toSvgIcon(
+                              icon: Assets.iconsError,
+                            ),
+                          ),
+                          if (quiz.status == QuizStatus.pending &&
+                              quiz.user.id == context.read<UserCubit>().user.id)
+                            Positioned.fill(
+                              child: Container(
+                                  color: Colors.black.withOpacity(0.7),
+                                  child: Center(
+                                      child: toSvgIcon(
+                                          icon: Assets.iconsEmpty,
+                                          color: Colors.white,
+                                          size: 32.0))),
+                            ),
+                        ],
+                      ),
+                    )
+                  : ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Container(
                         width: 72,
                         height: 88,
                         color: Theme.of(context).colorScheme.tertiaryContainer,
-                        child: wasSynchronouslyLoaded
-                            ? child
-                            : Center(
-                                child: SizedBox(
-                                  height: 16.0,
-                                  width: 16.0,
-                                  child: CircularProgressIndicator(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onTertiaryContainer,
-                                    strokeWidth: 2.0,
-                                  ),
-                                ),
-                              ),
-                      );
-                    },
-                    errorBuilder: (_, __, ___) => toSvgIcon(
-                      icon: Assets.iconsError,
+                        child: Center(
+                          child: toSvgIcon(icon: Assets.iconsEmpty, size: 32),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              if (quiz.anime != null) const SizedBox(width: 12),
+              const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -115,4 +146,32 @@ class _ItemQuizState extends State<ItemQuiz>
       );
     });
   }
+
+  animeItemImage({required BuildContext context, required Anime anime}) =>
+      Image(
+        image: context.read<AppCacheManager>().getAnimeImage(anime),
+        fit: BoxFit.cover,
+        width: double.infinity,
+        frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+          if (frame != null) return child;
+          return Container(
+            color: Theme.of(context).colorScheme.tertiaryContainer,
+            width: double.infinity,
+            child: wasSynchronouslyLoaded
+                ? child
+                : Center(
+                    child: SizedBox(
+                      height: 16.0,
+                      width: 16.0,
+                      child: CircularProgressIndicator(
+                        color:
+                            Theme.of(context).colorScheme.onTertiaryContainer,
+                        strokeWidth: 2.0,
+                      ),
+                    ),
+                  ),
+          );
+        },
+        errorBuilder: (_, __, ___) => const Icon(Icons.error),
+      );
 }

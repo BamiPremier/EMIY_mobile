@@ -25,6 +25,7 @@ import 'package:umai/common/bloc/notification_cubit.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/models/device_info.dart';
 import 'package:umai/common/screens/home.dart';
+import 'package:umai/common/screens/splash_screen.dart';
 import 'package:umai/common/services/api_service.dart';
 import 'package:umai/common/services/cache_manager.dart';
 import 'package:umai/common/services/home_anime_service.dart';
@@ -235,19 +236,22 @@ class MyApp extends StatelessWidget {
                   child: child,
                 ),
                 home: Builder(builder: (context) {
+                  const splashScreen = SplashScreen(fromOnboarding: false);
+
                   return BlocBuilder<UserCubit, UserState>(
                     buildWhen: (previous, _) =>
                         previous is InitializingUserState,
                     builder: (context, state) {
-                      if (state is InitializingUserState)
+                      if (state is InitializingUserState) {
                         return const SizedBox();
+                      }
                       if (state is UserNotLoggedState)
                         return const OnboardingScreen();
                       if (state is CompleteUserProfileState) {
                         return const RegistrationUsername();
                       }
                       if (state is UserLoggedState) return const HomeScreen();
-                      return const OnboardingScreen();
+                      return splashScreen;
                     },
                   );
                 }),
