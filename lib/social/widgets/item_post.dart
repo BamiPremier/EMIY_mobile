@@ -17,11 +17,11 @@ class PostItem extends StatefulWidget {
   const PostItem({super.key});
 
   static Widget get({required BuildContext context, required Post post}) {
+    final postCubit = context.read<PostCubitManager>().get(post);
     return MultiBlocProvider(
       providers: [
-        BlocProvider.value(value: context.read<PostCubitManager>().get(post)),
-        BlocProvider<XCommonCubit<Post>>(
-            create: (context) => context.read<PostCubit>()),
+        BlocProvider.value(value: postCubit),
+        BlocProvider<XCommonCubit<Post>>.value(value: postCubit),
         BlocProvider.value(
             value: context.read<PersonCubitManager>().get(post.user)),
       ],
@@ -58,10 +58,9 @@ class _PostItemState extends State<PostItem> {
             Navigator.of(context).push(
               MaterialPageRoute(
                   builder: (context) => CommonDetailsScreen.fromPost(
-                      context: context,
-                      post: post,
-                  )
-              ),
+                        context: context,
+                        post: post,
+                      )),
             );
           },
           behavior: HitTestBehavior.translucent,

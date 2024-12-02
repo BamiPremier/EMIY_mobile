@@ -37,35 +37,33 @@ class EpisodeCommentWidget extends StatefulWidget {
     required Comment comment,
     required dynamic targetEntity,
   }) {
-    return (episode == null)
-        ? EpisodeCommentWidget.forNoEpisode(
-            comment: comment, targetEntity: targetEntity)
-        : MultiBlocProvider(
-            providers: [
-              BlocProvider.value(
-                value: context.read<EpisodeCubitManager>().get(episode),
-              ),
-              BlocProvider<XCommonCubit<Episode>>(
-                create: (context) =>
-                    context.read<EpisodeCubit>() as XCommonCubit<Episode>,
-              ),
-              BlocProvider(
-                  create: (context) =>
-                      ActionCommentEpisodeCubit(context.read<EpisodeCubit>())
-                          as ActionCommentBaseCubit<XCommonCubit<Episode>>),
-              BlocProvider(
-                create: (context) => CommentCubit<Episode>(
-                  context.read<XService<Episode>>(),
-                  comment,
-                ),
-              ),
-            ],
-            child: EpisodeCommentWidget.forEpisode(
-              episode: episode,
-              comment: comment,
-              targetEntity: targetEntity,
+    if (episode == null) {
+      return EpisodeCommentWidget.forNoEpisode(
+          comment: comment, targetEntity: targetEntity);
+    } else {
+      final episodeCubit = context.read<EpisodeCubitManager>().get(episode);
+      return MultiBlocProvider(
+        providers: [
+          BlocProvider.value(value: episodeCubit),
+          BlocProvider<XCommonCubit<Episode>>.value(value: episodeCubit),
+          BlocProvider(
+              create: (context) =>
+                  ActionCommentEpisodeCubit(context.read<EpisodeCubit>())
+                      as ActionCommentBaseCubit<XCommonCubit<Episode>>),
+          BlocProvider(
+            create: (context) => CommentCubit<Episode>(
+              context.read<XService<Episode>>(),
+              comment,
             ),
-          );
+          ),
+        ],
+        child: EpisodeCommentWidget.forEpisode(
+          episode: episode,
+          comment: comment,
+          targetEntity: targetEntity,
+        ),
+      );
+    }
   }
 
   @override

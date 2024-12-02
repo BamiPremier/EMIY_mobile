@@ -19,11 +19,12 @@ class NewPostUserWidget extends StatefulWidget {
       {required BuildContext context,
       required Post post,
       required String targetEntity}) {
+    final postCubit = context.read<PostCubitManager>().get(post);
+
     return MultiBlocProvider(
       providers: [
-        BlocProvider.value(value: context.read<PostCubitManager>().get(post)),
-        BlocProvider<XCommonCubit<Post>>(
-            create: (context) => context.read<PostCubit>()),
+        BlocProvider.value(value: postCubit),
+        BlocProvider<XCommonCubit<Post>>.value(value: postCubit),
         BlocProvider.value(
             value: context.read<PersonCubitManager>().get(post.user)),
       ],
@@ -41,7 +42,8 @@ class _NewPostUserWidgetState extends State<NewPostUserWidget> {
   final _trimMode = TrimMode.Line;
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PostCubit, XCommonState>(builder: (context, state) {
+    return BlocBuilder<XCommonCubit<Post>, XCommonState>(
+        builder: (context, state) {
       final post = postCubit.x as Post;
       return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         ActivityHeadWidget.get(

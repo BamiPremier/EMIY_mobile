@@ -31,22 +31,26 @@ class LikeEpisodeWidget extends StatefulWidget {
     required String targetEntity,
     required User user,
   }) {
-    return (episode == null)
-        ? BlocProvider.value(
+    if (episode == null) {
+      return BlocProvider.value(
+          value: context.read<PersonCubitManager>().get(user),
+          child: LikeEpisodeWidget.forNoEpisode(targetEntity: targetEntity));
+    } else {
+      final episodeCubit = context.read<EpisodeCubitManager>().get(episode);
+      return MultiBlocProvider(
+        providers: [
+          BlocProvider.value(
+            value: episodeCubit,
+          ),
+          BlocProvider<XCommonCubit<Episode>>.value(value: episodeCubit),
+          BlocProvider.value(
             value: context.read<PersonCubitManager>().get(user),
-            child: LikeEpisodeWidget.forNoEpisode(targetEntity: targetEntity))
-        : MultiBlocProvider(
-            providers: [
-              BlocProvider.value(
-                value: context.read<EpisodeCubitManager>().get(episode),
-              ),
-              BlocProvider<XCommonCubit<Episode>>(
-                create: (context) => context.read<EpisodeCubit>(),
-              ),
-            ],
-            child: LikeEpisodeWidget.forEpisode(
-                targetEntity: targetEntity, episode: episode),
-          );
+          ),
+        ],
+        child: LikeEpisodeWidget.forEpisode(
+            targetEntity: targetEntity, episode: episode),
+      );
+    }
   }
 
   @override
@@ -64,36 +68,33 @@ class _LikeEpisodeWidgetState extends State<LikeEpisodeWidget> {
   Widget buildNoEpisode() {
     final personCubit = context.read<PersonCubit>();
     final user = personCubit.user;
-    return  Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ActivityHeadWidget.get(
+            context: context, targetEntity: widget.targetEntity, user: user),
+        Row(
           children: [
-            ActivityHeadWidget.get(
-                context: context,
-                targetEntity: widget.targetEntity,
-                user: user),
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.onInverseSurface,
-                        borderRadius: BorderRadius.circular(8)),
-                    child: Text(
-                      "Le contenu n’est plus disponible",
-                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
-                          ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.onInverseSurface,
+                    borderRadius: BorderRadius.circular(8)),
+                child: Text(
+                  "Le contenu n’est plus disponible",
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ],
+              ),
             ),
           ],
-         );
+        ),
+      ],
+    );
   }
 
   Widget buildEpisode(Episode episode) {
@@ -104,25 +105,22 @@ class _LikeEpisodeWidgetState extends State<LikeEpisodeWidget> {
 
         final personCubit = context.read<PersonCubit>();
         final user = personCubit.user;
-        return  Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ActivityHeadWidget.get(
-                  context: context,
-                  targetEntity: widget.targetEntity,
-                  user: user),
-              const SizedBox(height: 8),
-              const EpisodeInfo(),
-              ActivityBtnType1Widget<Episode>(
-                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => CommonDetailsScreen.fromEpisode(
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ActivityHeadWidget.get(
+                context: context,
+                targetEntity: widget.targetEntity,
+                user: user),
+            const SizedBox(height: 8),
+            const EpisodeInfo(),
+            ActivityBtnType1Widget<Episode>(
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => CommonDetailsScreen.fromEpisode(
                           context: context,
                           episode: episode,
-                      )
-                  ))
-              )
-            ],
-      
+                        ))))
+          ],
         );
       },
     );

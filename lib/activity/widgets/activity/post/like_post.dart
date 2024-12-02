@@ -16,12 +16,10 @@ class LikePostWidget extends StatefulWidget {
   final Post? post;
   final String targetEntity;
 
-  // Constructeur pour les cas où le post est nul
   LikePostWidget.forNoPost({
     required this.targetEntity,
   }) : post = null;
 
-  // Constructeur pour les cas où le post est non nul
   LikePostWidget.forPost({
     required this.post,
     required this.targetEntity,
@@ -33,25 +31,23 @@ class LikePostWidget extends StatefulWidget {
     required User user,
     required String targetEntity,
   }) {
-    return (post == null)
-        ? BlocProvider.value(
+    if (post == null) {
+      return BlocProvider.value(
+          value: context.read<PersonCubitManager>().get(user),
+          child: LikePostWidget.forNoPost(targetEntity: targetEntity));
+    } else {
+      final postCubit = context.read<PostCubitManager>().get(post);
+      return MultiBlocProvider(
+        providers: [
+          BlocProvider.value(value: postCubit),
+          BlocProvider<XCommonCubit<Post>>.value(value: postCubit),
+          BlocProvider.value(
             value: context.read<PersonCubitManager>().get(user),
-            child: LikePostWidget.forNoPost(targetEntity: targetEntity))
-        : MultiBlocProvider(
-            providers: [
-              BlocProvider.value(
-                value: context.read<PostCubitManager>().get(post),
-              ),
-              BlocProvider<XCommonCubit<Post>>(
-                  create: (context) =>
-                      context.read<PostCubit>() as XCommonCubit<Post>),
-              BlocProvider.value(
-                value: context.read<PersonCubitManager>().get(user),
-              ),
-            ],
-            child:
-                LikePostWidget.forPost(post: post, targetEntity: targetEntity),
-          );
+          ),
+        ],
+        child: LikePostWidget.forPost(post: post, targetEntity: targetEntity),
+      );
+    }
   }
 
   @override

@@ -22,11 +22,11 @@ class ReportedPostWidget extends StatefulWidget {
       {required BuildContext context,
       required String targetEntity,
       required Post post}) {
+    final postCubit = context.read<PostCubitManager>().get(post);
     return MultiBlocProvider(
       providers: [
-        BlocProvider.value(value: context.read<PostCubitManager>().get(post)),
-        BlocProvider<XCommonCubit<Post>>(
-            create: (context) => context.read<PostCubit>()),
+        BlocProvider.value(value: postCubit),
+        BlocProvider<XCommonCubit<Post>>.value(value: postCubit),
         BlocProvider.value(
             value: context.read<PersonCubitManager>().get(post.user)),
       ],

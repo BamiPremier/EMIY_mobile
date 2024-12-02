@@ -46,10 +46,14 @@ class ApiService extends potatoes.ApiService {
       }
     } on DioException catch (e) {
       {
-        try {
-          throw ApiError.fromApi(
-              (e.response!.data as Map<String, dynamic>)['error']);
-        } catch (eX) {
+        if (e.response!.data != null) {
+          if ((e.response!.data as Map<String, dynamic>)['error'] != null) {
+            throw ApiError.fromApi(
+                (e.response!.data as Map<String, dynamic>)['error']);
+          } else {
+            throw ApiError.fromDio(e);
+          }
+        } else {
           throw ApiError.fromDio(e);
         }
       }
