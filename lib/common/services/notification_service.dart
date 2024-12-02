@@ -49,13 +49,11 @@ class NotificationService {
     }
 
     messaging.onTokenRefresh.listen((token) {
-      print('FirebaseMessaging token changed : $token');
-      sendToken(token);
+       sendToken(token);
     });
     messaging.getToken().then((token) {
       if (token != null) {
-        print('FirebaseMessaging token retrieve : $token');
-        sendToken(token);
+         sendToken(token);
       }
     });
     messaging.getInitialMessage().then((RemoteMessage? message) {
@@ -159,8 +157,7 @@ class NotificationService {
 
 Future<void> onBackgroundMessage(RemoteMessage message) async {
   if (message.notification != null) {
-    print("Message reçu en arrière-plan : ${message.data.toString()}");
-
+  
     final FlutterLocalNotificationsPlugin localNotifications =
         FlutterLocalNotificationsPlugin();
     const androidPlatformChannelSpecifics = AndroidNotificationDetails(

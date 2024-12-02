@@ -37,9 +37,7 @@ class PostFeedCubit extends AutoListCubit<Post> {
       if (state is AutoListReadyState<Post>) {
       final list = (state as AutoListReadyState<Post>).items;
       var l = List.from(list.items)..removeWhere((p) => p.user.id == user.id);
-      print("${l.length}t");
-      log("${List.from(list.items)..removeWhere((p) => p.user.id == user.id)}t");
-
+    
       emit(AutoListReadyState(PaginatedList(
         items: List.from(list.items)..removeWhere((p) => p.user.id == user.id),
         total: list.total - 1,

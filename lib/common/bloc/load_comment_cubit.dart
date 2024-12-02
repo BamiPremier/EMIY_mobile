@@ -47,11 +47,11 @@ class BaseLoadCommentCubit<T> extends AutoListCubit<Comment> {
   }
 
   deleteMyComment(Comment comment) {
-    print(comment.id);
+   
     if (state is AutoListReadyState<Comment>) {
       final list = (state as AutoListReadyState<Comment>).items;
       service.deleteComment(commentId: comment.id).then((_) {
-        print(comment.id);
+      
         emit(AutoListReadyState(list.remove(comment, update: true)));
       });
     }

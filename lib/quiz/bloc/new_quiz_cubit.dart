@@ -38,7 +38,7 @@ class NewQuizCubit extends Cubit<NewQuizState> {
   }
 
   void saveQuiz({required String title, required String description}) {
-    print(state);
+   
     if (state is QuizSelectAnimeState ||
         state is QuizCreatedState ||
         state is QuizIdleState) {
@@ -59,7 +59,7 @@ class NewQuizCubit extends Cubit<NewQuizState> {
         if (stateBefore is QuizSelectAnimeState)
           "anime_id": stateBefore.anime.id,
       };
-      print(data);
+     
       final response = await quizService.newQuiz(data: data);
       quizManageCubitManager.add(response);
       emit(QuizCreatedState(
