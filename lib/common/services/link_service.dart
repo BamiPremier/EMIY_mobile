@@ -16,7 +16,6 @@ class LinkService extends ApiService {
 
   const LinkService(super._dio);
 
-
   Future<User> getUserById({required String id}) {
     return compute(
         dio.get(
@@ -59,7 +58,7 @@ class LinkService extends ApiService {
           _getEpisode.replaceAll(':idEpisode', idEpisode.toString()),
           options: Options(headers: withAuth()),
         ),
-        mapper: (data) => Episode.fromJson(data['episode']));
+        mapper: (data) => Episode.fromJson(data));
   }
 
   Future<Quiz> getQuiz({required String idQuiz}) {

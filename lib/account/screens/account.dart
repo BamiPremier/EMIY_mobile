@@ -8,6 +8,7 @@ import 'package:umai/account/screens/param/settings_screen.dart';
 import 'package:umai/account/screens/sections/activities.dart';
 import 'package:umai/account/screens/sections/animes.dart';
 import 'package:umai/account/screens/sections/posts.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:umai/account/screens/sections/quiz_user.dart';
 import 'package:umai/account/screens/sections/watchlist.dart';
 import 'package:umai/auth/screens/onboarding_screen.dart';
@@ -164,8 +165,7 @@ class _AccountScreenState extends State<AccountScreen>
                                 const EdgeInsets.symmetric(horizontal: 16.0),
                             child: Row(
                               children: [
-                                toSvgIcon(
-                                    icon: Assets.iconsFollow, size: 16.0),
+                                toSvgIcon(icon: Assets.iconsFollow, size: 16.0),
                                 const SizedBox(width: 16),
                                 counter(
                                   onTap: () {
@@ -275,6 +275,12 @@ class _AccountScreenState extends State<AccountScreen>
 
     if (state is UserLoggingOut) {
       loadingDialogCompleter = showLoadingBarrier(context: context);
+    } else if (state is ShareUserLoadingState) {
+      loadingDialogCompleter = showLoadingBarrier(
+        context: context,
+      );
+    } else if (state is ShareUserSuccessState) {
+      await Share.share(state.shareLink);
     } else if (state is UserNotLoggedState) {
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => const OnboardingScreen()),
@@ -299,6 +305,7 @@ class _AccountScreenState extends State<AccountScreen>
                     icon: Assets.iconsShare,
                   ),
                   onTap: () {
+                    userCubit.shareUser();
                     Navigator.of(innerContext).pop();
                   },
                 ),

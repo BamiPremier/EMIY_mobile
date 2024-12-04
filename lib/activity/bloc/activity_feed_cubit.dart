@@ -11,7 +11,7 @@ import 'package:umai/activity/models/activity.dart';
 import 'package:umai/quiz/models/quiz.dart';
 import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/social/models/post.dart';
-import 'package:umai/social/services/post_cubit_manager.dart'; 
+import 'package:umai/social/services/post_cubit_manager.dart';
 
 class ActivityFeedCubit extends AutoListCubit<Activity> {
   final ActivityService activitytService;
@@ -55,6 +55,9 @@ class ActivityFeedCubit extends AutoListCubit<Activity> {
             if (activity.subTarget != null) {
               episodeCubitManager.add(Episode.fromJson(activity.subTarget));
             }
+          case TargetEntity.episodeLikes:
+            episodeCubitManager.add(Episode.fromJson(activity.target));
+
           case TargetEntity.postComments:
             if (activity.subTarget != null) {
               postCubitManager.add(Post.fromJson(activity.subTarget));
