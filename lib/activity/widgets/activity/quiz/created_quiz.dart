@@ -65,7 +65,7 @@ class _CreatedQuizWidgetState extends State<CreatedQuizWidget>
                     ),
                     onPressed: () => quizManageCubit.shareQuiz(),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 16,
                   ),
                 ],

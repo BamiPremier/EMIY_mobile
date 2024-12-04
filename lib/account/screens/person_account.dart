@@ -383,19 +383,19 @@ class _PersonAccountScreenState extends State<PersonAccountScreen>
                         Tab(text: 'Quiz'),
                       ],
                     ),
-                    Expanded(
+                    const Expanded(
                       child: TabBarView(
                         children: [
-                          const ActivityTab(
+                          ActivityTab(
                             currentUser: false,
                           ),
-                          const AnimesTab(
+                          AnimesTab(
                             currentUser: false,
                           ),
                           WatchList(
                             currentUser: false,
                           ),
-                          const PostTab(
+                          PostTab(
                             currentUser: false,
                           ),
                           QuizUserScreen(

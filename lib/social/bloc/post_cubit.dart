@@ -8,8 +8,7 @@ class PostCubit extends XCommonCubit<Post> {
   PostCubit(this.socialService, Post post) : super(socialService, post);
 
   @override
-  Future<void> close() {
-    print('close===${x.itemId}');
+  Future<void> close() { 
     return super.close();
   }
 

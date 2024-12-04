@@ -60,3 +60,9 @@ class QuizQuestionsState extends CubitInformationState with QuizManageState {
   @override
   List<Object?> get props => [questions];
 }
+
+class QuizQuestionsAfterPublishState extends CubitInformationState
+    with QuizManageState {
+  final List<QuizQuestionResponse> questions;
+  const QuizQuestionsAfterPublishState(this.questions);
+}

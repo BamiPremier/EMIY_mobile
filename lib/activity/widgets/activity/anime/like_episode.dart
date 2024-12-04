@@ -54,7 +54,7 @@ class LikeEpisodeWidget extends StatefulWidget {
   }
 
   @override
-  _LikeEpisodeWidgetState createState() => _LikeEpisodeWidgetState();
+  State<LikeEpisodeWidget> createState() => _LikeEpisodeWidgetState();
 }
 
 class _LikeEpisodeWidgetState extends State<LikeEpisodeWidget> {

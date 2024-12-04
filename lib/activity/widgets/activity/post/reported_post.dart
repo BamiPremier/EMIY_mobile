@@ -103,7 +103,7 @@ class _ReportedPostWidgetState extends State<ReportedPostWidget> {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 8,
           ),
           Container(

@@ -188,7 +188,7 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen>
                   : isSelected
                       ? Colors.white
                       : Theme.of(context).colorScheme.onSurfaceVariant;
-            } else if (stateParticipation is QuizParticipationIdleState) {
+            } else {
               final isSelected =
                   stateParticipation.userResponse?.id == currentResponse.id;
               backgroundColor = isSelected
@@ -197,11 +197,7 @@ class _QuizParticipationScreenState extends State<QuizParticipationScreen>
               foregroundColor = isSelected
                   ? Theme.of(context).colorScheme.onPrimary
                   : Theme.of(context).colorScheme.onSurfaceVariant;
-            } else {
-              backgroundColor = Theme.of(context).colorScheme.surfaceBright;
-              foregroundColor = Theme.of(context).colorScheme.onSurfaceVariant;
             }
-
             return GestureDetector(
                 onTap: () =>
                     stateParticipation is QuizParticipationSubmittedState

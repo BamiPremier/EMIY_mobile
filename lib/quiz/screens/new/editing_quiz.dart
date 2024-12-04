@@ -136,8 +136,7 @@ class _EditingQuizScreenState extends State<EditingQuizScreen>
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(children: [
-                                    if (state is QuizCreatedState)
-                                      Expanded(
+                                       Expanded(
                                         child: Text(
                                           (state).quiz.title,
                                           maxLines: 2,
@@ -156,8 +155,7 @@ class _EditingQuizScreenState extends State<EditingQuizScreen>
                                       },
                                     ),
                                   ]),
-                                  if (state is QuizCreatedState)
-                                    Text(
+                                   Text(
                                       (state).quiz.description,
                                       style: Theme.of(context)
                                           .textTheme

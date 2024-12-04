@@ -12,7 +12,7 @@ import 'package:umai/quiz/widgets/item_quiz.dart';
 
 class QuizUserScreen extends StatefulWidget {
   final bool currentUser;
-  QuizUserScreen({super.key, this.currentUser = true});
+  const QuizUserScreen({super.key, this.currentUser = true});
   @override
   State<QuizUserScreen> createState() => _QuizUserScreenState();
 }

@@ -106,7 +106,7 @@ class _AccountScreenState extends State<AccountScreen>
                     SliverToBoxAdapter(
                       child: Column(
                         children: [
-                          SizedBox(height: 16),
+                          const SizedBox(height: 16),
                           Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 16.0),
@@ -256,7 +256,7 @@ class _AccountScreenState extends State<AccountScreen>
                             children: [
                               const ActivityTab(),
                               const AnimesTab(),
-                              WatchList(),
+                              const WatchList(),
                               const PostTab(),
                               QuizUserScreen(),
                             ],

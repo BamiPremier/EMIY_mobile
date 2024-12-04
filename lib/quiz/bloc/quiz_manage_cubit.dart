@@ -27,15 +27,19 @@ class QuizManageCubit extends ObjectCubit<Quiz, QuizManageState> {
         'cannot retrieve quiz: Current state is ${state.runtimeType}');
   }
 
-  void loadQuestions() async {
+  void loadQuestions({bool isAfterPublish = false}) async {
     final stateBefore = state;
 
     try {
       emit(const QuizManageLoadingState());
 
       await quizService.getQuizQuestions(idQuiz: quiz.id).then((questions) {
-        emit(QuizQuestionsState(questions));
-        emit(stateBefore);
+        if (isAfterPublish) {
+          emit(QuizQuestionsAfterPublishState(questions));
+        } else {
+          emit(QuizQuestionsState(questions));
+          emit(stateBefore);
+        }
       });
     } catch (error, trace) {
       emit(QuizManageErrorState(error, trace));

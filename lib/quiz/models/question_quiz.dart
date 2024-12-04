@@ -22,6 +22,18 @@ class QuestionQuiz extends Equatable {
       'responses': jsonEncode(responses.map((e) => e.toJson()).toList()),
     };
   }
+  // Méthode pour désérialiser depuis JSON
+  factory QuestionQuiz.fromJson(Map<String, dynamic> json) {
+    return QuestionQuiz(
+      id: json['id'],
+      label: json['label'],
+      image: json['image'],
+      responses: (json['responses'] as List)
+          .map((e) => QuizResponse.fromJson(e))
+          .toList(),
+      correctAnswerIndex: json['correctAnswerIndex'],
+    );
+  }
 
   @override
   List<Object?> get props => [label, image, responses, correctAnswerIndex];
@@ -35,7 +47,13 @@ class QuizResponse {
     required this.label,
     required this.isCorrect,
   });
-
+// Méthode pour désérialiser depuis JSON
+  factory QuizResponse.fromJson(Map<String, dynamic> json) {
+    return QuizResponse(
+      label: json['label'],
+      isCorrect: json['isCorrect'],
+    );
+  }
   Map<String, dynamic> toJson() {
     return {
       'label': label,

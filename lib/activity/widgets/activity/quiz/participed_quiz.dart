@@ -35,10 +35,10 @@ class ParticipedQuizWidget extends StatefulWidget {
     );
   }
 
-  ParticipedQuizWidget._({required this.targetEntity});
+  const ParticipedQuizWidget._({required this.targetEntity});
 
   @override
-  _ParticipedQuizWidgetState createState() => _ParticipedQuizWidgetState();
+  State<ParticipedQuizWidget> createState() => _ParticipedQuizWidgetState();
 }
 
 class _ParticipedQuizWidgetState extends State<ParticipedQuizWidget>
@@ -59,7 +59,7 @@ class _ParticipedQuizWidgetState extends State<ParticipedQuizWidget>
                   targetEntity: widget.targetEntity,
                   context: context,
                   user: user),
-              SizedBox(
+              const SizedBox(
                 height: 8,
               ),
               Container(
@@ -79,7 +79,7 @@ class _ParticipedQuizWidgetState extends State<ParticipedQuizWidget>
                     ),
                     onPressed: () => quizManageCubit.shareQuiz(),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 16,
                   ),
                 ],

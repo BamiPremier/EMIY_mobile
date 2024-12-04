@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter/material.dart'; 
 import 'package:umai/auth/screens/onboarding_screen.dart';
 import 'package:umai/utils/assets.dart';
 

@@ -1,13 +1,18 @@
+ 
 import 'package:flutter/material.dart';
+import 'package:potatoes/common/widgets/loaders.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/models/anime.dart';
 import 'package:umai/common/bloc/user_cubit.dart';
 import 'package:umai/common/services/cache_manager.dart';
+import 'package:umai/quiz/bloc/new_quiz_cubit.dart';
 import 'package:umai/quiz/bloc/quiz_manage_cubit.dart';
 import 'package:umai/quiz/models/quiz.dart';
+import 'package:umai/quiz/screens/new/editing_quiz.dart';
 import 'package:umai/quiz/screens/quiz_details.dart';
 import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/utils/assets.dart';
+import 'package:umai/utils/dialogs.dart';
 import 'package:umai/utils/svg_utils.dart';
 import 'package:umai/utils/themes.dart';
 
@@ -27,23 +32,52 @@ class ItemQuiz extends StatefulWidget {
   State<ItemQuiz> createState() => _ItemQuizState();
 }
 
-class _ItemQuizState extends State<ItemQuiz>
-    with SingleTickerProviderStateMixin {
+class _ItemQuizState extends State<ItemQuiz> with CompletableMixin {
   late final quizManageCubit = context.read<QuizManageCubit>();
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<QuizManageCubit, QuizManageState>(
-        builder: (context, state) {
+    return BlocConsumer<QuizManageCubit, QuizManageState>(
+        listener: (context, state) async {
+      await waitForDialog();
+
+      if (state is QuizManageLoadingState) {
+        loadingDialogCompleter = showLoadingBarrier(context: context);
+      } else if (state is QuizQuestionsAfterPublishState) {
+        context.read<NewQuizCubit>().updateAfter(
+              quiz: quizManageCubit.quiz,
+              questions: state.questions,
+            );
+
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => EditingQuizScreen(
+                      quizManageCubit.quiz,
+                    )));
+      } else if (state is QuizManageErrorState) {
+        showErrorToast(content: state.error, context: context);
+      }
+    }, builder: (context, state) {
       final Quiz quiz = quizManageCubit.quiz;
       return GestureDetector(
         behavior: HitTestBehavior.opaque,
-        onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => QuizDetailScreen.get(context: context, quiz: quiz),
-            settings: const RouteSettings(name: quizRouteName),
-          ),
-        ),
+        onTap: () {
+          context.read<NewQuizCubit>().resetState();
+          if (quiz.status == QuizStatus.pending &&
+              quiz.user.id == context.read<UserCubit>().user.id) {
+           
+            quizManageCubit.loadQuestions(isAfterPublish: true);
+          } else {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) =>
+                    QuizDetailScreen.get(context: context, quiz: quiz),
+                settings: const RouteSettings(name: quizRouteName),
+              ),
+            );
+          }
+        },
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Row(

@@ -17,7 +17,7 @@ class PostActivityImage extends StatelessWidget {
     final double height = min(450, width);
 
     return ClipRRect(
-      borderRadius: BorderRadius.only(
+      borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
       child: Image(
         image: context.read<AppCacheManager>().getImage(url),

@@ -16,11 +16,11 @@ class LikePostWidget extends StatefulWidget {
   final Post? post;
   final String targetEntity;
 
-  LikePostWidget.forNoPost({
+  const LikePostWidget.forNoPost({
     required this.targetEntity,
   }) : post = null;
 
-  LikePostWidget.forPost({
+  const LikePostWidget.forPost({
     required this.post,
     required this.targetEntity,
   });

@@ -1,5 +1,4 @@
-import 'dart:developer';
-
+ 
 import 'package:potatoes/auto_list/models/paginated_list.dart';
 import 'package:potatoes/libs.dart';
 import 'package:umai/animes/models/anime.dart';
@@ -24,15 +23,6 @@ class AuthService extends ApiService {
       required String deviceName,
       required String timezone,
       required String appVersion}) {
-    log(
-      {
-        "verify_token": token,
-        "device_id": deviceId,
-        "device_name": deviceName,
-        "app_version": int.parse(appVersion),
-        "timezone": timezone,
-      }.toString(),
-    );
     return compute(
       dio.post(
         _auth,

@@ -1,4 +1,4 @@
-import 'dart:developer';
+ 
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -77,7 +77,6 @@ class AuthCubit extends Cubit<AuthState> {
     final appVersion = userCubit.preferencesService.packageInfo.buildNumber;
     final timezone = userCubit.preferencesService.timezone;
 
-    log(DateTime.now().timeZoneName);
     authService
         .authUser(
       deviceId: deviceInfo.id,
@@ -186,7 +185,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   String generateUserTag(String username) {
-      String tag = username.toLowerCase();
+    String tag = username.toLowerCase();
 
     // Remplacer les espaces par des tirets
     tag = tag.replaceAll(' ', '-');

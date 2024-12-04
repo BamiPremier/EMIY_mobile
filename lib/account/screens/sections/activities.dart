@@ -19,6 +19,7 @@ class ActivityTab extends StatefulWidget {
 }
 
 class _ActivityTabState extends State<ActivityTab> with CompletableMixin {
+  // ignore: prefer_typing_uninitialized_variables
   late final activityUserCubit;
   @override
   void initState() {

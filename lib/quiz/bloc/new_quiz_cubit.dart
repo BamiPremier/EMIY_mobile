@@ -3,6 +3,7 @@ import 'package:potatoes/potatoes.dart';
 import 'package:umai/animes/models/anime.dart';
 import 'package:umai/quiz/models/question_quiz.dart';
 import 'package:umai/quiz/models/quiz.dart';
+import 'package:umai/quiz/models/quiz_response.dart' hide QuizResponse;
 import 'package:umai/quiz/services/quiz_cubit_manager.dart';
 import 'package:umai/quiz/services/quiz_service.dart';
 
@@ -38,7 +39,6 @@ class NewQuizCubit extends Cubit<NewQuizState> {
   }
 
   void saveQuiz({required String title, required String description}) {
-   
     if (state is QuizSelectAnimeState ||
         state is QuizCreatedState ||
         state is QuizIdleState) {
@@ -59,7 +59,7 @@ class NewQuizCubit extends Cubit<NewQuizState> {
         if (stateBefore is QuizSelectAnimeState)
           "anime_id": stateBefore.anime.id,
       };
-     
+
       final response = await quizService.newQuiz(data: data);
       quizManageCubitManager.add(response);
       emit(QuizCreatedState(
@@ -88,7 +88,7 @@ class NewQuizCubit extends Cubit<NewQuizState> {
                   : null;
       final idQuiz = stateBefore is QuizSelectAnimeState
           ? stateBefore.quiz!.id
-          : (stateBefore is QuizCreatedState && stateBefore.quiz != null)
+          : (stateBefore is QuizCreatedState  )
               ? stateBefore.quiz.id
               : (stateBefore is QuizUpdateState)
                   ? stateBefore.quiz!.id
@@ -123,6 +123,28 @@ class NewQuizCubit extends Cubit<NewQuizState> {
       emit(QuizErrorState(error, trace));
       emit(stateBefore);
     }
+  }
+
+  void updateAfter(
+      {required Quiz quiz, required List<QuizQuestionResponse> questions}) {
+    emit(QuizCreatedState(
+      anime: quiz.anime,
+      quiz: quiz,
+      questions: questions
+          .map((q) => QuestionQuiz(
+                id: q.id,
+                label: q.label,
+                image: q.image,
+                correctAnswerIndex: q.responses.indexWhere((r) => r.isCorrect),
+                responses: q.responses
+                    .map((r) => QuizResponse(
+                          label: r.label,
+                          isCorrect: r.isCorrect,
+                        ))
+                    .toList(),
+              ))
+          .toList(),
+    ));
   }
 
   void publishQuiz() async {
