@@ -28,6 +28,10 @@ class _ActionCommentState<T extends XItem> extends State<ActionComment<T>> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(children: [
+              if (commentCubit.comment.likesCount != 0)
+                SizedBox(
+                  width: 8,
+                ),
               commentCubit.comment.hasLiked
                   ? TextButton(
                       onPressed: () => commentCubit.unLikeComment(),

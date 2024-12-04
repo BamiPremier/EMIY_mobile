@@ -95,7 +95,7 @@ class XCommonCubit<T> extends ObjectCubit<XItem, XCommonState> {
       final stateBefore = state;
       var newItem = x.copyWithLike(
         hasLiked: !x.itemHasLiked,
-        likesCount: x.itemLikesCount - 1,
+        likesCount: x.itemLikesCount - 1 > 0 ? x.itemLikesCount - 1 : 0,
       );
       update(newItem);
       service

@@ -38,6 +38,10 @@ class _ButtonCommonState<T extends XItem> extends State<ButtonCommon<T>>
               padding: EdgeInsets.zero,
               icon: Row(
                 children: [
+                  if (item.itemLikesCount != 0)
+                    SizedBox(
+                      width: 16,
+                    ),
                   Text(
                     '${item.itemLikesCount != 0 ? item.itemLikesCount : ''}',
                     style: Theme.of(context).textTheme.titleLarge!.copyWith(

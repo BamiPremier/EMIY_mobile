@@ -35,6 +35,10 @@ class _ActivityBtnType1WidgetState<T extends XItem>
             margin: const EdgeInsets.only(left: 8, right: 16.0),
             child: Row(
               children: [
+                if (item.itemLikesCount != 0)
+                  SizedBox(
+                    width: 16,
+                  ),
                 Text(
                   '${item.itemLikesCount != 0 ? item.itemLikesCount : ''}',
                   style: Theme.of(context).textTheme.titleLarge!.copyWith(
@@ -46,7 +50,6 @@ class _ActivityBtnType1WidgetState<T extends XItem>
                 IconButton(
                   alignment: Alignment.centerLeft,
                   padding: EdgeInsets.zero,
-                  
                   icon: toSvgIcon(
                     icon: Assets.iconsLike,
                     color: item.itemHasLiked

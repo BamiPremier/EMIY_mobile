@@ -43,6 +43,10 @@ class _ActivityBtnType3WidgetState<T extends XItem, C extends XCommonCubit<T>,
         },
         builder: (context, state) {
           return Row(children: [
+            if (commentCubit.comment.likesCount != 0)
+              SizedBox(
+                width: 4,
+              ),
             const SizedBox(
               width: 4,
             ),

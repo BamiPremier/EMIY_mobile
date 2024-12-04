@@ -60,9 +60,8 @@ class CommentCubit<T> extends ObjectCubit<Comment, CommentState> {
   void unLikeComment() {
     final stateBefore = state;
     var newComment = comment.copyWith(
-      hasLiked: !comment.hasLiked,
-      likesCount: comment.likesCount - 1,
-    );
+        hasLiked: !comment.hasLiked,
+        likesCount: comment.likesCount - 1 > 0 ? comment.likesCount - 1 : 0);
     update(newComment);
     service
         .unLikeComment(
