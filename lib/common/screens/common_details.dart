@@ -33,9 +33,10 @@ mixin XItem implements XReportedItem {
   int get itemCommentsCount;
   User? get itemUser;
   bool? get itemReported;
+  int get itemLikesCount;
 
   DateTime get itemCreatedAt;
-  copyWithLike({bool? hasLiked});
+  copyWithLike({bool? hasLiked, int? likesCount});
   copyWithCommentsCount({bool increment = true});
 }
 

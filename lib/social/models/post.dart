@@ -15,6 +15,7 @@ class Post with _$Post, XItem, XReportedItem {
     required String content,
     String? image,
     @JsonKey(name: 'has_liked') @Default(false) bool hasLiked,
+    @JsonKey(name: 'likes_count') @Default(0) int likesCount,
     @JsonKey(name: 'comments_count') @Default(0) int commentsCount,
     required User user,
     @Default(false) bool reported,
@@ -40,11 +41,12 @@ class Post with _$Post, XItem, XReportedItem {
   bool get itemReported => reported;
   @override
   DateTime get itemCreatedAt => createdAt;
-
   @override
-  Post copyWithLike({bool? hasLiked}) =>
-      copyWith(hasLiked: hasLiked ?? this.hasLiked);
-      
+  int get itemLikesCount => likesCount;
+  @override
+  Post copyWithLike({bool? hasLiked, int? likesCount}) =>
+      copyWith(hasLiked: hasLiked ?? this.hasLiked, likesCount: likesCount ?? this.likesCount);
+
   @override
   Post copyWithCommentsCount({bool increment = true}) {
     final newCount = increment ? commentsCount + 1 : commentsCount - 1;

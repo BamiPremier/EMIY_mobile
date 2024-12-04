@@ -20,17 +20,13 @@ Error _$ErrorFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Error {
-  String get code => throw _privateConstructorUsedError; // Le code de l'erreur
-  String get message =>
-      throw _privateConstructorUsedError; // Message générique de l'erreur
+  String get code => throw _privateConstructorUsedError;
+  String get message => throw _privateConstructorUsedError;
   @JsonKey(name: 'display_messages')
-  List<IDisplayText>? get displayMessages =>
-      throw _privateConstructorUsedError; // Messages traduits
-  Map<String, dynamic>? get details =>
-      throw _privateConstructorUsedError; // Détails additionnels de l'erreur
+  List<IDisplayText>? get displayMessages => throw _privateConstructorUsedError;
+  Map<String, dynamic>? get details => throw _privateConstructorUsedError;
   @JsonKey(name: 'status_code')
-  int get statusCode =>
-      throw _privateConstructorUsedError; // Code HTTP ou autre
+  int get statusCode => throw _privateConstructorUsedError;
   String get url => throw _privateConstructorUsedError;
 
   /// Serializes this Error to a JSON map.
@@ -39,8 +35,7 @@ mixin _$Error {
   /// Create a copy of Error
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $ErrorCopyWith<Error> get copyWith =>
-      throw _privateConstructorUsedError;
+  $ErrorCopyWith<Error> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -109,8 +104,7 @@ class _$ErrorCopyWithImpl<$Res, $Val extends Error>
 }
 
 /// @nodoc
-abstract class _$$ErrorImplCopyWith<$Res>
-    implements $ErrorCopyWith<$Res> {
+abstract class _$$ErrorImplCopyWith<$Res> implements $ErrorCopyWith<$Res> {
   factory _$$ErrorImplCopyWith(
           _$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
       __$$ErrorImplCopyWithImpl<$Res>;
@@ -194,12 +188,9 @@ class _$ErrorImpl extends _Error {
 
   @override
   final String code;
-// Le code de l'erreur
   @override
   final String message;
-// Message générique de l'erreur
   final List<IDisplayText>? _displayMessages;
-// Message générique de l'erreur
   @override
   @JsonKey(name: 'display_messages')
   List<IDisplayText>? get displayMessages {
@@ -210,9 +201,7 @@ class _$ErrorImpl extends _Error {
     return EqualUnmodifiableListView(value);
   }
 
-// Messages traduits
   final Map<String, dynamic>? _details;
-// Messages traduits
   @override
   Map<String, dynamic>? get details {
     final value = _details;
@@ -222,11 +211,9 @@ class _$ErrorImpl extends _Error {
     return EqualUnmodifiableMapView(value);
   }
 
-// Détails additionnels de l'erreur
   @override
   @JsonKey(name: 'status_code')
   final int statusCode;
-// Code HTTP ou autre
   @override
   final String url;
 
@@ -288,21 +275,20 @@ abstract class _Error extends Error {
       required final String url}) = _$ErrorImpl;
   _Error._() : super._();
 
-  factory _Error.fromJson(Map<String, dynamic> json) =
-      _$ErrorImpl.fromJson;
+  factory _Error.fromJson(Map<String, dynamic> json) = _$ErrorImpl.fromJson;
 
   @override
-  String get code; // Le code de l'erreur
+  String get code;
   @override
-  String get message; // Message générique de l'erreur
+  String get message;
   @override
   @JsonKey(name: 'display_messages')
-  List<IDisplayText>? get displayMessages; // Messages traduits
+  List<IDisplayText>? get displayMessages;
   @override
-  Map<String, dynamic>? get details; // Détails additionnels de l'erreur
+  Map<String, dynamic>? get details;
   @override
   @JsonKey(name: 'status_code')
-  int get statusCode; // Code HTTP ou autre
+  int get statusCode;
   @override
   String get url;
 
@@ -320,8 +306,7 @@ IDisplayText _$IDisplayTextFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$IDisplayText {
-  String get lang =>
-      throw _privateConstructorUsedError; // Langue du message (ex : 'en', 'fr')
+  String get lang => throw _privateConstructorUsedError;
   String get value => throw _privateConstructorUsedError;
 
   /// Serializes this IDisplayText to a JSON map.
@@ -424,7 +409,6 @@ class _$IDisplayTextImpl extends _IDisplayText {
 
   @override
   final String lang;
-// Langue du message (ex : 'en', 'fr')
   @override
   final String value;
 
@@ -472,7 +456,7 @@ abstract class _IDisplayText extends IDisplayText {
       _$IDisplayTextImpl.fromJson;
 
   @override
-  String get lang; // Langue du message (ex : 'en', 'fr')
+  String get lang;
   @override
   String get value;
 

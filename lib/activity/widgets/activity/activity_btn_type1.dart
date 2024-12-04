@@ -35,8 +35,18 @@ class _ActivityBtnType1WidgetState<T extends XItem>
             margin: const EdgeInsets.only(left: 8, right: 16.0),
             child: Row(
               children: [
+                Text(
+                  '${item.itemLikesCount != 0 ? item.itemLikesCount : ''}',
+                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                        color: item.itemHasLiked
+                            ? Theme.of(context).colorScheme.tertiary
+                            : Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
+                ),
                 IconButton(
+                  alignment: Alignment.centerLeft,
                   padding: EdgeInsets.zero,
+                  
                   icon: toSvgIcon(
                     icon: Assets.iconsLike,
                     color: item.itemHasLiked
@@ -50,6 +60,7 @@ class _ActivityBtnType1WidgetState<T extends XItem>
                   },
                 ),
                 IconButton(
+                  alignment: Alignment.centerLeft,
                   padding: EdgeInsets.zero,
                   icon: toSvgIcon(
                     icon: Assets.iconsComment,
@@ -59,6 +70,7 @@ class _ActivityBtnType1WidgetState<T extends XItem>
                 ),
                 const Spacer(),
                 IconButton(
+                  alignment: Alignment.centerLeft,
                   padding: EdgeInsets.zero,
                   icon: toSvgIcon(
                     icon: Assets.iconsShare,

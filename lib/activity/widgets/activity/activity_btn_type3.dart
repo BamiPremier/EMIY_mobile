@@ -57,7 +57,7 @@ class _ActivityBtnType3WidgetState<T extends XItem, C extends XCommonCubit<T>,
                               ),
                     ),
                     child: Text(
-                      'J\'aime',
+                      '${commentCubit.comment.likesCount != 0 ? commentCubit.comment.likesCount : ''} J\'aime',
                       style: Theme.of(context).textTheme.labelSmall!.copyWith(
                             color: AppTheme.primaryRed,
                           ),

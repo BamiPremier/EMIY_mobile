@@ -39,7 +39,7 @@ class _ActionCommentState<T extends XItem> extends State<ActionComment<T>> {
                                 ),
                       ),
                       child: Text(
-                        'J\'aime',
+                        '${comment.likesCount != 0 ? comment.likesCount : ''} J\'aime',
                         style: Theme.of(context).textTheme.labelSmall!.copyWith(
                               color: AppTheme.primaryRed,
                             ),
@@ -50,7 +50,8 @@ class _ActionCommentState<T extends XItem> extends State<ActionComment<T>> {
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.zero,
                       ),
-                      child: Text('J\'aime',
+                      child: Text(
+                          '${commentCubit.comment.likesCount != 0 ? commentCubit.comment.likesCount : ''} J\'aime',
                           style: Theme.of(context).textTheme.labelSmall!),
                     ),
               TextButton(

@@ -13,13 +13,14 @@ class Comment with _$Comment, XReportedItem {
     required String id,
     required String content,
     @JsonKey(name: 'has_liked') required bool hasLiked,
+    @JsonKey(name: 'likes_count') @Default(0) int likesCount,
     @JsonKey(name: 'comment_responses_count')
     required int commentResponsesCount,
     required User user,
     @JsonKey(name: 'created_at')
     @DateTimeConverter()
     required DateTime createdAt,
-  }) = _Comment;
+  }) = _Comment; 
 
   factory Comment.fromJson(Map<String, dynamic> json) =>
       _$CommentFromJson(json);

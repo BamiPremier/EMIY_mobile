@@ -11,10 +11,11 @@ class Episode with _$Episode, XItem {
   const Episode._();
   const factory Episode({
     required int id,
-    required int airingAt, 
+    required int airingAt,
     required int timeUntilAiring,
     required int episode,
     required Anime anime,
+    @JsonKey(name: 'likes_count') @Default(0) int likesCount,
     @JsonKey(name: 'has_liked') @Default(false) bool hasLiked,
     @JsonKey(name: 'comments_count') @Default(0) int commentsCount,
   }) = _Episode;
@@ -24,7 +25,8 @@ class Episode with _$Episode, XItem {
 
   @override
   int get itemCommentsCount => commentsCount;
-
+  @override
+  int get itemLikesCount => likesCount;
   @override
   String get itemId => id.toString();
 
@@ -47,9 +49,9 @@ class Episode with _$Episode, XItem {
   User? get itemUser => null;
 
   @override
-  Episode copyWithLike({bool? hasLiked}) =>
-      copyWith(hasLiked: hasLiked ?? this.hasLiked);
-
+  Episode copyWithLike({bool? hasLiked, int? likesCount}) => copyWith(
+      hasLiked: hasLiked ?? this.hasLiked,
+      likesCount: likesCount ?? this.likesCount);
 
   Episode copyWithCommentsCount({bool increment = true}) {
     final newCount = increment ? commentsCount + 1 : commentsCount - 1;

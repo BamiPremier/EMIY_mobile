@@ -36,11 +36,24 @@ class _ButtonCommonState<T extends XItem> extends State<ButtonCommon<T>>
           children: [
             IconButton(
               padding: EdgeInsets.zero,
-              icon: toSvgIcon(
-                icon: Assets.iconsLike,
-                color: item.itemHasLiked
-                    ? Theme.of(context).colorScheme.tertiary
-                    : Theme.of(context).colorScheme.onSurfaceVariant,
+              icon: Row(
+                children: [
+                  Text(
+                    '${item.itemLikesCount != 0 ? item.itemLikesCount : ''}',
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          color: item.itemHasLiked
+                              ? Theme.of(context).colorScheme.tertiary
+                              : Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                  ),
+                  const SizedBox(width: 4.0),
+                  toSvgIcon(
+                    icon: Assets.iconsLike,
+                    color: item.itemHasLiked
+                        ? Theme.of(context).colorScheme.tertiary
+                        : Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                ],
               ),
               onPressed: () {
                 item.itemHasLiked

@@ -25,6 +25,8 @@ mixin _$Episode {
   int get timeUntilAiring => throw _privateConstructorUsedError;
   int get episode => throw _privateConstructorUsedError;
   Anime get anime => throw _privateConstructorUsedError;
+  @JsonKey(name: 'likes_count')
+  int get likesCount => throw _privateConstructorUsedError;
   @JsonKey(name: 'has_liked')
   bool get hasLiked => throw _privateConstructorUsedError;
   @JsonKey(name: 'comments_count')
@@ -50,6 +52,7 @@ abstract class $EpisodeCopyWith<$Res> {
       int timeUntilAiring,
       int episode,
       Anime anime,
+      @JsonKey(name: 'likes_count') int likesCount,
       @JsonKey(name: 'has_liked') bool hasLiked,
       @JsonKey(name: 'comments_count') int commentsCount});
 
@@ -76,6 +79,7 @@ class _$EpisodeCopyWithImpl<$Res, $Val extends Episode>
     Object? timeUntilAiring = null,
     Object? episode = null,
     Object? anime = null,
+    Object? likesCount = null,
     Object? hasLiked = null,
     Object? commentsCount = null,
   }) {
@@ -100,6 +104,10 @@ class _$EpisodeCopyWithImpl<$Res, $Val extends Episode>
           ? _value.anime
           : anime // ignore: cast_nullable_to_non_nullable
               as Anime,
+      likesCount: null == likesCount
+          ? _value.likesCount
+          : likesCount // ignore: cast_nullable_to_non_nullable
+              as int,
       hasLiked: null == hasLiked
           ? _value.hasLiked
           : hasLiked // ignore: cast_nullable_to_non_nullable
@@ -135,6 +143,7 @@ abstract class _$$EpisodeImplCopyWith<$Res> implements $EpisodeCopyWith<$Res> {
       int timeUntilAiring,
       int episode,
       Anime anime,
+      @JsonKey(name: 'likes_count') int likesCount,
       @JsonKey(name: 'has_liked') bool hasLiked,
       @JsonKey(name: 'comments_count') int commentsCount});
 
@@ -160,6 +169,7 @@ class __$$EpisodeImplCopyWithImpl<$Res>
     Object? timeUntilAiring = null,
     Object? episode = null,
     Object? anime = null,
+    Object? likesCount = null,
     Object? hasLiked = null,
     Object? commentsCount = null,
   }) {
@@ -184,6 +194,10 @@ class __$$EpisodeImplCopyWithImpl<$Res>
           ? _value.anime
           : anime // ignore: cast_nullable_to_non_nullable
               as Anime,
+      likesCount: null == likesCount
+          ? _value.likesCount
+          : likesCount // ignore: cast_nullable_to_non_nullable
+              as int,
       hasLiked: null == hasLiked
           ? _value.hasLiked
           : hasLiked // ignore: cast_nullable_to_non_nullable
@@ -205,6 +219,7 @@ class _$EpisodeImpl extends _Episode {
       required this.timeUntilAiring,
       required this.episode,
       required this.anime,
+      @JsonKey(name: 'likes_count') this.likesCount = 0,
       @JsonKey(name: 'has_liked') this.hasLiked = false,
       @JsonKey(name: 'comments_count') this.commentsCount = 0})
       : super._();
@@ -223,6 +238,9 @@ class _$EpisodeImpl extends _Episode {
   @override
   final Anime anime;
   @override
+  @JsonKey(name: 'likes_count')
+  final int likesCount;
+  @override
   @JsonKey(name: 'has_liked')
   final bool hasLiked;
   @override
@@ -231,7 +249,7 @@ class _$EpisodeImpl extends _Episode {
 
   @override
   String toString() {
-    return 'Episode(id: $id, airingAt: $airingAt, timeUntilAiring: $timeUntilAiring, episode: $episode, anime: $anime, hasLiked: $hasLiked, commentsCount: $commentsCount)';
+    return 'Episode(id: $id, airingAt: $airingAt, timeUntilAiring: $timeUntilAiring, episode: $episode, anime: $anime, likesCount: $likesCount, hasLiked: $hasLiked, commentsCount: $commentsCount)';
   }
 
   @override
@@ -246,6 +264,8 @@ class _$EpisodeImpl extends _Episode {
                 other.timeUntilAiring == timeUntilAiring) &&
             (identical(other.episode, episode) || other.episode == episode) &&
             (identical(other.anime, anime) || other.anime == anime) &&
+            (identical(other.likesCount, likesCount) ||
+                other.likesCount == likesCount) &&
             (identical(other.hasLiked, hasLiked) ||
                 other.hasLiked == hasLiked) &&
             (identical(other.commentsCount, commentsCount) ||
@@ -255,7 +275,7 @@ class _$EpisodeImpl extends _Episode {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, airingAt, timeUntilAiring,
-      episode, anime, hasLiked, commentsCount);
+      episode, anime, likesCount, hasLiked, commentsCount);
 
   /// Create a copy of Episode
   /// with the given fields replaced by the non-null parameter values.
@@ -280,6 +300,7 @@ abstract class _Episode extends Episode {
           required final int timeUntilAiring,
           required final int episode,
           required final Anime anime,
+          @JsonKey(name: 'likes_count') final int likesCount,
           @JsonKey(name: 'has_liked') final bool hasLiked,
           @JsonKey(name: 'comments_count') final int commentsCount}) =
       _$EpisodeImpl;
@@ -297,6 +318,9 @@ abstract class _Episode extends Episode {
   int get episode;
   @override
   Anime get anime;
+  @override
+  @JsonKey(name: 'likes_count')
+  int get likesCount;
   @override
   @JsonKey(name: 'has_liked')
   bool get hasLiked;

@@ -1,11 +1,9 @@
- 
-
 import 'package:potatoes/auto_list.dart';
 import 'package:potatoes/libs.dart';
 import 'package:potatoes/potatoes.dart';
 import 'package:umai/common/bloc/report_cubit.dart';
 import 'package:umai/common/models/comment.dart';
-import 'package:umai/common/screens/common_details.dart'; 
+import 'package:umai/common/screens/common_details.dart';
 
 part 'common_state.dart';
 
@@ -76,7 +74,10 @@ class XCommonCubit<T> extends ObjectCubit<XItem, XCommonState> {
   void likeItem() {
     if (state is InitializingXCommonState) {
       final stateBefore = state;
-      var newItem = x.copyWithLike(hasLiked: !x.itemHasLiked);
+      var newItem = x.copyWithLike(
+        hasLiked: !x.itemHasLiked,
+        likesCount: x.itemLikesCount + 1,
+      );
       update(newItem);
       service
           .likeItem(
@@ -92,7 +93,10 @@ class XCommonCubit<T> extends ObjectCubit<XItem, XCommonState> {
   void unLikeItem() {
     if (state is InitializingXCommonState) {
       final stateBefore = state;
-      var newItem = x.copyWithLike(hasLiked: !x.itemHasLiked);
+      var newItem = x.copyWithLike(
+        hasLiked: !x.itemHasLiked,
+        likesCount: x.itemLikesCount - 1,
+      );
       update(newItem);
       service
           .unLikeItem(

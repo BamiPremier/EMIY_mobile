@@ -24,6 +24,8 @@ mixin _$Comment {
   String get content => throw _privateConstructorUsedError;
   @JsonKey(name: 'has_liked')
   bool get hasLiked => throw _privateConstructorUsedError;
+  @JsonKey(name: 'likes_count')
+  int get likesCount => throw _privateConstructorUsedError;
   @JsonKey(name: 'comment_responses_count')
   int get commentResponsesCount => throw _privateConstructorUsedError;
   User get user => throw _privateConstructorUsedError;
@@ -49,6 +51,7 @@ abstract class $CommentCopyWith<$Res> {
       {String id,
       String content,
       @JsonKey(name: 'has_liked') bool hasLiked,
+      @JsonKey(name: 'likes_count') int likesCount,
       @JsonKey(name: 'comment_responses_count') int commentResponsesCount,
       User user,
       @JsonKey(name: 'created_at') @DateTimeConverter() DateTime createdAt});
@@ -74,6 +77,7 @@ class _$CommentCopyWithImpl<$Res, $Val extends Comment>
     Object? id = null,
     Object? content = null,
     Object? hasLiked = null,
+    Object? likesCount = null,
     Object? commentResponsesCount = null,
     Object? user = null,
     Object? createdAt = null,
@@ -91,6 +95,10 @@ class _$CommentCopyWithImpl<$Res, $Val extends Comment>
           ? _value.hasLiked
           : hasLiked // ignore: cast_nullable_to_non_nullable
               as bool,
+      likesCount: null == likesCount
+          ? _value.likesCount
+          : likesCount // ignore: cast_nullable_to_non_nullable
+              as int,
       commentResponsesCount: null == commentResponsesCount
           ? _value.commentResponsesCount
           : commentResponsesCount // ignore: cast_nullable_to_non_nullable
@@ -128,6 +136,7 @@ abstract class _$$CommentImplCopyWith<$Res> implements $CommentCopyWith<$Res> {
       {String id,
       String content,
       @JsonKey(name: 'has_liked') bool hasLiked,
+      @JsonKey(name: 'likes_count') int likesCount,
       @JsonKey(name: 'comment_responses_count') int commentResponsesCount,
       User user,
       @JsonKey(name: 'created_at') @DateTimeConverter() DateTime createdAt});
@@ -152,6 +161,7 @@ class __$$CommentImplCopyWithImpl<$Res>
     Object? id = null,
     Object? content = null,
     Object? hasLiked = null,
+    Object? likesCount = null,
     Object? commentResponsesCount = null,
     Object? user = null,
     Object? createdAt = null,
@@ -169,6 +179,10 @@ class __$$CommentImplCopyWithImpl<$Res>
           ? _value.hasLiked
           : hasLiked // ignore: cast_nullable_to_non_nullable
               as bool,
+      likesCount: null == likesCount
+          ? _value.likesCount
+          : likesCount // ignore: cast_nullable_to_non_nullable
+              as int,
       commentResponsesCount: null == commentResponsesCount
           ? _value.commentResponsesCount
           : commentResponsesCount // ignore: cast_nullable_to_non_nullable
@@ -192,6 +206,7 @@ class _$CommentImpl extends _Comment {
       {required this.id,
       required this.content,
       @JsonKey(name: 'has_liked') required this.hasLiked,
+      @JsonKey(name: 'likes_count') this.likesCount = 0,
       @JsonKey(name: 'comment_responses_count')
       required this.commentResponsesCount,
       required this.user,
@@ -211,6 +226,9 @@ class _$CommentImpl extends _Comment {
   @JsonKey(name: 'has_liked')
   final bool hasLiked;
   @override
+  @JsonKey(name: 'likes_count')
+  final int likesCount;
+  @override
   @JsonKey(name: 'comment_responses_count')
   final int commentResponsesCount;
   @override
@@ -222,7 +240,7 @@ class _$CommentImpl extends _Comment {
 
   @override
   String toString() {
-    return 'Comment(id: $id, content: $content, hasLiked: $hasLiked, commentResponsesCount: $commentResponsesCount, user: $user, createdAt: $createdAt)';
+    return 'Comment(id: $id, content: $content, hasLiked: $hasLiked, likesCount: $likesCount, commentResponsesCount: $commentResponsesCount, user: $user, createdAt: $createdAt)';
   }
 
   @override
@@ -234,6 +252,8 @@ class _$CommentImpl extends _Comment {
             (identical(other.content, content) || other.content == content) &&
             (identical(other.hasLiked, hasLiked) ||
                 other.hasLiked == hasLiked) &&
+            (identical(other.likesCount, likesCount) ||
+                other.likesCount == likesCount) &&
             (identical(other.commentResponsesCount, commentResponsesCount) ||
                 other.commentResponsesCount == commentResponsesCount) &&
             (identical(other.user, user) || other.user == user) &&
@@ -244,7 +264,7 @@ class _$CommentImpl extends _Comment {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, content, hasLiked,
-      commentResponsesCount, user, createdAt);
+      likesCount, commentResponsesCount, user, createdAt);
 
   /// Create a copy of Comment
   /// with the given fields replaced by the non-null parameter values.
@@ -267,6 +287,7 @@ abstract class _Comment extends Comment {
       {required final String id,
       required final String content,
       @JsonKey(name: 'has_liked') required final bool hasLiked,
+      @JsonKey(name: 'likes_count') final int likesCount,
       @JsonKey(name: 'comment_responses_count')
       required final int commentResponsesCount,
       required final User user,
@@ -284,6 +305,9 @@ abstract class _Comment extends Comment {
   @override
   @JsonKey(name: 'has_liked')
   bool get hasLiked;
+  @override
+  @JsonKey(name: 'likes_count')
+  int get likesCount;
   @override
   @JsonKey(name: 'comment_responses_count')
   int get commentResponsesCount;

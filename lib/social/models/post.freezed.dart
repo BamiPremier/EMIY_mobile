@@ -25,6 +25,8 @@ mixin _$Post {
   String? get image => throw _privateConstructorUsedError;
   @JsonKey(name: 'has_liked')
   bool get hasLiked => throw _privateConstructorUsedError;
+  @JsonKey(name: 'likes_count')
+  int get likesCount => throw _privateConstructorUsedError;
   @JsonKey(name: 'comments_count')
   int get commentsCount => throw _privateConstructorUsedError;
   User get user => throw _privateConstructorUsedError;
@@ -52,6 +54,7 @@ abstract class $PostCopyWith<$Res> {
       String content,
       String? image,
       @JsonKey(name: 'has_liked') bool hasLiked,
+      @JsonKey(name: 'likes_count') int likesCount,
       @JsonKey(name: 'comments_count') int commentsCount,
       User user,
       bool reported,
@@ -79,6 +82,7 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
     Object? content = null,
     Object? image = freezed,
     Object? hasLiked = null,
+    Object? likesCount = null,
     Object? commentsCount = null,
     Object? user = null,
     Object? reported = null,
@@ -101,6 +105,10 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
           ? _value.hasLiked
           : hasLiked // ignore: cast_nullable_to_non_nullable
               as bool,
+      likesCount: null == likesCount
+          ? _value.likesCount
+          : likesCount // ignore: cast_nullable_to_non_nullable
+              as int,
       commentsCount: null == commentsCount
           ? _value.commentsCount
           : commentsCount // ignore: cast_nullable_to_non_nullable
@@ -143,6 +151,7 @@ abstract class _$$PostImplCopyWith<$Res> implements $PostCopyWith<$Res> {
       String content,
       String? image,
       @JsonKey(name: 'has_liked') bool hasLiked,
+      @JsonKey(name: 'likes_count') int likesCount,
       @JsonKey(name: 'comments_count') int commentsCount,
       User user,
       bool reported,
@@ -168,6 +177,7 @@ class __$$PostImplCopyWithImpl<$Res>
     Object? content = null,
     Object? image = freezed,
     Object? hasLiked = null,
+    Object? likesCount = null,
     Object? commentsCount = null,
     Object? user = null,
     Object? reported = null,
@@ -190,6 +200,10 @@ class __$$PostImplCopyWithImpl<$Res>
           ? _value.hasLiked
           : hasLiked // ignore: cast_nullable_to_non_nullable
               as bool,
+      likesCount: null == likesCount
+          ? _value.likesCount
+          : likesCount // ignore: cast_nullable_to_non_nullable
+              as int,
       commentsCount: null == commentsCount
           ? _value.commentsCount
           : commentsCount // ignore: cast_nullable_to_non_nullable
@@ -218,6 +232,7 @@ class _$PostImpl extends _Post {
       required this.content,
       this.image,
       @JsonKey(name: 'has_liked') this.hasLiked = false,
+      @JsonKey(name: 'likes_count') this.likesCount = 0,
       @JsonKey(name: 'comments_count') this.commentsCount = 0,
       required this.user,
       this.reported = false,
@@ -239,6 +254,9 @@ class _$PostImpl extends _Post {
   @JsonKey(name: 'has_liked')
   final bool hasLiked;
   @override
+  @JsonKey(name: 'likes_count')
+  final int likesCount;
+  @override
   @JsonKey(name: 'comments_count')
   final int commentsCount;
   @override
@@ -253,7 +271,7 @@ class _$PostImpl extends _Post {
 
   @override
   String toString() {
-    return 'Post(id: $id, content: $content, image: $image, hasLiked: $hasLiked, commentsCount: $commentsCount, user: $user, reported: $reported, createdAt: $createdAt)';
+    return 'Post(id: $id, content: $content, image: $image, hasLiked: $hasLiked, likesCount: $likesCount, commentsCount: $commentsCount, user: $user, reported: $reported, createdAt: $createdAt)';
   }
 
   @override
@@ -266,6 +284,8 @@ class _$PostImpl extends _Post {
             (identical(other.image, image) || other.image == image) &&
             (identical(other.hasLiked, hasLiked) ||
                 other.hasLiked == hasLiked) &&
+            (identical(other.likesCount, likesCount) ||
+                other.likesCount == likesCount) &&
             (identical(other.commentsCount, commentsCount) ||
                 other.commentsCount == commentsCount) &&
             (identical(other.user, user) || other.user == user) &&
@@ -278,7 +298,7 @@ class _$PostImpl extends _Post {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, content, image, hasLiked,
-      commentsCount, user, reported, createdAt);
+      likesCount, commentsCount, user, reported, createdAt);
 
   /// Create a copy of Post
   /// with the given fields replaced by the non-null parameter values.
@@ -302,6 +322,7 @@ abstract class _Post extends Post {
       required final String content,
       final String? image,
       @JsonKey(name: 'has_liked') final bool hasLiked,
+      @JsonKey(name: 'likes_count') final int likesCount,
       @JsonKey(name: 'comments_count') final int commentsCount,
       required final User user,
       final bool reported,
@@ -321,6 +342,9 @@ abstract class _Post extends Post {
   @override
   @JsonKey(name: 'has_liked')
   bool get hasLiked;
+  @override
+  @JsonKey(name: 'likes_count')
+  int get likesCount;
   @override
   @JsonKey(name: 'comments_count')
   int get commentsCount;
